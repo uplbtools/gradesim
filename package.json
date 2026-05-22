@@ -1,0 +1,12 @@
+{
+  "name": "gradesim-root",
+  "private": true,
+  "workspaces": [
+    "website"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=website",
+    "dev": "npm run dev --workspace=website",
+    "start": "npm run start --workspace=website"
+  }
+}
