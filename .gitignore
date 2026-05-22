@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.next/
+
+# Build output
+extension/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cloned source (already restructured into extension/)
+gradesim/

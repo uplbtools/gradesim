@@ -1,91 +1,65 @@
-# Elbi GradeSim - UPLB GWA Calculator
+# Elbi GradeSim
 
-A Chrome extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors.
+A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on Chrome, Firefox, Opera, and Edge.
 
-![Elbi GradeSim](icons/icon128.png)
+## Repository Structure
 
-## Features
+```
+gradesim/
+├── extension/           # Browser extension source
+│   ├── src/             # Shared source (popup, content scripts, curriculum data)
+│   ├── manifests/       # Per-browser manifest files
+│   ├── icons/           # Extension icons
+│   └── build.sh         # Build script for each browser target
+├── website/             # Next.js landing page
+│   ├── app/             # Pages and components
+│   └── public/
+│       ├── curricula/   # Curriculum images by college (PNG)
+│       ├── chrome.svg   # Browser logos
+│       └── firefox.svg
+└── README.md
+```
 
-### 1. Automatic GWA Calculation
-- Automatically captures your grades from AMIS when you visit the Personal Information page
-- Calculates your current GWA (weighted average)
-- Excludes NSTP, PE, and HK courses from calculation (per UP policy)
-- Shows your current Latin honor track
+## Extension
 
-### 2. Grades Overview
-- View all your grades organized by semester
-- See course codes, titles, units, and grades
-- Color-coded grades for easy visualization
+### Build
 
-### 3. Track Detection
-- Automatically detects your track (Thesis or SP) based on enrolled courses
-- CMSC 200 = Thesis Track (15 free elective units)
-- CMSC 190 = SP Track (18 free elective units)
+```bash
+cd extension
+./build.sh all        # Build all browsers
+./build.sh chrome     # Build Chrome only
+./build.sh firefox    # Build Firefox only
+```
 
-### 4. "What If?" Simulator
-- Calculate what grades you need in remaining courses to achieve a target GWA
-- Preset targets:
-  - **Summa Cum Laude**: GWA ≤ 1.20
-  - **Magna Cum Laude**: GWA ≤ 1.45
-  - **Cum Laude**: GWA ≤ 1.75
-  - **Honor Roll**: GWA ≤ 2.00
-  - **Custom**: Enter any target GWA
-- Shows remaining courses based on your selected curriculum
-- Calculates required average grade for remaining courses
+Output goes to `extension/dist/<browser>/`. Load the folder in your browser's developer mode.
 
-## Installation
+### Install from Store
 
-### From Chrome Web Store
-1. Visit the [Chrome Web Store page](https://chrome.google.com/webstore) (Coming soon)
-2. Click "Add to Chrome"
+- [Chrome Web Store](https://chromewebstore.google.com/detail/elbi-gradesim-uplb-gwa-ca/mlhklblbhkikcmobmmajckjcbmdinldb)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/elbi-gradesim/)
 
-### Developer Mode (Manual Installation)
-1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in the top right)
-4. Click "Load unpacked"
-5. Select the `Elbi Gradesim` folder
+### Features
 
-## Usage
+- Automatic GWA calculation from AMIS
+- "What If?" simulator for Latin honor targets
+- Grades overview by semester or year
+- 30+ UPLB degree programs supported
+- 100% local — no data leaves your device
 
-1. Log in to [AMIS](https://amis.uplb.edu.ph)
-2. Go to the Personal Information page
-3. Click the extension icon to view your GWA and use the What If? simulator
+## Website
 
-## Supported Programs
+```bash
+cd website
+npm install
+npm run dev
+```
 
-Currently supports:
-- **BS Computer Science** - University of the Philippines Los Baños
+The landing page links to both store listings and displays curriculum data.
 
-More programs coming soon! Other colleges (CAS, CAFS, CEM, CEAT, CDC, CFNR, CHE, UPRHS) are listed but curriculum data is pending.
+## Privacy
 
-## Privacy Policy
-
-**Your data stays on YOUR device.**
-
-- ✅ All data is stored locally using Chrome's built-in storage
-- ✅ No external servers - everything runs in your browser
-- ✅ No analytics or tracking
-- ✅ No data collection or sharing with third parties
-- ✅ We never see or store your AMIS credentials
-
-For full details, see [PRIVACY_POLICY.md](PRIVACY_POLICY.md)
-
-## Permissions Explained
-
-| Permission | Why We Need It |
-|------------|----------------|
-| `storage` | To save your grades data locally on your device |
-| `host_permissions` | To access AMIS portal and read your grades when you're logged in |
-
-## Technical Details
-
-The extension intercepts the `grades?summarize=true` API call made by AMIS to get your grades data. This data is stored locally in your browser and never sent to any external server.
-
-## Contributing
-
-Feel free to add more curricula! Edit `curriculum.js` to add courses for other degree programs.
+All data stays on your device. No servers, no analytics, no tracking. See [PRIVACY_POLICY.md](extension/PRIVACY_POLICY.md).
 
 ## License
 
-MIT License
+MIT
