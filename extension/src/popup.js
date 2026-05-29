@@ -20,11 +20,111 @@ let excludedCourses = new Set();
 // Store current view mode
 let currentView = 'semester';
 
+// Store course substitutions - requiredCode -> takenCode
+let substitutions = {};
+
 document.addEventListener('DOMContentLoaded', async () => {
+  // Check if opened in a tab
+  const urlParams = new URLSearchParams(window.location.search);
+  const isTabMode = urlParams.get('mode') === 'tab' || window.innerWidth > 600;
+  if (isTabMode) {
+    document.body.classList.add('tab-mode');
+  }
+
+  // Open in Tab button
+  const openTabBtn = document.getElementById('openTabBtn');
+  if (openTabBtn) {
+    openTabBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('popup.html?mode=tab') });
+    });
+  }
+
+  // Help Modal logic
+  const helpBtn = document.getElementById('helpBtn');
+  const helpOverlay = document.getElementById('helpOverlay');
+  const closeHelpBtn = document.getElementById('closeHelpBtn');
+
+  if (helpBtn && helpOverlay && closeHelpBtn) {
+    helpBtn.addEventListener('click', () => {
+      helpOverlay.classList.remove('hidden');
+    });
+
+    closeHelpBtn.addEventListener('click', () => {
+      helpOverlay.classList.add('hidden');
+    });
+
+    // Close on overlay click
+    helpOverlay.addEventListener('click', (e) => {
+      if (e.target === helpOverlay) {
+        helpOverlay.classList.add('hidden');
+      }
+    });
+  }
+
+  // Check if terms are accepted
+  const savedTerms = await chrome.storage.local.get(['termsAccepted']);
+  let isTermsAccepted = !!savedTerms.termsAccepted;
+  
+  const termsOverlay = document.getElementById('termsOverlay');
+  const closeTermsBtn = document.getElementById('closeTermsBtn');
+  const termsCheckbox = document.getElementById('termsCheckbox');
+  const acceptTermsBtn = document.getElementById('acceptTermsBtn');
+  
+  const showTerms = (forceAcceptMode) => {
+    termsOverlay.classList.remove('hidden');
+    if (forceAcceptMode) {
+      closeTermsBtn.classList.add('hidden');
+      acceptTermsBtn.textContent = 'Accept & Proceed';
+      acceptTermsBtn.disabled = !termsCheckbox.checked;
+    } else {
+      closeTermsBtn.classList.remove('hidden');
+      acceptTermsBtn.textContent = 'Close';
+      acceptTermsBtn.disabled = false;
+    }
+  };
+  
+  if (!isTermsAccepted) {
+    showTerms(true);
+  } else {
+    termsOverlay.classList.add('hidden');
+  }
+  
+  termsCheckbox.addEventListener('change', () => {
+    if (!isTermsAccepted) {
+      acceptTermsBtn.disabled = !termsCheckbox.checked;
+    }
+  });
+  
+  acceptTermsBtn.addEventListener('click', async () => {
+    if (!isTermsAccepted) {
+      await chrome.storage.local.set({ termsAccepted: true });
+      isTermsAccepted = true;
+    }
+    termsOverlay.classList.add('hidden');
+  });
+  
+  closeTermsBtn.addEventListener('click', () => {
+    termsOverlay.classList.add('hidden');
+  });
+  
+  const viewTermsLink = document.getElementById('viewTermsLink');
+  if (viewTermsLink) {
+    viewTermsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      showTerms(!isTermsAccepted);
+    });
+  }
+
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
   if (savedExclusions.excludedCourses) {
     excludedCourses = new Set(savedExclusions.excludedCourses);
+  }
+  
+  // Load substitutions from storage
+  const savedSubstitutions = await chrome.storage.local.get(['substitutions']);
+  if (savedSubstitutions.substitutions) {
+    substitutions = savedSubstitutions.substitutions;
   }
   const loadingEl = document.getElementById('loading');
   const noDataEl = document.getElementById('noData');
@@ -106,6 +206,115 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('customGWA').addEventListener('focus', () => {
     document.querySelector('input[value="custom"]').checked = true;
   });
+  
+  // Apply Substitution button
+  const addSubBtn = document.getElementById('addSubBtn');
+  if (addSubBtn) {
+    addSubBtn.addEventListener('click', async () => {
+      const reqSelect = document.getElementById('subRequired');
+      const takenSelect = document.getElementById('subTaken');
+      const reqCode = reqSelect.value;
+      const takenCode = takenSelect.value;
+      
+      if (!reqCode || !takenCode) {
+        alert('Please select both a required course and a completed course.');
+        return;
+      }
+      
+      // Save substitution
+      substitutions[reqCode] = takenCode;
+      await chrome.storage.local.set({ substitutions });
+      
+      // Reset selectors
+      reqSelect.value = '';
+      takenSelect.value = '';
+      
+      // Re-render
+      if (window.gradesData && window.gradesData.courses) {
+        displayGradesData(window.gradesData.courses);
+      }
+    });
+  }
+
+  // Export JSON functionality
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async () => {
+      try {
+        const data = await chrome.storage.local.get([
+          'gradesData',
+          'selectedProgram',
+          'excludedCourses',
+          'substitutions'
+        ]);
+        
+        const exportObj = {
+          source: 'elbi-gradesim',
+          timestamp: new Date().toISOString(),
+          selectedProgram: data.selectedProgram || 'BSCS',
+          excludedCourses: data.excludedCourses || [],
+          substitutions: data.substitutions || {},
+          gradesData: data.gradesData || null
+        };
+        
+        const jsonString = JSON.stringify(exportObj, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `elbi-gradesim-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Failed to export data: ' + err.message);
+      }
+    });
+  }
+
+  // Import JSON functionality
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+  if (importBtn && importFile) {
+    importBtn.addEventListener('click', () => {
+      importFile.click();
+    });
+    
+    importFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const importObj = JSON.parse(evt.target.result);
+          
+          if (importObj.source !== 'elbi-gradesim') {
+            throw new Error('Invalid backup file. Must be a valid Elbi GradeSim JSON backup.');
+          }
+          
+          const toSave = {};
+          if (importObj.selectedProgram) toSave.selectedProgram = importObj.selectedProgram;
+          if (importObj.excludedCourses) toSave.excludedCourses = importObj.excludedCourses;
+          if (importObj.substitutions) toSave.substitutions = importObj.substitutions;
+          if (importObj.gradesData) toSave.gradesData = importObj.gradesData;
+          
+          // Always mark terms as accepted when importing data
+          toSave.termsAccepted = true;
+          
+          await chrome.storage.local.set(toSave);
+          alert('Data imported successfully! The extension will now reload.');
+          window.location.reload();
+        } catch (err) {
+          alert('Failed to import data: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+  }
 });
 
 // Parse the AMIS data structure into a flat array of courses
@@ -355,8 +564,32 @@ function displayGradesList(gradesBySemester, allCourses) {
     groupedCourses = gradesBySemester;
   }
   
-  // Sort groups (semesters or years)
-  const sortedGroups = Object.keys(groupedCourses).sort().reverse();
+  // Sort groups (semesters or years) chronologically
+  const getTermWeight = (term) => {
+    const t = term.toLowerCase();
+    if (t.includes('first') || t.includes('1st')) return 1;
+    if (t.includes('second') || t.includes('2nd')) return 2;
+    if (t.includes('midyear') || t.includes('summer')) return 3;
+    return 0;
+  };
+
+  const sortedGroups = Object.keys(groupedCourses).sort((a, b) => {
+    const splitA = a.split(',');
+    const splitB = b.split(',');
+    
+    const yearA = splitA[0];
+    const yearB = splitB[0];
+    
+    if (yearA !== yearB) {
+      return yearB.localeCompare(yearA);
+    }
+    
+    if (splitA.length > 1 && splitB.length > 1) {
+      return getTermWeight(splitB[1]) - getTermWeight(splitA[1]);
+    }
+    
+    return b.localeCompare(a);
+  });
   
   sortedGroups.forEach(groupKey => {
     const courses = groupedCourses[groupKey];
@@ -535,7 +768,18 @@ function displayRemainingCourses(completedCourses) {
   const freeElectiveUnitsTotal = getFreeElectiveUnits(currentTrack);
   
   // Get completed course codes (normalized)
-  const completedCodes = new Set(completedCourses.map(c => c.code.toUpperCase().trim()));
+  const completedCodes = new Set();
+  completedCourses.forEach(c => {
+    const code = c.code.toUpperCase().trim();
+    completedCodes.add(code);
+  });
+  
+  // Add required course codes to completedCodes if their taken courses are completed
+  for (const [reqCode, takenCode] of Object.entries(substitutions)) {
+    if (completedCodes.has(takenCode.toUpperCase().trim())) {
+      completedCodes.add(reqCode.toUpperCase().trim());
+    }
+  }
   
   // Filter remaining required courses from curriculum
   const remaining = (curriculum.majorCourses || []).filter(course => {
@@ -558,13 +802,82 @@ function displayRemainingCourses(completedCourses) {
   const requiredCodesSet = new Set((curriculum.requiredCodes || []).map(c => c.toUpperCase().trim()));
   const freeElectives = completedCourses.filter(c => {
     const code = c.code.toUpperCase().trim();
-    const isRequired = requiredCodesSet.has(code);
+    // It's required if it's in the requiredCodes list, OR if it's substituted for something in requiredCodes
+    const isSubstitutedForRequired = Object.entries(substitutions).some(([req, taken]) => 
+      taken.toUpperCase().trim() === code && requiredCodesSet.has(req.toUpperCase().trim())
+    );
+    const isRequired = requiredCodesSet.has(code) || isSubstitutedForRequired;
     const isGE = c.title && c.title.trim().startsWith("(GE)");
     return !isRequired && !isGE;
   });
   
   const freeElectiveUnitsTaken = freeElectives.reduce((sum, c) => sum + c.units, 0);
   const freeElectiveUnitsRemaining = Math.max(0, freeElectiveUnitsTotal - freeElectiveUnitsTaken);
+  
+  // Populate substitutions dropdowns
+  const subRequiredSelect = document.getElementById('subRequired');
+  if (subRequiredSelect) {
+    subRequiredSelect.innerHTML = '<option value="">-- Select Required Course --</option>';
+    // Sort required courses alphabetically by code
+    const sortedRequired = [...(curriculum.majorCourses || [])].sort((a, b) => a.code.localeCompare(b.code));
+    sortedRequired.forEach(course => {
+      const code = course.code.toUpperCase().trim();
+      const option = document.createElement('option');
+      option.value = code;
+      option.textContent = `${course.code} (${course.units}u)`;
+      subRequiredSelect.appendChild(option);
+    });
+  }
+  
+  const subTakenSelect = document.getElementById('subTaken');
+  if (subTakenSelect) {
+    subTakenSelect.innerHTML = '<option value="">-- Select Completed Course --</option>';
+    // Sort completed courses alphabetically by code
+    const sortedCompleted = [...completedCourses].sort((a, b) => a.code.localeCompare(b.code));
+    sortedCompleted.forEach(c => {
+      const code = c.code.toUpperCase().trim();
+      const isGE = c.title && c.title.trim().startsWith("(GE)");
+      const isAlreadyUsed = Object.values(substitutions).some(taken => taken.toUpperCase().trim() === code);
+      
+      // Only show if not a required curriculum code, not GE, and not already used in another substitution
+      if (!requiredCodesSet.has(code) && !isGE && !isAlreadyUsed) {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${c.code} (${c.units}u) - Grade: ${c.grade}`;
+        subTakenSelect.appendChild(option);
+      }
+    });
+  }
+  
+  // Render active substitutions list
+  const substitutionsList = document.getElementById('substitutionsList');
+  if (substitutionsList) {
+    substitutionsList.innerHTML = '';
+    const subEntries = Object.entries(substitutions);
+    if (subEntries.length === 0) {
+      substitutionsList.innerHTML = '<div class="no-substitutions-notice">No substitutions configured.</div>';
+    } else {
+      subEntries.forEach(([reqCode, takenCode]) => {
+         const item = document.createElement('div');
+         item.className = 'substitution-item';
+         item.innerHTML = `
+           <span class="sub-map"><strong>${sanitizeText(reqCode)}</strong> ← <strong>${sanitizeText(takenCode)}</strong></span>
+           <button class="btn-remove-sub" data-req="${sanitizeText(reqCode)}" title="Remove substitution">×</button>
+         `;
+         substitutionsList.appendChild(item);
+      });
+      
+      // Add remove listeners
+      substitutionsList.querySelectorAll('.btn-remove-sub').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const req = btn.dataset.req;
+          delete substitutions[req];
+          await chrome.storage.local.set({ substitutions });
+          displayGradesData(window.gradesData.courses);
+        });
+      });
+    }
+  }
   
   // Display remaining required courses
   remaining.forEach(course => {
@@ -1199,6 +1512,7 @@ function generateHighlightsPanel(data) {
 }
 
 function generateProgressPanel(data) {
+  const currentProgram = getCurrentCurriculum();
   const totalRequired = currentProgram?.totalUnitsRequired || 155;
   const completed = data.totalUnits;
   const remaining = Math.max(0, totalRequired - completed);
