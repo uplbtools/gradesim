@@ -1,2117 +1,11465 @@
 // UPLB Curriculum Database
 // Complete undergraduate programs for University of the Philippines Los Baños
-// NOTE: This is UPLB only - not UP Diliman, UP Manila, UP Baguio, etc.
+// NOTE: This is UPLB only - not UP Diliman, UP Manila, etc.
 
 const UPLB_PROGRAMS = {
-  // ============================================================================
-  // COLLEGE OF ARTS AND SCIENCES (CAS)
-  // ============================================================================
-  
   "BSCS": {
-    code: "BSCS",
-    name: "BS Computer Science",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 130,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "CMSC 200", freeElectiveUnits: 15 },
-      sp: { name: "Special Problem Track", code: "CMSC 190", freeElectiveUnits: 18 }
+    "code": "BSCS",
+    "name": "BS Computer Science",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 130,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "CMSC 200",
+        "freeElectiveUnits": 15
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "CMSC 190",
+        "freeElectiveUnits": 18
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      { code: "MATH 27", title: "Analytic Geometry and Calculus I", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "CMSC 12", title: "Foundations of Computer Science", units: 3 },
-      { code: "CMSC 21", title: "Fundamentals of Programming", units: 3 },
-      { code: "CMSC 22", title: "Object-Oriented Programming", units: 3 },
-      { code: "CMSC 23", title: "Mobile Computing", units: 3 },
-      { code: "CMSC 56", title: "Discrete Mathematical Structures in Computer Science I", units: 3 },
-      { code: "CMSC 57", title: "Discrete Mathematical Structures in Computer Science II", units: 3 },
-      { code: "CMSC 100", title: "Web Programming", units: 3 },
-      { code: "CMSC 123", title: "Data Structures", units: 3 },
-      { code: "CMSC 124", title: "Design and Implementation of Programming Languages", units: 3 },
-      { code: "CMSC 125", title: "Operating Systems", units: 3 },
-      { code: "CMSC 127", title: "File Processing and Database Systems", units: 3 },
-      { code: "CMSC 128", title: "Introduction to Software Engineering", units: 3 },
-      { code: "CMSC 130", title: "Logic Design and Digital Computer Circuits", units: 3 },
-      { code: "CMSC 131", title: "Introduction to Computer Organization and Machine Level Programming", units: 3 },
-      { code: "CMSC 132", title: "Computer Architecture", units: 3 },
-      { code: "CMSC 137", title: "Data Communications and Networking", units: 3 },
-      { code: "CMSC 141", title: "Automata and Language Theory", units: 3 },
-      { code: "CMSC 142", title: "Design and Analysis of Algorithms", units: 3 },
-      { code: "CMSC 150", title: "Numerical and Symbolic Computation", units: 3 },
-      { code: "CMSC 170", title: "Introduction to Artificial Intelligence", units: 3 },
-      { code: "CMSC 173", title: "Human Computer Interaction", units: 3 },
-      { code: "CMSC 180", title: "Introduction to Parallel Computing", units: 3 },
-      { code: "CMSC 190", title: "Special Problem", units: 3, track: "sp" },
-      { code: "CMSC 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "CMSC 12",
+        "title": "Foundations of Computer Science",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CMSC 21",
+        "title": "Fundamentals of Programming",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 22",
+        "title": "Object-Oriented Programming",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 23",
+        "title": "Mobile Computing",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 56",
+        "title": "Discrete Mathematical Structures in Computer Science I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 57",
+        "title": "Discrete Mathematical Structures in Computer Science II",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 100",
+        "title": "Web Programming",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 123",
+        "title": "Data Structures",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 124",
+        "title": "Design and Implementation of Programming Languages",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 125",
+        "title": "Operating Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 127",
+        "title": "File Processing and Database Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 128",
+        "title": "Introduction to Software Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 130",
+        "title": "Logic Design and Digital Computer Circuits",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 131",
+        "title": "Introduction to Computer Organization and Machine Level Programming",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 132",
+        "title": "Computer Architecture",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 137",
+        "title": "Data Communications and Networking",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 141",
+        "title": "Automata and Language Theory",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 142",
+        "title": "Design and Analysis of Algorithms",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 150",
+        "title": "Numerical and Symbolic Computation",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 170",
+        "title": "Introduction to Artificial Intelligence",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 173",
+        "title": "Human Computer Interaction",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 180",
+        "title": "Introduction to Parallel Computing",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 190",
+        "title": "Special Problem",
+        "units": 3,
+        "track": "sp",
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 200",
+        "title": "Undergraduate Thesis",
+        "units": 6,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "MATH 27", "MATH 28", "CMSC 12", "CMSC 21", "CMSC 22", "CMSC 23",
-      "CMSC 56", "CMSC 57", "CMSC 100", "CMSC 123", "CMSC 124", "CMSC 125",
-      "CMSC 127", "CMSC 128", "CMSC 130", "CMSC 131", "CMSC 132", "CMSC 137",
-      "CMSC 141", "CMSC 142", "CMSC 150", "CMSC 170", "CMSC 173", "CMSC 180",
-      "STAT 101", "ENG 10"
+    "requiredCodes": [
+      "MATH 27",
+      "MATH 28",
+      "CMSC 12",
+      "CMSC 21",
+      "CMSC 22",
+      "CMSC 23",
+      "CMSC 56",
+      "CMSC 57",
+      "CMSC 100",
+      "CMSC 123",
+      "CMSC 124",
+      "CMSC 125",
+      "CMSC 127",
+      "CMSC 128",
+      "CMSC 130",
+      "CMSC 131",
+      "CMSC 132",
+      "CMSC 137",
+      "CMSC 141",
+      "CMSC 142",
+      "CMSC 150",
+      "CMSC 170",
+      "CMSC 173",
+      "CMSC 180",
+      "STAT 101",
+      "ENG 10"
     ]
   },
-  
   "BSMATH": {
-    code: "BSMATH",
-    name: "BS Mathematics",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 129,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "MATH 200", freeElectiveUnits: 9, majorElectiveUnits: 6 },
-      sp: { name: "Special Problem Track", code: "MATH 190", freeElectiveUnits: 9, majorElectiveUnits: 9 }
+    "code": "BSMATH",
+    "name": "BS Mathematics",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 129,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "MATH 200",
+        "freeElectiveUnits": 9,
+        "majorElectiveUnits": 6
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "MATH 190",
+        "freeElectiveUnits": 9,
+        "majorElectiveUnits": 9
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      // First Year - First Semester
-      { code: "MATH 20", title: "The Landscape of Mathematics", units: 3 },
-      { code: "MATH 36", title: "Mathematical Analysis I", units: 5 },
-      { code: "BIO 11.1", title: "Investigative Biology Laboratory", units: 2 },
-      // First Year - Second Semester
-      { code: "MATH 37", title: "Mathematical Analysis II", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 3 },
-      // Second Year - First Semester
-      { code: "MATH 38", title: "Mathematical Analysis III", units: 5 },
-      { code: "MATH 101", title: "Logic and Set Theory", units: 3 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      // Second Year - Second Semester
-      { code: "MATH 103", title: "Elementary Theory of Numbers", units: 3 },
-      { code: "MATH 138", title: "Introductory Topology", units: 3 },
-      { code: "MATH 141", title: "Introductory Combinatorics", units: 3 },
-      { code: "AMAT 152", title: "Fundamentals of Mathematical Computing", units: 3 },
-      // Third Year - First Semester
-      { code: "MATH 111", title: "Modern Algebra I", units: 3 },
-      { code: "MATH 155", title: "Advanced Calculus I", units: 3 },
-      { code: "MATH 195", title: "Research Methods in Mathematics", units: 3 },
-      { code: "COMA 150", title: "Workplace Communication", units: 3 },
-      // Third Year - Second Semester
-      { code: "MATH 120", title: "Linear Algebra", units: 3 },
-      { code: "MATH 133", title: "Euclidean and Non-Euclidean Geometry", units: 3 },
-      { code: "MATH 151", title: "Ordinary Differential Equations", units: 3 },
-      // Third Year - Midyear
-      { code: "MATH 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "MATH 135", title: "Projective Geometry", units: 3 },
-      { code: "MATH 165", title: "Complex Analysis I", units: 3 },
-      { code: "MATH 181", title: "Introduction to Probability Theory", units: 3 },
-      { code: "MATH 192", title: "Foundations of Mathematics", units: 3 },
-      { code: "MATH 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "MATH 190", title: "Special Problems", units: 3, track: "sp" },
-      { code: "MATH 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "MATH 20",
+        "title": "The Landscape of Mathematics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 36",
+        "title": "Mathematical Analysis I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/PhilippineHistory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 MATH 37. Mathematical Analysis II",
+        "title": "3 MATH 37. Mathematical Analysis II 5 STAT 101. Statistical Methods 3 BIO 11.1 Investigative Biology Laboratory 3 CHEM 18.1. University Chemistry Lab 3 ARTS 1. Critical Perspectives in the Arts (2) GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Hu Activities 16",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 2 2 3 3 man Kinetics (2) 18",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 38",
+        "title": "Mathematical Analysis III",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 37"
+        ]
+      },
+      {
+        "code": "MATH 101",
+        "title": "Logic and Set Theory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 27",
+          "MATH 36"
+        ]
+      },
+      {
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51.1",
+        "title": "Elements of Physics Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activitie",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "5    MATH 103. Elementary Theory of Numbers",
+        "title": "5    MATH 103. Elementary Theory of Numbers 3    MATH 138. Introductory Topology 4    MATH 141. Introductory Combinatorics 1    AMAT 152. Fundamentals of Mathematical Comput 3    STS 1. Science, Technology, and Society s   (2) GE Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (3) Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Training Service Program II 16",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 ing 3 3 Human Kinetics (2) (3) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 111",
+        "title": "Modern Algebra I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 101"
+        ]
+      },
+      {
+        "code": "MATH 155",
+        "title": "Advanced Calculus I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 38",
+          "MATH 101"
+        ]
+      },
+      {
+        "code": "MATH 195",
+        "title": "Research Methods in Mathematics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 101",
+          "MATH 111"
+        ]
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication Major Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     MATH 120. Linear Algebra",
+        "title": "3     MATH 120. Linear Algebra 3     MATH 133.Euclidean and Non-Euclidean Geometry 3     MATH 151. Ordinary Differential Equations 3     MATH Major Elective 3     COMA 150. Workplace Communication 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3     MATH 198. Practicum",
+        "title": "3     MATH 198. Practicum 3 3 3 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 135",
+        "title": "Projective Geometry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "MATH 120"
+        ]
+      },
+      {
+        "code": "MATH 165",
+        "title": "Complex Analysis I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "MATH 155"
+        ]
+      },
+      {
+        "code": "MATH 181",
+        "title": "Introduction to Probability Theory Major Elective",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "MATH 38"
+        ]
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 MATH 190. Special Problems",
+        "title": "3 MATH 190. Special Problems 3 MATH 192. Foundations of Mathematics 3 MATH 199. Undergraduate Seminar 3 Major Elective 3 Elective 15",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 1 3 3 13",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "MATH 20", "MATH 36", "MATH 37", "MATH 38",
-      "MATH 101", "MATH 103", "MATH 111", "MATH 120", "MATH 133", "MATH 135",
-      "MATH 138", "MATH 141", "MATH 151", "MATH 155", "MATH 165", "MATH 181",
-      "MATH 192", "MATH 195", "MATH 198", "MATH 199",
-      "AMAT 152", "BIO 11.1", "CHEM 18", "CHEM 18.1", "COMA 150",
-      "PHYS 51", "PHYS 51.1", "STAT 101"
+    "requiredCodes": [
+      "MATH 20",
+      "MATH 36",
+      "CHEM 18",
+      "KAS 1/HIST 1",
+      "ETHICS 1",
+      "3 MATH 37. Mathematical Analysis II",
+      "3",
+      "MATH 38",
+      "MATH 101",
+      "PHYS 51",
+      "PHYS 51.1",
+      "GE",
+      "5    MATH 103. Elementary Theory of Numbers",
+      "3",
+      "MATH 111",
+      "MATH 155",
+      "MATH 195",
+      "PI 10",
+      "COMM 10",
+      "3     MATH 120. Linear Algebra",
+      "3     MATH 198. Practicum",
+      "MATH 135",
+      "MATH 165",
+      "MATH 181",
+      "Elective",
+      "3 MATH 190. Special Problems",
+      "3"
     ]
   },
-  
   "BSAPMATH": {
-    code: "BSAPMATH",
-    name: "BS Applied Mathematics",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 131,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "AMAT 200", freeElectiveUnits: 9, majorElectiveUnits: 12 },
-      sp: { name: "Special Problem Track", code: "AMAT 190", freeElectiveUnits: 12, majorElectiveUnits: 15 }
+    "code": "BSAPMATH",
+    "name": "BS Applied Mathematics",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 131,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "AMAT 200",
+        "freeElectiveUnits": 9,
+        "majorElectiveUnits": 12
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "AMAT 190",
+        "freeElectiveUnits": 12,
+        "majorElectiveUnits": 15
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      // First Year
-      { code: "AMAT 19", title: "Finite Mathematics", units: 3 },
-      { code: "MATH 36", title: "Mathematical Analysis I", units: 5 },
-      { code: "MATH 37", title: "Mathematical Analysis II", units: 3 },
-      { code: "MATH 38", title: "Mathematical Analysis III", units: 5 },
-      { code: "BIO 11.1", title: "Investigative Biology Laboratory", units: 2 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      // Second Year
-      { code: "AMAT 110", title: "Mathematical Modeling", units: 3 },
-      { code: "AMAT 105", title: "Matrices and Applications", units: 3 },
-      { code: "AMAT 112", title: "Introduction to Mathematical Optimization", units: 3 },
-      { code: "AMAT 152", title: "Fundamentals of Mathematical Computing", units: 3 },
-      { code: "AMAT 170", title: "Theory of Interest", units: 4 },
-      { code: "MATH 101", title: "Logic and Set Theory", units: 3 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      // Third Year
-      { code: "MATH 151", title: "Ordinary Differential Equations", units: 3 },
-      { code: "MATH 155", title: "Advanced Calculus I", units: 3 },
-      { code: "MATH 174", title: "Numerical Analysis I", units: 3 },
-      { code: "MATH 175", title: "Numerical Analysis II", units: 3 },
-      { code: "MATH 181", title: "Introduction to Probability Theory", units: 3 },
-      { code: "MATH 195", title: "Research Methods in Mathematics", units: 3 },
-      { code: "COMA 150", title: "Workplace Communication", units: 3 },
-      // Fourth Year
-      { code: "AMAT 198", title: "Practicum", units: 3 },
-      { code: "AMAT 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "AMAT 190", title: "Special Problems", units: 3, track: "sp" },
-      { code: "AMAT 200", title: "Undergraduate Thesis", units: 3, track: "thesis" },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "AMAT 19",
+        "title": "Finite Mathematics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 36",
+        "title": "Mathematical Analysis I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    MATH 37. Mathematical Analysis II",
+        "title": "3    MATH 37. Mathematical Analysis II 5    STAT 101. Statistical Methods 3    BIO 11.1. Investigative Biology Laboratory 3    CHEM 18.1. University Chemistry Laboratory 3    ARTS 1. Critical Perspectives in the Arts (2) GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced 17 Human Kinetics Activities",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 2 2 3 3 (2) 16",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "AMAT 110",
+        "title": "Mathematical Modeling",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "AMAT 105"
+        ]
+      },
+      {
+        "code": "MATH 38",
+        "title": "Mathematical Analysis III",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 37"
+        ]
+      },
+      {
+        "code": "MATH 101",
+        "title": "Logic and Set Theory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 27",
+          "MATH 36"
+        ]
+      },
+      {
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51.1",
+        "title": "Elements of Physics Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    AMAT 105. Matrices and Applications",
+        "title": "3    AMAT 105. Matrices and Applications 5    AMAT 112. Introduction to Mathematical Optimization 3    AMAT 152. Fundamentals of Mathematical Computing 4    AMAT 170. Theory of Interest 1    STS 1. Science, Technology, and Society (2)",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (3) Human Kinetics Activities 16 NSTP 2. National Training Service Program II",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 (2) (3) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 151",
+        "title": "Ordinary Differential Equations",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 38",
+          "MATH 101"
+        ]
+      },
+      {
+        "code": "MATH 174",
+        "title": "Numerical Analysis I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 38",
+          "AMAT 152"
+        ]
+      },
+      {
+        "code": "MATH 181",
+        "title": "Introduction to Probability Theory",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 38"
+        ]
+      },
+      {
+        "code": "Elective",
+        "title": "(AMAT/MATH)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    MATH 155. Advanced Calculus I",
+        "title": "3    MATH 155. Advanced Calculus I 3    MATH 175. Numerical Analysis II 3    MATH 195. Research Methods in Mathematics 3    Elective (AMAT/MATH) 3",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 150",
+        "title": "Workplace Communication 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3     AMAT 198. Practicum",
+        "title": "3     AMAT 198. Practicum 3 3 3 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(AMAT/MATH)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(AMAT/MATH)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 AMAT 190. Special Problems",
+        "title": "3 AMAT 190. Special Problems 3 AMAT 199. Undergraduate Seminar 3 Elective (AMAT/MATH) 3 Elective 3 Elective 15",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 1 3 3 3 13",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "AMAT 19", "MATH 36", "MATH 37", "MATH 38",
-      "BIO 11.1", "CHEM 18", "CHEM 18.1", "STAT 101",
-      "AMAT 110", "AMAT 105", "AMAT 112", "AMAT 152", "AMAT 170",
-      "MATH 101", "PHYS 51", "PHYS 51.1",
-      "MATH 151", "MATH 155", "MATH 174", "MATH 175", "MATH 181", "MATH 195",
-      "COMA 150", "AMAT 198", "AMAT 199"
+    "requiredCodes": [
+      "AMAT 19",
+      "MATH 36",
+      "CHEM 18",
+      "KAS 1/HIST 1",
+      "ETHICS 1",
+      "3    MATH 37. Mathematical Analysis II",
+      "3",
+      "AMAT 110",
+      "MATH 38",
+      "MATH 101",
+      "PHYS 51",
+      "PHYS 51.1",
+      "3    AMAT 105. Matrices and Applications",
+      "GE",
+      "3",
+      "MATH 151",
+      "MATH 174",
+      "MATH 181",
+      "Elective",
+      "COMM 10",
+      "GE",
+      "3    MATH 155. Advanced Calculus I",
+      "COMA 150",
+      "3     AMAT 198. Practicum",
+      "Elective",
+      "Elective",
+      "PI 10",
+      "Elective",
+      "Elective",
+      "3 AMAT 190. Special Problems",
+      "3"
     ]
   },
-  
   "BSSTAT": {
-    code: "BSSTAT",
-    name: "BS Statistics",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 143,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "STAT 135", title: "Logic and Matrix Algebra in Statistics", units: 3 },
-      { code: "STAT 162", title: "Experimental Designs", units: 3 },
-      { code: "STAT 182", title: "Statistical Packages", units: 3 },
-      { code: "BIO 30", title: "Genetics", units: 3 },
-      { code: "CMSC 12", title: "Foundations of Computer Science", units: 3 },
-      // Second Year
-      { code: "CMSC 21", title: "Fundamentals of Programming", units: 3 },
-      { code: "CMSC 22", title: "Object-Oriented Programming", units: 3 },
-      { code: "MATH 182", title: "Introduction to Stochastic Processes", units: 3 },
-      { code: "STAT 144", title: "Introductory Statistical Theory I", units: 3 },
-      { code: "STAT 145", title: "Introductory Statistical Theory II", units: 3 },
-      { code: "STAT 163", title: "Survey Designs", units: 3 },
-      { code: "STAT 168", title: "Response Surface Methodology", units: 3 },
-      // Third Year
-      { code: "CMSC 127", title: "File Processing and Database Systems", units: 3 },
-      { code: "STAT 146", title: "Introductory Statistical Theory III", units: 3 },
-      { code: "STAT 147", title: "Introduction to the Theory of Nonparametric Statistics", units: 4 },
-      { code: "STAT 151", title: "Applied Regression and Correlation", units: 3 },
-      { code: "STAT 156", title: "Introductory Time Series Analysis", units: 3 },
-      { code: "STAT 173", title: "Survey Operations", units: 3 },
-      { code: "STAT 174", title: "Introductory Biostatistics", units: 3 },
-      { code: "STAT 175", title: "Analysis of Multivariate Data", units: 3 },
-      { code: "STAT 181", title: "Statistical Computing", units: 3 },
-      { code: "STAT 192.1", title: "Statistical Consulting Laboratory", units: 1 },
-      { code: "STAT 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      { code: "STAT 148", title: "Introductory Bayesian Statistics", units: 3 },
-      { code: "STAT 157", title: "Financial Risk Analysis", units: 3 },
-      { code: "STAT 165", title: "Categorical Data Analysis", units: 3 },
-      { code: "STAT 167", title: "Statistical Quality Control", units: 3 },
-      { code: "STAT 183", title: "Introductory Data Analytics", units: 3 },
-      { code: "STAT 190", title: "Special Problem", units: 3 },
-      { code: "STAT 191", title: "Special Topics", units: 3 },
-      { code: "STAT 199", title: "Undergraduate Seminar", units: 1 },
+    "code": "BSSTAT",
+    "name": "BS Statistics",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 143,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyda Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippin History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 30",
+        "title": "Genetics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "y",
+        "title": "y 3     ARTS 1. Critical Perspectives in the Arts e 3",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective 3 MATH 28. Analytic Geometry and Calculus III 3 CMSC 12. Foundations of Computer Science 3 STAT 162. Experimental Designs",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 135",
+        "title": "Logic and Matrix Algebra 3 3     in Statistics 3     STAT 182. Statistical Packages 3 3 3 (2) 15",
+        "units": 6,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CMSC 21",
+        "title": "Fundamentals of Programming",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 144",
+        "title": "Introductory Statistical Theory I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 28",
+          "STAT 101"
+        ]
+      },
+      {
+        "code": "STAT 168",
+        "title": "Response Surface Methodology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 MATH 182. Introduction to Stochastic Processes",
+        "title": "3 MATH 182. Introduction to Stochastic Processes 3 CMSC 22. Object-Oriented Programming 3 ABME 10. Foundations of Entrepreneurship 3 STAT 145. Introductory Statistical Theory II 3 STAT 163. Survey Designs",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 15 NSTP 1. National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3     GE Elective",
+        "title": "3     GE Elective 3     GE Elective 3 3 3 (2) (3) 15",
+        "units": 6,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "Track",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 146",
+        "title": "Introductory Statistical Theory III",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 145"
+        ]
+      },
+      {
+        "code": "STAT 173",
+        "title": "Survey Operations",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 163"
+        ]
+      },
+      {
+        "code": "STAT 175",
+        "title": "Analysis of Multivariate Data",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 151"
+        ]
+      },
+      {
+        "code": "STAT 181",
+        "title": "Statistical Computing",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 145",
+          "STAT 182"
+        ]
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Training Service Program II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "Track 3     CMSC 127. File Processing and Database Systems",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 147",
+        "title": "Introduction to the Theory of 3    Nonparametric Statistics 3    STAT 151. Applied Regression and Correlation 3    STAT 156. Introductory Time Series Analysis 3 (3) 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3     STAT 198. Practicum",
+        "title": "3     STAT 198. Practicum 3 3 3 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "Track",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 148",
+        "title": "Introductory Bayesian Statistics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 165",
+        "title": "Categorical Data Analysis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "STAT 151"
+        ]
+      },
+      {
+        "code": "STAT 190",
+        "title": "Special Problem",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 191",
+        "title": "Special Topics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 174",
+        "title": "Introductory Biostatistics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "STAT 145"
+        ]
+      },
+      {
+        "code": "STAT 192.1",
+        "title": "Statistical Consulting Laboratory",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    PI 10. The Life and Works of Jose Rizal",
+        "title": "3    PI 10. The Life and Works of Jose Rizal 3    STAT 157. Financial Risk Analysis 3    STAT 167. Statistical Quality Control 3    STAT 183. Introductory Data Analytics 1    STAT 190. Special Problem 3    STAT 199. Undergraduate Seminar 3 1 20",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 2 1 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "MATH 27", "MATH 28", "STAT 101", "STAT 135", "STAT 162", "STAT 182",
-      "BIO 30", "CMSC 12", "CMSC 21", "CMSC 22", "CMSC 127",
-      "MATH 182", "STAT 144", "STAT 145", "STAT 146", "STAT 147",
-      "STAT 151", "STAT 156", "STAT 163", "STAT 168", "STAT 173", "STAT 174", "STAT 175",
-      "STAT 181", "STAT 192.1", "STAT 198",
-      "ENG 10", "STAT 148", "STAT 157", "STAT 165", "STAT 167", "STAT 183",
-      "STAT 190", "STAT 191", "STAT 199"
+    "requiredCodes": [
+      "ETHICS 1",
+      "KAS 1/HIST 1",
+      "MATH 27",
+      "BIO 30",
+      "STAT 101",
+      "y",
+      "GE",
+      "STAT 135",
+      "STS 1",
+      "CMSC 21",
+      "ECON 11",
+      "STAT 144",
+      "STAT 168",
+      "3 MATH 182. Introduction to Stochastic Processes",
+      "3     GE Elective",
+      "COMM 10",
+      "Elective",
+      "STAT 146",
+      "STAT 173",
+      "STAT 175",
+      "STAT 181",
+      "3",
+      "Elective",
+      "STAT 147",
+      "3     STAT 198. Practicum",
+      "Elective",
+      "ENG 10",
+      "STAT 148",
+      "STAT 165",
+      "STAT 190",
+      "STAT 191",
+      "STAT 174",
+      "STAT 192.1",
+      "3    PI 10. The Life and Works of Jose Rizal",
+      "3"
     ]
   },
-  
   "BSMST": {
-    code: "BSMST",
-    name: "BS Mathematics and Science Teaching",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 150,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      { code: "MATH 27", title: "Analytic Geometry and Calculus I", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MATH 36", title: "Mathematical Analysis I", units: 3 },
-      { code: "MATH 37", title: "Mathematical Analysis II", units: 3 },
-      { code: "MATH 114", title: "Differential Equations", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "EDUC 100", title: "The Teaching Profession", units: 3 },
-      { code: "EDUC 101", title: "The Child and Adolescent Learner", units: 3 },
-      { code: "EDUC 102", title: "Facilitating Learning", units: 3 },
-      { code: "EDUC 103", title: "Curriculum Development", units: 3 },
-      { code: "EDUC 110", title: "Principles of Teaching", units: 3 },
-      { code: "EDUC 160", title: "Educational Assessment", units: 3 },
-      { code: "EDUC 190", title: "Practice Teaching", units: 6, gradeType: "S/U" },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "code": "BSMST",
+    "name": "BS Mathematics and Science Teaching",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 150,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "MATH 36",
+        "title": "Mathematical Analysis I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "MATH 37",
+        "title": "Mathematical Analysis II",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "MATH 114",
+        "title": "Differential Equations",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EDUC 100",
+        "title": "The Teaching Profession",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EDUC 101",
+        "title": "The Child and Adolescent Learner",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "EDUC 102",
+        "title": "Facilitating Learning",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "EDUC 103",
+        "title": "Curriculum Development",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "EDUC 110",
+        "title": "Principles of Teaching",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "EDUC 160",
+        "title": "Educational Assessment",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "EDUC 190",
+        "title": "Practice Teaching",
+        "units": 6,
+        "gradeType": "S/U",
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "EDUC 100"
+        ]
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "MATH 27", "MATH 28", "MATH 36", "MATH 37", "MATH 114",
-      "STAT 101", "EDUC 100", "EDUC 101", "EDUC 102", "EDUC 103", "EDUC 110",
-      "EDUC 160", "EDUC 190", "ENG 10"
+    "requiredCodes": [
+      "MATH 27",
+      "MATH 28",
+      "MATH 36",
+      "MATH 37",
+      "MATH 114",
+      "STAT 101",
+      "EDUC 100",
+      "EDUC 101",
+      "EDUC 102",
+      "EDUC 103",
+      "EDUC 110",
+      "EDUC 160",
+      "EDUC 190",
+      "ENG 10"
     ]
   },
-  
   "BSBIO": {
-    code: "BSBIO",
-    name: "BS Biology",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 143,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year
-      { code: "BIO 11.1", title: "Investigative Biology Laboratory", units: 2 },
-      { code: "BIO 14", title: "Biodiversity", units: 5 },
-      { code: "BIO 30", title: "Genetics", units: 3 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "CHEM 40", title: "Basic Organic Chemistry", units: 4 },
-      { code: "CHEM 40.1", title: "Basic Organic Chemistry Laboratory", units: 1 },
-      { code: "MATH 25", title: "Fundamental Calculus", units: 3 },
-      { code: "MCB 11", title: "Biology and Applications of Microorganisms", units: 3 },
-      // Second Year
-      { code: "BOT 14", title: "University Botany", units: 3 },
-      { code: "ZOO 14", title: "University Zoology", units: 3 },
-      { code: "CHEM 160", title: "Introductory Biochemistry", units: 3 },
-      { code: "CHEM 160.1", title: "Introductory Biochemistry Laboratory", units: 2 },
-      { code: "BIO 150", title: "Ecology", units: 4 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      { code: "BIO 101", title: "Introductory Molecular Biology", units: 3 },
-      { code: "BIO 140", title: "Evolutionary Biology", units: 3 },
-      // Third Year
-      { code: "STAT 164", title: "Statistics for the Biological Sciences", units: 3 },
-      { code: "BIO 120", title: "Cell Biology", units: 3 },
-      { code: "BIO 142", title: "Principles of Systematic Biology", units: 3 },
-      { code: "BIO 195", title: "Research Methods in the Biological Sciences", units: 3 },
-      { code: "BIO 127", title: "Developmental Biology", units: 3 },
-      { code: "BIO 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "COMA 150", title: "Workplace Communication", units: 3 },
-      { code: "BIO 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "BIO 200", title: "Undergraduate Thesis", units: 6 },
+    "code": "BSBIO",
+    "name": "BS Biology",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 143,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MCB 11",
+        "title": "Biology and Applications of Microorganis",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    BIO 11.1. Investigative Biology Laboratory",
+        "title": "3    BIO 11.1. Investigative Biology Laboratory 3    CHEM 18.1 University Chemistry Laboratory ms       3    BIO 30. Genetics 3    PI 10. The Life and Works of Jose Rizal 3   GE Elective 3   GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 18",
+        "units": 16,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
+        "units": 4,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory 1 5",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 14",
+        "title": "Biodiversity",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BOT 14",
+        "title": "University Botany",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ZOO 14",
+        "title": "University Zoology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 160",
+        "title": "Introductory Biochemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 150",
+        "title": "Ecology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Hum Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "5 PHYS 51. Elements of Physics",
+        "title": "5 PHYS 51. Elements of Physics 3 PHYS 51.1. Elements of Physics Laboratory 3 BIO 101. Introductory Molecular Biology 3 CHEM 160.1. Introductory Biochemistry Laboratory 4 BIO 140. Evolutionary Biology an (2)",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective (3) ABME 10. Foundations of Entrepreneurship",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) 18 Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Training Service Program II 19",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 164",
+        "title": "Statistics for the Biological Sciences",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 120",
+        "title": "Cell Biology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 142",
+        "title": "Principles of Systematic Biology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication Major Major",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    BIO 195. Research Methods in the Biological Sciences",
+        "title": "3    BIO 195. Research Methods in the Biological Sciences 3    BIO 127. Developmental Biology",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday 3 3    Life 3 Major 3   Major 3   Elective 18",
+        "units": 18,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 198",
+        "title": "Practicum 3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 150",
+        "title": "Workplace Communication",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 199",
+        "title": "Undergraduate Seminar Major Major Major",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 Major",
+        "title": "3 Major 1 Elective 3 BIO 200. Undergraduate Thesis 3 3 3 3 19",
+        "units": 9,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "BIO 11.1", "BIO 14", "BIO 30", "BIO 101", "BIO 120", "BIO 127",
-      "BIO 140", "BIO 142", "BIO 150", "BIO 195", "BIO 198", "BIO 199", "BIO 200",
-      "BOT 14", "ZOO 14", "CHEM 18", "CHEM 18.1", "CHEM 40", "CHEM 40.1",
-      "CHEM 160", "CHEM 160.1", "COMA 150", "MATH 25", "MCB 11",
-      "PHYS 51", "PHYS 51.1", "STAT 164"
+    "requiredCodes": [
+      "CHEM 18",
+      "MATH 25",
+      "MCB 11",
+      "KAS 1/HIST 1",
+      "ARTS 1",
+      "STS 1",
+      "3    BIO 11.1. Investigative Biology Laboratory",
+      "CHEM 40",
+      "CHEM 40.1",
+      "BIO 14",
+      "BOT 14",
+      "ZOO 14",
+      "CHEM 160",
+      "BIO 150",
+      "5 PHYS 51. Elements of Physics",
+      "GE",
+      "STAT 164",
+      "BIO 120",
+      "BIO 142",
+      "COMM 10",
+      "3    BIO 195. Research Methods in the Biological Sciences",
+      "ETHICS 1",
+      "BIO 198",
+      "COMA 150",
+      "BIO 199",
+      "Elective",
+      "BIO 200",
+      "3 Major"
     ]
   },
-  
   "BSCHEM": {
-    code: "BSCHEM",
-    name: "BS Chemistry",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 142,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "CHEM 19", title: "Chemical Structure and Properties", units: 3 },
-      { code: "CHEM 32", title: "Quantitative Inorganic Analysis", units: 3 },
-      { code: "CHEM 32.1", title: "Quantitative Inorganic Analysis Laboratory", units: 2 },
-      { code: "MCB 11", title: "Biology and Applications of Microorganisms", units: 3 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "PHYS 71", title: "University Physics I", units: 4 },
-      { code: "PHYS 71.1", title: "University Physics I Laboratory", units: 1 },
-      // Second Year
-      { code: "CHEM 43", title: "Organic Chemistry I", units: 3 },
-      { code: "CHEM 43.1", title: "Organic Chemistry I Laboratory", units: 2 },
-      { code: "CHEM 44", title: "Organic Chemistry II", units: 3 },
-      { code: "CHEM 44.1", title: "Organic Chemistry II Laboratory", units: 2 },
-      { code: "CHEM 111", title: "Physical Chemistry I", units: 3 },
-      { code: "CHEM 161A", title: "Biochemistry I", units: 3 },
-      { code: "PHYS 72", title: "University Physics II", units: 4 },
-      { code: "PHYS 72.1", title: "University Physics II Laboratory", units: 1 },
-      { code: "CMSC 12", title: "Foundations of Computer Science", units: 3 },
-      { code: "AMAT 152", title: "Fundamentals of Mathematical Computing", units: 3 },
-      { code: "STAT 162", title: "Experimental Designs", units: 3 },
-      // Third Year
-      { code: "CHEM 111.1", title: "Physical Chemistry I Laboratory", units: 2 },
-      { code: "CHEM 112", title: "Physical Chemistry II", units: 3 },
-      { code: "CHEM 112.1", title: "Physical Chemistry II Laboratory", units: 2 },
-      { code: "CHEM 115", title: "Physical Chemistry III", units: 3 },
-      { code: "CHEM 137", title: "Modern Analytical Chemistry", units: 3 },
-      { code: "CHEM 137.1", title: "Modern Analytical Chemistry Laboratory", units: 2 },
-      { code: "CHEM 140", title: "Organic Analysis", units: 4 },
-      { code: "CHEM 161B", title: "Biochemistry II", units: 3 },
-      { code: "CHEM 161.1", title: "General Biochemistry Laboratory", units: 2 },
-      { code: "CHEM 180", title: "Environmental Chemistry", units: 3 },
-      { code: "CHEM 192", title: "Chemical Information, Literature and Communication", units: 3 },
-      { code: "CHEM 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "CHEM 120", title: "Inorganic Chemistry", units: 3 },
-      { code: "CHEM 120.1", title: "Inorganic Chemistry Laboratory", units: 2 },
-      { code: "CHEM 131", title: "Technical Analysis I (Foods and Feeds)", units: 4 },
-      { code: "CHEM 171", title: "Industrial Chemistry", units: 3 },
-      { code: "CHEM 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "CHEM 200", title: "Undergraduate Thesis", units: 6 },
+    "code": "BSCHEM",
+    "name": "BS Chemistry",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 142,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MCB 11",
+        "title": "Biology and Applications of Microorganisms",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine Histo",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    CHEM 19. Chemical Structure and Properties",
+        "title": "3    CHEM 19. Chemical Structure and Properties 3    CHEM 18.1 University Chemistry Laboratory 3    MATH 28. Analytic Geometry and Calculus III 3    PHYS 71. University Physics I 3    PHYS 71.1. University Physics I Laboratory ry        3    GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 18",
+        "units": 16,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32",
+        "title": "Quantitative Inorganic Analysis 3",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": [
+          "CHEM 18",
+          "CHEM 18.1"
+        ]
+      },
+      {
+        "code": "CHEM 32.1",
+        "title": "Quantitative Inorganic Analysis 2 Laboratory 5",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": [
+          "CHEM 32"
+        ]
+      },
+      {
+        "code": "CHEM 43",
+        "title": "Organic Chemistry I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 19",
+          "CHEM 32"
+        ]
+      },
+      {
+        "code": "PHYS 72",
+        "title": "University Physics II",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 71",
+          "MATH 28"
+        ]
+      },
+      {
+        "code": "PHYS 72.1",
+        "title": "University Physics II Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 71.1",
+          "PHYS 72"
+        ]
+      },
+      {
+        "code": "CMSC 12/AMAT 152",
+        "title": "Foundations of Computer Science/Fund",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 111",
+        "title": "Physical Chemistry I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32",
+          "MATH 28",
+          "PHYS 72"
+        ]
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kin Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 CHEM 43.1. Organic Chemistry I Laboratory",
+        "title": "3 CHEM 43.1. Organic Chemistry I Laboratory 4 CHEM 112. Physical Chemistry II 1 GE Elective amentals 3 of STAT Mathematical 162. Experimental Computing Designs 3 PI 10. The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in 3 3 Communication etics          HK 12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I 17 17",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 44",
+        "title": "Organic Chemistry II",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": [
+          "CHEM 43"
+        ]
+      },
+      {
+        "code": "CHEM 44.1",
+        "title": "Organic Chemistry II Laboratory 2 5",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": [
+          "CHEM 44"
+        ]
+      },
+      {
+        "code": "CHEM 111.1",
+        "title": "Physical Chemistry I Laboratory",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "Elective",
+        "title": "(NON-CHEM)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 137",
+        "title": "Modern Analytical Chemistry",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32",
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "CHEM 140",
+        "title": "Organic Analysis",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 44",
+          "CHEM 44.1"
+        ]
+      },
+      {
+        "code": "CHEM 161A",
+        "title": "Biochemistry I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 44",
+          "CHEM 44.1"
+        ]
+      },
+      {
+        "code": "CHEM 192",
+        "title": "Chemical Information, Literature and Communi",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Training Service Program II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198.",
+        "title": "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198. 3 CHEM 115. Physical Chemistry III 3 CHEM 137.1. Modern Analytical Chem Laboratory2 4 CHEM 161.1. General Biochemistry Laboratory 3 CHEM 180. Environmental Chemistry cation 3 CHEM 161B. Biochemistry II (3) 18",
+        "units": 15,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Practicum",
+        "title": "Practicum 3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 120",
+        "title": "Inorganic Chemistry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 131",
+        "title": "Technical Analysis I (Foods and Feeds)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 200",
+        "title": "Undegraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(NON-CHEM)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 CHEM 120.1. Inorganic Chemistry Laboratory",
+        "title": "3 CHEM 120.1. Inorganic Chemistry Laboratory 4 CHEM 171. Industrial Chemistry 3 CHEM 199. Undergraduate Seminar 3 CHEM 200. Undegraduate Thesis 3 Elective (CHEM) 16",
+        "units": 12,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "CHEM 18", "CHEM 18.1", "CHEM 19", "CHEM 32", "CHEM 32.1",
-      "CHEM 43", "CHEM 43.1", "CHEM 44", "CHEM 44.1",
-      "CHEM 111", "CHEM 111.1", "CHEM 112", "CHEM 112.1", "CHEM 115",
-      "CHEM 120", "CHEM 120.1", "CHEM 131", "CHEM 137", "CHEM 137.1",
-      "CHEM 140", "CHEM 161A", "CHEM 161B", "CHEM 161.1",
-      "CHEM 171", "CHEM 180", "CHEM 192", "CHEM 198", "CHEM 199", "CHEM 200",
-      "AMAT 152", "CMSC 12", "MATH 27", "MATH 28", "MCB 11",
-      "PHYS 71", "PHYS 71.1", "PHYS 72", "PHYS 72.1", "STAT 162"
+    "requiredCodes": [
+      "CHEM 18",
+      "ARTS 1",
+      "MCB 11",
+      "MATH 27",
+      "ETHICS 1",
+      "KAS 1/HIST 1",
+      "3    CHEM 19. Chemical Structure and Properties",
+      "CHEM 32",
+      "CHEM 32.1",
+      "CHEM 43",
+      "PHYS 72",
+      "PHYS 72.1",
+      "CMSC 12/AMAT 152",
+      "CHEM 111",
+      "GE",
+      "3 CHEM 43.1. Organic Chemistry I Laboratory",
+      "COMM 10",
+      "CHEM 44",
+      "CHEM 44.1",
+      "CHEM 111.1",
+      "Elective",
+      "CHEM 137",
+      "CHEM 140",
+      "CHEM 161A",
+      "CHEM 192",
+      "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198.",
+      "Practicum",
+      "CHEM 120",
+      "CHEM 131",
+      "CHEM 200",
+      "Elective",
+      "STS 1",
+      "3 CHEM 120.1. Inorganic Chemistry Laboratory"
     ]
   },
-  
   "BSAPPHY": {
-    code: "BSAPPHY",
-    name: "BS Applied Physics",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 143,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year
-      { code: "PHYS 101", title: "Newtonian Mechanics", units: 4 },
-      { code: "PHYS 102", title: "Electromagnetism", units: 4 },
-      { code: "PHYS 111", title: "Mathematical Methods of Physics I", units: 4 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "COMA 150", title: "Workplace Communication", units: 3 },
-      // Second Year
-      { code: "APHY 10.1", title: "Programming in Physics", units: 1 },
-      { code: "APHY 101", title: "Physics in Scientific Instruments", units: 3 },
-      { code: "PHYS 103", title: "Mechanical Waves, Optics, and Thermodynamics", units: 4 },
-      { code: "PHYS 104", title: "Modern Physics", units: 4 },
-      { code: "PHYS 112", title: "Mathematical Methods of Physics II", units: 4 },
-      { code: "PHYS 113", title: "Mathematical Methods of Physics III", units: 3 },
-      { code: "PHYS 121", title: "Theoretical Mechanics I", units: 3 },
-      { code: "PHYS 131", title: "Electromagnetic Theory I", units: 3 },
-      // Third Year
-      { code: "APHY 102", title: "Physics of Electronic Devices", units: 3 },
-      { code: "APHY 115", title: "Computational Physics", units: 4 },
-      { code: "PHYS 122", title: "Theoretical Mechanics II", units: 3 },
-      { code: "PHYS 132", title: "Electromagnetic Theory II", units: 3 },
-      { code: "PHYS 141", title: "Quantum Physics I", units: 3 },
-      { code: "PHYS 151", title: "Statistical Physics I", units: 3 },
-      { code: "PHYS 165", title: "Optical Physics", units: 3 },
-      { code: "PHYS 192.1", title: "Experimental Physics I", units: 2 },
-      { code: "PHYS 195", title: "Research Methods in Physics", units: 3 },
-      { code: "APHY 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "APHY 191", title: "Special Topics", units: 3 },
-      { code: "APHY 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "APHY 200", title: "Undergraduate Thesis", units: 6 },
-      { code: "PHYS 142", title: "Quantum Physics II", units: 3 },
+    "code": "BSAPPHY",
+    "name": "BS Applied Physics",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 143,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "PHYS 101",
+        "title": "Newtonian Mechanics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippin History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4    PHYS 102. Electromagnetism",
+        "title": "4    PHYS 102. Electromagnetism 3    PHYS 111. Mathematical Methods of Physics I 3    MATH 28. Analytic Geometry and Calculus III 3    COMA 150. Workplace Communication e 3    CHEM 18.1. University Chemistry Laboratory 2 (2) GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) 16 Human Kinetics Activities 19",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "APHY 10.1",
+        "title": "Programming in Physics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 103",
+        "title": "Mechanical Waves, Optics, and Thermod",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 102"
+        ]
+      },
+      {
+        "code": "PHYS 112",
+        "title": "Mathematical Methods of Physics II",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 111"
+        ]
+      },
+      {
+        "code": "PHYS 121",
+        "title": "Theoretical Mechanics I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 101",
+          "PHYS 111"
+        ]
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyda Life",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1 APHY 101. Physics in Scientific Instruments",
+        "title": "1 APHY 101. Physics in Scientific Instruments ynamics 4 PHYS 104. Modern Physics 4 PHYS 113. Mathematical Methods of Physics III 3 PHYS 131. Electromagnetic Theory I y 3",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced (2) 3 Human Kinetics Activities (2) NSTP 2. National Training Service Program II (3) 18",
+        "units": 17,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 115",
+        "title": "Computational Physics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 122",
+        "title": "Theoretical Mechanics II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 121"
+        ]
+      },
+      {
+        "code": "PHYS 132",
+        "title": "Electromagnetic Theory II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 131"
+        ]
+      },
+      {
+        "code": "PHYS 141",
+        "title": "Quantum Physics I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 104",
+          "PHYS 113"
+        ]
+      },
+      {
+        "code": "PHYS 195",
+        "title": "Research Methods in Physics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4 APHY 102. Physics of Electronic Devices",
+        "title": "4 APHY 102. Physics of Electronic Devices 3 PHYS 151. Statistical Physics I 3 PHYS 165. Optical Physics 3 PHYS 192.1. Experimental Physics I",
+        "units": 2,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication 3 3 Elective (APHY/PHYS) 19",
+        "units": 17,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "APHY 198",
+        "title": "Practicum 3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "APHY 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 142",
+        "title": "Quantum Physics II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 141"
+        ]
+      },
+      {
+        "code": "Elective",
+        "title": "(APHY/PHYS)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(APHY/PHYS)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(APHY/PHYS)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 APHY 191. Special Topics",
+        "title": "3 APHY 191. Special Topics 3 APHY 199. Undegraduate Seminar 3 APHY 200. Undergraduate Thesis 3 STS 1. Science, Technology, and Society 3 Elective (APHY/PHYS) 3 Elective 18",
+        "units": 16,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "PHYS 101", "PHYS 102", "PHYS 103", "PHYS 104",
-      "PHYS 111", "PHYS 112", "PHYS 113", "PHYS 121", "PHYS 122",
-      "PHYS 131", "PHYS 132", "PHYS 141", "PHYS 142", "PHYS 151",
-      "PHYS 165", "PHYS 192.1", "PHYS 195",
-      "APHY 10.1", "APHY 101", "APHY 102", "APHY 115",
-      "APHY 191", "APHY 198", "APHY 199", "APHY 200",
-      "CHEM 18", "CHEM 18.1", "COMA 150", "MATH 27", "MATH 28"
+    "requiredCodes": [
+      "PHYS 101",
+      "CHEM 18",
+      "MATH 27",
+      "ARTS 1",
+      "KAS 1/HIST 1",
+      "4    PHYS 102. Electromagnetism",
+      "APHY 10.1",
+      "PHYS 103",
+      "PHYS 112",
+      "PHYS 121",
+      "ETHICS 1",
+      "GE",
+      "1 APHY 101. Physics in Scientific Instruments",
+      "GE",
+      "PHYS 115",
+      "PHYS 122",
+      "PHYS 132",
+      "PHYS 141",
+      "PHYS 195",
+      "PI 10",
+      "4 APHY 102. Physics of Electronic Devices",
+      "COMM 10",
+      "APHY 198",
+      "APHY 200",
+      "PHYS 142",
+      "Elective",
+      "Elective",
+      "Elective",
+      "Elective",
+      "3 APHY 191. Special Topics"
     ]
   },
-  
   "BACOMM": {
-    code: "BACOMM",
-    name: "BA Communication Arts",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 145,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "COMA 200", freeElectiveUnits: 6 },
-      sp: { name: "Special Problem Track", code: "COMA 190", freeElectiveUnits: 9 }
+    "code": "BACOMM",
+    "name": "BA Communication Arts",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 145,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "COMA 200",
+        "freeElectiveUnits": 6
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "COMA 190",
+        "freeElectiveUnits": 9
+      }
     },
-    defaultTrack: "thesis",
-    majorCourses: [
-      // First Year
-      { code: "COMA 101", title: "Introduction to Communication", units: 3 },
-      { code: "COMA 151", title: "Audio-Visual Literacy", units: 3 },
-      { code: "ENG 100", title: "Advanced Expository Writing", units: 3 },
-      { code: "ENG 113", title: "Advanced Composition", units: 3 },
-      { code: "SPCM 11", title: "Fundamentals of Speech Communication", units: 3 },
-      { code: "PHLO 12", title: "Logic", units: 3 },
-      { code: "AH 11", title: "Western Art History and Appreciation", units: 3 },
-      // Second Year
-      { code: "COMA 10", title: "Introduction to Language", units: 3 },
-      { code: "COMA 102", title: "Communication Theories", units: 3 },
-      { code: "COMA 103", title: "Introduction to Communication Research", units: 3 },
-      { code: "COMA 104", title: "Development Communication", units: 3 },
-      { code: "COMA 114", title: "Writing for Development Communication", units: 3 },
-      { code: "COMA 152", title: "Production Design", units: 3 },
-      { code: "COMA 161", title: "Basic Principles of Radio Production", units: 3 },
-      { code: "COMA 170", title: "Principles of Advertising", units: 3 },
-      { code: "COMA 175", title: "Public Relations", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "LIT 101", title: "Literary Criticism", units: 3 },
-      { code: "SPCM 112", title: "Interpersonal Communication", units: 3 },
-      // Third Year
-      { code: "COMA 105", title: "Communication Ethics", units: 3 },
-      { code: "COMA 160", title: "Media and Society", units: 3 },
-      { code: "COMA 162", title: "Digital Audio Production", units: 3 },
-      { code: "COMA 163", title: "Photography", units: 3 },
-      { code: "COMA 164", title: "Video Production", units: 3 },
-      { code: "COMA 165", title: "Web Design", units: 3 },
-      { code: "COMA 171", title: "Editing for Print", units: 3 },
-      { code: "COMA 192", title: "Extension Communication", units: 3 },
-      { code: "COMA 197", title: "Practicum Seminar", units: 3 },
-      { code: "COMA 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "COMA 190", title: "Special Problems", units: 3, track: "sp" },
-      { code: "COMA 199", title: "Undergraduate Seminar", units: 3 },
-      { code: "COMA 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
-      { code: "COMA 200a", title: "Practicum", units: 3 },
+    "defaultTrack": "thesis",
+    "majorCourses": [
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 101",
+        "title": "Language and Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUM 100",
+        "title": "Critical Theories",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SPCM 102",
+        "title": "Voice and Diction",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday 3 3    STS 1. Science, Technology, and Society 3    GE Elective 3  COMA 102. Language and Culture 3  ENG 100. Rereading the Literary Canons 3  SPCM 101. Rhetoric",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Life",
+        "title": "Life 3 3 3 3 3 (2) 18",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 101",
+        "title": "English Prose Styles",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 104",
+        "title": "Argumentative Writing",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUM 101",
+        "title": "Visual Culture",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "THEA 101",
+        "title": "History of the Theatre",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "THEA 102",
+        "title": "Theatre Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 COMA 103. Introduction to Discourse Analysis",
+        "title": "3 COMA 103. Introduction to Discourse Analysis 3 COMA 192. Introduction to Research 3 SPCM 104. Occasional Speeches 3 Major 3 Major 3 Major",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Training Service Program II 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 (2) (3) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 105",
+        "title": "Principles of Public Relations and Advertising",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 190",
+        "title": "Special Problems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(Foreign Language)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(SOSC or PHLO)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(SOSC or PHLO)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(STAT)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    COMA 150. Workplace Communication",
+        "title": "3    COMA 150. Workplace Communication 3 COMA 193. Workshop 3 COMA 199. Undergraduate Seminar 3 Major 3 Major 3 Elective (Foreign Language) 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMA",
+        "title": "200a. Practicum 3 1 3 3 3 16",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 200",
+        "title": "Undergradute Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMA",
+        "title": "200a. Practicum",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUM 102",
+        "title": "New Media Art",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "THEA 103",
+        "title": "Philippine Theatre Major Major",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     GE Elective",
+        "title": "3     GE Elective 3     PI 10. The Life and Works of José Rizal 3     COMA 200. Undergraduate Thesis 3     HUM 104. Culture and Arts Management 3     HUM 170. Philippine Art and Society 3     Elective (SOSC or PHLO) 18",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 18",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "COMA 10", "COMA 101", "COMA 102", "COMA 103", "COMA 104", "COMA 105",
-      "COMA 114", "COMA 151", "COMA 152", "COMA 160", "COMA 161", "COMA 162",
-      "COMA 163", "COMA 164", "COMA 165", "COMA 170", "COMA 171", "COMA 175",
-      "COMA 192", "COMA 197", "COMA 198", "COMA 199", "COMA 200a",
-      "AH 11", "ENG 100", "ENG 113", "LIT 101", "PHLO 12",
-      "SPCM 11", "SPCM 112", "STAT 101"
+    "requiredCodes": [
+      "ARTS 1",
+      "COMM 10",
+      "KAS 1/HIST 1",
+      "COMA 101",
+      "HUM 100",
+      "SPCM 102",
+      "ETHICS 1",
+      "Life",
+      "GE",
+      "ENG 101",
+      "ENG 104",
+      "HUM 101",
+      "THEA 101",
+      "THEA 102",
+      "3 COMA 103. Introduction to Discourse Analysis",
+      "3",
+      "COMA 105",
+      "COMA 190",
+      "Elective",
+      "Elective",
+      "Elective",
+      "Elective",
+      "3    COMA 150. Workplace Communication",
+      "3",
+      "COMA",
+      "COMA 200",
+      "COMA",
+      "HUM 102",
+      "THEA 103",
+      "3     GE Elective",
+      "3"
     ]
   },
-  
   "BASOCIO": {
-    code: "BASOCIO",
-    name: "BA Sociology",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 136,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year
-      { code: "SOC 10", title: "Introduction to Sociology", units: 3 },
-      { code: "SOC 110", title: "Cultural Anthropology for Sociologists", units: 3 },
-      { code: "PSYC 10", title: "Introduction to Psychology", units: 3 },
-      { code: "ECON 11", title: "Introduction to Microeconomics", units: 3 },
-      // Second Year
-      { code: "SOC 100", title: "Philippine Social and Cultural History", units: 3 },
-      { code: "SOC 112", title: "Classical Sociological Theory", units: 3 },
-      { code: "SOC 113", title: "Contemporary Sociological Theory", units: 3 },
-      { code: "SOC 120", title: "Family and Society", units: 3 },
-      { code: "SOC 130", title: "Social Stratification and Mobility", units: 3 },
-      { code: "SOC 140", title: "Social Problems", units: 3 },
-      { code: "SOC 170", title: "Sociological Statistics", units: 3 },
-      { code: "ECON 12", title: "Introduction to Macroeconomics", units: 3 },
-      { code: "PHLO 101", title: "Ethics", units: 3 },
-      { code: "POLSC 14", title: "Philippine Politics and Government", units: 3 },
-      // Third Year
-      { code: "SOC 111", title: "Sociology of Knowledge", units: 3 },
-      { code: "SOC 150", title: "Political Sociology", units: 3 },
-      { code: "SOC 160", title: "Sociology of Development", units: 3 },
-      { code: "SOC 161", title: "Rural Sociology", units: 3 },
-      { code: "SOC 171", title: "Qualitative Methods of Social Research", units: 3 },
-      { code: "SOC 172", title: "Quantitative Methods of Social Research", units: 3 },
-      { code: "SOC 180", title: "Demography", units: 3 },
-      { code: "SOC 195", title: "Social Movements", units: 3 },
-      { code: "SOC 198", title: "Practicum", units: 3 },
-      // Fourth Year
-      { code: "SOC 191", title: "Special Topics", units: 3 },
-      { code: "SOC 199", title: "Undergraduate Seminar", units: 3 },
-      { code: "SOC 200", title: "Undergraduate Thesis", units: 6 },
+    "code": "BASOCIO",
+    "name": "BA Sociology",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 136,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 10",
+        "title": "General Principles of Sociology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ANTH 10",
+        "title": "Introduction to Social and Cultural Anthropolog",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PSY 10",
+        "title": "Foundations of Psychology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 GE Elective",
+        "title": "3 GE Elective 3 HIST 10. Introduction to History 3 SOC 100. Social Organization y    3 POSC 10. Principles of Government and Politic 3 SOC 110. Sociology of the Family (2) HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 STS 1. Science,",
+        "title": "3 STS 1. Science, Technology, and Society 3 GE Elective 3 s 3 (2) 15",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 166",
+        "title": "Statistics for the Social Sciences",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 116",
+        "title": "Sociology of Religion",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 130/SOC 135",
+        "title": "Social Psychology/Attitudes and Persuasion",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 AERS 160. Rural Sociology",
+        "title": "3 AERS 160. Rural Sociology 3    SOC 140. Introduction to Demography 3    Elective (SOSC) 3    Elective (SOSC) 3    Elective (2) HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities (3) NSTP 2. National Training Service Program II 15",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 PI 10. The Life",
+        "title": "3 PI 10. The Life and Works of Jose Rizal 3 GE Elective 3 3 3 (2) (3) 15",
+        "units": 6,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(SOSC)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(SOSC)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 107",
+        "title": "Gender Relations",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 151",
+        "title": "Classical Sociological Theories",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 195",
+        "title": "Research Methodologies in the Social Sciences",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 195.1",
+        "title": "Research Methodologies in the Social Sciences Laboratory",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 SOC 166. Social Program Evaluation",
+        "title": "3 SOC 166. Social Program Evaluation 3 SOC 152. Contemporary Sociological Theories 3 SOC 192. Introduction to Qualitative Social Research 3 COMM 10. Critical Perspectives in Communication 2 Elective 1 15",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 SOC 198.",
+        "title": "3 SOC 198. Internship 3 3 3 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 114",
+        "title": "Sociology of Economic Life",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 120",
+        "title": "Urban Sociology",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 180",
+        "title": "Collective Behavior",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 191",
+        "title": "Special Topics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SOC 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1    SOC 112. Sociology of Politics",
+        "title": "1    SOC 112. Sociology of Politics 3    SOC 160/SOC 165. Social Change/Sociology o Development 3     SOC 170/SOC 175. Social Problems/Deviance 3     SOC 200. Undergraduate Thesis 3     Elective 3 16",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 f 3 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "SOC 10", "SOC 100", "SOC 110", "SOC 111", "SOC 112", "SOC 113",
-      "SOC 120", "SOC 130", "SOC 140", "SOC 150", "SOC 160", "SOC 161",
-      "SOC 170", "SOC 171", "SOC 172", "SOC 180", "SOC 191", "SOC 195",
-      "SOC 198", "SOC 199", "SOC 200",
-      "ECON 11", "ECON 12", "PHLO 101", "POLSC 14", "PSYC 10"
+    "requiredCodes": [
+      "KAS 1/HIST 1",
+      "ETHICS 1",
+      "SOC 10",
+      "ANTH 10",
+      "PSY 10",
+      "3 GE Elective",
+      "3 STS 1. Science,",
+      "ARTS 1",
+      "ECON 11",
+      "STAT 166",
+      "SOC 116",
+      "SOC 130/SOC 135",
+      "3 AERS 160. Rural Sociology",
+      "3 PI 10. The Life",
+      "Elective",
+      "Elective",
+      "SOC 107",
+      "SOC 151",
+      "SOC 195",
+      "SOC 195.1",
+      "3 SOC 166. Social Program Evaluation",
+      "3 SOC 198.",
+      "SOC 199",
+      "SOC 114",
+      "SOC 120",
+      "SOC 180",
+      "SOC 191",
+      "SOC 200",
+      "1    SOC 112. Sociology of Politics",
+      "3"
     ]
   },
-  
   "BAPHILO": {
-    code: "BAPHILO",
-    name: "BA Philosophy",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 132,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "PHLO 200", freeElectiveUnits: 12 },
-      sp: { name: "Special Problem Track", code: "PHLO 190", freeElectiveUnits: 15 }
+    "code": "BAPHILO",
+    "name": "BA Philosophy",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 132,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "PHLO 200",
+        "freeElectiveUnits": 12
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "PHLO 190",
+        "freeElectiveUnits": 15
+      }
     },
-    defaultTrack: "thesis",
-    majorCourses: [
-      // First Year
-      { code: "PHLO 11", title: "Introduction to Philosophy", units: 3 },
-      { code: "PHLO 12", title: "Logic", units: 3 },
-      { code: "ENG 100", title: "Advanced Expository Writing", units: 3 },
-      // Second Year
-      { code: "PHLO 101", title: "Ethics", units: 3 },
-      { code: "PHLO 104", title: "Political Philosophy", units: 3 },
-      { code: "PHLO 110", title: "Ancient Philosophy", units: 3 },
-      { code: "PHLO 112", title: "Modern Philosophy", units: 3 },
-      { code: "PHLO 115", title: "Philosophy in the Philippines", units: 3 },
-      // Third Year
-      { code: "PHLO 103", title: "Philosophy of Religion", units: 3 },
-      { code: "PHLO 105", title: "Aesthetics", units: 3 },
-      { code: "PHLO 113", title: "Contemporary Philosophy", units: 3 },
-      { code: "PHLO 114", title: "Oriental Philosophy", units: 3 },
-      { code: "PHLO 120", title: "Metaphysics", units: 3 },
-      { code: "PHLO 121", title: "Epistemology", units: 3 },
-      { code: "PHLO 125", title: "Philosophy of Science", units: 3 },
-      { code: "PHLO 192", title: "Research Methods in Philosophy", units: 3 },
-      // Fourth Year
-      { code: "PHLO 127", title: "Philosophy of Language", units: 3 },
-      { code: "PHLO 190", title: "Special Problems", units: 3, track: "sp" },
-      { code: "PHLO 197", title: "Seminar in Philosophy", units: 3 },
-      { code: "PHLO 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
+    "defaultTrack": "thesis",
+    "majorCourses": [
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday L",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine H",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 11",
+        "title": "Fundamental Approaches to Philosophy",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 12",
+        "title": "Logic",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ife       3      PI 10. The Life and Works of Jose Rizal",
+        "title": "ife       3      PI 10. The Life and Works of Jose Rizal istory    3    GE Elective 3    PHLO 150. Epistemology 3    PHLO 171. Ethics 3    ECON 11/POSC 10. General Economics/Principles of Governmen 3    SPEC. Readings in Speculative Thought",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 t and 3Politics 3 s (2) 18",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 110",
+        "title": "Ancient Philosophy",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 112",
+        "title": "Modern Philosophy",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 173",
+        "title": "Practical Ethics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 PHLO Elective",
+        "title": "3 PHLO Elective 3 PHLO 111. Medieval Philosophy 3 PHLO 120. Philosophical Reasoning 3 GE Elective 3 Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic 3 Activities (3) NSTP 2. National Training Service Program II (2) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 s (2) (3) 15",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 197",
+        "title": "Philosophic Problems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 174",
+        "title": "Biomedical Ethics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 181",
+        "title": "Aesthetics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 195",
+        "title": "Philosophy of Language",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 PHLO 113. Contemporary Philosophy",
+        "title": "3 PHLO 113. Contemporary Philosophy 3 PHLO 182. Philosophy and Semiotics 3 Specialized course. Elective in one discipline 3 Elective (PHLO) 3 Elective (PHLO) 15 Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 178",
+        "title": "Environmental Ethics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 176",
+        "title": "Social and Political Philosophy",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHLO 190",
+        "title": "Special Problems",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(PHLO) Specialized course. Elective in one discipline",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3      PHLO 160. Philosophy of Science",
+        "title": "3      PHLO 160. Philosophy of Science 3      PHLO 184. Feminist Philosophy 3      PHLO 185. Critical Perspectives in Filipino Philosophy 3      PHLO 190. Special Problems 3      Specialized course. Elective in one discipline 15",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "PHLO 11", "PHLO 12", "PHLO 101", "PHLO 103", "PHLO 104", "PHLO 105",
-      "PHLO 110", "PHLO 112", "PHLO 113", "PHLO 114", "PHLO 115",
-      "PHLO 120", "PHLO 121", "PHLO 125", "PHLO 127",
-      "PHLO 192", "PHLO 197",
-      "ENG 100"
+    "requiredCodes": [
+      "ETHICS 1",
+      "KAS 1/HIST 1",
+      "ARTS 1",
+      "STS 1",
+      "PHLO 11",
+      "PHLO 12",
+      "ife       3      PI 10. The Life and Works of Jose Rizal",
+      "3",
+      "COMM 10",
+      "GE",
+      "Elective",
+      "PHLO 110",
+      "PHLO 112",
+      "PHLO 173",
+      "3 PHLO Elective",
+      "3",
+      "PHLO 197",
+      "PHLO 174",
+      "PHLO 181",
+      "PHLO 195",
+      "Elective",
+      "3 PHLO 113. Contemporary Philosophy",
+      "3",
+      "PHLO 178",
+      "PHLO 176",
+      "PHLO 190",
+      "Elective",
+      "3      PHLO 160. Philosophy of Science",
+      "3"
     ]
   },
-  
   "AASS": {
-    code: "AASS",
-    name: "Associate in Arts in Sports Studies",
-    college: "CAS",
-    collegeName: "College of Arts and Sciences",
-    available: true,
-    totalUnitsRequired: 78,
-    geCoursesRequired: 5,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year First Semester
-      { code: "SS 102", title: "Introduction to Sports Studies", units: 3 },
-      { code: "PEd 91", title: "Physical Education 91", units: 3 },
-      { code: "HK 11", title: "Wellness and Basic Injury Management", units: 2 },
-      { code: "HK 12", title: "Basic Human Kinetics Activities", units: 2 },
-      // First Year Second Semester
-      { code: "SS 110", title: "Foundations of Sports Studies", units: 3 },
-      { code: "PEd 92", title: "Physical Education 92", units: 3 },
-      { code: "SS 103", title: "Sports Science Fundamentals", units: 3 },
-      { code: "PEd 151", title: "Physical Education 151", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // First Year Midyear
-      { code: "KAS 1", title: "Kasaysayan ng Pilipinas/Philippine History", units: 3 },
-      // Second Year First Semester
-      { code: "SS 104", title: "Sports Studies 104", units: 3 },
-      { code: "PEd 93", title: "Physical Education 93", units: 3 },
-      { code: "SS 130", title: "Sports Studies 130", units: 3 },
-      { code: "PEd 174", title: "Physical Education 174", units: 3 },
-      { code: "PEd 176", title: "Physical Education 176", units: 3 },
-      { code: "MATH 10", title: "Mathematics 10", units: 3 },
-      { code: "HK 11/12/13", title: "Human Kinetics Activities", units: 2 },
-      // Second Year Second Semester
-      { code: "SS 120", title: "Sports Studies 120", units: 3 },
-      { code: "PI 100", title: "The Life, Works, and Writings of Jose Rizal", units: 3 },
-      { code: "PEd 172", title: "Physical Education 172", units: 3 },
-      { code: "PEd 100", title: "Physical Education 100", units: 3 },
-      { code: "PEd 196", title: "Physical Education 196", units: 3 },
-      { code: "PEd 130.1", title: "Physical Education 130.1", units: 3 },
-      { code: "HK 11/12/13", title: "Human Kinetics Activities", units: 2 },
+    "code": "AASS",
+    "name": "Associate in Arts in Sports Studies",
+    "college": "CAS",
+    "collegeName": "College of Arts and Sciences",
+    "available": true,
+    "totalUnitsRequired": 78,
+    "geCoursesRequired": 5,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "SS 102",
+        "title": "Introduction to Sports Studies",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PEd 91",
+        "title": "Physical Education 91",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "Basic Human Kinetics Activities",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "SS 110",
+        "title": "Foundations of Sports Studies",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "SS 102"
+        ]
+      },
+      {
+        "code": "PEd 92",
+        "title": "Physical Education 92",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "SS 103",
+        "title": "Sports Science Fundamentals",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "SS 102"
+        ]
+      },
+      {
+        "code": "PEd 151",
+        "title": "Physical Education 151",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SS 104",
+        "title": "Sports Studies 104",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "SS 102"
+        ]
+      },
+      {
+        "code": "PEd 93",
+        "title": "Physical Education 93",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "SS 130",
+        "title": "Sports Studies 130",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "SS 102"
+        ]
+      },
+      {
+        "code": "PEd 174",
+        "title": "Physical Education 174",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "PEd 176",
+        "title": "Physical Education 176",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "MATH 10",
+        "title": "Mathematics 10",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11/12/13",
+        "title": "Human Kinetics Activities",
+        "units": 2,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SS 120",
+        "title": "Sports Studies 120",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "SS 102"
+        ]
+      },
+      {
+        "code": "PI 100",
+        "title": "The Life, Works, and Writings of Jose Rizal",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PEd 172",
+        "title": "Physical Education 172",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "PEd 100",
+        "title": "Physical Education 100",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "PEd 196",
+        "title": "Physical Education 196",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "PEd 130.1",
+        "title": "Physical Education 130.1",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "PEd 91"
+        ]
+      },
+      {
+        "code": "HK 11/12/13",
+        "title": "Human Kinetics Activities",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "SS 102", "SS 103", "SS 104", "SS 110", "SS 120", "SS 130",
-      "PEd 91", "PEd 92", "PEd 93", "PEd 100", "PEd 130.1", 
-      "PEd 151", "PEd 172", "PEd 174", "PEd 176", "PEd 196",
-      "HK 11", "HK 12", "HK 12/13", "HK 11/12/13",
-      "KAS 1", "PI 100", "MATH 10"
+    "requiredCodes": [
+      "SS 102",
+      "SS 103",
+      "SS 104",
+      "SS 110",
+      "SS 120",
+      "SS 130",
+      "PEd 91",
+      "PEd 92",
+      "PEd 93",
+      "PEd 100",
+      "PEd 130.1",
+      "PEd 151",
+      "PEd 172",
+      "PEd 174",
+      "PEd 176",
+      "PEd 196",
+      "HK 11",
+      "HK 12",
+      "HK 12/13",
+      "HK 11/12/13",
+      "KAS 1",
+      "PI 100",
+      "MATH 10"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF AGRICULTURE AND FOOD SCIENCE (CAFS)
-  // ============================================================================
-  
   "BSAGRI": {
-    code: "BSAGRI",
-    name: "BS Agriculture",
-    college: "CAFS",
-    collegeName: "College of Agriculture and Food Science",
-    available: true,
-    totalUnitsRequired: 142,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "AGRI 11", title: "Introduction to Agricultural Science", units: 1 },
-      { code: "AGRI 21", title: "Introduction to Animal Science", units: 3 },
-      { code: "AGRI 31", title: "Fundamentals of Crop Science I", units: 3 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      // Year 1 Sem 2
-      { code: "AGRI 41", title: "Principles of Crop Protection", units: 3 },
-      { code: "AGRI 51", title: "Principles of Soil Science", units: 3 },
-      { code: "AGRI 22", title: "Introduction to Livestock and Poultry Production", units: 3 },
-      { code: "AGRI 32", title: "Fundamentals of Crop Science II", units: 3 },
-      // Year 2 Sem 1
-      { code: "AGRI 61", title: "Agricultural Extension Communication", units: 3 },
-      { code: "BOT 20", title: "Plant Physiology", units: 3 },
-      { code: "AGRI 42", title: "Pest Management", units: 3 },
-      { code: "ECON 11", title: "General Economics", units: 3 },
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      // Year 2 Sem 2
-      { code: "ABE 1", title: "Introduction to Agricultural Engineering", units: 3 },
-      { code: "CHEM 40", title: "Organic Chemistry I", units: 4 },
-      { code: "CHEM 40.1", title: "Organic Chemistry I Laboratory", units: 1 },
-      { code: "AGRI 111", title: "Crop Production Systems", units: 3 },
-      { code: "AGRI 171", title: "Ethics, Laws and Policies in Agriculture", units: 3 },
-      // Year 3 Sem 1
-      { code: "BIO 30", title: "Genetics", units: 3 },
-      { code: "ABT 10", title: "Introduction to Agricultural Biotechnology", units: 3 },
-      { code: "AGRI 121", title: "Farm Business Accounting", units: 3 },
-      { code: "STAT 162", title: "Experimental Designs I", units: 3 },
-      // Year 3 Sem 2
-      { code: "AAE 111", title: "Farm Management", units: 3 },
-      { code: "AGRI 195", title: "Research Methods in Agriculture", units: 3 },
-      // Year 3 Midyear
-      { code: "AGRI 198", title: "Practicum/Major Farm Practice", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "AGRI 199", title: "Undergraduate Seminar", units: 1 },
-      // Year 4 Sem 2
-      { code: "AGRI 200", title: "Undergraduate Thesis", units: 3 },
+    "code": "BSAGRI",
+    "name": "BS Agriculture",
+    "college": "CAFS",
+    "collegeName": "College of Agriculture and Food Science",
+    "available": true,
+    "totalUnitsRequired": 142,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "AGRI 11",
+        "title": "1   AGRI",
+        "units": 51,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 21",
+        "title": "3   AGRI",
+        "units": 22,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 31",
+        "title": "3   AGRI",
+        "units": 32,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 41",
+        "title": "3   CHEM",
+        "units": 18,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "3   ETHICS",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "3   HK 16",
+        "units": 11,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 (2) 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "2    KAS 1/HIST",
+        "units": 1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 10",
+        "title": "3    ECON",
+        "units": 11,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 42",
+        "title": "3    BOT",
+        "units": 20,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 61",
+        "title": "3    AGRI",
+        "units": 111,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABT 10",
+        "title": "3    AGRI",
+        "units": 171,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ELECTIVE",
+        "title": "GE 1                        3    CHEM",
+        "units": 40,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "OR 13                         (2)   CHEM",
+        "units": 40.1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP",
+        "title": "1 17",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 4 1 (3) 20",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Midyear",
+        "title": "Midyear Major 198/200a 3",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 199",
+        "title": "1    SPECIALIZATION COURSE",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJOR",
+        "title": "COURSE 4                       3    SPECIALIZATION COURSE",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJOR",
+        "title": "COURSE 5                       3    SPECIALIZATION COURSE",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJOR",
+        "title": "COURSE 6                       3    Elective",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 1",
+        "title": "3    MAJOR 200/MAJOR 200a",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJOR 200/MAJOR 190",
+        "title": "3 Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "3",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "OR 13 20",
+        "units": 2,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "2",
+        "title": "2 3 4 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "AGRI 11", "AGRI 21", "AGRI 31", "AGRI 22", "AGRI 32", "AGRI 41", "AGRI 42",
-      "AGRI 51", "AGRI 61", "AGRI 111", "AGRI 121", "AGRI 171", "AGRI 195",
-      "AGRI 198", "AGRI 199", "AGRI 200",
-      "CHEM 18", "CHEM 18.1", "CHEM 40", "CHEM 40.1", "BOT 20", "BIO 30",
-      "ABE 1", "ABT 10", "AAE 111", "ECON 11", "MGT 101", "STAT 162"
+    "requiredCodes": [
+      "AGRI 11",
+      "AGRI 21",
+      "AGRI 31",
+      "AGRI 41",
+      "ARTS 1",
+      "STS 1",
+      "3",
+      "CHEM 18.1",
+      "ABME 10",
+      "AGRI 42",
+      "AGRI 61",
+      "ABT 10",
+      "ELECTIVE",
+      "3",
+      "Midyear",
+      "AGRI 199",
+      "MAJOR",
+      "MAJOR",
+      "MAJOR",
+      "ABE 1",
+      "MAJOR 200/MAJOR 190",
+      "COMM 10",
+      "2"
     ]
   },
-  
   "BSABIO": {
-    code: "BSABIO",
-    name: "BS Agricultural Biotechnology",
-    college: "CAFS",
-    collegeName: "College of Agriculture and Food Science",
-    available: true,
-    totalUnitsRequired: 142,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "ABT 11", title: "Introduction to Agricultural Biotechnology", units: 1 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "AGRI 21", title: "Introduction to Animal Science", units: 3 },
-      { code: "AGRI 31", title: "Fundamentals of Crop Science I", units: 3 },
-      // Year 1 Sem 2
-      { code: "CHEM 40", title: "Basic Organic Chemistry", units: 4 },
-      { code: "CHEM 40.1", title: "Basic Organic Chemistry Laboratory", units: 1 },
-      { code: "AGRI 22", title: "Introduction to Livestock and Poultry Production", units: 3 },
-      { code: "MATH 25", title: "Fundamental Calculus", units: 3 },
-      { code: "BIO 30", title: "Genetics", units: 3 },
-      // Year 2 Sem 1
-      { code: "ABT 101", title: "Fundamentals of Agricultural Biotechnology", units: 3 },
-      { code: "CHEM 160", title: "Introductory Biochemistry", units: 3 },
-      { code: "AGRI 32", title: "Fundamentals of Crop Science II", units: 3 },
-      { code: "MCB 11", title: "Biology and Applications of Microorganisms", units: 3 },
-      { code: "AGRI 41", title: "Principles of Crop Protection", units: 3 },
-      // Year 2 Sem 2
-      { code: "ABT 103", title: "Experimental Techniques in Agricultural Biotechnology I", units: 3 },
-      { code: "AGRI 51", title: "Principles of Soil Science", units: 3 },
-      { code: "CMSC 12", title: "Foundations of Computer Science", units: 3 },
-      { code: "BIO 101", title: "Introductory Molecular Biology", units: 3 },
-      { code: "AGRI 42", title: "Pest Management", units: 3 },
-      // Year 3 Sem 1
-      { code: "ABT 104", title: "Experimental Techniques in Agricultural Biotechnology", units: 3 },
-      { code: "STAT 162", title: "Experimental Designs I", units: 3 },
-      { code: "AGRI 61", title: "Agricultural Extension Communication", units: 3 },
-      { code: "ABME 10", title: "Foundations of Entrepreneurship", units: 3 },
-      // Year 3 Sem 2
-      { code: "ABT 106", title: "Molecular Markers", units: 3 },
-      { code: "ABT 107", title: "Recombinant DNA Technology", units: 3 },
-      { code: "ECON 11", title: "General Economics", units: 3 },
-      { code: "AGRI 171", title: "Ethics, Laws, and Policies in Agriculture", units: 3 },
-      // Year 3 Midyear
-      { code: "ABT 198", title: "Practicum/Major Farm Practice", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      { code: "ABT 200", title: "Undergraduate Thesis/Major Farm Practice", units: 3 },
-      // Year 4 Sem 2
-      { code: "ABT 108", title: "Issues and Regulation of Agricultural Biotechnology", units: 3 },
-      { code: "ABT 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "AGRI 199", title: "Colloquium in Agriculture", units: 1 },
-      { code: "ABT 190", title: "Undergraduate Thesis/Special Problems", units: 3 },
+    "code": "BSABIO",
+    "name": "BS Agricultural Biotechnology",
+    "college": "CAFS",
+    "collegeName": "College of Agriculture and Food Science",
+    "available": true,
+    "totalUnitsRequired": 142,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ABT 11",
+        "title": "Introduction to Agricultural Biotechnology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 21",
+        "title": "(Lab). Introduction to Animal Science",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 31",
+        "title": "(Lab). Fundamentals of Crop Science",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1    AGRI 22. Introduction to Livestock and Poultry Productio",
+        "title": "1    AGRI 22. Introduction to Livestock and Poultry Productio 3    AGRI 32. Fundamentals of Crop Science II 3    AGRI 41. Principles of Crop Protection 3    CHEM 18.1. University Chemistry Laboratory 3    HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History 3    ETHICS 1. Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management 16",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "n",
+        "title": "n 3 3 2 3 3 (2) 17",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 42",
+        "title": "Pest Management",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MCB 11",
+        "title": "Biology and Applications of Microorganisms",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "GE1 (Math 10). Mathematics, Culture and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 30",
+        "title": "Genetics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4    CHEM 160. Introductory Biochemistry",
+        "title": "4    CHEM 160. Introductory Biochemistry 1    ABT 101. Fundamentals of Agricultural Biotechnology 3    STAT 162. Experimental Designs I 3    CMSC 12. Introduction to Computer Science 3    MATH 25. Fundamental Calculus 3    AGRI 51. Principles of Soil Science (2) Elective GE",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program 17",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 3 (3) 21",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ABT 103",
+        "title": "Experimental Techniques in Agricultural Biotechnology I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 101",
+        "title": "Introductory Molecular Biology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 61",
+        "title": "Agricultural Extension Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 10",
+        "title": "Cultivating the Entreprenuerial Mindset",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "GE 3 (SAS 1). Self and Society",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Service Training Program Total",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ABT 106. Molecular Markers",
+        "title": "3 ABT 106. Molecular Markers 3  ABT 104. Experimental Techniques in Agricultural Biotechno 3  Elective course 3  ECON 11. General Economics 3  AGRI 171. Ethics, Laws, and Policies in Agriculture 3  SPECIALIZATION COURSE",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human 3 Kinetics Activities (3) 21",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ABT",
+        "title": "198/200a. Practicum/Major Practice logy3II 3 3 3 3 (2) 18",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 101",
+        "title": "Concepts and Dynamics of Management",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABT 107",
+        "title": "Recombinant DNA Technology SPECIALIZATION COURSE SPECIALIZATION COURSE SPECIALIZATION COURSE",
+        "units": 4,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABT",
+        "title": "200/ABT 200a. Undergraduate Thesis/Major Practice",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABT 108",
+        "title": "Issues and Regulation of Agricultural Biotechno 3    ABT 199. Undergraduate Seminar 3    AGRI 199. Colloquium in Agriculture 3    Elective Course 3    ABT 200/190. Undergraduate Thesis/Special Problems 3 (2) 18",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 logy 1 1 3 3 11",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "ABT 11", "ABT 101", "ABT 103", "ABT 104", "ABT 106", "ABT 107", "ABT 108",
-      "ABT 198", "ABT 199", "ABT 200", "ABT 190",
-      "CHEM 18", "CHEM 18.1", "CHEM 40", "CHEM 40.1", "CHEM 160",
-      "AGRI 21", "AGRI 22", "AGRI 31", "AGRI 32", "AGRI 41", "AGRI 42",
-      "AGRI 51", "AGRI 61", "AGRI 171", "AGRI 199",
-      "MATH 25", "BIO 30", "BIO 101", "MCB 11", "CMSC 12", "STAT 162",
-      "ABME 10", "ECON 11", "MGT 101"
+    "requiredCodes": [
+      "ABT 11",
+      "CHEM 18",
+      "AGRI 21",
+      "AGRI 31",
+      "ARTS 1",
+      "STS 1",
+      "1    AGRI 22. Introduction to Livestock and Poultry Productio",
+      "n",
+      "CHEM 40",
+      "CHEM 40.1",
+      "AGRI 42",
+      "MCB 11",
+      "Elective",
+      "BIO 30",
+      "4    CHEM 160. Introductory Biochemistry",
+      "3",
+      "ABT 103",
+      "BIO 101",
+      "AGRI 61",
+      "PI 10",
+      "ABME 10",
+      "COMM 10",
+      "Elective",
+      "3 ABT 106. Molecular Markers",
+      "3",
+      "ABT",
+      "MGT 101",
+      "ABT 107",
+      "ABT",
+      "3",
+      "ABT 108",
+      "3"
     ]
   },
-  
   "BSFST": {
-    code: "BSFST",
-    name: "BS Food Science and Technology",
-    college: "CAFS",
-    collegeName: "College of Agriculture and Food Science",
-    available: true,
-    totalUnitsRequired: 143,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "FST 11", title: "Introduction to Food Science and Technology", units: 3 },
-      { code: "AGRI 21", title: "Introduction to Animal Science", units: 3 },
-      { code: "AGRI 31", title: "Fundamentals of Crop Science I", units: 3 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      // Year 1 Sem 2
-      { code: "MCB 11", title: "Biology and Applications of Microorganisms", units: 3 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "CHEM 40", title: "Basic Organic Chemistry", units: 4 },
-      { code: "CHEM 40.1", title: "Basic Organic Chemistry Laboratory", units: 1 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 3 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 2 },
-      // Year 2 Sem 1
-      { code: "ABME 10", title: "Foundations of Entrepreneurship", units: 3 },
-      { code: "CHEM 32", title: "Quantitative Inorganic Analysis", units: 3 },
-      { code: "CHEM 32.1", title: "Quantitative Inorganic Analysis Laboratory", units: 2 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      // Year 2 Sem 2
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      { code: "CHEM 160", title: "Introductory Biochemistry", units: 3 },
-      { code: "MCB 180", title: "Food Microbiology", units: 3 },
-      { code: "FST 101", title: "Food Chemistry", units: 3 },
-      { code: "FST 130", title: "Food Processing I", units: 3 },
-      // Year 3 Sem 1
-      { code: "FST 102", title: "Food Analysis", units: 4 },
-      { code: "FST 131", title: "Food Processing II", units: 3 },
-      { code: "FST 140", title: "Food Quality Management", units: 3 },
-      { code: "FST 141", title: "Food Engineering", units: 3 },
-      { code: "FST 167", title: "Sensory Evaluation", units: 3 },
-      // Year 3 Sem 2
-      { code: "AGRI 171", title: "Ethics, Laws, and Policies in Agriculture", units: 3 },
-      { code: "AGRI 195", title: "Research Methods in Agriculture", units: 3 },
-      { code: "FST 111", title: "Food Preservation", units: 3 },
-      { code: "FST 151", title: "Food Packaging", units: 3 },
-      { code: "FST 200", title: "Undergraduate Thesis", units: 3 },
-      // Year 3 Midyear
-      { code: "FST 198", title: "Practicum", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "FST 165", title: "Food Product Development", units: 3 },
-      { code: "FST 170", title: "Food Plant Design", units: 3 },
-      { code: "ABME 172", title: "Product Ideation and Creation", units: 3 },
-      // Year 4 Sem 2
-      { code: "FST 147", title: "Food Safety and Regulation", units: 3 },
-      { code: "FST 175", title: "Food Service Management", units: 3 },
-      { code: "FST 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "AGRI 199", title: "Colloquium in Agriculture", units: 1 },
+    "code": "BSFST",
+    "name": "BS Food Science and Technology",
+    "college": "CAFS",
+    "collegeName": "College of Agriculture and Food Science",
+    "available": true,
+    "totalUnitsRequired": 143,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "FST 11",
+        "title": "3 GE",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 21",
+        "title": "(Lab)                                  3 MCB 11 (Lab)",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 31",
+        "title": "(Lab)                                  3 MATH",
+        "units": 27,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "3 CHEM 18.1 (Lab)",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "3 GE",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "3 PHYS",
+        "units": 51,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "-2 PHYS 51.1 (Lab)",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "or 18",
+        "units": 13,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 2 3 3 2 -2 19",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40",
+        "title": "3 STAT 101 (Lab)",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "(Lab)                                2 MGT",
+        "units": 101,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 10",
+        "title": "3 CHEM",
+        "units": 160,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32",
+        "title": "3 MCB 180 (Lab)",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 18",
+          "CHEM 18.1"
+        ]
+      },
+      {
+        "code": "CHEM 32.1",
+        "title": "(Lab)                                2 FST 101 (Lab)",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32"
+        ]
+      },
+      {
+        "code": "STS 1",
+        "title": "3 FST 130 (Lab)",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "or 13                                   -2 HK 12 or",
+        "units": 13,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "-3 NSTP 16",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 -2 -3 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "3 PI",
+        "units": 10,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 102",
+        "title": "(Lab)                                  4 AGRI",
+        "units": 171,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 131",
+        "title": "(Lab)                                  3 AGRI 195 (Lab)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 140",
+        "title": "(Lab)                                  3 FST",
+        "units": 111,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 141",
+        "title": "(Lab)                                  3 FST 151 (Lab)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 167",
+        "title": "(Lab)                                  3 FST 19",
+        "units": 200,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MID",
+        "title": "YEAR TERM",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST",
+        "title": "198",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 18 3 3",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "GE 3",
+        "title": "3 Elective",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 165",
+        "title": "3 Elective",
+        "units": 2,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 170",
+        "title": "3 FST",
+        "units": 147,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 172",
+        "title": "3 FST",
+        "units": 175,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FST 200",
+        "title": "3 FST HIST1/KAS1                                    3 AGRI 18 Total no. of units:",
+        "units": 143,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 1 1 14",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "FST 11", "FST 101", "FST 102", "FST 111", "FST 130", "FST 131",
-      "FST 140", "FST 141", "FST 147", "FST 151", "FST 165", "FST 167",
-      "FST 170", "FST 175", "FST 198", "FST 199", "FST 200",
-      "CHEM 18", "CHEM 18.1", "CHEM 32", "CHEM 32.1", "CHEM 40", "CHEM 40.1", "CHEM 160",
-      "AGRI 21", "AGRI 31", "AGRI 171", "AGRI 195", "AGRI 199",
-      "MCB 11", "MCB 180", "MATH 27", "PHYS 51", "PHYS 51.1",
-      "STAT 101", "MGT 101", "ABME 10", "ABME 172"
+    "requiredCodes": [
+      "FST 11",
+      "AGRI 21",
+      "AGRI 31",
+      "ARTS 1",
+      "ETHICS 1",
+      "CHEM 18",
+      "3",
+      "CHEM 40",
+      "CHEM 40.1",
+      "ABME 10",
+      "CHEM 32",
+      "CHEM 32.1",
+      "STS 1",
+      "3",
+      "COMM 10",
+      "FST 102",
+      "FST 131",
+      "FST 140",
+      "FST 141",
+      "FST 167",
+      "MID",
+      "FST",
+      "3",
+      "GE 3",
+      "FST 165",
+      "FST 170",
+      "ABME 172",
+      "FST 200",
+      "3"
     ]
   },
-  
   "BSACHEM": {
-    code: "BSACHEM",
-    name: "BS Agricultural Chemistry",
-    college: "CAFS",
-    collegeName: "College of Agriculture and Food Science",
-    available: true,
-    totalUnitsRequired: 197,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "CHEM 16", title: "General Chemistry I", units: 4 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus I", units: 3 },
-      // Year 1 Sem 2
-      { code: "CHEM 17", title: "General Chemistry II", units: 4 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYSICS 71", title: "Elementary Physics I", units: 4 },
-      { code: "AGCHEM 10", title: "General Agricultural Chemistry", units: 3 },
-      // Year 2 Sem 1
-      { code: "CHEM 26", title: "Analytical Chemistry I", units: 5 },
-      { code: "CHEM 40", title: "Organic Chemistry I", units: 5 },
-      { code: "PHYSICS 72", title: "Elementary Physics II", units: 4 },
-      { code: "MATH 36", title: "Mathematical Analysis I", units: 3 },
-      // Year 2 Sem 2
-      { code: "CHEM 27", title: "Analytical Chemistry II", units: 4 },
-      { code: "CHEM 41", title: "Organic Chemistry II", units: 5 },
-      { code: "CHEM 31", title: "Elementary Biochemistry", units: 5 },
-      { code: "BIO 30", title: "Cellular and Molecular Biology", units: 3 },
-      // Year 3 Sem 1
-      { code: "CHEM 160", title: "Physical Chemistry I", units: 4 },
-      { code: "AGCHEM 100", title: "Soil Chemistry", units: 4 },
-      { code: "AGCHEM 101", title: "Soil Fertility and Plant Nutrition", units: 4 },
-      { code: "AGCHEM 120", title: "Food Chemistry", units: 4 },
-      // Year 3 Sem 2
-      { code: "CHEM 161", title: "Physical Chemistry II", units: 4 },
-      { code: "AGCHEM 102", title: "Advanced Soil Chemistry", units: 3 },
-      { code: "AGCHEM 110", title: "Plant Biochemistry", units: 4 },
-      { code: "AGCHEM 140", title: "Environmental Chemistry", units: 3 },
-      { code: "AGCHEM 150", title: "Advanced Instrumental Methods of Analysis", units: 5 },
-      // Year 4 Sem 1
-      { code: "AGCHEM 111", title: "Principles of Plant Chemical Regulation", units: 3 },
-      { code: "AGCHEM 121", title: "Food Analysis", units: 4 },
-      { code: "AGCHEM 130", title: "Pesticide Chemistry", units: 4 },
-      { code: "AGCHEM 141", title: "Environmental Toxicology", units: 3 },
-      // Year 4 Sem 2
-      { code: "AGCHEM 122", title: "Industrial Food Chemistry", units: 3 },
-      { code: "AGCHEM 151", title: "Radiochemistry", units: 3 },
-      { code: "AGCHEM 190", title: "Special Problem", units: 3 },
-      // Year 5 Sem 1
-      { code: "AGCHEM 200", title: "Undergraduate Thesis", units: 6 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 5 Sem 2 (MIDYEAR)
-      { code: "AGCHEM 191", title: "On-the-Job Training", units: 3, gradeType: "S/U" },
-      // Support courses
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "CMSC 11", title: "Introduction to Computer Science I", units: 3 },
+    "code": "BSACHEM",
+    "name": "BS Agricultural Chemistry",
+    "college": "CAFS",
+    "collegeName": "College of Agriculture and Food Science",
+    "available": true,
+    "totalUnitsRequired": 197,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MCB 11",
+        "title": "Biology and Applications of Microorganisms",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    CHEM 19. Chemical Structure and Properties",
+        "title": "3    CHEM 19. Chemical Structure and Properties 3    MATH 28. Analytic Geometry and Calculus III 3    BIO 30. Genetics 3    AGRI 31. Fundamentals of Crop Science I 3    CHEM 18.1 University Chemistry Laboratory 3    GE Elective (2)   HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 18",
+        "units": 17,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 43",
+        "title": "Organic Chemistry I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 19",
+          "CHEM 32"
+        ]
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BOT 20",
+        "title": "Fundamentals of Plant Physiology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CMSC 12/AMAT 152",
+        "title": "Foundations of Computer Science/Fundamentals of Mathema",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "tical Computing",
+        "title": "tical Computing",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory",
+        "title": "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory 3    CHEM 43.1. Organic Chemistry I Laboratory 4    PHYS 72. University Physics II 1    PHYS 72.1. University Physics II Laboratory 3    AGRI 21. Introduction to Animal Science 3    AGRI 32. Fundamentals of Crop Science II 3    CHEM 32. Quantitative Inorganic Analysis (2)   HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 20    NSTP 1. National Training Service Program I 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 44",
+        "title": "Organic Chemistry II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 43"
+        ]
+      },
+      {
+        "code": "STAT 162",
+        "title": "Experimental Designs",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 101"
+        ]
+      },
+      {
+        "code": "AGRI 22",
+        "title": "Introduction to Livestock and Poultry Production",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 111/AAE 120",
+        "title": "Farm Management/Agricultural Marketing I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 61",
+        "title": "Innovations and Entrepreneurship in Agriculture",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Training Service Program II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I",
+        "title": "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I 3    CHEM 131. Technical Analysis I (Foods and Feeds)                          4 3    CHEM 44.1. Organic Chemistry II Laboratory 3    COMM 10. Critical Perspectives in Communication 3    AGRI 51. Principles of Soil Science 3    AGRI 41. Principles of Crop Protection (3) 18",
+        "units": 18,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 111.1",
+        "title": "Physical Chemistry I Laboratory",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "CHEM 112",
+        "title": "Physical Chemistry II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "CHEM 137",
+        "title": "Modern Analytical Chemistry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32",
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "CHEM 161B",
+        "title": "Biochemistry II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 161A"
+        ]
+      },
+      {
+        "code": "CHEM 140",
+        "title": "Organic Analysis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 44",
+          "CHEM 44.1"
+        ]
+      },
+      {
+        "code": "AGRI 42",
+        "title": "Pest Management SPECIALIZATION",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 180",
+        "title": "Environmental Chemistry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 120",
+        "title": "Inorganic Chemistry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 171",
+        "title": "Ethics, Laws and Policies in Agriculture",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ACHM 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society SPECIALIZATION",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum",
+        "title": "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum 3     CHEM 115. Physical Chemistry III                                          3 3     CHEM 137.1. Modern Analytical Chem Laboratory 3     CHEM 161.1. General Biochemistry Laboratory 4     CHEM 192. Chemical Information, Literature and Communication 3     SPECIALIZATION 3     SPECIALIZATION 21",
+        "units": 18,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "FIFTH",
+        "title": "YEAR 3     CHEM 133. Technical Analysis II (Soils, Fertilizers, and Pesticides) 3     CHEM 185. Structure and Reactivity of Agricultural Chemicals 1     AGRI 199. Colloquium in Agriculture 3     ACHEM 200. Undergraduate Thesis 3     GE Elective 3     SPECIALIZATION 3 19",
+        "units": 17,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "CHEM 16", "CHEM 17", "CHEM 26", "CHEM 27", "CHEM 40", "CHEM 41", "CHEM 31",
-      "CHEM 160", "CHEM 161", "MATH 27", "MATH 28", "MATH 36",
-      "PHYSICS 71", "PHYSICS 72", "BIO 30", "STAT 101", "CMSC 11",
-      "AGCHEM 10", "AGCHEM 100", "AGCHEM 101", "AGCHEM 102", "AGCHEM 110", "AGCHEM 111",
-      "AGCHEM 120", "AGCHEM 121", "AGCHEM 122", "AGCHEM 130", "AGCHEM 140", "AGCHEM 141",
-      "AGCHEM 150", "AGCHEM 151", "AGCHEM 190", "AGCHEM 191", "AGCHEM 200", "ENG 10"
+    "requiredCodes": [
+      "CHEM 18",
+      "ARTS 1",
+      "MCB 11",
+      "MATH 27",
+      "ETHICS 1",
+      "KAS 1/HIST 1",
+      "3    CHEM 19. Chemical Structure and Properties",
+      "ECON 11",
+      "CHEM 43",
+      "PHYS 71",
+      "PHYS 71.1",
+      "BOT 20",
+      "CMSC 12/AMAT 152",
+      "PI 10",
+      "tical Computing",
+      "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory",
+      "CHEM 44",
+      "STAT 162",
+      "AGRI 22",
+      "AAE 111/AAE 120",
+      "AGRI 61",
+      "GE",
+      "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I",
+      "CHEM 111.1",
+      "CHEM 112",
+      "CHEM 137",
+      "CHEM 161B",
+      "CHEM 140",
+      "AGRI 42",
+      "CHEM 180",
+      "CHEM 120",
+      "CHEM 199",
+      "AGRI 171",
+      "ACHM 200",
+      "STS 1",
+      "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum",
+      "FIFTH"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF ENGINEERING AND AGRO-INDUSTRIAL TECHNOLOGY (CEAT)
-  // ============================================================================
-  
   "BSABE": {
-    code: "BSABE",
-    name: "BS Agricultural and Biosystems Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 169,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "ABE 10", title: "Introduction to Agricultural and Biosystems Engineering", units: 1 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 2 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      // Year 1 Sem 2
-      { code: "ABE 30", title: "Engineering Surveying", units: 3 },
-      { code: "ABE 32", title: "Computer-Aided Design", units: 2 },
-      { code: "CHEM 40", title: "Basic Organic Chemistry", units: 4 },
-      { code: "CHEM 40.1", title: "Basic Organic Chemistry Laboratory", units: 1 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      // Year 2 Sem 1
-      { code: "ABE 40", title: "Engineering Survey Camp", units: 1, gradeType: "S/U" },
-      { code: "ABE 42", title: "Engineering Mechanics", units: 4 },
-      { code: "ABE 43", title: "Introduction to Numerical Methods and Computing", units: 3 },
-      { code: "ABE 48", title: "Engineering Materials", units: 2 },
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      { code: "PHYS 52", title: "Advanced Physics for Engineers", units: 3 },
-      { code: "PHYS 52.1", title: "Advanced Physics for Engineers Laboratory", units: 1 },
-      { code: "EE 1", title: "Basic Electrical Engineering", units: 3 },
-      // Year 2 Sem 2
-      { code: "ABE 52", title: "Structural Mechanics", units: 3 },
-      { code: "ABE 54", title: "Thermodynamics I", units: 3 },
-      { code: "ABE 56", title: "Fluid Mechanics", units: 3 },
-      { code: "ABE 57", title: "Engineering Geology", units: 3 },
-      { code: "ABE 58", title: "Basic Electronics", units: 3 },
-      { code: "ENSC 22", title: "Differential Equations for Engineering", units: 3 },
-      { code: "SOIL 51", title: "Fundamentals of Soil Science", units: 3 },
-      // Year 3 Sem 1
-      { code: "ABE 61", title: "Engineering Hydrology", units: 3 },
-      { code: "ABE 62", title: "Hydraulic Engineering", units: 3 },
-      { code: "ABE 63", title: "Thermodynamics II", units: 3 },
-      { code: "ABE 64", title: "Transport Processes", units: 3 },
-      { code: "ABE 66", title: "Instrumentation and Controls", units: 3 },
-      // Year 3 Sem 2
-      { code: "ABE 72", title: "Drainage and Land Development", units: 3 },
-      { code: "ABE 73", title: "Irrigation Engineering", units: 3 },
-      { code: "ABE 74", title: "Agricultural Waste Management", units: 3 },
-      { code: "ABE 75", title: "Aquacultural Engineering", units: 3 },
-      { code: "ABE 76", title: "Refrigeration and Air Conditioning", units: 3 },
-      { code: "ABE 67", title: "Structural Engineering", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 3 Midyear
-      { code: "ABE 198", title: "Field Practice", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "ABE 81", title: "Agricultural Machinery and Equipment", units: 3 },
-      { code: "ABE 82", title: "Postharvest and Food Engineering", units: 3 },
-      { code: "ABE 83", title: "Soil and Water Conservation Engineering", units: 3 },
-      { code: "ABE 84", title: "Agricultural Structures", units: 3 },
-      { code: "ABE 199", title: "Seminar", units: 1 },
-      { code: "ABE 200", title: "Undergraduate Thesis/Innovationeering", units: 3 },
-      // Year 4 Sem 2
-      { code: "ABE 88", title: "Biosystems Engineering", units: 3 },
-      { code: "ABE 186", title: "ABE Codes and Standards, and Contracts", units: 2 },
-      { code: "ABE 190", title: "Design Project", units: 3 },
+    "code": "BSABE",
+    "name": "BS Agricultural and Biosystems Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 169,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ABE 10",
+        "title": "Introduction to Agricultural and Biosystems Engineering",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 30",
+        "title": "Engineering Surveying",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 32",
+        "title": "Computer-Aided Design",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 18"
+        ]
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 18"
+        ]
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus III",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51.1",
+        "title": "Elements of Physics Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 40",
+        "title": "Engineering Survey Camp",
+        "units": 1,
+        "gradeType": "S/U",
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 42",
+        "title": "Engineering Mechanics",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 43",
+        "title": "Introduction to Numerical Methods and Computing",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 48",
+        "title": "Engineering Materials",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 10.1"
+        ]
+      },
+      {
+        "code": "PHYS 52",
+        "title": "Advanced Physics for Engineers",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "PHYS 51"
+        ]
+      },
+      {
+        "code": "PHYS 52.1",
+        "title": "Advanced Physics for Engineers Laboratory",
+        "units": 1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "PHYS 51"
+        ]
+      },
+      {
+        "code": "EE 1",
+        "title": "Basic Electrical Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 52",
+        "title": "Structural Mechanics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 54",
+        "title": "Thermodynamics I",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 56",
+        "title": "Fluid Mechanics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 57",
+        "title": "Engineering Geology",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 58",
+        "title": "Basic Electronics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ENSC 22",
+        "title": "Differential Equations for Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ENSC 10.1"
+        ]
+      },
+      {
+        "code": "SOIL 51",
+        "title": "Fundamentals of Soil Science",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 61",
+        "title": "Engineering Hydrology",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 62",
+        "title": "Hydraulic Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 63",
+        "title": "Thermodynamics II",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 64",
+        "title": "Transport Processes",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 66",
+        "title": "Instrumentation and Controls",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 72",
+        "title": "Drainage and Land Development",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 73",
+        "title": "Irrigation Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 74",
+        "title": "Agricultural Waste Management",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 75",
+        "title": "Aquacultural Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 76",
+        "title": "Refrigeration and Air Conditioning",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 67",
+        "title": "Structural Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 198",
+        "title": "Field Practice",
+        "units": 3,
+        "gradeType": "S/U",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 81",
+        "title": "Agricultural Machinery and Equipment",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 82",
+        "title": "Postharvest and Food Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 83",
+        "title": "Soil and Water Conservation Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 84",
+        "title": "Agricultural Structures",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 199",
+        "title": "Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 200",
+        "title": "Undergraduate Thesis/Innovationeering",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 88",
+        "title": "Biosystems Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 186",
+        "title": "ABE Codes and Standards, and Contracts",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABE 10"
+        ]
+      },
+      {
+        "code": "ABE 190",
+        "title": "Design Project",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 10"
+        ]
+      }
     ],
-    requiredCodes: [
-      "ABE 10", "ABE 30", "ABE 32", "ABE 40", "ABE 42", "ABE 43", "ABE 48",
-      "ABE 52", "ABE 54", "ABE 56", "ABE 57", "ABE 58",
-      "ABE 61", "ABE 62", "ABE 63", "ABE 64", "ABE 66", "ABE 67",
-      "ABE 72", "ABE 73", "ABE 74", "ABE 75", "ABE 76",
-      "ABE 81", "ABE 82", "ABE 83", "ABE 84", "ABE 88",
-      "ABE 186", "ABE 190", "ABE 198", "ABE 199", "ABE 200",
-      "ENSC 10.1", "ENSC 21", "ENSC 22", "EE 1",
-      "CHEM 18", "CHEM 18.1", "CHEM 40", "CHEM 40.1",
-      "MATH 27", "MATH 28", "PHYS 51", "PHYS 51.1", "PHYS 52", "PHYS 52.1",
-      "SOIL 51", "ENG 10"
+    "requiredCodes": [
+      "ABE 10",
+      "ABE 30",
+      "ABE 32",
+      "ABE 40",
+      "ABE 42",
+      "ABE 43",
+      "ABE 48",
+      "ABE 52",
+      "ABE 54",
+      "ABE 56",
+      "ABE 57",
+      "ABE 58",
+      "ABE 61",
+      "ABE 62",
+      "ABE 63",
+      "ABE 64",
+      "ABE 66",
+      "ABE 67",
+      "ABE 72",
+      "ABE 73",
+      "ABE 74",
+      "ABE 75",
+      "ABE 76",
+      "ABE 81",
+      "ABE 82",
+      "ABE 83",
+      "ABE 84",
+      "ABE 88",
+      "ABE 186",
+      "ABE 190",
+      "ABE 198",
+      "ABE 199",
+      "ABE 200",
+      "ENSC 10.1",
+      "ENSC 21",
+      "ENSC 22",
+      "EE 1",
+      "CHEM 18",
+      "CHEM 18.1",
+      "CHEM 40",
+      "CHEM 40.1",
+      "MATH 27",
+      "MATH 28",
+      "PHYS 51",
+      "PHYS 51.1",
+      "PHYS 52",
+      "PHYS 52.1",
+      "SOIL 51",
+      "ENG 10"
     ]
   },
-  
   "BSCHE": {
-    code: "BSCHE",
-    name: "BS Chemical Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 163,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "ChE 10", title: "Introduction to Chemical Engineering Profession", units: 1 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      { code: "MCB 11", title: "Biology and Applications of Microorganisms", units: 3 },
-      // Year 1 Sem 2
-      { code: "CHEM 32", title: "Quantitative Inorganic Analysis", units: 3 },
-      { code: "CHEM 32.1", title: "Quantitative Inorganic Analysis Laboratory", units: 2 },
-      { code: "CHEM 40", title: "Basic Organic Chemistry", units: 4 },
-      { code: "CHEM 40.1", title: "Basic Organic Chemistry Laboratory", units: 1 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      // Year 2 Sem 1
-      { code: "ChE 30", title: "Fundamentals of Chemical Engineering", units: 4 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 2 },
-      { code: "EE 1", title: "Basic Electrical Engineering", units: 3 },
-      { code: "ENSC 11", title: "Statics of Rigid Bodies", units: 3 },
-      { code: "CHEM 111", title: "Physical Chemistry I", units: 3 },
-      { code: "CHEM 111.1", title: "Physical Chemistry I Laboratory", units: 3 },
-      { code: "CHEM 160", title: "Introductory Biochemistry", units: 3 },
-      // Year 2 Sem 2
-      { code: "ENSC 26", title: "Computer Applications in Engineering", units: 3 },
-      { code: "ChE 32", title: "Industrial Stoichiometry", units: 3 },
-      { code: "ENSC 12", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      { code: "CHEM 112", title: "Physical Chemistry II", units: 3 },
-      // Year 3 Sem 1
-      { code: "ChE 142", title: "Chemical Engineering Thermodynamics I", units: 3 },
-      { code: "ChE 147", title: "Application of Fluid Dynamics in Chemical Engineering", units: 3 },
-      { code: "ChE 149", title: "Transport Phenomena", units: 3 },
-      { code: "ChE 152", title: "Separation Processes", units: 3 },
-      { code: "ENSC 13", title: "Strength of Materials", units: 3 },
-      { code: "STAT 168", title: "Response Surface Methodology", units: 3 },
-      // Year 3 Sem 2
-      { code: "ChE 143", title: "Chemical Engineering Thermodynamics II", units: 3 },
-      { code: "ChE 145", title: "Chemical Reaction Engineering", units: 3 },
-      { code: "ChE 153", title: "Transfer Operations I", units: 3 },
-      { code: "ChE 154", title: "Transfer Operations II", units: 3 },
-      { code: "ChE 172", title: "Introduction to Biochemical Engineering", units: 3 },
-      { code: "ChE 180", title: "Agro-Industrial Waste Management", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 3 Midyear
-      { code: "ChE 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "ChE 157.1", title: "Chemical Engineering Unit Operations Laboratory", units: 2 },
-      { code: "ChE 191", title: "Special Topics", units: 3 },
-      { code: "ChE 192", title: "Chemical Process Equipment Design", units: 3 },
-      { code: "ChE 200", title: "Undergraduate Thesis/Innovationeering/EIR", units: 3 },
-      // Year 4 Sem 2
-      { code: "ChE 170", title: "Instrumentation and Process Dynamics and Control", units: 3 },
-      { code: "ChE 185", title: "Chemical Engineering Laws, Ethics, Specifications and Contracts", units: 2 },
-      { code: "ChE 193", title: "Plant Design", units: 3 },
-      { code: "ChE 199", title: "Plant Inspection and Seminar", units: 1 },
+    "code": "BSCHE",
+    "name": "BS Chemical Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 163,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ChE 10. Introduction to Chemical Engineering Profession",
+        "title": "ChE 10. Introduction to Chemical Engineering Profession",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51.1",
+        "title": "Elements of Physics Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1 CHEM 18.1. University Chemistry Laboratory",
+        "title": "1 CHEM 18.1. University Chemistry Laboratory 3 MCB 11. Biology and Applications of Microorganisms 3 ENSC 11. Statics of Rigid Bodies 4 MATH 28. Analytic Geometry and Calculus III 1 HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Ki 3 Activities (2) NSTP 1. National Service Training Program 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and 2 Society 3 GE 1",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in 3 the Arts 3 3 netics (2) (3) 14",
+        "units": 9,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ChE 30. Fundamentals of Chemical Engineering",
+        "title": "ChE 30. Fundamentals of Chemical Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 1",
+        "title": "Basic Electrical Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32",
+        "title": "Quantitative Inorganic Analysis",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 18",
+          "CHEM 18.1"
+        ]
+      },
+      {
+        "code": "CHEM 32.1",
+        "title": "Quantitative Inorganic Analysis Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32"
+        ]
+      },
+      {
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Service Training Program",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4 ENSC 26. Computer Applications in Engineering",
+        "title": "4 ENSC 26. Computer Applications in Engineering 2 ChE 32. Industrial Stoichiometry 3 ENSC 12. Dynamics of Rigid Bodies 3 ENSC 21. Mathematical Methods in Engineering 2 CHEM 111. Physical Chemistry I 4 CHEM 160. Introductory Biochemistry 1 GE",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Ki (2) Activities (3) 19",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 3 netics (2) 21",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ChE 142. Chemical Engineering Thermodynamics I",
+        "title": "ChE 142. Chemical Engineering Thermodynamics I ChE 147. Application of Fluid Dynamics in Chemical Engineerin ChE 149. Transport Phenomena ChE 152. Separation Processes",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 112",
+        "title": "Physical Chemistry II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 111"
+        ]
+      },
+      {
+        "code": "STAT 168",
+        "title": "Respone Surface Methodology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ChE 143. Chemical Engineering Thermodynamics II",
+        "title": "3 ChE 143. Chemical Engineering Thermodynamics II g      3 ChE 145. Chemical Reaction Engineering 3 ChE 153. Transfer Operations I 3 ChE 154. Transfer Operations II 3 ENSC 13. Strength of Materials 3 CHEM 111.1. Physical Chemistry I Laboratory 3 ENG 10. Writing of Scientific Papers 21",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 ChE 198. Internship",
+        "title": "3 ChE 198. Internship 3 3 3 3 2 3 20",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ChE 157.1. Chemical Engineering Unit Operations Laboratory",
+        "title": "ChE 157.1. Chemical Engineering Unit Operations Laboratory ChE 191. Special Topics ChE 192. Chemical Process Equipment Design ChE 200/200b/200c. Undergraduate Thesis/Innovationeering/ Engineering Industry Research Cognate ChE 172. Introduction to Biochemical Engineering ChE 180. Agro-Industrial Waste Management",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "2 ChE 170. Instrumentation and Process Dynamics and Cont",
+        "title": "2 ChE 170. Instrumentation and Process Dynamics and Cont 3 ChE 185. Chemical Engg Laws, Ethics, Specifications an 3 ChE 193. Plant Design 3 ChE 199. Plant Inspection and Seminar ChE 200/200b/200c. Undergraduate Thesis/Innovationeeri 3 Engineering Industry Research 3 Cognate 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Life GE 20",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "rol",
+        "title": "rol d Contracts 3 1 ng/ 3 3 3 3 21",
+        "units": 2,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "ChE 10", "ChE 30", "ChE 32", "ChE 142", "ChE 143", "ChE 145", "ChE 147", "ChE 149",
-      "ChE 152", "ChE 153", "ChE 154", "ChE 157.1", "ChE 170", "ChE 172", "ChE 180",
-      "ChE 185", "ChE 191", "ChE 192", "ChE 193", "ChE 198", "ChE 199", "ChE 200",
-      "CHEM 18", "CHEM 18.1", "CHEM 32", "CHEM 32.1", "CHEM 40", "CHEM 40.1",
-      "CHEM 111", "CHEM 111.1", "CHEM 112", "CHEM 160",
-      "ENSC 10.1", "ENSC 11", "ENSC 12", "ENSC 13", "ENSC 21", "ENSC 26",
-      "MATH 27", "MATH 28", "PHYS 51", "PHYS 51.1", "MCB 11", "EE 1", "STAT 168", "ENG 10"
+    "requiredCodes": [
+      "ChE 10. Introduction to Chemical Engineering Profession",
+      "CHEM 18",
+      "MATH 27",
+      "PHYS 51",
+      "PHYS 51.1",
+      "PI 10",
+      "1 CHEM 18.1. University Chemistry Laboratory",
+      "STS 1",
+      "ARTS 1",
+      "ChE 30. Fundamentals of Chemical Engineering",
+      "ENSC 10.1",
+      "EE 1",
+      "CHEM 32",
+      "CHEM 32.1",
+      "CHEM 40",
+      "CHEM 40.1",
+      "4 ENSC 26. Computer Applications in Engineering",
+      "3",
+      "ChE 142. Chemical Engineering Thermodynamics I",
+      "CHEM 112",
+      "STAT 168",
+      "COMM 10",
+      "3 ChE 143. Chemical Engineering Thermodynamics II",
+      "3 ChE 198. Internship",
+      "ChE 157.1. Chemical Engineering Unit Operations Laboratory",
+      "2 ChE 170. Instrumentation and Process Dynamics and Cont",
+      "rol"
     ]
   },
-  
   "BSCE": {
-    code: "BSCE",
-    name: "BS Civil Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 159,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "CE 10", title: "Fundamentals of Civil Engineering", units: 1 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 2 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYS 71", title: "University Physics I", units: 4 },
-      { code: "PHYS 71.1", title: "University Physics Laboratory", units: 1 },
-      // Year 1 Sem 2
-      { code: "ABE 48", title: "Fundamentals of Surveying", units: 3 },
-      { code: "ENSC 11", title: "Statics of Rigid Bodies", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 4 },
-      { code: "PHYS 72", title: "University Physics II", units: 4 },
-      { code: "PHYS 72.1", title: "University Physics II Laboratory", units: 1 },
-      // Year 2 Sem 1
-      { code: "EE 1", title: "Basic Electrical Engineering", units: 3 },
-      { code: "ENSC 12", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 13", title: "Strength of Materials", units: 3 },
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      // Year 2 Sem 2
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "CE 120", title: "Higher Surveying", units: 3 },
-      { code: "CE 131", title: "Structural Analysis I", units: 3 },
-      { code: "ENSC 16", title: "Fluid Mechanics", units: 3 },
-      // Year 3 Sem 1
-      { code: "ABE 57", title: "Field Hydrology", units: 3 },
-      { code: "CE 121", title: "Transportation Engineering I", units: 3 },
-      { code: "CE 132", title: "Structural Analysis I", units: 3 },
-      { code: "CE 133", title: "Structural Analysis II", units: 3 },
-      { code: "CE 151", title: "Sanitary Engineering I", units: 3 },
-      { code: "CE 170", title: "Geotechnical Engineering", units: 3 },
-      { code: "FPPS 183", title: "Engineering Economic Analysis", units: 3 },
-      // Year 3 Sem 2
-      { code: "CE 122", title: "Transportation Engineering II", units: 3 },
-      { code: "CE 134", title: "Design of Reinforced Concrete Members", units: 4 },
-      { code: "CE 152", title: "Sanitary Engineering II", units: 3 },
-      { code: "CE 161", title: "Construction Materials and Testing", units: 3 },
-      { code: "CE 163", title: "Civil Engineering Laws, Contracts and Ethics", units: 2 },
-      { code: "ENSC 16.1", title: "Fluid Mechanics Laboratory", units: 2 },
-      { code: "IE 184", title: "Project Development and Management", units: 3 },
-      // Year 3 Midyear
-      { code: "CE 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "CE 135", title: "Design of Steel Members", units: 3 },
-      { code: "CE 137", title: "Structural Dynamics and Earthquake Engineering", units: 3 },
-      { code: "CE 141", title: "Hydraulic Engineering", units: 3 },
-      { code: "CE 164", title: "Construction Project Planning and Management", units: 4 },
-      { code: "CE 171", title: "Foundation Engineering", units: 3 },
-      { code: "CE 200", title: "Undergraduate Thesis/Innovationeering", units: 3 },
-      // Year 4 Sem 2
-      { code: "ABE 67", title: "Irrigation and Drainage Engineering I", units: 3 },
-      { code: "CE 197", title: "Civil Engineering Project Integration", units: 3 },
-      { code: "CE 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      { code: "ENSC 26", title: "Computer Applications in Engineering", units: 3 },
+    "code": "BSCE",
+    "name": "BS Civil Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 159,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 10",
+        "title": "Fundamentals of Civil Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     ENSC 10.1. Engineering Graphics Laboratory",
+        "title": "3     ENSC 10.1. Engineering Graphics Laboratory 1     ENSC 11. Statics of Rigid Bodies 3     MATH 28. Analytic Geometry and Calculus III 3     PHYS 72. University Physics II 3     PHYS 72.1. University Physics II Laboratory 4     STS 1. Science, Technology and Society 1     GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "2",
+        "title": "2 3 3 4 1 3 3 (2) 19",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "EE 1",
+        "title": "Basic Electrical Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 48",
+        "title": "Fundamentals of Surveying",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12",
+        "title": "Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 CHEM 18. University Chemistry",
+        "title": "3 CHEM 18. University Chemistry 3 CHEM 18.1. University Chemistry Laboratory 3 CE 120. Higher Surveying 3 CE 131. Structural Analysis I 3 ENSC 16. Fluid Mechanics 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Lif 3 PI 10. The Life, Works, and Writings of Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Activities (3) NSTP 2. National Service Training Program 21",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 2 3 3 3 e 3 Kinetics (2) (3) 20",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 57",
+        "title": "Field Hydrology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 121",
+        "title": "Transportation Engineering I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 132",
+        "title": "Structural Analysis II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 133",
+        "title": "Design of Timber Members",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 151",
+        "title": "Sanitary Engineering I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 170",
+        "title": "Geotechnical Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 183",
+        "title": "Engineering Economic Analysis",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic Activities",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 CE 122. Transportation Engineering II",
+        "title": "3 CE 122. Transportation Engineering II 3 CE 134. Design of Reinforced Concrete Members 3 CE 152. Sanitary Engineering II 3 CE 161. Construction Materials & Testing 3 CE 163. Civil Engineering Laws, Contracts and Ethics 3 ENSC 16.1. Fluid Mechanics Laboratory 3 IE 184. Project Development and Management s (2) 21",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 CE 198. Practicum",
+        "title": "3 CE 198. Practicum 4 3 3 2 2 3 20",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CE 135",
+        "title": "Design of Steel Members",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 137",
+        "title": "Structural Dynamics and Earhquake Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 141",
+        "title": "Hydraulic Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 164",
+        "title": "Construction Project Planning and Management",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE 171",
+        "title": "Foundation Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CE",
+        "title": "200/200b. Thesis/Innovationeering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     ABE 67. Irrigation & Drainage Engineering",
+        "title": "3     ABE 67. Irrigation & Drainage Engineering 3     CE 197. Civil Engineering Project Integration 3     CE 199. Seminar 4     CE 200/200b. Thesis/Innovationeering 3     COMM 10. Critical Perspectives in Communication 3     ENG 10. Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 26",
+        "title": "Computer Applications in Engineering 19",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 1 3 3 3 3 19",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "CE 10", "CE 120", "CE 121", "CE 122", "CE 131", "CE 132", "CE 133", "CE 134", "CE 135",
-      "CE 137", "CE 141", "CE 151", "CE 152", "CE 161", "CE 163", "CE 164", "CE 170", "CE 171",
-      "CE 197", "CE 198", "CE 199", "CE 200",
-      "ENSC 10.1", "ENSC 11", "ENSC 12", "ENSC 13", "ENSC 16", "ENSC 16.1", "ENSC 21", "ENSC 26",
-      "MATH 27", "MATH 28", "PHYS 71", "PHYS 71.1", "PHYS 72", "PHYS 72.1",
-      "CHEM 18", "CHEM 18.1", "ABE 48", "ABE 57", "ABE 67",
-      "STAT 101", "EE 1", "FPPS 183", "IE 184", "ENG 10"
+    "requiredCodes": [
+      "ARTS 1",
+      "CE 10",
+      "GE",
+      "MATH 27",
+      "PHYS 71",
+      "PHYS 71.1",
+      "3     ENSC 10.1. Engineering Graphics Laboratory",
+      "2",
+      "EE 1",
+      "ENSC 12",
+      "ENSC 13",
+      "ENSC 21",
+      "STAT 101",
+      "GE",
+      "ABE 48",
+      "3 CHEM 18. University Chemistry",
+      "3",
+      "ABE 57",
+      "CE 121",
+      "CE 132",
+      "CE 133",
+      "CE 151",
+      "CE 170",
+      "FPPS 183",
+      "3 CE 122. Transportation Engineering II",
+      "3 CE 198. Practicum",
+      "CE 135",
+      "CE 137",
+      "CE 141",
+      "CE 164",
+      "CE 171",
+      "CE",
+      "3     ABE 67. Irrigation & Drainage Engineering",
+      "ENSC 26",
+      "3"
     ]
   },
-  
   "BSEE": {
-    code: "BSEE",
-    name: "BS Electrical Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 162,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYS 71", title: "University Physics I", units: 4 },
-      { code: "PHYS 71.1", title: "University Physics I Laboratory", units: 1 },
-      { code: "EE 30", title: "Introduction to Electrical Engineering", units: 3 },
-      // Year 1 Sem 2
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "PHYS 72", title: "University Physics II", units: 4 },
-      { code: "PHYS 72.1", title: "University Physics II Laboratory", units: 1 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 2 },
-      { code: "ENSC 11", title: "Statics of Rigid Bodies", units: 3 },
-      // Year 2 Sem 1
-      { code: "EE 40", title: "Fundamentals of Electrical Engineering I", units: 4 },
-      { code: "EE 45", title: "Fundamentals of Engineering Electromagnetics", units: 3 },
-      { code: "ENSC 12", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 14a", title: "Engineering Thermodynamics and Heat Transfer", units: 5 },
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      // Year 2 Sem 2
-      { code: "EE 50", title: "Fundamentals of Electrical Engineering II", units: 4 },
-      { code: "EE 51", title: "Electromechanical Energy Conversion for DC", units: 3 },
-      { code: "EE 55", title: "Semiconductor Devices", units: 3 },
-      { code: "ENSC 26", title: "Computer Applications in Engineering", units: 3 },
-      // Year 3 Sem 1
-      { code: "EE 60", title: "Signals and Systems", units: 3 },
-      { code: "EE 65", title: "Electronic Circuits", units: 4 },
-      { code: "EE 61", title: "Electromechanical Energy Conversion for AC", units: 4 },
-      { code: "EE 62", title: "Principles of Power Systems", units: 3 },
-      { code: "EE 66", title: "Signals and Noise in Electrical Engineering Networks", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 3 Sem 2
-      { code: "EE 70", title: "Instrumentation Engineering", units: 4 },
-      { code: "EE 75", title: "Digital Electronics", units: 4 },
-      { code: "EE 71", title: "Analysis of Power Systems", units: 3 },
-      { code: "EE 79", title: "Electrical Engineering Law, Ethics, and Contracts", units: 1 },
-      { code: "FPPS 183", title: "Engineering Economic Analysis", units: 3 },
-      { code: "IE 184", title: "Project Development and Management", units: 3 },
-      { code: "EE 199", title: "Undergraduate Seminar", units: 1 },
-      // Year 3 Midyear
-      { code: "EE 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "EE 85", title: "Industrial Electronics", units: 3 },
-      { code: "EE 80", title: "Control Systems Analysis", units: 3 },
-      { code: "EE 86", title: "Electronic Communication Systems I", units: 3 },
-      { code: "EE 81", title: "Maintenance of Electrical Equipment and Devices", units: 3 },
-      { code: "EE 200", title: "Undergraduate Thesis/Innovationeering/EIR", units: 3 },
-      // Year 4 Sem 2
-      { code: "EE 91", title: "Electrical System Design, Planning, and Estimation", units: 4 },
+    "code": "BSEE",
+    "name": "BS Electrical Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 162,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 30",
+        "title": "Introduction to Electrical Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 MATH 28. Analytic Geometry and Calculus III",
+        "title": "3 MATH 28. Analytic Geometry and Calculus III 4 PHYS 72. University Physics II 1 PHYS 72.1. University Physics II Laboratory 1 ENSC 10.1. Engineering Graphics Laboratory 3 ENSC 11. Statics of Rigid Bodies 3 GE Elective 3 GE Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Service Training Program II 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 4 1 2 3 3 3 (2) (3) 19",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "EE 40",
+        "title": "Fundamentals of Electrical Engineering I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 45",
+        "title": "Fundamentals of Engineering Electromagnetics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC",
+        "title": "14a. Engineering Thermodynamics and Heat Transfer",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4 EE 50. Fundamentals of Electrical Engineering II",
+        "title": "4 EE 50. Fundamentals of Electrical Engineering II 3 EE 51. Electromechanical Energy Conversion for DC 3 EE 55. Semiconductor Devices 5 ENSC 26. Computer Applications in Engineering 3 KAS 1/HIST 1. Kasaysayan ng Pilipinas/Philippine History 3 GE Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities 21",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "4",
+        "title": "4 3 3 3 3 3 (2) 19",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "EE 60",
+        "title": "Signals and Systems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 65",
+        "title": "Electronic Circuits",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 61",
+        "title": "Electromechanical Energy Conversion for AC",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 62",
+        "title": "Principles of Power Systems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 66",
+        "title": "Signals and Noise in Electrical Engineering Network",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 EE 70. Instrumentation Engineering",
+        "title": "3 EE 70. Instrumentation Engineering 4 EE 75. Digital Electronics 4 EE 71. Analysis of Power Systems 3 EE 79. Electrical Engineering Law, Ethics, and Contracts s    3 FPPS 183. Engineering Economic Analysis 3 IE 184. Project Development and Management",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EE 199",
+        "title": "Undergraduate Seminar 20",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "4 EE 198. Internship",
+        "title": "4 EE 198. Internship 4 3 1 3 3 1 19",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "EE 85",
+        "title": "Industrial Electronics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 80",
+        "title": "Control Systems Analysis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 86",
+        "title": "Electronic Communication Systems I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE 81",
+        "title": "Maintenance of Electrical Equipment and Devices",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE",
+        "title": "200/200b/200c. Undergraduate Thesis/Innovationeering/Engineering Industry Research Specialization Course",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE",
+        "title": "200/200b/200c. Undergraduate Thesis/ 3 Innovationeering/Engineering Industry Research 3 Specialization Course 3 Specialization Course 3 Elective 3 Elective 3 EE 91. Electrical System Design, Planning, and Estimatio 3 21",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 n 19",
+        "units": 4,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "EE 30", "EE 40", "EE 45", "EE 50", "EE 51", "EE 55", "EE 60", "EE 61", "EE 62",
-      "EE 65", "EE 66", "EE 70", "EE 71", "EE 75", "EE 79", "EE 80", "EE 81",
-      "EE 85", "EE 86", "EE 91", "EE 198", "EE 199", "EE 200",
-      "ENSC 10.1", "ENSC 11", "ENSC 12", "ENSC 14a", "ENSC 21", "ENSC 26",
-      "MATH 27", "MATH 28", "PHYS 71", "PHYS 71.1", "PHYS 72", "PHYS 72.1",
-      "FPPS 183", "IE 184", "ENG 10"
+    "requiredCodes": [
+      "MATH 27",
+      "PHYS 71",
+      "PHYS 71.1",
+      "EE 30",
+      "PI 10",
+      "ARTS 1",
+      "ETHICS 1",
+      "3 MATH 28. Analytic Geometry and Calculus III",
+      "3",
+      "EE 40",
+      "EE 45",
+      "ENSC 12",
+      "ENSC",
+      "ENSC 21",
+      "STS 1",
+      "4 EE 50. Fundamentals of Electrical Engineering II",
+      "4",
+      "EE 60",
+      "EE 65",
+      "EE 61",
+      "EE 62",
+      "EE 66",
+      "ENG 10",
+      "3 EE 70. Instrumentation Engineering",
+      "EE 199",
+      "4 EE 198. Internship",
+      "EE 85",
+      "EE 80",
+      "EE 86",
+      "EE 81",
+      "COMM 10",
+      "EE",
+      "EE",
+      "3"
     ]
   },
-  
   "BSIE": {
-    code: "BSIE",
-    name: "BS Industrial Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 160,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "IE 10", title: "Foundations of Industrial Engineering", units: 1 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYS 51", title: "Elements of Physics", units: 4 },
-      { code: "PHYS 51.1", title: "Elements of Physics Laboratory", units: 1 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      // Year 1 Sem 2
-      { code: "ENSC 11", title: "Statics of Rigid Bodies", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "IE 31", title: "Industrial Organization and Management", units: 3 },
-      { code: "IE 21", title: "Industrial Processes", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      // Year 2 Sem 1
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      { code: "IE 141", title: "Operations Research I", units: 3 },
-      { code: "IE 132", title: "Methods of Engineering", units: 5 },
-      { code: "IE 125", title: "Industrial Quality Control", units: 5 },
-      // Year 2 Sem 2
-      { code: "IE 142", title: "Operations Research II", units: 3 },
-      { code: "ENSC 12", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 2 },
-      { code: "IE 151", title: "Production Systems", units: 3 },
-      { code: "IE 150", title: "Systems Evaluation", units: 3 },
-      { code: "MGT 111", title: "Principles of Accounting", units: 3 },
-      // Year 2 Midyear
-      { code: "IE 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 3 Sem 1
-      { code: "ENSC 13", title: "Strength of Materials", units: 3 },
-      { code: "IE 143", title: "Stochastic Processes in Industrial Engineering", units: 3 },
-      { code: "ABE 43", title: "Engineering Shop", units: 3 },
-      { code: "IE 152", title: "Manufacturing Planning and Design", units: 3 },
-      { code: "ENSC 26", title: "Computer Applications in Engineering", units: 3 },
-      { code: "IE 134", title: "Ergonomics", units: 3 },
-      // Year 3 Sem 2
-      { code: "ENSC 16", title: "Fluid Mechanics", units: 3 },
-      { code: "ENSC 14a", title: "Engineering Thermodynamics and Heat Transfer", units: 5 },
-      { code: "IE 144", title: "Systems Simulation", units: 3 },
-      { code: "IE 184", title: "Project Development and Management", units: 3 },
-      { code: "IE 164", title: "Information Systems I", units: 3 },
-      { code: "IE 136", title: "Industrial Safety and Health", units: 3 },
-      // Year 4 Sem 1
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      { code: "IE 158", title: "Supply Chain Engineering", units: 3 },
-      { code: "IE 165", title: "Information Systems II", units: 3 },
-      { code: "IE 185", title: "Industrial Systems Design", units: 3 },
-      { code: "IE 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "IE 200", title: "Thesis/Innovationeering/EIR", units: 3 },
-      // Year 4 Sem 2
-      { code: "IE 90", title: "Ethics for Industrial Engineers", units: 2 },
-      { code: "EE 1", title: "Basic Electrical Engineering", units: 3 },
+    "code": "BSIE",
+    "name": "BS Industrial Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 160,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 10",
+        "title": "Foundations of Industrial Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 51.1",
+        "title": "Elements of Physics Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ENSC 11. Statics of Rigid Bodies",
+        "title": "3 ENSC 11. Statics of Rigid Bodies 3 MATH 28. Analytic Geometry and Calculus III 3 IE 31. Industrial Organization and Manageme 1 IE 21. Industrial Processes 4 STAT 101. Statistical Methods 1 KAS 1/HIST 1. Kasaysayan ng Pilipinas/Phili 3 GE Elective. General Education",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanc 2 Activities (2) NSTP 2. National Service Training Program (3) 20",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 nt 3 3 ppine History 3 ed Human Kinetics (2)",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "II",
+        "title": "(3) 21",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 141",
+        "title": "Operations Research I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 132",
+        "title": "Methods of Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 125",
+        "title": "Industrial Quality Control",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kineti",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ETHICS 1. Ethics and Moral Reasoning in Eve",
+        "title": "3 ETHICS 1. Ethics and Moral Reasoning in Eve 3 IE 142. Operations Research II 3 ENSC 12. Dynamics of Rigid Bodies 5 ENSC 10.1. Engineering Graphics Laboratory 5 IE 151. Production Systems cs Activities        (2) IE 150. Systems Evaluation",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 111",
+        "title": "Principles of Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanc Activities 19",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ryday Life          3     IE 198. Internship",
+        "title": "ryday Life          3     IE 198. Internship 3 3 2 3 3 3 ed Human Kinetics (2) 20",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 143",
+        "title": "Stochastic Processes in Industrial Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 43",
+        "title": "Engineering Shop",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 152",
+        "title": "Manufacturing Planning and Design",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 26",
+        "title": "Computer Applications in Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 134",
+        "title": "Ergonomics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ENSC 16. Fluid Mechanics",
+        "title": "3 ENSC 16. Fluid Mechanics 3 ENSC 14a. Engineering Thermodynamics and He 3 IE 144. Systems Simulation 3 IE 184. Project Development and Management 3 IE 164. Informations Systems I 3 IE 136. Industrial Safety and Health 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 at Transfer 3 3 3 3 20",
+        "units": 5,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Technical Cognate",
+        "title": "Technical Cognate",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 158",
+        "title": "Supply Chain Engineering",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 165",
+        "title": "Information Systems II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 185",
+        "title": "Industrial Systems Design",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE",
+        "title": "200/200b/200c. Thesis/Innovationeering/EIR",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 Technical Cognate",
+        "title": "3 Technical Cognate 3 IE 90. Ethics for Industrial Engineers 3 COMM 10. Critical Perspectives in Communica 3 GE Elective. General Education 3 GE Elective. General Education 1 EE 1. Basic Electrical Engineering 3 IE 200/200b/200c. Thesis/Innovationeering/E 19",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 2 tion 3 3 3",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "IR",
+        "title": "3 20",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "IE 10", "IE 21", "IE 31", "IE 90", "IE 125", "IE 132", "IE 134", "IE 136",
-      "IE 141", "IE 142", "IE 143", "IE 144", "IE 150", "IE 151", "IE 152",
-      "IE 158", "IE 164", "IE 165", "IE 184", "IE 185", "IE 198", "IE 199", "IE 200",
-      "ENSC 10.1", "ENSC 11", "ENSC 12", "ENSC 13", "ENSC 14a", "ENSC 16", "ENSC 21", "ENSC 26",
-      "MATH 27", "MATH 28", "PHYS 51", "PHYS 51.1", "CHEM 18", "CHEM 18.1",
-      "STAT 101", "MGT 111", "ABE 43", "EE 1", "ENG 10"
+    "requiredCodes": [
+      "ARTS 1",
+      "STS 1",
+      "MATH 27",
+      "IE 10",
+      "PHYS 51",
+      "PHYS 51.1",
+      "CHEM 18",
+      "CHEM 18.1",
+      "3 ENSC 11. Statics of Rigid Bodies",
+      "3",
+      "II",
+      "PI 10",
+      "ENSC 21",
+      "IE 141",
+      "IE 132",
+      "IE 125",
+      "3 ETHICS 1. Ethics and Moral Reasoning in Eve",
+      "MGT 111",
+      "ryday Life          3     IE 198. Internship",
+      "ENSC 13",
+      "IE 143",
+      "ABE 43",
+      "IE 152",
+      "ENSC 26",
+      "IE 134",
+      "3 ENSC 16. Fluid Mechanics",
+      "3",
+      "Technical Cognate",
+      "ENG 10",
+      "IE 158",
+      "IE 165",
+      "IE 185",
+      "IE 199",
+      "IE",
+      "3 Technical Cognate",
+      "3",
+      "IR"
     ]
   },
-  
   "BSME": {
-    code: "BSME",
-    name: "BS Mechanical Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 161,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "ME 10", title: "Introduction to Mechanical Engineering", units: 3 },
-      { code: "ENSC 10.1", title: "Engineering Graphics Laboratory", units: 3 },
-      { code: "CHEM 18", title: "University Chemistry", units: 3 },
-      { code: "CHEM 18.1", title: "University Chemistry Laboratory", units: 2 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "PHYS 71", title: "University Physics I", units: 4 },
-      { code: "PHYS 71.1", title: "University Physics I Laboratory", units: 1 },
-      // Year 1 Sem 2
-      { code: "EE 1", title: "Basic Electrical Engineering", units: 3 },
-      { code: "ENSC 11", title: "Statics of Rigid Bodies", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "IE 31", title: "Industrial Organization and Management", units: 3 },
-      { code: "ME 43", title: "Engineering Shop", units: 3 },
-      // Year 2 Sem 1
-      { code: "EE 2", title: "Basic Electronics Engineering", units: 4 },
-      { code: "ENSC 12", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 13", title: "Strength of Materials", units: 3 },
-      { code: "ENSC 14", title: "Basic Thermodynamics", units: 3 },
-      { code: "ME 113", title: "Manufacturing Processes", units: 3 },
-      // Year 2 Sem 2
-      { code: "EE 3", title: "DC and AC Machinery", units: 4 },
-      { code: "ENSC 15", title: "Fundamentals of Heat Transfer", units: 3 },
-      { code: "ENSC 16", title: "Fluid Mechanics", units: 3 },
-      { code: "ENSC 21", title: "Mathematical Methods in Engineering", units: 3 },
-      { code: "ME 45", title: "Analysis of Machine Elements", units: 3 },
-      { code: "ME 70", title: "Mechanical Engineering Thermodynamics", units: 3 },
-      // Year 3 Sem 1
-      { code: "ME 53", title: "Machine Design for Bioproduction Systems I", units: 3 },
-      { code: "ME 160", title: "Mechanical Vibrations", units: 3 },
-      { code: "ME 171", title: "Fluid Machinery", units: 3 },
-      { code: "ME 172", title: "Combustion Engineering", units: 2 },
-      { code: "ME 175", title: "Refrigeration Systems", units: 3 },
-      // Year 3 Sem 2
-      { code: "ENSC 26", title: "Computer Applications in Engineering", units: 3 },
-      { code: "ME 154", title: "Design of Machinery", units: 3 },
-      { code: "ME 173.1", title: "Mechanical Engineering Laboratory I", units: 1 },
-      { code: "ME 176", title: "Air Conditioning and Ventilation Systems", units: 3 },
-      { code: "IE 184", title: "Project Development and Management", units: 3 },
-      // Year 3 Midyear
-      { code: "ME 198", title: "Practicum", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "EE 28", title: "Introduction to Control Systems", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "ME 90", title: "Mechanical Engineering Laws, Ethics, Codes and Standards", units: 2 },
-      { code: "ME 174.1", title: "Mechanical Engineering Laboratory II", units: 2 },
-      { code: "ME 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "ME 200", title: "Undergraduate Thesis/Engineering Industry Research", units: 3 },
-      // Year 4 Sem 2
-      { code: "ME 181", title: "Industrial Plant Engineering and Design", units: 4 },
-      { code: "ME 182", title: "Power Plant Engineering and Design", units: 4 },
+    "code": "BSME",
+    "name": "BS Mechanical Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 161,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine Histor",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "10*. Introduction to Mechanical Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "y      3 ARTS 1. Critical Perspectives in the Arts",
+        "title": "y      3 ARTS 1. Critical Perspectives in the Arts 3 EE 1. Basic Electrical Engineering 3 PI 10. The Life, Works, and Writings of Rizal 3 ENSC 11. Statics of Rigid Bodies 2 MATH 28. Analytic Geometry and Calculus III 3 IE 31. Industrial Organization and Management 4 ME 43**. Engineering Shop 1 NSTP 1. National Service Training Program (2) HK 12. Human Kinetics Activities 19",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 3 (3) (2) 21",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE",
+        "title": "2*. Basic Electronics Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 14",
+        "title": "Basic Thermodynamics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "113**. Manufacturing Processes",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Service Training Program",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 EE 3*. DC and AC Machinery",
+        "title": "3 EE 3*. DC and AC Machinery 4 ENSC 15. Fundamentals of Heat Transfer 3 ENSC 16. Fluid Mechanics 3 ENSC 21. Mathematical Methods in Engineering 3 ME 45*. Analysis of Machine Elements 3 ME 70*. Mechanical Engineering Thermodynamics",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (3) Activities (2) 19",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "4",
+        "title": "4 3 3 3 3 3 s (2) 19",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and Society",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 150",
+        "title": "Systems Evaluation",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "53**. Machine Design for Bioproduction Systems I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "160*. Mechanical Vibrations",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "171*. Fluid Machinery",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "172*. Combustion Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "175*. Refrigeration Systems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     COMM 10. Critical Perspectives in Communication",
+        "title": "3     COMM 10. Critical Perspectives in Communication 3     ENG 10. Writing of Scientific Papers 3     ENSC 26. Computer Applications in Engineering 3     ME 154*. Design of Machinery 3     ME 173.1*. Mechanical Engineering Laboratory I 2     ME 176*. Air Conditioning and Ventilation Systems 3     IE 184. Project Development and Management 21",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 ME 198. Practicum",
+        "title": "3 ME 198. Practicum 3 3 3 1 3 19",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "GE Course",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EE",
+        "title": "28*. Introduction to Control Systems",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "90*. Mechanical Engineering Laws, Ethics, Codes and",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "174.1*. Mechanical Engineering Laboratory II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "199*. Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "200/b/c*. Undergraduate Thesis/Engineering Industry",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 Elective GE Course",
+        "title": "3 Elective GE Course 3 Elective GE Course 3 ME 181*. Industrial Plant Engineering and Design Standards 2 ME 182*. Power Plant Engineering and Design",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ME",
+        "title": "200/b/c*. Undergraduate Thesis/Engineering Industry 2 Research/ Innovationeering 1 Elective* Research/ 3     Innovationeering 3 20",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 4 4 3 3 20",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "ME 10", "ME 43", "ME 45", "ME 53", "ME 70", "ME 90", "ME 113",
-      "ME 154", "ME 160", "ME 171", "ME 172", "ME 173.1", "ME 174.1",
-      "ME 175", "ME 176", "ME 181", "ME 182", "ME 198", "ME 199", "ME 200",
-      "ENSC 10.1", "ENSC 11", "ENSC 12", "ENSC 13", "ENSC 14", "ENSC 15", "ENSC 16", "ENSC 21", "ENSC 26",
-      "EE 1", "EE 2", "EE 3", "EE 28",
-      "MATH 27", "MATH 28", "PHYS 71", "PHYS 71.1",
-      "CHEM 18", "CHEM 18.1", "STAT 101", "IE 31", "IE 184"
+    "requiredCodes": [
+      "KAS 1/HIST 1",
+      "ME",
+      "ENSC 10.1",
+      "CHEM 18",
+      "CHEM 18.1",
+      "MATH 27",
+      "PHYS 71",
+      "PHYS 71.1",
+      "y      3 ARTS 1. Critical Perspectives in the Arts",
+      "3",
+      "ETHICS 1",
+      "EE",
+      "ENSC 12",
+      "ENSC 13",
+      "ENSC 14",
+      "ME",
+      "3 EE 3*. DC and AC Machinery",
+      "4",
+      "STS 1",
+      "IE 150",
+      "ME",
+      "ME",
+      "ME",
+      "ME",
+      "ME",
+      "3     COMM 10. Critical Perspectives in Communication",
+      "3 ME 198. Practicum",
+      "Elective",
+      "EE",
+      "STAT 101",
+      "ME",
+      "ME",
+      "ME",
+      "ME",
+      "3 Elective GE Course",
+      "ME",
+      "3"
     ]
   },
-  
   "BSMATE": {
-    code: "BSMATE",
-    name: "BS Materials Engineering",
-    college: "CEAT",
-    collegeName: "College of Engineering and Agro-Industrial Technology",
-    available: true,
-    totalUnitsRequired: 175,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      { code: "MATE 21", title: "Engineering Drawing", units: 2 },
-      { code: "MATE 31", title: "Introduction to Materials Science", units: 3 },
-      { code: "MATE 41", title: "Structure of Materials", units: 4 },
-      { code: "MATE 101", title: "Physical Metallurgy", units: 4 },
-      { code: "MATE 111", title: "Mechanical Behavior of Materials", units: 4 },
-      { code: "MATE 121", title: "Ceramic Materials", units: 3 },
-      { code: "MATE 131", title: "Polymer Materials", units: 3 },
-      { code: "MATE 141", title: "Electronic Materials", units: 3 },
-      { code: "MATE 151", title: "Corrosion Engineering", units: 3 },
-      { code: "MATE 161", title: "Materials Characterization", units: 4 },
-      { code: "MATE 171", title: "Materials Processing", units: 4 },
-      { code: "MATE 181", title: "Materials Selection and Design", units: 3 },
-      { code: "MATE 190", title: "Materials Engineering Design", units: 4 },
-      { code: "MATE 191", title: "Engineering Internship", units: 3, gradeType: "S/U" },
-      { code: "ENSC 21", title: "Statics of Rigid Bodies", units: 3 },
-      { code: "ENSC 22", title: "Dynamics of Rigid Bodies", units: 3 },
-      { code: "ENSC 24", title: "Thermodynamics I", units: 3 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus I", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MATH 114", title: "Differential Equations", units: 3 },
-      { code: "PHYSICS 71", title: "Elementary Physics I", units: 4 },
-      { code: "PHYSICS 72", title: "Elementary Physics II", units: 4 },
-      { code: "CHEM 16", title: "General Chemistry I", units: 4 },
-      { code: "CHEM 17", title: "General Chemistry II", units: 4 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "code": "BSMATE",
+    "name": "BS Materials Engineering",
+    "college": "CEAT",
+    "collegeName": "College of Engineering and Agro-Industrial Technology",
+    "available": true,
+    "totalUnitsRequired": 175,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "MATE 21",
+        "title": "Engineering Drawing",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 31",
+        "title": "Introduction to Materials Science",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 41",
+        "title": "Structure of Materials",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 101",
+        "title": "Physical Metallurgy",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 111",
+        "title": "Mechanical Behavior of Materials",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 121",
+        "title": "Ceramic Materials",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 131",
+        "title": "Polymer Materials",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 141",
+        "title": "Electronic Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 151",
+        "title": "Corrosion Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 161",
+        "title": "Materials Characterization",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 171",
+        "title": "Materials Processing",
+        "units": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 181",
+        "title": "Materials Selection and Design",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 190",
+        "title": "Materials Engineering Design",
+        "units": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "MATE 191",
+        "title": "Engineering Internship",
+        "units": 3,
+        "gradeType": "S/U",
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Statics of Rigid Bodies",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 22",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ENSC 21"
+        ]
+      },
+      {
+        "code": "ENSC 24",
+        "title": "Thermodynamics I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 21"
+        ]
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus I",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "MATH 114",
+        "title": "Differential Equations",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
+        ]
+      },
+      {
+        "code": "PHYSICS 71",
+        "title": "Elementary Physics I",
+        "units": 4,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYSICS 72",
+        "title": "Elementary Physics II",
+        "units": 4,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "PHYSICS 71"
+        ]
+      },
+      {
+        "code": "CHEM 16",
+        "title": "General Chemistry I",
+        "units": 4,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 17",
+        "title": "General Chemistry II",
+        "units": 4,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 16"
+        ]
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "MATE 21", "MATE 31", "MATE 41", "MATE 101", "MATE 111", "MATE 121",
-      "MATE 131", "MATE 141", "MATE 151", "MATE 161", "MATE 171", "MATE 181",
-      "MATE 190", "MATE 191", "ENSC 21", "ENSC 22", "ENSC 24",
-      "MATH 27", "MATH 28", "MATH 114",
-      "PHYSICS 71", "PHYSICS 72", "CHEM 16", "CHEM 17", "ENG 10"
+    "requiredCodes": [
+      "MATE 21",
+      "MATE 31",
+      "MATE 41",
+      "MATE 101",
+      "MATE 111",
+      "MATE 121",
+      "MATE 131",
+      "MATE 141",
+      "MATE 151",
+      "MATE 161",
+      "MATE 171",
+      "MATE 181",
+      "MATE 190",
+      "MATE 191",
+      "ENSC 21",
+      "ENSC 22",
+      "ENSC 24",
+      "MATH 27",
+      "MATH 28",
+      "MATH 114",
+      "PHYSICS 71",
+      "PHYSICS 72",
+      "CHEM 16",
+      "CHEM 17",
+      "ENG 10"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF ECONOMICS AND MANAGEMENT (CEM)
-  // ============================================================================
-  
   "BSECON": {
-    code: "BSECON",
-    name: "BS Economics",
-    college: "CEM",
-    collegeName: "College of Economics and Management",
-    available: true,
-    totalUnitsRequired: 138,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "ECON 200", freeElectiveUnits: 6 },
-      sp: { name: "Special Problem Track", code: "ECON 199", freeElectiveUnits: 6 }
+    "code": "BSECON",
+    "name": "BS Economics",
+    "college": "CEM",
+    "collegeName": "College of Economics and Management",
+    "available": true,
+    "totalUnitsRequired": 138,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "ECON 200",
+        "freeElectiveUnits": 6
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "ECON 199",
+        "freeElectiveUnits": 6
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      // First Year First Semester
-      { code: "KAS 1", title: "Kasaysayan ng Pilipinas/Philippine History", units: 3 },
-      { code: "ARTS 1", title: "Critical Perspectives in the Arts", units: 3 },
-      { code: "STS 1", title: "Science, Technology, and Society", units: 3 },
-      { code: "MATH 25", title: "Fundamental Calculus", units: 3 },
-      { code: "ECON 11", title: "General Economics", units: 3 },
-      { code: "HK 11", title: "Wellness and Basic Injury Management", units: 2 },
-      // First Year Second Semester
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      { code: "COST 10", title: "Introduction to Collective Action", units: 1 },
-      { code: "ECON 101", title: "Intermediate Macroeconomic Theory", units: 3 },
-      { code: "ECON 102", title: "Intermediate Microeconomic Theory", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // Second Year First Semester
-      { code: "PI 10", title: "The Life and Works of Jose Rizal", units: 3 },
-      { code: "ECON 103", title: "Introduction to Growth Theory and Open Economy Macroeconomics", units: 3 },
-      { code: "ECON 104", title: "Introduction to Factor Market Analysis, General Equilibrium, and Welfare Economics", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "HK 12/13", title: "Human Kinetics Activities/Advanced Human Kinetics Activities", units: 2 },
-      // Second Year Second Semester
-      { code: "ETHICS 1", title: "Ethics and Moral Reasoning in Everyday Life", units: 3 },
-      { code: "MGT 111", title: "Principles of Accounting", units: 3 },
-      { code: "ECON 130", title: "Elements of Mathematical Economics", units: 3 },
-      { code: "ECON 137", title: "Introduction to Econometrics", units: 3 },
-      // Third Year First Semester
-      { code: "ECON 115", title: "Philippine Economic History", units: 3 },
-      { code: "ECON 121", title: "Money and Banking", units: 3 },
-      { code: "ECON 138", title: "Intermediate Econometrics", units: 3 },
-      { code: "ECON 170", title: "Intermediate Environmental Economics", units: 3 },
-      { code: "ECON 175", title: "Benefit Cost Analysis", units: 3 },
-      { code: "MGT 115", title: "Introduction to Financial Management", units: 3 },
-      // Third Year Second Semester
-      { code: "COMM 10", title: "Critical Perspectives in Communication", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      { code: "ECON 141", title: "International Economics", units: 3 },
-      { code: "ECON 151", title: "Public Economics", units: 3 },
-      // Third Year Midyear
-      { code: "ECON 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Fourth Year First Semester
-      { code: "ECON 199", title: "Undergraduate Seminar", units: 1 },
-      { code: "ECON 200", title: "Undergraduate Thesis", units: 3 },
-      // Fourth Year Second Semester
-      { code: "ECON 110", title: "History of Economic Doctrines", units: 3 },
-      { code: "ECON 185", title: "Development Economics", units: 3 },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayang ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 GE Elective",
+        "title": "3 GE Elective 3 GE Elective 3 MGT 101. Concepts and Dynamics of Management 3 COST 10. Introduction to Collective Action 3 ECON 101. Intermediate Macroeconomic Theory (2) ECON 102. Intermediate Microeconomic Theory",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12/HK 13",
+        "title": "Human Kinetics Activities/Advanced Human Kinetics Activities 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 1 3 3 (2) 16",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective Language Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life Works and Writings of Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 103",
+        "title": "Introduction to Growth Theory and Open Economy Macroeconomics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 104",
+        "title": "Introduction to Factor Market Analysis, General Equilibri & Welfare Economics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I HK12/HK13. Human Kinetics Activities / Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday 3 Language Elective 3 MGT 111. Principles of Accounting 3 ECON 130. Elements of Mathematical Economics",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 137",
+        "title": "Introduction to Econometrics 3 um          NSTP 2. National Service Training Program II 3 HK12/HK13.Human Kinetics Activities / Advance 3 Human Kinetics Activities (3) (2) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Life",
+        "title": "Life 3 3 3 3 (3) d (2) 15",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 115",
+        "title": "Philippine Economic History",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 121",
+        "title": "Money and Banking",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 138",
+        "title": "Intermediate Econometrics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 170",
+        "title": "Intermediate Environmental Economics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 175",
+        "title": "Benefit Cost Analysis",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 115",
+        "title": "Introduction to Financial Management",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 COMM 10. Critical Perspectives in Communication",
+        "title": "3 COMM 10. Critical Perspectives in Communication 3      ENG 10. Writing of Scientific Papers 3      ECON 141. International Economics 3      ECON 151. Public Economics 3      Specialization Course. Mandatory 3      Specialization Course. Elective 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 198",
+        "title": "Internship 3 3 3 3 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 200",
+        "title": "Undergraduate Thesis Specialization Course. Mandatory Specialization Course. Mandatory Specialization Course. Elective",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3      Free Elective",
+        "title": "3      Free Elective 1      ECON 110. History of Economic Doctrines 3      ECON 185. Development Economics 3      ECON 199. Undergraduate Seminar 3      ECON 200. Undergraduate Thesis 3      Specialization Course. Elective 16",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 1 3 3 16",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "KAS 1", "ARTS 1", "STS 1", "MATH 25", "ECON 11", "HK 11",
-      "MGT 101", "COST 10", "ECON 101", "ECON 102", "HK 12/13",
-      "PI 10", "ECON 103", "ECON 104", "STAT 101",
-      "ETHICS 1", "MGT 111", "ECON 130", "ECON 137",
-      "ECON 115", "ECON 121", "ECON 138", "ECON 170", "ECON 175", "MGT 115",
-      "COMM 10", "ENG 10", "ECON 141", "ECON 151",
-      "ECON 198", "ECON 199", "ECON 200", "ECON 110", "ECON 185"
+    "requiredCodes": [
+      "KAS 1/HIST 1",
+      "ARTS 1",
+      "STS 1",
+      "MATH 25",
+      "ECON 11",
+      "3 GE Elective",
+      "3",
+      "GE",
+      "PI 10",
+      "ECON 103",
+      "ECON 104",
+      "STAT 101",
+      "ETHICS 1",
+      "ECON 137",
+      "Life",
+      "ECON 115",
+      "ECON 121",
+      "ECON 138",
+      "ECON 170",
+      "ECON 175",
+      "MGT 115",
+      "3 COMM 10. Critical Perspectives in Communication",
+      "3",
+      "ECON 198",
+      "Elective",
+      "ECON 199",
+      "ECON 200",
+      "3      Free Elective",
+      "3"
     ]
   },
-  
   "BSAAE": {
-    code: "BSAAE",
-    name: "BS Agricultural and Applied Economics",
-    college: "CEM",
-    collegeName: "College of Economics and Management",
-    available: true,
-    totalUnitsRequired: 140,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "AAE 200", freeElectiveUnits: 9 },
-      sp: { name: "Special Problem Track", code: "AAE 199", freeElectiveUnits: 12 }
+    "code": "BSAAE",
+    "name": "BS Agricultural and Applied Economics",
+    "college": "CEM",
+    "collegeName": "College of Economics and Management",
+    "available": true,
+    "totalUnitsRequired": 140,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "AAE 200",
+        "freeElectiveUnits": 0,
+        "majorElectiveUnits": 15
+      },
+      "mfp": {
+        "name": "Major Farm Practice Track",
+        "code": "AAE 200A",
+        "freeElectiveUnits": 0,
+        "majorElectiveUnits": 15
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "AAE 10", title: "Introduction to Agricultural and Applied Economics", units: 3 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MGT 1", title: "Fundamentals of Accounting I", units: 3 },
-      // Year 1 Sem 2
-      { code: "ECON 11", title: "Introduction to Microeconomics", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 2 Sem 1
-      { code: "AAE 103", title: "Principles of Crop Production", units: 3 },
-      { code: "ECON 12", title: "Introduction to Macroeconomics", units: 3 },
-      { code: "ECON 110", title: "Mathematics for Economists I", units: 3 },
-      { code: "STAT 101", title: "Elementary Statistics", units: 3 },
-      // Year 2 Sem 2
-      { code: "AAE 104", title: "Principles of Animal Production", units: 3 },
-      { code: "AAE 120", title: "Agricultural Economics Survey", units: 3 },
-      { code: "ECON 101", title: "Microeconomic Theory", units: 3 },
-      { code: "ECON 111", title: "Mathematics for Economists II", units: 3 },
-      { code: "ECON 115", title: "Introduction to Econometrics", units: 3 },
-      // Year 3 Sem 1
-      { code: "AAE 125", title: "Agricultural Marketing", units: 3 },
-      { code: "AAE 130", title: "Agricultural Production Economics", units: 3 },
-      { code: "AAE 140", title: "Natural Resource Economics", units: 3 },
-      { code: "ECON 102", title: "Macroeconomic Theory", units: 3 },
-      { code: "ECON 116", title: "Econometric Methods", units: 3 },
-      // Year 3 Sem 2
-      { code: "AAE 145", title: "Environmental Economics", units: 3 },
-      { code: "AAE 150", title: "Agricultural Finance", units: 3 },
-      { code: "AAE 155", title: "Agribusiness Management", units: 3 },
-      { code: "AAE 160", title: "Economic Planning and Development", units: 3 },
-      { code: "AAE 185", title: "Agricultural and Applied Economics Research", units: 3 },
-      // Year 3 Midyear
-      { code: "AAE 198", title: "Practicum", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "AAE 165", title: "Agricultural Policy", units: 3 },
-      { code: "AAE 199", title: "Special Problem", units: 3, track: "sp" },
-      { code: "AAE 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
+    "defaultTrack": "thesis",
+    "majorCourses": [
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 10",
+        "title": "Introduction to Agricultural and Applied Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 51",
+        "title": "Principles of Soil Science",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 101",
+        "title": "Concepts and Dynamics of Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COST 10",
+        "title": "Introduction to Collective Action",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     ETHICS 1. Ethics and Moral Reason",
+        "title": "3     ETHICS 1. Ethics and Moral Reason 1     AGRI 21. Introduction to Animal S 3     AGRI 31. Fundamentals of Crop Sci 3     AAE 111. Farm Management 3     ECON 102. Intermediate Microecono 3     STAT 101. Statistical Methods (2)   HK 12/13. Human Kinetics Activiti 1 17",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ing in Everyday Life",
+        "title": "ing in Everyday Life cience ence I 3 mic Theory 3 es/Advanced Human Kinetics Activities 18",
+        "units": 2,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 103",
+        "title": "Statistical Analysis of Agricultural and Applied Economics Data",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 120",
+        "title": "Agricultural Marketing I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 104",
+        "title": "Farm Business Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 22",
+        "title": "Introduction to Livestock and Poultry Production",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 32",
+        "title": "Fundamentals of Crop Science II",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 101",
+        "title": "Intermediate Macroeconomic Theory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     GE Elective",
+        "title": "3     GE Elective 3     ARTS 1. Critical Perspectives in 3     PI 10. Life and Works of Rizal 3     HNF 141. Food Nutrition System 3     NRC 170. Watershed Management 3     ECON 130. Elements of Mathematica (2)   HK 12/13. Human Kinetics Activiti (3)   NSTP 2. National Service Training 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 the Arts 3 3 3 l Economics es/Advanced Human Kinetics Program II 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 2",
+        "title": "Fundamentals of Agricultural and Biosystems Engineering II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 110",
+        "title": "Introduction to Agricultural and Applied Economics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 130",
+        "title": "Agricultural Finance",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 142",
+        "title": "Natural Resource Economics I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 171",
+        "title": "Feasibility Studies of Agri-Based Enterprises and Agro-Industrial Development Projects",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3     COMM 10. Critical Perspectives in",
+        "title": "3     COMM 10. Critical Perspectives in",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 195",
+        "title": "Introduction to Research 3 Economics 3     AAE 161. Introduction to Food and 3     AAE 123. Agricultural and Interna 3     AAE/ECON/MGT/COST Track Course 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Communication                          3      AAE 198. Internship",
+        "title": "Communication                          3      AAE 198. Internship Methods in Agricultural and Applied 3 Nutrition Economics tional Trade 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 151",
+        "title": "Agricultural Policy",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE",
+        "title": "200/200a. Undergraduate Thesis/Major Farm Practice",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 199",
+        "title": "Undergraduate Seminar Technical Track Course AAE/ECON/MGT/COST Track Course AAE/ECON/MGT/COST Track Course",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    AAE 150. Economics of Agricultura",
+        "title": "3    AAE 150. Economics of Agricultura 3    AAE 200/200a. Undergraduate Thesi 1    STS 1. Science, Technology and So 3    GE Elective 3    GE Elective 3 16",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "l Development",
+        "title": "l Development s/Major Farm Practice ciety 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "AAE 10", "AAE 103", "AAE 104", "AAE 120", "AAE 125", "AAE 130",
-      "AAE 140", "AAE 145", "AAE 150", "AAE 155", "AAE 160", "AAE 165",
-      "AAE 185", "AAE 198",
-      "ECON 11", "ECON 12", "ECON 101", "ECON 102", "ECON 110", "ECON 111",
-      "ECON 115", "ECON 116",
-      "MATH 27", "MATH 28", "STAT 101", "MGT 1", "ENG 10"
+    "requiredCodes": [
+      "KAS 1/HIST 1",
+      "AAE 10",
+      "AGRI 51",
+      "MGT 101",
+      "MATH 25",
+      "ECON 11",
+      "COST 10",
+      "3     ETHICS 1. Ethics and Moral Reason",
+      "ing in Everyday Life",
+      "AAE 103",
+      "AAE 120",
+      "AAE 104",
+      "AGRI 22",
+      "AGRI 32",
+      "ECON 101",
+      "3     GE Elective",
+      "3",
+      "ENG 10",
+      "ABE 2",
+      "AAE 110",
+      "AAE 130",
+      "AAE 142",
+      "AAE 171",
+      "3     COMM 10. Critical Perspectives in",
+      "AAE 195",
+      "Communication                          3      AAE 198. Internship",
+      "AAE 151",
+      "AAE",
+      "AAE 199",
+      "3    AAE 150. Economics of Agricultura",
+      "l Development"
     ]
   },
-  
   "BSABME": {
-    code: "BSABME",
-    name: "BS Agribusiness Management and Entrepreneurship",
-    college: "CEM",
-    collegeName: "College of Economics and Management",
-    available: true,
-    totalUnitsRequired: 141,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "ABME 200", freeElectiveUnits: 6 },
-      sp: { name: "Special Problem Track", code: "ABME 199", freeElectiveUnits: 9 }
+    "code": "BSABME",
+    "name": "BS Agribusiness Management and Entrepreneurship",
+    "college": "CEM",
+    "collegeName": "College of Economics and Management",
+    "available": true,
+    "totalUnitsRequired": 141,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "ABME 200",
+        "freeElectiveUnits": 6
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "ABME 199",
+        "freeElectiveUnits": 9
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "ABME 10", title: "Introduction to Agribusiness Management", units: 3 },
-      { code: "MATH 27", title: "Analytic Geometry and Calculus II", units: 3 },
-      { code: "MGT 1", title: "Fundamentals of Accounting I", units: 3 },
-      // Year 1 Sem 2
-      { code: "ECON 11", title: "Introduction to Microeconomics", units: 3 },
-      { code: "MATH 28", title: "Analytic Geometry and Calculus III", units: 3 },
-      { code: "MGT 2", title: "Fundamentals of Accounting II", units: 3 },
-      // Year 2 Sem 1
-      { code: "ABME 101", title: "Principles of Crop Production", units: 3 },
-      { code: "ABME 105", title: "Agribusiness Products Survey", units: 3 },
-      { code: "ECON 12", title: "Introduction to Macroeconomics", units: 3 },
-      { code: "MGT 101", title: "Organization and Management", units: 3 },
-      { code: "STAT 101", title: "Elementary Statistics", units: 3 },
-      // Year 2 Sem 2
-      { code: "ABME 102", title: "Principles of Animal Production", units: 3 },
-      { code: "ABME 110", title: "Agribusiness Marketing", units: 3 },
-      { code: "ABME 120", title: "Financial Management", units: 3 },
-      { code: "ABME 130", title: "Information Technology for Agribusiness", units: 3 },
-      { code: "ECON 101", title: "Microeconomic Theory", units: 3 },
-      // Year 3 Sem 1
-      { code: "ABME 111", title: "Agricultural Sales", units: 3 },
-      { code: "ABME 122", title: "Credit Management and Rural Banking", units: 3 },
-      { code: "ABME 140", title: "Production Management", units: 3 },
-      { code: "ABME 150", title: "Human Resource Management", units: 3 },
-      { code: "ECON 102", title: "Macroeconomic Theory", units: 3 },
-      // Year 3 Sem 2
-      { code: "ABME 160", title: "Commercial Law and Ethics", units: 3 },
-      { code: "ABME 170", title: "Strategic Management", units: 3 },
-      { code: "ABME 172", title: "Product Ideation and Creation", units: 3 },
-      { code: "ABME 180", title: "Statistics for Management", units: 3 },
-      { code: "ABME 195", title: "Seminar", units: 1 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      // Year 3 Midyear
-      { code: "ABME 198", title: "On-the-Job Training", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "ABME 171", title: "Entrepreneurship", units: 3 },
-      { code: "ABME 185", title: "Operations Research", units: 3 },
-      { code: "ABME 190", title: "Feasibility Study", units: 3 },
-      { code: "ABME 199", title: "Special Problem", units: 3, track: "sp" },
-      { code: "ABME 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "ABME 10",
+        "title": "Foundations of Entrepreneurship",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 11",
+        "title": "Introduction to Agribusiness Management and Entrepreneurship",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 41",
+        "title": "Principles of Crop Protection",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABT 10",
+        "title": "Traditional and Modern Biotechnology: Principles an Applications",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COST 10",
+        "title": "Introduction to Collective Action",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    AGRI 21. Introduction to Animal Science",
+        "title": "3    AGRI 21. Introduction to Animal Science 1    AGRI 31. Fundamentals of Crop Science I 3    MGT 101. Concepts and Dynamics of Management d 3    MGT 111. Principles of Accounting 3    ETHICS 1. Ethics and Moral Reasoning for Everyday Li 3    KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine Hi",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human K 1 Activities (2) 17",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 fe story inetics (2) 18",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 103",
+        "title": "Agribusiness Systems and Modalities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 22",
+        "title": "Introduction to Livestock and Poultry Production",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 32",
+        "title": "Fundamentals of Crop Science II",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 121",
+        "title": "Quantitative Business Analysis",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 151",
+        "title": "Introduction to Marketing Management",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 ECON 102. Intermediate Microeconomic Theory",
+        "title": "3 ECON 102. Intermediate Microeconomic Theory 3 ABE 2. Fundamentals of Agricultural Engineering II 3 MGT 113. Managerial Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 131",
+        "title": "Introduction to Human Relations and Behavior 3 Organization 3 MGT 141. Fundamentals of Operations Management 3 ABME 172. Product Ideation and Creation",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kin (2) Activities (3) NSTP 2. National Service Training Program II 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 in 3 3 3 etics (2) (3) 18",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 101",
+        "title": "Intermediate Macroeconomic Theory",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 109",
+        "title": "Managerial Economics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AAE 111",
+        "title": "Farm Management Track Course",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspective in Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    PI 10. The Life Works and Writing of Jose Rizal",
+        "title": "3    PI 10. The Life Works and Writing of Jose Rizal 3    STAT 101. Statistical Methods 3    Elective 3    Track Course 3    GE Elective 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABME",
+        "title": "198. 3 Internship 3 3 3 3 15",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 161",
+        "title": "Business Law",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts Track Course",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    ABME 190. Special Problems",
+        "title": "3    ABME 190. Special Problems 3    MGT 155. International Marketing 3    MGT 181. Fundamentals of Strategic Business Manageme 3    STS 1. Science, Technology and Society 3    Elective 15",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 nt 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "ABME 10", "ABME 101", "ABME 102", "ABME 105", "ABME 110", "ABME 111",
-      "ABME 120", "ABME 122", "ABME 130", "ABME 140", "ABME 150", "ABME 160",
-      "ABME 170", "ABME 171", "ABME 172", "ABME 180", "ABME 185", "ABME 190",
-      "ABME 195", "ABME 198",
-      "ECON 11", "ECON 12", "ECON 101", "ECON 102",
-      "MGT 1", "MGT 2", "MGT 101", "MATH 27", "MATH 28", "STAT 101", "ENG 10"
+    "requiredCodes": [
+      "ABME 10",
+      "ABME 11",
+      "AGRI 41",
+      "ABT 10",
+      "ECON 11",
+      "MATH 25",
+      "COST 10",
+      "3    AGRI 21. Introduction to Animal Science",
+      "3",
+      "ABME 103",
+      "AGRI 22",
+      "AGRI 32",
+      "MGT 121",
+      "MGT 151",
+      "GE",
+      "3 ECON 102. Intermediate Microeconomic Theory",
+      "MGT 131",
+      "3",
+      "ECON 101",
+      "MGT 109",
+      "AAE 111",
+      "COMM 10",
+      "GE",
+      "3    PI 10. The Life Works and Writing of Jose Rizal",
+      "ABME",
+      "MGT 161",
+      "ARTS 1",
+      "Elective",
+      "Elective",
+      "3    ABME 190. Special Problems",
+      "3"
     ]
   },
-  
   "AAENTREP": {
-    code: "AAENTREP",
-    name: "Associate in Arts in Entrepreneurship",
-    college: "CEM",
-    collegeName: "College of Economics and Management",
-    available: true,
-    totalUnitsRequired: 75,
-    geCoursesRequired: 5,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year First Semester
-      { code: "KAS 1", title: "Kasaysayan ng Pilipinas/Philippine History", units: 3 },
-      { code: "COMM 10", title: "Critical Perspectives in Communication", units: 3 },
-      { code: "STS 1", title: "Science, Technology, and Society", units: 3 },
-      { code: "ABME 10", title: "Foundations of Entrepreneurship", units: 3 },
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      { code: "HK 11", title: "Wellness and Basic Injury Management", units: 2 },
-      // First Year Second Semester
-      { code: "ARTS 1", title: "Critical Perspectives in the Arts", units: 3 },
-      { code: "MGT 111", title: "Principles of Accounting", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // First Year Midyear
-      { code: "PI 10", title: "The Life, Works, and Writings of Jose Rizal", units: 3 },
-      // Second Year First Semester
-      { code: "ABME 172", title: "Product Ideation and Creation", units: 3 },
-      { code: "ABME 174", title: "Business Planning", units: 3 },
-      { code: "ABME 115", title: "Entrepreneurial Finance", units: 3 },
-      { code: "MGT 113", title: "Managerial Accounting", units: 3 },
-      { code: "MGT 151", title: "Introduction to Marketing Management", units: 3 },
-      { code: "ENTR 198", title: "Internship", units: 3, gradeType: "S/U" },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // Second Year Second Semester
-      { code: "ETHICS 1", title: "Ethics and Moral Reasoning for Everyday Life", units: 3 },
-      { code: "MGT 161", title: "Business Law", units: 3 },
-      { code: "MGT 131", title: "Introduction to Human Relations and Behavior in Organization", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
+    "code": "AAENTREP",
+    "name": "Associate in Arts in Entrepreneurship",
+    "college": "CEM",
+    "collegeName": "College of Economics and Management",
+    "available": true,
+    "totalUnitsRequired": 75,
+    "geCoursesRequired": 5,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 10",
+        "title": "Foundations of Entrepreneurship",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 101",
+        "title": "Concepts and Dynamics of Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 111",
+        "title": "Principles of Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life, Works, and Writings of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 172",
+        "title": "Product Ideation and Creation",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ABME 10"
+        ]
+      },
+      {
+        "code": "ABME 174",
+        "title": "Business Planning",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "ABME 10"
+        ]
+      },
+      {
+        "code": "ABME 115",
+        "title": "Entrepreneurial Finance",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABME 10"
+        ]
+      },
+      {
+        "code": "MGT 113",
+        "title": "Managerial Accounting",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "MGT 151",
+        "title": "Introduction to Marketing Management",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "ENTR 198",
+        "title": "Internship",
+        "units": 3,
+        "gradeType": "S/U",
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning for Everyday Life",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 161",
+        "title": "Business Law",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "MGT 131",
+        "title": "Introduction to Human Relations and Behavior in Organization",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      }
     ],
-    requiredCodes: [
-      "KAS 1", "COMM 10", "STS 1", "ARTS 1", "ETHICS 1", "PI 10",
-      "ABME 10", "ABME 172", "ABME 174", "ABME 115",
-      "MGT 101", "MGT 111", "MGT 113", "MGT 131", "MGT 151", "MGT 161",
-      "ENTR 198", "HK 11", "HK 12/13"
+    "requiredCodes": [
+      "KAS 1",
+      "COMM 10",
+      "STS 1",
+      "ARTS 1",
+      "ETHICS 1",
+      "PI 10",
+      "ABME 10",
+      "ABME 172",
+      "ABME 174",
+      "ABME 115",
+      "MGT 101",
+      "MGT 111",
+      "MGT 113",
+      "MGT 131",
+      "MGT 151",
+      "MGT 161",
+      "ENTR 198",
+      "HK 11",
+      "HK 12/13"
     ]
   },
-  
   "BSACCT": {
-    code: "BSACCT",
-    name: "BS Accountancy",
-    college: "CEM",
-    collegeName: "College of Economics and Management",
-    available: true,
-    totalUnitsRequired: 166,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // First Year First Semester
-      { code: "KAS 1", title: "Kasaysayan ng Pilipinas/Philippine History", units: 3 },
-      { code: "STS 1", title: "Science, Technology, and Society", units: 3 },
-      { code: "MATH 25", title: "Fundamental Calculus", units: 3 },
-      { code: "ECON 11", title: "General Economics", units: 3 },
-      { code: "MGT 101", title: "Concepts and Dynamics of Management", units: 3 },
-      { code: "BA 99.1", title: "Fundamental Accounting Theory and Practice I", units: 3 },
-      { code: "HK 11", title: "Wellness and Basic Injury Management", units: 2 },
-      // First Year Second Semester
-      { code: "ETHICS 1", title: "Ethics and Moral Reasoning for Everyday Life", units: 3 },
-      { code: "ARTS 1", title: "Critical Perspectives in the Arts", units: 3 },
-      { code: "COMM 10", title: "Critical Perspectives in Communication", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "ECON 101", title: "Intermediate Macroeconomic Theory", units: 3 },
-      { code: "BA 99.2", title: "Fundamental Accounting Theory and Practice II", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // First Year Midyear
-      { code: "BA 183", title: "Introduction to Database Management for Accounting", units: 3 },
-      // Second Year First Semester
-      { code: "ECON 102", title: "Intermediate Microeconomic Theory", units: 3 },
-      { code: "MGT 121", title: "Quantitative Business Analysis", units: 3 },
-      { code: "MGT 131", title: "Introduction to Human Relations and Behavior in Organization", units: 3 },
-      { code: "MGT 151", title: "Introduction to Marketing Management", units: 3 },
-      { code: "BA 114.1", title: "Accounting Theory and Practice I", units: 6 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // Second Year Second Semester
-      { code: "MGT 141", title: "Fundamentals of Operations Management", units: 3 },
-      { code: "BA 114.2", title: "Accounting Theory and Practice II", units: 6 },
-      { code: "BA 116", title: "Cost Accounting", units: 3 },
-      { code: "HK 12/13", title: "Basic or Advanced Human Kinetics Activities", units: 2 },
-      // Second Year Midyear
-      { code: "BA 198.1", title: "Internship I", units: 3, gradeType: "S/U" },
-      // Third Year First Semester
-      { code: "PI 10", title: "The Life, Works, and Writings of Jose Rizal", units: 3 },
-      { code: "BA 117", title: "Managerial Cost Accounting and Control", units: 3 },
-      { code: "BA 118.1", title: "Advanced Accounting I", units: 6 },
-      { code: "BA 127", title: "Tax Accounting I", units: 3 },
-      { code: "BA 141", title: "Business Finance I", units: 3 },
-      { code: "BA 161", title: "Law on Business Transactions", units: 3 },
-      // Third Year Second Semester
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
-      { code: "BA 142", title: "Business Finance II", units: 3 },
-      { code: "BA 118.2", title: "Advanced Accounting II", units: 6 },
-      { code: "BA 120.1", title: "Audit Theory", units: 3 },
-      { code: "BA 128", title: "Tax Accounting II", units: 3 },
-      { code: "BA 162", title: "Law on Business Associations", units: 3 },
-      // Third Year Midyear
-      { code: "BA 198.2", title: "Internship II", units: 3, gradeType: "S/U" },
-      // Fourth Year First Semester
-      { code: "MGT 117", title: "Investment Management", units: 3 },
-      { code: "MGT 181", title: "Strategic Business Management", units: 3 },
-      { code: "BA 122", title: "Computerized Accounting and Auditing Theory and Practice", units: 3 },
-      { code: "BA 164", title: "Law on Negotiable Instruments and Banking Related Laws", units: 3 },
-      { code: "BA 184.1", title: "Computer-based Accounting Systems", units: 3 },
-      { code: "BA 190", title: "Special Problems", units: 1 },
-      // Fourth Year Second Semester
-      { code: "BA 120.2", title: "Audit Practice", units: 6 },
-      { code: "BA 167", title: "Sales and Bailments and other Special Laws", units: 3 },
-      { code: "BA 184.2", title: "Audit of Computer-based Accounting Systems", units: 3 },
-      { code: "BA 191", title: "Special Topics", units: 1 },
+    "code": "BSACCT",
+    "name": "BS Accountancy",
+    "college": "CEM",
+    "collegeName": "College of Economics and Management",
+    "available": true,
+    "totalUnitsRequired": 166,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 101",
+        "title": "Concepts and Dynamics of Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BA 99.1",
+        "title": "Fundamental Accounting Theory and Practice I",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning for Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 101",
+        "title": "Intermediate Macroeconomic Theory",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "ECON 11"
+        ]
+      },
+      {
+        "code": "BA 99.2",
+        "title": "Fundamental Accounting Theory and Practice II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "BA 183",
+        "title": "Introduction to Database Management for Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "ECON 102",
+        "title": "Intermediate Microeconomic Theory",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ECON 11"
+        ]
+      },
+      {
+        "code": "MGT 121",
+        "title": "Quantitative Business Analysis",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "MGT 131",
+        "title": "Introduction to Human Relations and Behavior in Organization",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "MGT 151",
+        "title": "Introduction to Marketing Management",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "BA 114.1",
+        "title": "Accounting Theory and Practice I",
+        "units": 6,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "MGT 141",
+        "title": "Fundamentals of Operations Management",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "BA 114.2",
+        "title": "Accounting Theory and Practice II",
+        "units": 6,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 116",
+        "title": "Cost Accounting",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "HK 12/13",
+        "title": "Basic or Advanced Human Kinetics Activities",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "HK 11"
+        ]
+      },
+      {
+        "code": "BA 198.1",
+        "title": "Internship I",
+        "units": 3,
+        "gradeType": "S/U",
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life, Works, and Writings of Jose Rizal",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BA 117",
+        "title": "Managerial Cost Accounting and Control",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 118.1",
+        "title": "Advanced Accounting I",
+        "units": 6,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 127",
+        "title": "Tax Accounting I",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 141",
+        "title": "Business Finance I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 161",
+        "title": "Law on Business Transactions",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BA 142",
+        "title": "Business Finance II",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 118.2",
+        "title": "Advanced Accounting II",
+        "units": 6,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 120.1",
+        "title": "Audit Theory",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 128",
+        "title": "Tax Accounting II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 162",
+        "title": "Law on Business Associations",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 198.2",
+        "title": "Internship II",
+        "units": 3,
+        "gradeType": "S/U",
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "MGT 117",
+        "title": "Investment Management",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "MGT 181",
+        "title": "Strategic Business Management",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "MGT 101"
+        ]
+      },
+      {
+        "code": "BA 122",
+        "title": "Computerized Accounting and Auditing Theory and Practice",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 164",
+        "title": "Law on Negotiable Instruments and Banking Related Laws",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 184.1",
+        "title": "Computer-based Accounting Systems",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 190",
+        "title": "Special Problems",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 120.2",
+        "title": "Audit Practice",
+        "units": 6,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 167",
+        "title": "Sales and Bailments and other Special Laws",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 184.2",
+        "title": "Audit of Computer-based Accounting Systems",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      },
+      {
+        "code": "BA 191",
+        "title": "Special Topics",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "BA 99.1"
+        ]
+      }
     ],
-    requiredCodes: [
-      "KAS 1", "STS 1", "MATH 25", "ECON 11", "ECON 101", "ECON 102",
-      "ETHICS 1", "ARTS 1", "COMM 10", "PI 10", "ENG 10",
-      "STAT 101", "MGT 101", "MGT 121", "MGT 131", "MGT 141", "MGT 151", "MGT 117", "MGT 181",
-      "BA 99.1", "BA 99.2", "BA 114.1", "BA 114.2", "BA 116", "BA 117",
-      "BA 118.1", "BA 118.2", "BA 120.1", "BA 120.2", "BA 122",
-      "BA 127", "BA 128", "BA 141", "BA 142",
-      "BA 161", "BA 162", "BA 164", "BA 167",
-      "BA 183", "BA 184.1", "BA 184.2", "BA 190", "BA 191",
-      "BA 198.1", "BA 198.2", "HK 11", "HK 12/13"
+    "requiredCodes": [
+      "KAS 1",
+      "STS 1",
+      "MATH 25",
+      "ECON 11",
+      "ECON 101",
+      "ECON 102",
+      "ETHICS 1",
+      "ARTS 1",
+      "COMM 10",
+      "PI 10",
+      "ENG 10",
+      "STAT 101",
+      "MGT 101",
+      "MGT 121",
+      "MGT 131",
+      "MGT 141",
+      "MGT 151",
+      "MGT 117",
+      "MGT 181",
+      "BA 99.1",
+      "BA 99.2",
+      "BA 114.1",
+      "BA 114.2",
+      "BA 116",
+      "BA 117",
+      "BA 118.1",
+      "BA 118.2",
+      "BA 120.1",
+      "BA 120.2",
+      "BA 122",
+      "BA 127",
+      "BA 128",
+      "BA 141",
+      "BA 142",
+      "BA 161",
+      "BA 162",
+      "BA 164",
+      "BA 167",
+      "BA 183",
+      "BA 184.1",
+      "BA 184.2",
+      "BA 190",
+      "BA 191",
+      "BA 198.1",
+      "BA 198.2",
+      "HK 11",
+      "HK 12/13"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF FORESTRY AND NATURAL RESOURCES (CFNR)
-  // ============================================================================
-  
   "BSFOR": {
-    code: "BSFOR",
-    name: "BS Forestry",
-    college: "CFNR",
-    collegeName: "College of Forestry and Natural Resources",
-    available: true,
-    totalUnitsRequired: 143,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "FOR 1", title: "Introduction to Forests and Forestry", units: 3 },
-      { code: "SFI 100", title: "Geology and Forest Soils", units: 3 },
-      { code: "FBS 10", title: "Biology of Tropical Forest Plants", units: 4 },
-      { code: "ECON 11", title: "General Economics", units: 3 },
-      // Year 1 Sem 2
-      { code: "SFFG 101", title: "Principles and Concepts of Social Forestry", units: 3 },
-      { code: "FRM 92", title: "Forest Engineering", units: 3 },
-      { code: "FBS 21", title: "Taxonomy of Forest Plants", units: 4 },
-      { code: "FRM 120", title: "Forestry Economics", units: 3 },
-      // Year 2 Sem 1
-      { code: "SFFG 123", title: "Forest Policy and Institution", units: 3 },
-      { code: "FPPS 11", title: "Wood Structure and Identification", units: 3 },
-      { code: "FBS 31", title: "Plant Physiology", units: 3 },
-      { code: "NRC 140", title: "Introduction to Geographic Information Systems", units: 3 },
-      // Year 2 Sem 2
-      { code: "NRC 170", title: "Watershed Management", units: 3 },
-      { code: "FPPS 127", title: "Properties and Utilization of Forest Products", units: 4 },
-      { code: "FBS 36", title: "Fundamentals of Forest Ecology", units: 3 },
-      { code: "SFI 103", title: "Fundamentals of Agroforestry", units: 3 },
-      // Year 3 Sem 1
-      { code: "SFI 140", title: "Tropical Silviculture", units: 3 },
-      { code: "FBS 45", title: "Forest Insect Pests and Diseases", units: 4 },
-      { code: "SFFG 113", title: "Forestry Extension", units: 3 },
-      { code: "FBS 101", title: "Forest Biodiversity", units: 3 },
-      // Year 3 Sem 2
-      { code: "FPPS 128", title: "Non-Timber Forest Products", units: 3 },
-      { code: "SFI 142", title: "Plantation Forestry", units: 3 },
-      { code: "FBS 172", title: "Forest Genetics", units: 3 },
-      { code: "FOR 195", title: "Research Methods in Forestry and Natural Resources", units: 3 },
-      { code: "FRM 61", title: "Forest Biometry", units: 3 },
-      // Year 3 Midyear
-      { code: "FOR 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "FOR 200", title: "Undergraduate Thesis", units: 3 },
-      { code: "SFFG 125", title: "Political Economy and Administration of Forestry", units: 3 },
-      { code: "FRM 131", title: "Forest-based Enterprise Development and Management", units: 3 },
-      { code: "SFFG 152", title: "Sociology of Natural Resources", units: 3 },
-      { code: "FOR 199", title: "Undergraduate Seminar", units: 1 },
-      // Year 4 Sem 2
-      { code: "FPPS 147", title: "Furniture and Handicraft Production", units: 3 },
-      { code: "FRM 183", title: "Timber Production Management", units: 3 },
-      { code: "FRM 184", title: "Integrated Forest Resource Management", units: 3 },
+    "code": "BSFOR",
+    "name": "BS Forestry",
+    "college": "CFNR",
+    "collegeName": "College of Forestry and Natural Resources",
+    "available": true,
+    "totalUnitsRequired": 143,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "FOR 1",
+        "title": "Introduction to Forests and Forestry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 100",
+        "title": "Geology and Forest Soils",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 10",
+        "title": "Biology of Tropical Forest Plants",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 SFFG 101. Principles and Concepts of Social Forestry",
+        "title": "3 SFFG 101. Principles and Concepts of Social Forestry 3 FRM 92. Forest Engineering 4 FBS 21. Taxonomy of Forest Plants 3 FRM 120. Forestry Economics 3 GE Elective 3 GE Elective (2) HK 12/13. Human Kinetics Activities/Advanced Human Ki 19",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 4 3 3 3 netics Activities 19",
+        "units": 2,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 123",
+        "title": "Forest Policy and Institution",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 11",
+        "title": "Wood Structure and Identification",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 31",
+        "title": "Plant Physiology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NRC 140",
+        "title": "Introduction to Geographic Information Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/History of the Philippine",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 NRC 170. Watershed Management",
+        "title": "3 NRC 170. Watershed Management 3 FPPS 127. Properties and Utilization of Forest Product 3 FBS 36. Fundamentals of Forest Ecology 3 SFI 103. Fundamentals of Agroforestry s    3 GE Elective 3 STS 1. Science, Technology, and Society (3) NSTP 2. National Service Training Program II (2) HK 12/13. Human Kinetics Activities/Advanced Human Ki 18",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 s 3 3 3 3 (3) netics Activities 19",
+        "units": 2,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "Specialization Course",
+        "title": "Specialization Course",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 140",
+        "title": "Tropical Silviculture",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 45",
+        "title": "Forest Insect Pests and Diseases",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 113",
+        "title": "Forestry Extension",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 101",
+        "title": "Forest Biodiversity Specialization Course",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    FPPS 128. Non-Timber Forest Products",
+        "title": "3    FPPS 128. Non-Timber Forest Products 3    SFI 142. Plantation Forestry 4    FBS 172. Forest Genetics 3    FOR 195. Research Methods in Forestry and Natural R 3    FRM 61. Forest Biometry 3    Specialization Course 19",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 FOR 198. Internship",
+        "title": "3 FOR 198. Internship 3 3 esources 3 3 18",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "FOR 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 125",
+        "title": "Political Economy and Administration of Forestry Development",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FRM 131",
+        "title": "Forest-based Enterprise Development and Management",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 152",
+        "title": "Sociology of Natural Resources",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FOR 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 FOR 200. Undergraduate Thesis",
+        "title": "3 FOR 200. Undergraduate Thesis 3 FPPS 147. Furniture and Handicraft Production 3 FRM 183. Timber Production Management 3 FRM 184. Integrated Forest Resource Management 3 Specialization Course 1 16",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "FOR 1", "FOR 195", "FOR 198", "FOR 199", "FOR 200",
-      "SFI 100", "SFI 103", "SFI 140", "SFI 142",
-      "FBS 10", "FBS 21", "FBS 31", "FBS 36", "FBS 45", "FBS 101", "FBS 172",
-      "SFFG 101", "SFFG 113", "SFFG 123", "SFFG 125", "SFFG 152",
-      "FPPS 11", "FPPS 127", "FPPS 128", "FPPS 147",
-      "FRM 61", "FRM 92", "FRM 120", "FRM 131", "FRM 183", "FRM 184",
-      "NRC 140", "NRC 170", "ECON 11"
+    "requiredCodes": [
+      "FOR 1",
+      "SFI 100",
+      "FBS 10",
+      "ECON 11",
+      "ARTS 1",
+      "PI 10",
+      "3 SFFG 101. Principles and Concepts of Social Forestry",
+      "3",
+      "SFFG 123",
+      "FPPS 11",
+      "FBS 31",
+      "NRC 140",
+      "KAS 1/HIST 1",
+      "ETHICS 1",
+      "3 NRC 170. Watershed Management",
+      "3",
+      "Specialization Course",
+      "SFI 140",
+      "FBS 45",
+      "SFFG 113",
+      "FBS 101",
+      "3    FPPS 128. Non-Timber Forest Products",
+      "3 FOR 198. Internship",
+      "FOR 200",
+      "SFFG 125",
+      "FRM 131",
+      "COMM 10",
+      "SFFG 152",
+      "FOR 199",
+      "3 FOR 200. Undergraduate Thesis",
+      "3"
     ]
   },
-  
   "AAFOR": {
-    code: "AAFOR",
-    name: "Associate in Forestry",
-    college: "CFNR",
-    collegeName: "College of Forestry and Natural Resources",
-    available: true,
-    totalUnitsRequired: 72,
-    geCoursesRequired: 6,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      { code: "FOR 1", title: "Introduction to Forestry", units: 3 },
-      { code: "FOR 21", title: "Dendrology", units: 3 },
-      { code: "FOR 31", title: "Forest Mensuration", units: 4 },
-      { code: "FOR 41", title: "Silvics and Silviculture", units: 4 },
-      { code: "FOR 51", title: "Forest Ecology", units: 3 },
-      { code: "FOR 101", title: "Forest Management", units: 4 },
-      { code: "FOR 111", title: "Forest Utilization", units: 4 },
-      { code: "FOR 121", title: "Forest Protection", units: 3 },
-      { code: "BIO 1", title: "General Biology I", units: 3 },
-      { code: "CHEM 16", title: "General Chemistry I", units: 4 },
-      { code: "MATH 17", title: "Algebra and Trigonometry", units: 5 },
+    "code": "AAFOR",
+    "name": "Associate in Forestry",
+    "college": "CFNR",
+    "collegeName": "College of Forestry and Natural Resources",
+    "available": true,
+    "totalUnitsRequired": 72,
+    "geCoursesRequired": 6,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "FOR 1",
+        "title": "Introduction to Forestry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FOR 21",
+        "title": "Dendrology",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 31",
+        "title": "Forest Mensuration",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 41",
+        "title": "Silvics and Silviculture",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 51",
+        "title": "Forest Ecology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 101",
+        "title": "Forest Management",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 111",
+        "title": "Forest Utilization",
+        "units": 4,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "FOR 121",
+        "title": "Forest Protection",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "FOR 1"
+        ]
+      },
+      {
+        "code": "BIO 1",
+        "title": "General Biology I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 16",
+        "title": "General Chemistry I",
+        "units": 4,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 17",
+        "title": "Algebra and Trigonometry",
+        "units": 5,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "FOR 1", "FOR 21", "FOR 31", "FOR 41", "FOR 51", "FOR 101", "FOR 111",
-      "FOR 121", "BIO 1", "CHEM 16", "MATH 17"
+    "requiredCodes": [
+      "FOR 1",
+      "FOR 21",
+      "FOR 31",
+      "FOR 41",
+      "FOR 51",
+      "FOR 101",
+      "FOR 111",
+      "FOR 121",
+      "BIO 1",
+      "CHEM 16",
+      "MATH 17"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF HUMAN ECOLOGY (CHE)
-  // ============================================================================
-  
   "BSHE": {
-    code: "BSHE",
-    name: "BS Human Ecology",
-    college: "CHE",
-    collegeName: "College of Human Ecology",
-    available: true,
-    totalUnitsRequired: 140,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "HFDS 101", title: "Family and the Environment", units: 3 },
-      { code: "HUME 100", title: "Introduction to Human Ecology", units: 3 },
-      { code: "CERP 101", title: "Fundamentals of Human Settlements", units: 3 },
-      { code: "SDS 101", title: "Introduction to Social Development", units: 3 },
-      // Year 1 Sem 2
-      { code: "HUME 112", title: "Sustainability Science", units: 3 },
-      { code: "HUME 107", title: "Principles of Human Development", units: 3 },
-      { code: "HUME 105", title: "Humans and Their Environment", units: 3 },
-      { code: "SOC 140", title: "Introduction to Demography", units: 3 },
-      { code: "BIO 150", title: "Ecology", units: 4 },
-      // Year 2 Sem 1
-      { code: "HUME 110", title: "Ecology and Value Systems", units: 3 },
-      { code: "HUME 111", title: "Human Ecological Perspectives in Development", units: 3 },
-      { code: "HUME 113", title: "Community Study in Human Welfare", units: 3 },
-      // Year 2 Sem 2
-      { code: "STAT 166", title: "Statistics for the Social Sciences", units: 3 },
-      { code: "HUME 114", title: "Material and Energy Flows", units: 3 },
-      { code: "CERP 161", title: "Planning Theory and Practice I", units: 3 },
-      { code: "HUME 115", title: "Social Policies", units: 3 },
-      // Year 3 Sem 1
-      { code: "CERP 140", title: "Fundamentals of Environmental Economics", units: 3 },
-      { code: "HUME 122", title: "Human Needs and the Built Environment", units: 3 },
-      { code: "HUME 123", title: "Climate Change Adaptation and Disaster Risk Reduction in Human Ecosystems", units: 3 },
-      { code: "SDS 172", title: "Techniques in Community Organizing", units: 3 },
-      { code: "HUME 195", title: "Research Methods in Human Ecology", units: 3 },
-      // Year 3 Sem 2
-      { code: "HUME 125", title: "Human Ecological Systems Mapping", units: 3 },
-      { code: "HUME 124", title: "Environmental Health", units: 3 },
-      { code: "SDS 173", title: "Consumer Education", units: 3 },
-      { code: "HFDS 110", title: "Migration", units: 3 },
-      // Year 4 Sem 1
-      { code: "HNF 141", title: "Food and Nutrition Systems", units: 3 },
-      { code: "CERP 200", title: "Undergraduate Thesis", units: 3 },
-      // Year 4 Sem 2
-      { code: "HUME 200a", title: "Supervised Field Experience", units: 6 },
-      { code: "HUME 199", title: "Seminar in Human Ecology", units: 1 },
+    "code": "BSHE",
+    "name": "BS Human Ecology",
+    "college": "CHE",
+    "collegeName": "College of Human Ecology",
+    "available": true,
+    "totalUnitsRequired": 140,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine Histor",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HFDS 101",
+        "title": "Family and the Environment",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 100",
+        "title": "Introduction to Human Ecology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CERP 101",
+        "title": "Fundamentals of Human Settlements",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SDS 101",
+        "title": "Introduction to Social Development",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "y         HUME 112. Sustainability Science",
+        "title": "y         HUME 112. Sustainability Science 3 3  HUME 107. Principles of Human Development 3  HUME 105. Humans and Their Environment 3  SOC 140. Introduction to Demography 3  BIO 150. Ecology",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities 15",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning 3 in Everyday Life 3 ARTS 1. Critical Perspectives in the Arts 3 3 4 s (2) 16",
+        "units": 6,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 110",
+        "title": "Ecology and Value Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 111",
+        "title": "Human Ecological Perspective in Development",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 115",
+        "title": "Social Policies",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 STS 1. Science, Technology, and Society",
+        "title": "3 STS 1. Science, Technology, and Society 3 STAT 166. Statistics for the Social Sciences 3 HUME 114. Material and Energy Flows 3 CERP 161. Planning Theory and Practice I 3 HUME 113. Community Study in Human Welfare",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities (3) NSTP 2. National Training Service Program II 15",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in 3 Communication 3 GE Elective 3 GE Elective 3 Student may take 6-9 units of GE based 3 on their specific major program s (2) (3) 15",
+        "units": 9,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CERP 140",
+        "title": "Fundamentals of Environmental Economics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 122",
+        "title": "Human Needs and the Built Environment",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SDS 173",
+        "title": "Consumer Education",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 195",
+        "title": "Research Methods in Human Ecology Major",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 HUME 125. Human Ecological Systems Mapping",
+        "title": "3 HUME 125. Human Ecological Systems Mapping 3 HUME 124. Environmental Health 3 SDS 172. Techniques in Community Organizing 3 HFDS 110. Migration 3 Major 15",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 Major",
+        "title": "3 Major 3 Major 3 Major 3 Student may take 6-9 units of major 3 courses based on their specific major program 15",
+        "units": 9,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 123",
+        "title": "Climate Change Adaptation and Disaster Risk Reduction in Human Ecosystems",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 141",
+        "title": "Food and Nutrition Systems Major Major CERP/HFDS/SDS 200. Undergraduate Thesis Student may add another major course depending on their program",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3 HUME 200a. Supervised Field Experience",
+        "title": "3 HUME 200a. Supervised Field Experience 3 HUME 199. Seminar in Human Ecology 3 CERP/HFDS/SDS 200. Undergraduate Thesis 3 3 15 Student may add another major course depending on their program",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "6",
+        "title": "6 1 3 10",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "HUME 100", "HUME 105", "HUME 107", "HUME 110", "HUME 111", "HUME 112",
-      "HUME 113", "HUME 114", "HUME 115", "HUME 122", "HUME 123", "HUME 124",
-      "HUME 125", "HUME 195", "HUME 199", "HUME 200a",
-      "HFDS 101", "HFDS 110", "HNF 141",
-      "CERP 101", "CERP 140", "CERP 161", "CERP 200",
-      "SDS 101", "SDS 172", "SDS 173",
-      "SOC 140", "BIO 150", "STAT 166"
+    "requiredCodes": [
+      "KAS 1/HIST 1",
+      "HFDS 101",
+      "HUME 100",
+      "CERP 101",
+      "SDS 101",
+      "y         HUME 112. Sustainability Science",
+      "ETHICS 1",
+      "HUME 110",
+      "HUME 111",
+      "HUME 115",
+      "PI 10",
+      "GE",
+      "3 STS 1. Science, Technology, and Society",
+      "COMM 10",
+      "CERP 140",
+      "HUME 122",
+      "SDS 173",
+      "HUME 195",
+      "3 HUME 125. Human Ecological Systems Mapping",
+      "3 Major",
+      "HUME 123",
+      "HNF 141",
+      "3 HUME 200a. Supervised Field Experience",
+      "6"
     ]
   },
-  
   "BSNUTRI": {
-    code: "BSNUTRI",
-    name: "BS Nutrition",
-    college: "CHE",
-    collegeName: "College of Human Ecology",
-    available: true,
-    totalUnitsRequired: 165,
-    geCoursesRequired: 9,
-    tracks: {
-      thesis: { name: "Thesis Track", code: "NUT 200", freeElectiveUnits: 9 },
-      sp: { name: "Special Problem Track", code: "NUT 190", freeElectiveUnits: 12 }
+    "code": "BSNUTRI",
+    "name": "BS Nutrition",
+    "college": "CHE",
+    "collegeName": "College of Human Ecology",
+    "available": true,
+    "totalUnitsRequired": 165,
+    "geCoursesRequired": 9,
+    "tracks": {
+      "thesis": {
+        "name": "Thesis Track",
+        "code": "NUT 200",
+        "freeElectiveUnits": 9
+      },
+      "sp": {
+        "name": "Special Problem Track",
+        "code": "NUT 190",
+        "freeElectiveUnits": 12
+      }
     },
-    defaultTrack: "sp",
-    majorCourses: [
-      { code: "NUT 11", title: "Fundamentals of Nutrition", units: 3 },
-      { code: "NUT 100", title: "Principles of Nutrition", units: 3 },
-      { code: "NUT 101", title: "Advanced Nutrition", units: 3 },
-      { code: "NUT 110", title: "Nutrition Assessment", units: 3 },
-      { code: "NUT 120", title: "Diet Therapy", units: 4 },
-      { code: "NUT 130", title: "Community Nutrition", units: 3 },
-      { code: "NUT 140", title: "Food Service Management", units: 3 },
-      { code: "NUT 150", title: "Nutrition Education", units: 3 },
-      { code: "NUT 160", title: "Nutrition Research Methods", units: 3 },
-      { code: "NUT 170", title: "Sports Nutrition", units: 3 },
-      { code: "NUT 180", title: "Nutrition in the Life Cycle", units: 3 },
-      { code: "NUT 190", title: "Special Problem", units: 3, track: "sp" },
-      { code: "NUT 191", title: "Dietetic Internship", units: 6, gradeType: "S/U" },
-      { code: "NUT 200", title: "Undergraduate Thesis", units: 6, track: "thesis" },
-      { code: "CHEM 16", title: "General Chemistry I", units: 4 },
-      { code: "CHEM 17", title: "General Chemistry II", units: 4 },
-      { code: "CHEM 40", title: "Organic Chemistry I", units: 5 },
-      { code: "CHEM 31", title: "Elementary Biochemistry", units: 5 },
-      { code: "BIO 1", title: "General Biology I", units: 3 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "defaultTrack": "sp",
+    "majorCourses": [
+      {
+        "code": "ABT 11",
+        "title": "Introduction to Agricultural Biotechnology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 30",
+        "title": "Genetics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HUME 100",
+        "title": "Introduction to Human Ecology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HFDS 130",
+        "title": "Human Physiology",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History",
+        "title": "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Life 3 GE Elective 3 CHEM 40. Organic Chemistry 3 CHEM 40.1. Organic Chemistry Laboratory 3 MCB 11. Biology and Applications of Microorganisms 2 HNF 101. Food Selection and Preparation",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics (2) Activities 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 4 1 3 4 (2) 21",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 101",
+        "title": "Concepts and Dynamics of Management",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 103",
+        "title": "Food Preservation",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 122",
+        "title": "Food and Nutrition",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 141",
+        "title": "Food and Nutrition Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 160",
+        "title": "Introductory Biochemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 102",
+        "title": "Meal Management",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activitie/Advanced Human Kinetic Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Service Training Program I",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    STS 1. Science, Technology, and Society",
+        "title": "3    STS 1. Science, Technology, and Society 3    PI 10. The Life and Works of Jose Rizal 4    GE Elective 3    GE Elective 3    STAT 101. Statistical Methods 4    MGT 111. Principles of Accounting s (2) HNF 123. Nutritional Assessment",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activitie /Advanced Human Kineti (3) Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 2",
+        "title": "National Service Training Program II 20",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3 3 3 3 3 3 3 cs (2) (3) 21",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 142",
+        "title": "Public Health Nutrition",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 104",
+        "title": "Food Service System I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 127",
+        "title": "Nutrition in the Life Stages",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 128",
+        "title": "Medical Nutrition Therapy I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 195",
+        "title": "Food and Nutrition Research",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    HNF 105. Food Service Systems II",
+        "title": "3    HNF 105. Food Service Systems II 3    HNF 143. Nutrition Education 4    HNF 129. Medical Nutrition Therapy II 5    HNF 200. Undergraduate Thesis 3    HNF 126. Sports Nutrition",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3 HNF 200. Undergraduate Thesis",
+        "title": "3 HNF 200. Undergraduate Thesis 3 5 3 2 3 19",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "HNF 199",
+        "title": "Undergraduate Seminar",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HNF",
+        "title": "200a. Practicum I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "1     HNF 200b. Practicum II",
+        "title": "1     HNF 200b. Practicum II 12 13",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "12",
+        "title": "12 12",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "NUT 11", "NUT 100", "NUT 101", "NUT 110", "NUT 120", "NUT 130", "NUT 140",
-      "NUT 150", "NUT 160", "NUT 170", "NUT 180", "NUT 191",
-      "CHEM 16", "CHEM 17", "CHEM 40", "CHEM 31", "BIO 1", "STAT 101", "ENG 10"
+    "requiredCodes": [
+      "ABT 11",
+      "BIO 30",
+      "ARTS 1",
+      "HUME 100",
+      "HFDS 130",
+      "CHEM 18",
+      "CHEM 18.1",
+      "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History",
+      "3",
+      "MGT 101",
+      "HNF 103",
+      "HNF 122",
+      "HNF 141",
+      "CHEM 160",
+      "HNF 102",
+      "3    STS 1. Science, Technology, and Society",
+      "3",
+      "HNF 142",
+      "HNF 104",
+      "HNF 127",
+      "HNF 128",
+      "HNF 195",
+      "3    HNF 105. Food Service Systems II",
+      "COMM 10",
+      "3 HNF 200. Undergraduate Thesis",
+      "HNF 199",
+      "HNF",
+      "1     HNF 200b. Practicum II",
+      "12"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF DEVELOPMENT COMMUNICATION (CDC)
-  // ============================================================================
-  
   "BSDC": {
-    code: "BSDC",
-    name: "BS Development Communication",
-    college: "CDC",
-    collegeName: "College of Development Communication",
-    available: true,
-    totalUnitsRequired: 142,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      // Year 1 Sem 1
-      { code: "DEVC 10", title: "Introduction to Development Communication", units: 3 },
-      { code: "DEVC 11", title: "Introduction to Media Writing for Development", units: 3 },
-      // Year 1 Sem 2
-      { code: "DEVC 20", title: "Fundamentals of Development Journalism", units: 3 },
-      { code: "DEVC 30", title: "Fundamentals of Community Broadcasting", units: 3 },
-      { code: "DEVC 40", title: "Fundamentals of Educational Communication", units: 3 },
-      { code: "DEVC 50", title: "Introduction to Science Communication", units: 3 },
-      // Year 2 Sem 1
-      { code: "COMM 10", title: "Critical Perspectives in Communication", units: 3 },
-      { code: "DEVC 70", title: "Interpersonal Communication in Development", units: 3 },
-      { code: "DEVC 80", title: "Communication and Society", units: 3 },
-      { code: "DEVC 103", title: "Visual and Audiovisual Media Production", units: 3 },
-      // Year 2 Sem 2
-      { code: "DEVC 101", title: "Introduction to Communication Theory", units: 3 },
-      { code: "DEVC 125", title: "Writing and Reporting for Development", units: 3 },
-      { code: "DEVC 135", title: "Multi-media Materials Planning and Design", units: 3 },
-      { code: "STAT 166", title: "Statistics for the Social Sciences", units: 3 },
-      // Year 3 Sem 1
-      { code: "DEVC 126", title: "Participatory Development Journalism", units: 3 },
-      { code: "DEVC 144", title: "Media-based Learning Systems", units: 3 },
-      { code: "DEVC 153", title: "Managing Information for Development", units: 3 },
-      // Year 3 Sem 2
-      { code: "DEVC 136", title: "Multi-media Materials Production and Management", units: 3 },
-      { code: "DEVC 154", title: "Communicating Science for Development", units: 3 },
-      { code: "DEVC 195", title: "Introduction to Communication Research", units: 3 },
-      // Year 3 Midyear
-      { code: "DEVC 198", title: "Internship", units: 3, gradeType: "S/U" },
-      // Year 4 Sem 1
-      { code: "DEVC 127", title: "Data Journalism for Development", units: 3 },
-      { code: "DEVC 145", title: "Distance Learning Systems in Development Communication", units: 3 },
-      { code: "DEVC 200", title: "Undergraduate Thesis", units: 3 },
-      // Year 4 Sem 2
-      { code: "DEVC 128", title: "Science Journalism", units: 3 },
-      { code: "DEVC 155", title: "Knowledge Management for Development", units: 3 },
-      { code: "DEVC 180", title: "Communication Campaigns and Programs", units: 3 },
-      { code: "DEVC 199", title: "Undergraduate Seminar", units: 1 },
+    "code": "BSDC",
+    "name": "BS Development Communication",
+    "college": "CDC",
+    "collegeName": "College of Development Communication",
+    "available": true,
+    "totalUnitsRequired": 142,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 10",
+        "title": "Introduction to Development Communicatio",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 11",
+        "title": "Introductios to Media Writing for Development",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ECON 11",
+        "title": "General Economics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine 3 3    History 3    ETHICS 1. Ethics and Moral Reasoning in Everyday Life 3    DEVC 20. Fundamentals of Development Journalism n    3    DEVC 30. Fundamentals of Community Broadcasting 3",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 40",
+        "title": "Fundamentals of Educational Communication and 3 Technology 3 DEVC 50. Introduction to Science Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Training Service Program II 18",
+        "units": 18,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 70",
+        "title": "Interpersonal Communication in Developme",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 80",
+        "title": "Communication and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 101",
+        "title": "Introduction to Communication Theory",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Huma Kinetics Activities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3",
+        "title": "3",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 125",
+        "title": "Writing and Reporting for Development         3 DEVC 3     DEVC 135. Multi-media Materials Plannning and Design 3     STAT 166. Statistics for the Social Sciences nt 3      Elective (Technical) 3     Elective (Technical) 3 n (2) 18",
+        "units": 15,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3. Visual and Audiovisual Media Production",
+        "title": "3. Visual and Audiovisual Media Production 3 3",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 126",
+        "title": "Participatory Development Journalism",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 144",
+        "title": "Media-based Learning Systems",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 153",
+        "title": "Managing Information for Development",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(Technical)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(Technical)",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Huma Kinetics Activities",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    DEVC 136. Multi-media Materials Production and Management",
+        "title": "3    DEVC 136. Multi-media Materials Production and Management 3 DEVC 198. 3    DEVC 154. Communicating Science for Development 3    DEVC 195. Introduction to Communication Research 3    Elective (Technical) 3    Elective (SOSC) 3    Elective (SOSC) n (2) 18 18",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "Internship",
+        "title": "Internship 3",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 127",
+        "title": "Data Journalism for Development",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 145",
+        "title": "Distance Learning Systems in Developmen Communication",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(Technical)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(Technical)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "Elective",
+        "title": "(SOSC)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    DEVC 128. Science Journalism",
+        "title": "3    DEVC 128. Science Journalism t 3     DEVC 155. Knowledge Management for Development 3     DEVC 180. Communication Campaigns and Programs 3     DEVC 199. Undergraduate Seminar 3     DEVC 200. Undergraduate Thesis 3     Elective (SOSC) 18",
+        "units": 16,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "DEVC 10", "DEVC 11", "DEVC 20", "DEVC 30", "DEVC 40", "DEVC 50",
-      "DEVC 70", "DEVC 80", "DEVC 101", "DEVC 103", "DEVC 125", "DEVC 126",
-      "DEVC 127", "DEVC 128", "DEVC 135", "DEVC 136", "DEVC 144", "DEVC 145",
-      "DEVC 153", "DEVC 154", "DEVC 155", "DEVC 180", "DEVC 195",
-      "DEVC 198", "DEVC 199", "DEVC 200", "COMM 10", "STAT 166"
+    "requiredCodes": [
+      "ARTS 1",
+      "STS 1",
+      "PI 10",
+      "DEVC 10",
+      "DEVC 11",
+      "ECON 11",
+      "KAS 1/HIST 1",
+      "DEVC 40",
+      "COMM 10",
+      "GE",
+      "GE",
+      "DEVC 70",
+      "DEVC 80",
+      "DEVC 101",
+      "3",
+      "DEVC 125",
+      "3. Visual and Audiovisual Media Production",
+      "DEVC 126",
+      "DEVC 144",
+      "DEVC 153",
+      "GE",
+      "Elective",
+      "Elective",
+      "3    DEVC 136. Multi-media Materials Production and Management",
+      "Internship",
+      "DEVC 127",
+      "DEVC 145",
+      "DEVC 200",
+      "Elective",
+      "Elective",
+      "Elective",
+      "3    DEVC 128. Science Journalism"
     ]
   },
-  
   "ASDC": {
-    code: "ASDC",
-    name: "Associate of Science in Development Communication",
-    college: "CDC",
-    collegeName: "College of Development Communication",
-    available: true,
-    totalUnitsRequired: 72,
-    geCoursesRequired: 6,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      { code: "DEVC 10", title: "Introduction to Development Communication", units: 3 },
-      { code: "DEVC 20", title: "Communication Theories", units: 3 },
-      { code: "DEVC 30", title: "Communication Research Methods", units: 3 },
-      { code: "DEVC 40", title: "Development Journalism", units: 3 },
-      { code: "DEVC 50", title: "Development Broadcasting", units: 3 },
-      { code: "DEVC 60", title: "Educational Communication", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "code": "ASDC",
+    "name": "Associate of Science in Development Communication",
+    "college": "CDC",
+    "collegeName": "College of Development Communication",
+    "available": true,
+    "totalUnitsRequired": 72,
+    "geCoursesRequired": 6,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "DEVC 10",
+        "title": "Introduction to Development Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 20",
+        "title": "Communication Theories",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 30",
+        "title": "Communication Research Methods",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 40",
+        "title": "Development Journalism",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 50",
+        "title": "Development Broadcasting",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 60",
+        "title": "Educational Communication",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "ENG 10",
+        "title": "Writing of Scientific Papers",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "DEVC 10", "DEVC 20", "DEVC 30", "DEVC 40", "DEVC 50", "DEVC 60", "ENG 10"
+    "requiredCodes": [
+      "DEVC 10",
+      "DEVC 20",
+      "DEVC 30",
+      "DEVC 40",
+      "DEVC 50",
+      "DEVC 60",
+      "ENG 10"
     ]
   },
-  
-  // ============================================================================
-  // COLLEGE OF VETERINARY MEDICINE (CVM)
-  // ============================================================================
-  
   "DVM": {
-    code: "DVM",
-    name: "Doctor of Veterinary Medicine",
-    college: "CVM",
-    collegeName: "College of Veterinary Medicine",
-    available: true,
-    totalUnitsRequired: 220,
-    geCoursesRequired: 9,
-    tracks: null,
-    defaultTrack: null,
-    majorCourses: [
-      { code: "VET 11", title: "Veterinary Anatomy I", units: 5 },
-      { code: "VET 12", title: "Veterinary Anatomy II", units: 5 },
-      { code: "VET 21", title: "Veterinary Physiology I", units: 4 },
-      { code: "VET 22", title: "Veterinary Physiology II", units: 4 },
-      { code: "VET 31", title: "Veterinary Biochemistry", units: 5 },
-      { code: "VET 41", title: "Veterinary Microbiology", units: 5 },
-      { code: "VET 51", title: "Veterinary Parasitology", units: 5 },
-      { code: "VET 61", title: "Veterinary Pathology", units: 5 },
-      { code: "VET 71", title: "Veterinary Pharmacology", units: 4 },
-      { code: "VET 101", title: "Veterinary Medicine I", units: 4 },
-      { code: "VET 102", title: "Veterinary Medicine II", units: 4 },
-      { code: "VET 111", title: "Veterinary Surgery I", units: 4 },
-      { code: "VET 112", title: "Veterinary Surgery II", units: 4 },
-      { code: "VET 121", title: "Theriogenology", units: 4 },
-      { code: "VET 131", title: "Veterinary Public Health", units: 3 },
-      { code: "VET 141", title: "Poultry Diseases", units: 3 },
-      { code: "VET 151", title: "Swine Diseases", units: 3 },
-      { code: "VET 161", title: "Ruminant Diseases", units: 3 },
-      { code: "VET 171", title: "Small Animal Medicine", units: 3 },
-      { code: "VET 181", title: "Veterinary Radiology", units: 3 },
-      { code: "VET 190", title: "Clinical Clerkship", units: 12, gradeType: "S/U" },
-      { code: "VET 200", title: "Thesis/Special Problem", units: 6 },
-      { code: "CHEM 16", title: "General Chemistry I", units: 4 },
-      { code: "CHEM 17", title: "General Chemistry II", units: 4 },
-      { code: "CHEM 40", title: "Organic Chemistry I", units: 5 },
-      { code: "CHEM 31", title: "Elementary Biochemistry", units: 5 },
-      { code: "BIO 1", title: "General Biology I", units: 3 },
-      { code: "PHYSICS 71", title: "Elementary Physics I", units: 4 },
-      { code: "STAT 101", title: "Statistical Methods", units: 3 },
-      { code: "ENG 10", title: "Writing of Scientific Papers", units: 3 },
+    "code": "DVM",
+    "name": "Doctor of Veterinary Medicine",
+    "college": "CVM",
+    "collegeName": "College of Veterinary Medicine",
+    "available": true,
+    "totalUnitsRequired": 220,
+    "geCoursesRequired": 9,
+    "tracks": null,
+    "defaultTrack": null,
+    "majorCourses": [
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1/HIST 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 101",
+        "title": "Animal Welfare",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "NSTP 1",
+        "title": "National Training Service Program I",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK 11",
+        "title": "Wellness and Basic Injury Management",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    ARTS 1. Critical Perspectives in the Arts",
+        "title": "3    ARTS 1. Critical Perspectives in the Arts 3    GE Elective 3    CHEM 18.1. University Chemistry Laboratory 3    STAT 164. Statistics for the Biological Scien 3    ZOTC 111. General Principles of Animal Produc 3    NSTP 2. National Training Service Program II (3)   HK 12/13. Human Kinetics Activities/Advanced (2) 18",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3    CHEM 40. Basic Organic Chemistry",
+        "title": "3    CHEM 40. Basic Organic Chemistry 3    CHEM 40.1. Basic Organic Chemistry Laboratory 2 ces tion (3) Human Kinetics Activities 14",
+        "units": 2,
+        "year": 1,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "GE",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 10",
+        "title": "Foundations of Entrepreneurship",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ZOTC 112",
+        "title": "Principles of Animal Breeding",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 160",
+        "title": "Introductory Biochemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPHY 140",
+        "title": "Biochemical Aspects of Animal Processes",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activitie",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "3    COMM 10. Critical Perspectives in Communicati",
+        "title": "3    COMM 10. Critical Perspectives in Communicati 3    VETA 101. Macroscopic Anatomy I 3    VETA 105. Microscopic and Developmental Anato 3    ZOTC 113. Principles of Animal Nutrition 3    VPHY 141. General Physiology",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "HK",
+        "title": "12/13. Human Kinetics Activities/Advanced 2 s 17",
+        "units": 2,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "on                          3     VMCB 121. General Microbiology",
+        "title": "on                          3     VMCB 121. General Microbiology 5 my I 3 4 Human Kinetics Activities 18",
+        "units": 2,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "VETA 102",
+        "title": "Macroscopic Anatomy II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VETA 106",
+        "title": "Microscopic and Developmental Anatomy II",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPHY 142",
+        "title": "Systemic Physiology",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ZOTC 114",
+        "title": "Swine Production",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "4     VMCB 123. Veterinary Virology",
+        "title": "4     VMCB 123. Veterinary Virology 4     VPAR 131. Veterinary Entomology and Protozool 4     VPHM 141. Veterinary Pharmacology and Therape 3     ZOTC 115. Ruminant Production 15    VMCB 122. Veterinary Bacteriology and Mycolog",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "3     VPTH 121. General Pathology",
+        "title": "3     VPTH 121. General Pathology ogy                         4     ZOTC 116. Poultry Production utics I                     4 3 y 17",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "VMCB 124",
+        "title": "Fundamentals of Immunology",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPAR 132",
+        "title": "Veterinary Helminthology",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPH 121",
+        "title": "Epidemiology",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPHM 142",
+        "title": "Veterinary Pharmacology and Therapeutics II",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPTH 122",
+        "title": "Systemic Pathology",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ZOTC 117",
+        "title": "Equine Production",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ZOTC 119",
+        "title": "Husbandry and Health Management of Laboratory Animals",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VSUR 154",
+        "title": "Veterinary Diagnostic Imaging",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VETC 171",
+        "title": "Introduction to Clinics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 152",
+        "title": "Canine and Feline Medicine",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 162",
+        "title": "Poultry Medicine",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VPH 123",
+        "title": "Food Hygiene",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VSUR 152",
+        "title": "Small Animal Surgery",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VETC 173",
+        "title": "Clinical Conference I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VETC 175",
+        "title": "Clinical Internship I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VELD 161.1",
+        "title": "Laboratory Diagnostics in Veterinary Medicine",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 156",
+        "title": "Jurisprudence, Ethics and Economics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "2    VMED 151. General Principles of Veterinary Me",
+        "title": "2    VMED 151. General Principles of Veterinary Me 4    VMED 195. Research Methods in Veterinary Medi 3    VPH 122. Zoonoses 4    VPTH 123. Clinical Pathology 3    VPHY 143. Veterinary Endocrinology and Reprod 2    VSUR 151. Principles of Veterinary Anesthesio 3 21",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FIFTH",
+        "title": "YEAR 2     VETC 172. Clinical Clerkship 2     VMED 155. Theriogenology 4     VMED 161. Equine Medicine 3     VMED 163. Ruminant Medicine 4     VMED 164. Swine Medicine 4     VMED 165. Aquatic and Wildlife Medicine 19    VSUR 153. Large Animal Surgery",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "VMED 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SIXTH",
+        "title": "YEAR 1    VETC 174. Clinical Conference II 6    VETC 176. Clinical Internship II 2 2 3 14",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "dicine",
+        "title": "dicine cine 2 3 uctive Physiology logy & Surgery 17 2 3 2 2 3 2 3 3 20 1 14 15",
+        "units": 3,
+        "year": 4,
+        "sem": "midyear",
+        "prereqs": []
+      }
     ],
-    requiredCodes: [
-      "VET 11", "VET 12", "VET 21", "VET 22", "VET 31", "VET 41", "VET 51",
-      "VET 61", "VET 71", "VET 101", "VET 102", "VET 111", "VET 112", "VET 121",
-      "VET 131", "VET 141", "VET 151", "VET 161", "VET 171", "VET 181", "VET 190",
-      "CHEM 16", "CHEM 17", "CHEM 40", "CHEM 31", "BIO 1", "PHYSICS 71",
-      "STAT 101", "ENG 10"
+    "requiredCodes": [
+      "ETHICS 1",
+      "KAS 1/HIST 1",
+      "PI 10",
+      "VMED 101",
+      "STS 1",
+      "CHEM 18",
+      "3    ARTS 1. Critical Perspectives in the Arts",
+      "3    CHEM 40. Basic Organic Chemistry",
+      "GE",
+      "GE",
+      "ABME 10",
+      "ZOTC 112",
+      "CHEM 160",
+      "VPHY 140",
+      "3    COMM 10. Critical Perspectives in Communicati",
+      "on                          3     VMCB 121. General Microbiology",
+      "VETA 102",
+      "VETA 106",
+      "VPHY 142",
+      "ZOTC 114",
+      "4     VMCB 123. Veterinary Virology",
+      "3     VPTH 121. General Pathology",
+      "VMCB 124",
+      "VPAR 132",
+      "VPH 121",
+      "VPHM 142",
+      "VPTH 122",
+      "ZOTC 117",
+      "ZOTC 119",
+      "VSUR 154",
+      "VETC 171",
+      "VMED 152",
+      "VMED 162",
+      "VPH 123",
+      "VSUR 152",
+      "VETC 173",
+      "VETC 175",
+      "VELD 161.1",
+      "VMED 156",
+      "VMED 200",
+      "2    VMED 151. General Principles of Veterinary Me",
+      "FIFTH",
+      "VMED 200",
+      "SIXTH",
+      "dicine"
     ]
-  },
+  }
 };
 
 // Group programs by college
@@ -2281,3 +11629,20 @@ function getRemainingGESlots(completedCourses) {
 
 // For backwards compatibility
 const BSCS_CURRICULUM = UPLB_PROGRAMS["BSCS"];
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    UPLB_PROGRAMS,
+    COLLEGES,
+    getCurrentCurriculum,
+    setCurrentProgram,
+    detectTrack,
+    getFreeElectiveUnits,
+    isGECourse,
+    isRequiredCourse,
+    getRemainingCourses,
+    countCompletedGE,
+    getRemainingGESlots,
+    BSCS_CURRICULUM
+  };
+}
