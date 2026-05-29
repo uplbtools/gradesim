@@ -10,6 +10,20 @@
   <div class="container">
     <header>
       <h1>Elbi GradeSim</h1>
+      <div class="header-actions">
+        <button id="helpBtn" class="header-btn" title="How to Use">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+          </svg>
+          Help
+        </button>
+        <button id="openTabBtn" class="header-btn primary" title="Open in Full Tab">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+          </svg>
+          Open Full Screen
+        </button>
+      </div>
     </header>
 
     <div id="loading" class="loading">
@@ -28,6 +42,8 @@
     </div>
 
     <div id="mainContent" class="hidden">
+      <div class="tab-layout-grid">
+        <div class="sidebar-column">
       <!-- Program Selector -->
       <section class="program-selector">
         <label for="programSelect">Your Program:</label>
@@ -104,7 +120,10 @@
         <div id="honorStatus" class="honor-status"></div>
       </section>
 
-      <p class="credits">UPLB GWA Calculator</p>
+      <p class="credits">UPLB GWA Calculator | <a href="#" id="viewTermsLink" class="terms-link">Terms & Privacy</a></p>
+        </div>
+
+        <div class="content-column">
 
       <!-- Tabs -->
       <div class="tabs">
@@ -181,6 +200,29 @@
             </div>
           </div>
 
+          <!-- Course Substitutions -->
+          <div class="substitutions-container" id="substitutionsContainer">
+            <h3>Course Substitutions</h3>
+            <div id="substitutionsList" class="substitutions-list">
+              <!-- Populated by JS -->
+            </div>
+            <div class="add-sub-box">
+              <div class="sub-field">
+                <label for="subRequired">Required:</label>
+                <select id="subRequired">
+                  <option value="">-- Select Required Course --</option>
+                </select>
+              </div>
+              <div class="sub-field">
+                <label for="subTaken">Substituted By:</label>
+                <select id="subTaken">
+                  <option value="">-- Select Completed Course --</option>
+                </select>
+              </div>
+              <button id="addSubBtn" class="btn btn-secondary btn-sm">Apply Substitution</button>
+            </div>
+          </div>
+
           <div class="remaining-courses">
             <h3>Remaining Courses</h3>
             <p class="hint" id="curriculumHint">Based on selected curriculum</p>
@@ -203,6 +245,101 @@
           <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
         </div>
       </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-actions-footer">
+      <button id="exportBtn" class="btn btn-secondary btn-sm" title="Export grades and settings as JSON">Export JSON</button>
+      <button id="importBtn" class="btn btn-secondary btn-sm" title="Import grades and settings from JSON">Import JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display: none;">
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="helpOverlay" class="terms-overlay hidden">
+    <div class="terms-modal help-modal">
+      <div class="terms-header" style="position: relative;">
+        <h2 style="font-size: 1.1rem; margin-bottom: 0;">How to use Elbi GradeSim</h2>
+        <button id="closeHelpBtn" class="close-terms-btn" aria-label="Close" style="top: 50%; transform: translateY(-50%);">&times;</button>
+      </div>
+      <div class="terms-content help-content">
+        <div class="help-item">
+          <div class="help-badge btn-primary">EXCL.</div>
+          <div class="help-text">
+            <strong>Exclude from GWA</strong>
+            <p>Toggle a subject out of your GWA calculation. This is useful for NSTP, HK, or other non-bearing subjects. Grades like INC and DRP are handled automatically.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge" style="background: linear-gradient(180deg, #ffd700 0%, #ffaa00 100%); color: #332200;">SCHOLAR</div>
+          <div class="help-text">
+            <strong>Scholar Status</strong>
+            <p>Automatically displayed per semester when your GWA qualifies (&le;1.45 for University Scholar, &le;1.75 for College Scholar) assuming you meet unit requirements.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge" style="background: #222; border: 1px solid #444;">WHAT IF?</div>
+          <div class="help-text">
+            <strong>Target Latin Honors</strong>
+            <p>In the "What If?" tab, select a target Latin Honor (e.g. Cum Laude). The app will calculate the required average grade you need for your remaining units to achieve it.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge" style="background: #111; border: 1px solid #333;">EXPORT JSON</div>
+          <div class="help-text">
+            <strong>Backup & Restore</strong>
+            <p>Use Export JSON to save your grades and settings to a file. Use Import JSON to restore them later or on another device.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge btn-primary">WRAPPED</div>
+          <div class="help-text">
+            <strong>Elbi GradeSim Wrapped</strong>
+            <p>Generate a fun, interactive summary of your academic journey. You can even export the final slide for your Instagram Story!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Use & Privacy Notice Modal -->
+  <div id="termsOverlay" class="terms-overlay hidden">
+    <div class="terms-modal">
+      <button id="closeTermsBtn" class="close-terms-btn hidden" aria-label="Close">&times;</button>
+      <div class="terms-header">
+        <h2>Elbi GradeSim</h2>
+        <p>Terms of Use & Privacy Notice</p>
+      </div>
+      <div class="terms-content">
+        <div class="terms-section">
+          <h3>About This Tool</h3>
+          <p>Elbi GradeSim is an independently developed student web extension designed specifically for <strong>UP Los Baños</strong> students for GWA tracking and simulation. It is not affiliated with, endorsed by, or connected to the University of the Philippines (UP) System, UPLB, or the UPLB AMIS portal.</p>
+        </div>
+        <div class="terms-section">
+          <h3>1. Privacy & Data</h3>
+          <p>Your academic data stays on your device. We collect, transmit, and track absolutely nothing. No analytics or external servers are used.</p>
+        </div>
+        <div class="terms-section">
+          <h3>2. Saved On Your Device</h3>
+          <p>All grade data is saved only inside your browser. Uninstalling the extension or clearing your browser's data will permanently remove your stored grades.</p>
+        </div>
+        <div class="terms-section">
+          <h3>3. Accuracy Disclaimer</h3>
+          <p>All GWA calculations and target simulations are unofficial estimates. They may not account for incomplete (INC), dropped (DRP), or deferred grades. Always verify official records with the UPLB Office of the University Registrar (OUR).</p>
+        </div>
+        <div class="terms-section">
+          <h3>4. Responsibility & IP</h3>
+          <p>You assume all responsibility for actions taken using this tool. The developer assumes no liability. UP and UPLB intellectual property marks are owned by the UP System; their appearance is purely incidental.</p>
+        </div>
+      </div>
+      <div class="terms-footer">
+        <label class="terms-agreement-label">
+          <input type="checkbox" id="termsCheckbox">
+          <span>I read and agree to the Terms of Use and Privacy Notice.</span>
+        </label>
+        <button id="acceptTermsBtn" class="btn btn-primary" disabled>Accept & Proceed</button>
+      </div>
     </div>
   </div>
 
