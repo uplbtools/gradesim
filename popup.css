@@ -429,6 +429,44 @@ header h1 {
   border: 2px solid;
 }
 
+.grade-legend {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--card-border);
+  text-align: left;
+}
+
+.legend-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.legend-item {
+  display: flex;
+  gap: 8px;
+}
+
+.legend-grade {
+  font-weight: bold;
+  color: var(--gem-light);
+  width: 28px;
+}
+
+.legend-desc {
+  color: var(--text-secondary);
+}
+
 .honor-status.summa {
   background: linear-gradient(180deg, #ffd700 0%, #ffaa00 100%);
   border-color: #aa7700;
@@ -584,18 +622,21 @@ header h1 {
 }
 
 .scholar-badge.university-scholar {
-  background: linear-gradient(180deg, #ffd700 0%, #ffaa00 100%);
-  color: #332200;
+  background: linear-gradient(180deg, #dfc785 0%, #c0a060 100%);
+  color: #1a1a1c;
+  font-weight: 700;
 }
 
 .scholar-badge.college-scholar {
-  background: linear-gradient(180deg, #e0e0e0 0%, #a0a0a0 100%);
-  color: #222;
+  background: linear-gradient(180deg, #b0b0ba 0%, #80808a 100%);
+  color: #1a1a1c;
+  font-weight: 700;
 }
 
 .scholar-badge.honor-roll {
-  background: linear-gradient(180deg, #6699ff 0%, #3366cc 100%);
-  color: #fff;
+  background: linear-gradient(180deg, #8ba8c4 0%, #5d81a3 100%);
+  color: #1a1a1c;
+  font-weight: 700;
 }
 
 .course-item {
