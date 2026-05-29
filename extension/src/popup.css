@@ -429,21 +429,6 @@ header h1 {
   border: 2px solid;
 }
 
-.grade-legend {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 2px dashed var(--card-border);
-  text-align: left;
-}
-
-.legend-title {
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  color: var(--text-secondary);
-  text-align: center;
-  margin-bottom: 8px;
-  letter-spacing: 1px;
-}
 
 .legend-grid {
   display: grid;
