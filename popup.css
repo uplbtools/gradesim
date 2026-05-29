@@ -3,27 +3,29 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Nunito:wght@400;600;700&display=swap');
 
 :root {
-  /* Primary Green - muted shades */
-  --gem-light: #6ec96e;
-  --gem-mid: #4a9c4a;
-  --gem-dark: #2d6b2d;
-  --gem-glow: rgba(74, 156, 74, 0.25);
+  /* Primary Green - muted, chill shades */
+  --gem-light: #8fba8f;
+  --gem-mid: #5c8f5c;
+  --gem-dark: #385938;
+  --gem-glow: rgba(92, 143, 92, 0.25);
   
   /* UI Colors - neutral grays */
-  --bg-dark: #1a1a1f;
-  --bg-mid: #22222a;
-  --bg-light: #2a2a35;
-  --card-bg: #16161c;
-  --card-border: #3a3a45;
+  --bg-dark: #1a1a1c;
+  --bg-mid: #222225;
+  --bg-light: #2a2a2e;
+  --card-bg: #161618;
+  --card-border: #38383e;
   
-  --text-primary: #d8d8dc;
-  --text-secondary: #a5a5b0;
-  --text-accent: #6ec96e;
+  /* Text Colors - high contrast for WCAG AA */
+  --text-primary: #e4e4e8;
+  --text-secondary: #b0b0ba;
+  --text-accent: #8fba8f;
   
-  --success: #6ec96e;
-  --warning: #d4a84b;
-  --danger: #c75050;
-  --info: #7cb1ef;
+  /* Status Colors - unified, muted palette */
+  --success: #8fba8f;
+  --warning: #c0a060;
+  --danger: #b56565;
+  --info: #739cc2;
   
   /* Pixel border */
   --pixel-border: 2px solid;
