@@ -1174,3 +1174,42 @@ header h1 {
   background: rgba(255, 255, 0, 0.2);
   color: var(--warning);
 }
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  margin-top: 16px;
+  border-top: 2px dashed var(--gem-dark);
+}
+
+.footer a {
+  display: inline-block;
+  color: var(--bg-dark);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  background: linear-gradient(180deg, var(--gem-light) 0%, var(--gem-mid) 50%, var(--gem-dark) 100%);
+  border: 2px solid var(--gem-dark);
+  box-shadow: 
+    inset -2px -2px 0 var(--gem-dark),
+    inset 2px 2px 0 rgba(255,255,255,0.3),
+    0 4px 0 var(--gem-dark);
+  transition: all 0.1s;
+}
+
+.footer a:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    inset -2px -2px 0 var(--gem-dark),
+    inset 2px 2px 0 rgba(255,255,255,0.3),
+    0 6px 0 var(--gem-dark);
+}
+
+.footer a:active {
+  transform: translateY(2px);
+  box-shadow: 
+    inset -2px -2px 0 var(--gem-dark),
+    inset 2px 2px 0 rgba(255,255,255,0.3),
+    0 2px 0 var(--gem-dark);
+}
