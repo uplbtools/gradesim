@@ -63,3 +63,7 @@ All data stays on your device. No servers, no analytics, no tracking. See [PRIVA
 ## License
 
 MIT
+
+
+---
+*If this project helped you out, consider [treating me to a coffee](https://kape.stimmie.dev) ☕*

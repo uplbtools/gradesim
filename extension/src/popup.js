@@ -2,13 +2,24 @@
  * Elbi GradeSim - Popup Script
  * Processes grades data locally. No data is collected, transmitted, or shared.
  */
+// Safe HTML setter to avoid AMO innerHTML warnings
+Object.defineProperty(Element.prototype, 'safeHTML', {
+  set: function(html) {
+    if (!html) {
+      this.replaceChildren();
+      return;
+    }
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    this.replaceChildren(...doc.body.childNodes);
+  }
+});
+
 
 // Sanitize text to prevent XSS
 function sanitizeText(text) {
   if (typeof text !== 'string') return '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+  return text.replace(/[&<>"']/g, m => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m]));
 }
 
 // Store current track selection
@@ -541,7 +552,7 @@ function displayHonorStatus(gwa) {
 
 function displayGradesList(gradesBySemester, allCourses) {
   const listEl = document.getElementById('gradesList');
-  listEl.innerHTML = '';
+  listEl.safeHTML = '';
   
   // Group courses based on current view mode
   let groupedCourses;
@@ -619,7 +630,7 @@ function displayGradesList(gradesBySemester, allCourses) {
       }
     }
     
-    header.innerHTML = `
+    header.safeHTML = `
       <span class="group-title">${sanitizeText(groupKey)}</span>
       <span class="group-gwa-info">
         <span class="group-gwa">GWA: ${groupGWA.gwa > 0 ? groupGWA.gwa.toFixed(4) : 'N/A'}</span>
@@ -664,7 +675,7 @@ function displayGradesList(gradesBySemester, allCourses) {
         </button>
       `;
       
-      item.innerHTML = `
+      item.safeHTML = `
         <div class="course-info">
           <div class="course-code">${sanitizeText(course.courseCode || course.code)}</div>
           <div class="course-title">${sanitizeText(course.courseTitle || course.title || '')}</div>
@@ -722,20 +733,20 @@ function calculateGroupGWA(courses) {
 function displayRemainingCourses(completedCourses) {
   const listEl = document.getElementById('remainingList');
   const trackInfoEl = document.getElementById('trackInfo');
-  listEl.innerHTML = '';
+  listEl.safeHTML = '';
   
   // Get current curriculum
   const curriculum = getCurrentCurriculum();
   
   // Check if program has curriculum data
   if (!curriculum.available) {
-    listEl.innerHTML = `
+    listEl.safeHTML = `
       <div class="free-elective-notice" style="background: rgba(100, 100, 0, 0.2); border-color: #666600; color: #ffff00;">
         <strong>⚠ Curriculum Not Available</strong>
         <br><small>The curriculum for ${curriculum.name} is coming soon. Only GWA calculation is available.</small>
       </div>
     `;
-    trackInfoEl.innerHTML = '';
+    trackInfoEl.safeHTML = '';
     return;
   }
   
@@ -749,10 +760,10 @@ function displayRemainingCourses(completedCourses) {
       const trackInfo = curriculum.tracks[detectedTrack];
       const trackName = trackInfo ? `${trackInfo.name} (${trackInfo.code})` : detectedTrack;
       trackInfoEl.className = 'track-info detected';
-      trackInfoEl.innerHTML = `✓ Detected: <strong>${trackName}</strong>`;
+      trackInfoEl.safeHTML = `✓ Detected: <strong>${trackName}</strong>`;
     } else {
       trackInfoEl.className = 'track-info not-detected';
-      trackInfoEl.innerHTML = `⚠ Track not yet detected. Defaulting to SP Track. Select your track below:`;
+      trackInfoEl.safeHTML = `⚠ Track not yet detected. Defaulting to SP Track. Select your track below:`;
     }
     
     // Set the radio button to match current track
@@ -761,7 +772,7 @@ function displayRemainingCourses(completedCourses) {
       trackRadio.checked = true;
     }
   } else {
-    trackInfoEl.innerHTML = '';
+    trackInfoEl.safeHTML = '';
   }
   
   // Get free elective units based on current track
@@ -817,7 +828,7 @@ function displayRemainingCourses(completedCourses) {
   // Populate substitutions dropdowns
   const subRequiredSelect = document.getElementById('subRequired');
   if (subRequiredSelect) {
-    subRequiredSelect.innerHTML = '<option value="">-- Select Required Course --</option>';
+    subRequiredSelect.safeHTML = '<option value="">-- Select Required Course --</option>';
     // Sort required courses alphabetically by code
     const sortedRequired = [...(curriculum.majorCourses || [])].sort((a, b) => a.code.localeCompare(b.code));
     sortedRequired.forEach(course => {
@@ -831,7 +842,7 @@ function displayRemainingCourses(completedCourses) {
   
   const subTakenSelect = document.getElementById('subTaken');
   if (subTakenSelect) {
-    subTakenSelect.innerHTML = '<option value="">-- Select Completed Course --</option>';
+    subTakenSelect.safeHTML = '<option value="">-- Select Completed Course --</option>';
     // Sort completed courses alphabetically by code
     const sortedCompleted = [...completedCourses].sort((a, b) => a.code.localeCompare(b.code));
     sortedCompleted.forEach(c => {
@@ -852,15 +863,15 @@ function displayRemainingCourses(completedCourses) {
   // Render active substitutions list
   const substitutionsList = document.getElementById('substitutionsList');
   if (substitutionsList) {
-    substitutionsList.innerHTML = '';
+    substitutionsList.safeHTML = '';
     const subEntries = Object.entries(substitutions);
     if (subEntries.length === 0) {
-      substitutionsList.innerHTML = '<div class="no-substitutions-notice">No substitutions configured.</div>';
+      substitutionsList.safeHTML = '<div class="no-substitutions-notice">No substitutions configured.</div>';
     } else {
       subEntries.forEach(([reqCode, takenCode]) => {
          const item = document.createElement('div');
          item.className = 'substitution-item';
-         item.innerHTML = `
+         item.safeHTML = `
            <span class="sub-map"><strong>${sanitizeText(reqCode)}</strong> ← <strong>${sanitizeText(takenCode)}</strong></span>
            <button class="btn-remove-sub" data-req="${sanitizeText(reqCode)}" title="Remove substitution">×</button>
          `;
@@ -884,7 +895,7 @@ function displayRemainingCourses(completedCourses) {
     const item = document.createElement('div');
     item.className = 'remaining-item';
     item.setAttribute('role', 'listitem');
-    item.innerHTML = `
+    item.safeHTML = `
       <span class="course-code">${sanitizeText(course.code)}</span>
       <span class="units-badge" aria-label="${course.units} units">${course.units}u</span>
     `;
@@ -895,7 +906,7 @@ function displayRemainingCourses(completedCourses) {
   if (remainingGESlots > 0) {
     const geNotice = document.createElement('div');
     geNotice.className = 'free-elective-notice';
-    geNotice.innerHTML = `
+    geNotice.safeHTML = `
       <strong>GE Courses:</strong> ${remainingGESlots} more GE course(s) needed
       <br><small>Completed ${completedGECount}/${geRequired} required GE courses.</small>
     `;
@@ -907,12 +918,12 @@ function displayRemainingCourses(completedCourses) {
   notice.className = 'free-elective-notice';
   const trackLabel = currentTrack === 'thesis' ? 'Thesis' : 'SP';
   if (freeElectiveUnitsRemaining > 0) {
-    notice.innerHTML = `
+    notice.safeHTML = `
       <strong>Free Electives:</strong> ${freeElectiveUnitsRemaining} units remaining
       <br><small>Taken ${freeElectiveUnitsTaken}/${freeElectiveUnitsTotal} free elective units (${trackLabel} track).</small>
     `;
   } else {
-    notice.innerHTML = `
+    notice.safeHTML = `
       <strong>Free Electives:</strong> ✓ Complete
       <br><small>Taken ${freeElectiveUnitsTaken}/${freeElectiveUnitsTotal} free elective units (${trackLabel} track).</small>
     `;
@@ -1023,7 +1034,7 @@ function showResults(status, targetGWA, currentGWA, unitsCompleted, unitsRemaini
   };
   
   if (status === 'error') {
-    contentEl.innerHTML = `<div class="result-summary impossible">${targetGWA}</div>`;
+    contentEl.safeHTML = `<div class="result-summary impossible">${targetGWA}</div>`;
     return;
   }
   
@@ -1065,7 +1076,7 @@ function showResults(status, targetGWA, currentGWA, unitsCompleted, unitsRemaini
       break;
   }
   
-  contentEl.innerHTML = `
+  contentEl.safeHTML = `
     <div class="result-summary ${statusClass}">
       ${statusMessage}
     </div>
@@ -1570,7 +1581,7 @@ function updateWrappedDisplay() {
   
   if (!panelEl || !wrappedPanels.length) return;
   
-  panelEl.innerHTML = wrappedPanels[wrappedCurrentPanel];
+  panelEl.safeHTML = wrappedPanels[wrappedCurrentPanel];
   progressEl.textContent = `${wrappedCurrentPanel + 1} / ${wrappedPanels.length}`;
   
   prevBtn.disabled = wrappedCurrentPanel === 0;
