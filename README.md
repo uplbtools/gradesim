@@ -67,3 +67,12 @@ MIT
 
 ---
 *If this project helped you out, consider [treating me to a coffee](https://kape.stimmie.dev) ☕*
+
+## 📊 Current State of the Code
+- **Tech Stack:** Static / Basic Scripts
+- **Repository Size:** 131 tracked files
+- **Latest Update:** `8c99fa0 chore: add stale issue and PR validators`
+
+
+---
+*☕ If you found this project useful, you can support my work at [kape.stimmie.dev](https://kape.stimmie.dev)!*
