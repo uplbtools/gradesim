@@ -1213,3 +1213,27 @@ header h1 {
     inset 2px 2px 0 rgba(255,255,255,0.3),
     0 2px 0 var(--gem-dark);
 }
+
+.legal-links {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  font-weight: 400;
+  border-top: none;
+  padding: 0;
+}
+
+.legal-links a {
+  display: inline;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--text-muted);
+  padding: 0 4px;
+  font-weight: 500;
+}
+
+.legal-links a:hover {
+  color: var(--text-secondary);
+  transform: none;
+  box-shadow: none;
+}
