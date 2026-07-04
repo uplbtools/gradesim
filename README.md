@@ -1,6 +1,6 @@
 # Elbi GradeSim
 
-A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on Chrome, Firefox, Opera, and Edge.
+A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on **Chrome**, **Firefox**, Opera, and Edge.
 
 ## Repository Structure
 

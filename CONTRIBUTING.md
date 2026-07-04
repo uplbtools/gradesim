@@ -21,7 +21,7 @@ cd extension
 ./build.sh chrome   # or firefox, all
 ```
 
-Load `extension/dist/<browser>/` via your browser’s developer / unpacked extension UI.
+Load `extension/dist/<browser>/` via your browser’s developer / unpacked extension UI, or install from the [Chrome Web Store](https://chromewebstore.google.com/detail/elbi-gradesim-uplb-gwa-ca/mlhklblbhkikcmobmmajckjcbmdinldb) or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/elbi-gradesim/).
 
 ### Pull requests
 
