@@ -10,7 +10,7 @@ Open a [GitHub issue](https://github.com/uplbtools/gradesim/issues) with:
 - Steps to reproduce
 - Expected vs actual grade or GWA output
 
-You do not need a pull request for typo reports in curriculum data — an issue is enough.
+You do not need a pull request for typo reports in curriculum data: an issue is enough.
 
 ## Developers
 

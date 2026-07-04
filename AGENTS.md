@@ -15,31 +15,31 @@ Org-wide agent defaults: see [room-tba/AGENTS.md](https://github.com/uplbtools/r
 
 ## Stack
 
-- **Platform:** Manifest V3 **browser extension** (vanilla JavaScript — no bundler in root)
+- **Platform:** Manifest V3 **browser extension** (vanilla JavaScript: no bundler in root)
 - **Targets:** Chrome, Firefox, Opera, Edge (separate manifests)
 - **Build:** `extension/build.sh [chrome|firefox|opera|edge|all]` → `extension/dist/<browser>/`
-- **Host permission:** `amis.uplb.edu.ph` — content scripts read AMIS DOM locally
-- **No server** — 100% client-side; no `package.json` scripts at repo root
+- **Host permission:** `amis.uplb.edu.ph`: content scripts read AMIS DOM locally
+- **No server**: 100% client-side; no `package.json` scripts at repo root
 
 ## Branches and release
 
 | Branch | Role |
 | --- | --- |
-| **`staging`** | Default branch — integration |
+| **`staging`** | Default branch: integration |
 | **`main`** | Release line for store submissions |
 
-**Ship flow:** merge to `main`, build with `./build.sh all`, upload zips to each browser store. Store review is human-gated — do not auto-close issues that depend on store approval.
+**Ship flow:** merge to `main`, build with `./build.sh all`, upload zips to each browser store. Store review is human-gated: do not auto-close issues that depend on store approval.
 
-There is no Vercel/CI deploy — verification is local build + manual load in browser dev mode.
+There is no Vercel/CI deploy: verification is local build + manual load in browser dev mode.
 
 ## Verify before done
 
 | Step | When |
 | --- | --- |
-| `cd extension && ./build.sh chrome` | Minimum before any extension change |
+| `cd extension &&./build.sh chrome` | Minimum before any extension change |
 | `./build.sh all` | Before store release |
 | Manual AMIS | Load unpacked extension; open AMIS schedule page; confirm GWA/simulator still works |
-| Manifest diff | When touching permissions — review all files in `extension/manifests/` |
+| Manifest diff | When touching permissions: review all files in `extension/manifests/` |
 
 ## Architecture (short)
 
@@ -54,10 +54,10 @@ website/         # Legacy copy — canonical website is gradesim-website repo
 
 ## Extension rules
 
-- **Privacy:** Never send grades or student data to a server — local `chrome.storage` / `browser.storage` only
-- **AMIS DOM scraping:** AMIS markup changes break the extension — prefer defensive selectors; add fixture HTML tests when possible
+- **Privacy:** Never send grades or student data to a server: local `chrome.storage` / `browser.storage` only
+- **AMIS DOM scraping:** AMIS markup changes break the extension: prefer defensive selectors; add fixture HTML tests when possible
 - **Multi-browser parity:** A manifest or permission change often needs all four manifest files updated
-- **No decorative UI motion** in popup — keep the panel calm and readable
+- **No decorative UI motion** in popup: keep the panel calm and readable
 
 ## Commits
 

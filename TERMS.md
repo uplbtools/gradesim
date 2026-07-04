@@ -17,7 +17,7 @@ GradeSim is an independent student tool. It is **not** affiliated with, endorsed
 
 ## No warranty
 
-The extension is provided **as is** without warranty. Grade calculations and honor simulations are estimates — always verify against official registrar records.
+The extension is provided **as is** without warranty. Grade calculations and honor simulations are estimates: always verify against official registrar records.
 
 ## Data
 

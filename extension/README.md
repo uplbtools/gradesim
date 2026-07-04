@@ -25,11 +25,11 @@ A Chrome extension for UPLB students to calculate their GWA and simulate grades 
 ### 4. "What If?" Simulator
 - Calculate what grades you need in remaining courses to achieve a target GWA
 - Preset targets:
-  - **Summa Cum Laude**: GWA ≤ 1.20
-  - **Magna Cum Laude**: GWA ≤ 1.45
-  - **Cum Laude**: GWA ≤ 1.75
-  - **Honor Roll**: GWA ≤ 2.00
-  - **Custom**: Enter any target GWA
+ - **Summa Cum Laude**: GWA ≤ 1.20
+ - **Magna Cum Laude**: GWA ≤ 1.45
+ - **Cum Laude**: GWA ≤ 1.75
+ - **Honor Roll**: GWA ≤ 2.00
+ - **Custom**: Enter any target GWA
 - Shows remaining courses based on your selected curriculum
 - Calculates required average grade for remaining courses
 

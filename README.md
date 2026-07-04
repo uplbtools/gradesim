@@ -44,7 +44,7 @@ Output goes to `extension/dist/<browser>/`. Load the folder in your browser's de
 - "What If?" simulator for Latin honor targets
 - Grades overview by semester or year
 - 30+ UPLB degree programs supported
-- 100% local — no data leaves your device
+- 100% local: no data leaves your device
 
 ## Website
 
