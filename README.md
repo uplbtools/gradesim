@@ -6,17 +6,17 @@ A browser extension for UPLB students to calculate their GWA and simulate grades
 
 ```
 gradesim/
-├── extension/           # Browser extension source
-│   ├── src/             # Shared source (popup, content scripts, curriculum data)
-│   ├── manifests/       # Per-browser manifest files
-│   ├── icons/           # Extension icons
-│   └── build.sh         # Build script for each browser target
-├── website/             # Next.js landing page
-│   ├── app/             # Pages and components
-│   └── public/
-│       ├── curricula/   # Curriculum images by college (PNG)
-│       ├── chrome.svg   # Browser logos
-│       └── firefox.svg
+├── extension/ # Browser extension source
+│ ├── src/ # Shared source (popup, content scripts, curriculum data)
+│ ├── manifests/ # Per-browser manifest files
+│ ├── icons/ # Extension icons
+│ └── build.sh # Build script for each browser target
+├── website/ # Next.js landing page
+│ ├── app/ # Pages and components
+│ └── public/
+│ ├── curricula/ # Curriculum images by college (PNG)
+│ ├── chrome.svg # Browser logos
+│ └── firefox.svg
 └── README.md
 ```
 
@@ -26,9 +26,9 @@ gradesim/
 
 ```bash
 cd extension
-./build.sh all        # Build all browsers
-./build.sh chrome     # Build Chrome only
-./build.sh firefox    # Build Firefox only
+./build.sh all # Build all browsers
+./build.sh chrome # Build Chrome only
+./build.sh firefox # Build Firefox only
 ```
 
 Output goes to `extension/dist/<browser>/`. Load the folder in your browser's developer mode.

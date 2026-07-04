@@ -45,11 +45,11 @@ There is no Vercel/CI deploy: verification is local build + manual load in brows
 
 ```
 extension/
-  src/           # Popup, content scripts, curriculum data
-  manifests/     # Per-browser manifest.json variants
-  icons/
-  build.sh       # Copies src + manifest → dist/<browser>/
-website/         # Legacy copy — canonical website is gradesim-website repo
+ src/ # Popup, content scripts, curriculum data
+ manifests/ # Per-browser manifest.json variants
+ icons/
+ build.sh # Copies src + manifest → dist/<browser>/
+website/ # Legacy copy: canonical website is gradesim-website repo
 ```
 
 ## Extension rules
