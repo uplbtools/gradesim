@@ -20,3 +20,6 @@ npm-debug.log*
 
 # Cloned source (already restructured into extension/)
 gradesim/
+
+# Website lives in separate repo (gradesim-website)
+website/
