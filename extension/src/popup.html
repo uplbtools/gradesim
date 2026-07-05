@@ -110,6 +110,7 @@
       <div class="tabs">
         <button class="tab active" data-tab="grades">Grades</button>
         <button class="tab" data-tab="whatif">What If?</button>
+        <button class="tab" data-tab="planner">Planner</button>
         <button class="tab" data-tab="wrapped">Wrapped</button>
       </div>
 
@@ -185,6 +186,17 @@
             <h3>Remaining Courses</h3>
             <p class="hint" id="curriculumHint">Based on selected curriculum</p>
             <div id="remainingList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Planner Tab -->
+      <section id="plannerTab" class="tab-content hidden">
+        <div class="planner-container">
+          <div class="planner-header">
+            <h3>Course Planner</h3>
+            <p class="hint">Plan your semesters, simulate delays, and see your earliest possible graduation. The prerequisite graph needs a larger screen.</p>
+            <button id="openPlannerBtn" class="btn btn-primary" style="margin-top: 16px;">Open Planner in New Tab</button>
           </div>
         </div>
       </section>

@@ -49,6 +49,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  // Open Planner button
+  const openPlannerBtn = document.getElementById('openPlannerBtn');
+  if (openPlannerBtn) {
+    openPlannerBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('planner.html') });
+    });
+  }
+
   // Program selection handling
   const programSelect = document.getElementById('programSelect');
   if (programSelect) {
