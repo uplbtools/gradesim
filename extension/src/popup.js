@@ -11,6 +11,11 @@ function sanitizeText(text) {
   return div.innerHTML;
 }
 
+function isPassingGrade(gradeStr) {
+  const grade = parseFloat(gradeStr);
+  return gradeStr === 'S' || gradeStr === 'P' || (!isNaN(grade) && grade >= 1.0 && grade <= 3.0);
+}
+
 // Store current track selection
 let currentTrack = 'sp';
 
@@ -247,8 +252,6 @@ function calculateGWA(courses, excludedIds = new Set()) {
   const gradesBySemester = {};
   const completedCourses = [];
 
-  // Courses to exclude from GWA calculation (by prefix)
-  const excludedPrefixes = ['NSTP', 'HK', 'PE'];
   // Non-numeric grades that should be displayed but not counted in GWA
   const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
 
@@ -256,14 +259,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
     const courseCode = course.courseCode || '';
     const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
-
-    // Skip NSTP, HK, PE courses entirely
-    const isPrefixExcluded = excludedPrefixes.some(prefix =>
-      courseCode.toUpperCase().startsWith(prefix)
-    );
-    if (isPrefixExcluded) {
-      return;
-    }
+    const isNonGwa = isNonGwaCourseCode(courseCode);
 
     const units = course.units || 0;
 
@@ -277,8 +273,20 @@ function calculateGWA(courses, excludedIds = new Set()) {
     }
 
     // Add course to display with special handling for S/U grades
-    const displayCourse = { ...course, isNonNumeric: isNonNumericGrade };
+    const displayCourse = { ...course, isNonNumeric: isNonNumericGrade, isNonGwa };
     gradesBySemester[semKey].push(displayCourse);
+
+    if (isNonGwa) {
+      if (isPassingGrade(gradeStr)) {
+        completedCourses.push({
+          code: course.courseCode,
+          title: course.courseTitle,
+          units: units,
+          grade: gradeStr
+        });
+      }
+      return;
+    }
 
     // For non-numeric grades, add to completed but don't calculate GWA
     if (isNonNumericGrade) {
@@ -430,9 +438,10 @@ function displayGradesList(gradesBySemester, allCourses) {
       const isExcluded = excludedCourses.has(courseId);
       const gradeStr = (course.grade || '').toString().toUpperCase().trim();
       const isNonNumeric = course.isNonNumeric || ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'].includes(gradeStr);
+      const isNonGwa = course.isNonGwa || isNonGwaCourseCode(course.courseCode || course.code);
 
       const item = document.createElement('div');
-      item.className = 'course-item' + (isExcluded ? ' excluded' : '') + (isNonNumeric ? ' non-numeric' : '');
+      item.className = 'course-item' + (isExcluded ? ' excluded' : '') + ((isNonNumeric || isNonGwa) ? ' non-numeric' : '');
       item.dataset.courseId = courseId;
 
       let gradeDisplay, gradeClass;
@@ -454,8 +463,8 @@ function displayGradesList(gradesBySemester, allCourses) {
         else if (grade >= 5.00) gradeClass = 'failed';
       }
 
-      // Don't show exclude button for non-numeric grades (they don't affect GWA anyway)
-      const excludeButton = isNonNumeric ? '' : `
+      // Don't show exclude button for courses that do not affect GWA anyway.
+      const excludeButton = (isNonNumeric || isNonGwa) ? '' : `
         <button class="exclude-toggle ${isExcluded ? 'excluded' : ''}" data-course-id="${sanitizeText(courseId)}" title="${isExcluded ? 'Include in GWA' : 'Exclude from GWA'}" aria-label="${isExcluded ? 'Include course in GWA calculation' : 'Exclude course from GWA calculation'}">
           ${isExcluded ? 'Incl.' : 'Excl.'}
         </button>
@@ -496,6 +505,10 @@ function calculateGroupGWA(courses) {
 
   courses.forEach(course => {
     const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
+
+    if (course.isNonGwa || isNonGwaCourseCode(course.courseCode || course.code)) {
+      return;
+    }
 
     // Skip excluded courses
     if (excludedCourses.has(courseId)) {
@@ -573,15 +586,17 @@ function displayRemainingCourses(completedCourses) {
     return !completedCodes.has(code);
   });
 
-  // Calculate remaining units from required courses
-  let remainingUnits = remaining.reduce((sum, c) => sum + c.units, 0);
-
-  // Count completed GE courses (title starts with "(GE)")
-  const completedGECount = completedCourses.filter(c =>
-    c.title && c.title.trim().startsWith("(GE)")
-  ).length;
+  // Count completed GE courses as generic 3-unit GE slots.
+  const completedGECount = countCompletedGE(completedCourses);
   const geRequired = curriculum.geCoursesRequired || 9;
   const remainingGESlots = Math.max(0, geRequired - completedGECount);
+  const completedHKCount = completedCourses.filter(c => {
+    const code = normalizeCourseCode(c.code);
+    return code.startsWith('HK') || code.startsWith('PE');
+  }).length;
+  const completedNSTPCount = completedCourses.filter(c => normalizeCourseCode(c.code).startsWith('NSTP')).length;
+  const remainingHKSlots = Math.max(0, 2 - completedHKCount);
+  const remainingNSTPSlots = Math.max(0, 2 - completedNSTPCount);
 
   // Calculate free elective units used
   // Free electives = courses that are NOT required AND NOT GE courses
@@ -589,8 +604,7 @@ function displayRemainingCourses(completedCourses) {
   const freeElectives = completedCourses.filter(c => {
     const code = c.code.toUpperCase().trim();
     const isRequired = requiredCodesSet.has(code);
-    const isGE = c.title && c.title.trim().startsWith("(GE)");
-    return !isRequired && !isGE;
+    return !isRequired && !isGECourse(c.code, c.title) && !isNonGwaCourseCode(c.code);
   });
 
   const freeElectiveUnitsTaken = freeElectives.reduce((sum, c) => sum + c.units, 0);
@@ -617,6 +631,16 @@ function displayRemainingCourses(completedCourses) {
       <br><small>Completed ${completedGECount}/${geRequired} required GE courses.</small>
     `;
     listEl.appendChild(geNotice);
+  }
+
+  if (remainingHKSlots > 0 || remainingNSTPSlots > 0) {
+    const nonGwaNotice = document.createElement('div');
+    nonGwaNotice.className = 'free-elective-notice';
+    nonGwaNotice.innerHTML = `
+      <strong>HK/NSTP:</strong> ${remainingHKSlots} HK and ${remainingNSTPSlots} NSTP course(s) left
+      <br><small>Excluded from GWA and What If grade targets.</small>
+    `;
+    listEl.appendChild(nonGwaNotice);
   }
 
   // Add free elective notice
@@ -848,7 +872,6 @@ function generateWrappedData(courses) {
   };
 
   const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
-  const excludedPrefixes = ['NSTP', 'HK', 'PE'];
   let totalWeighted = 0;
 
   // Temporary storage for semester calculations
@@ -859,10 +882,9 @@ function generateWrappedData(courses) {
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
     const semKey = course.term || `${course.academicYear} - ${course.semester}`;
 
-    // Skip excluded prefixes (still count their passed units toward graduation)
-    if (excludedPrefixes.some(prefix => courseCode.toUpperCase().startsWith(prefix))) {
-      const g = parseFloat(course.grade);
-      if (gradeStr === 'S' || gradeStr === 'P' || (!isNaN(g) && g >= 1.0 && g <= 3.0)) {
+    // Skip non-GWA courses (still count their passed units toward graduation)
+    if (isNonGwaCourseCode(courseCode)) {
+      if (isPassingGrade(gradeStr)) {
         data.unitsPassed += course.units || 0;
       }
       return;

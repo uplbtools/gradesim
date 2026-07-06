@@ -9,6 +9,7 @@ function sanitizeText(text) {
 
 let globalData = {};
 let curriculum = null;
+let plannerCourses = [];
 let baselineResult = null;
 let simResult = null;
 let currentStart = null; // { sem: '1'|'2'|'midyear', year: 2026, gridStartTime: 8 }
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('plannerGrid').innerHTML = '<div class="no-data"><p>Curriculum data not available. Pick your program in the extension popup first.</p></div>';
     return;
   }
+  plannerCourses = getPlannerCourses(curriculum);
 
   document.getElementById('plannerProgram').textContent = curriculum.name || program;
 
@@ -41,16 +43,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderPlannerFullscreen();
 
   window.addEventListener('resize', () => {
-    drawArrows(curriculum.majorCourses, window.nodeEls, document.getElementById('plannerArrows'), document.getElementById('plannerGrid'));
+    drawArrows(plannerCourses, window.nodeEls, document.getElementById('plannerArrows'), document.getElementById('plannerGrid'));
   });
 });
 
 function plannable(course) {
-  return course.code && course.code !== 'Elective' && !(course.title || '').startsWith('(GE)');
+  return course.code && course.code !== 'Elective';
 }
 
 function initDefaultSchedule() {
-  curriculum.majorCourses.forEach(course => {
+  plannerCourses.forEach(course => {
     if (!plannable(course)) return;
     const code = course.code.toUpperCase().trim();
     if (!globalData.plannedSchedule[code]) {
@@ -92,6 +94,7 @@ function semOfGridSlot(slotSem) {
 function computeStatuses() {
   const amisPassed = new Set();
   const amisFailed = new Set();
+  const passedCourses = [];
 
   if (globalData.gradesData && globalData.gradesData.student_grades) {
     for (const [, termData] of Object.entries(globalData.gradesData.student_grades)) {
@@ -102,11 +105,17 @@ function computeStatuses() {
         const grade = parseFloat(gradeStr);
         if (gradeStr === 'S' || gradeStr === 'P' || (grade >= 1.0 && grade <= 3.0)) {
           amisPassed.add(code);
+          passedCourses.push({
+            code,
+            title: courseData.course?.title || '',
+            units: parseInt(courseData.unit_taken) || 0
+          });
         } else if (grade === 5.0) {
           amisFailed.add(code);
         }
       }
     }
+    getCompletedRequirementSlotCodes(passedCourses, curriculum).forEach(code => amisPassed.add(code));
     for (const [reqCode, takenCode] of Object.entries(globalData.substitutions)) {
       if (amisPassed.has(takenCode.toUpperCase().trim())) {
         amisPassed.add(reqCode.toUpperCase().trim());
@@ -122,7 +131,7 @@ function computeStatuses() {
   const statusOf = (code) => globalData.customCourseStatus[code] || autoStatusOf(code);
 
   const passedSet = new Set();
-  curriculum.majorCourses.forEach(course => {
+  plannerCourses.forEach(course => {
     if (!plannable(course)) return;
     const code = course.code.toUpperCase().trim();
     if (statusOf(code) === 'passed') passedSet.add(code);
@@ -148,7 +157,7 @@ function currentTerm() {
 // latest taken course whose sem matches the current calendar sem.
 function computeGridStart(startSem, statusOf) {
   let base = 3; // just before Y1-1
-  curriculum.majorCourses.forEach(course => {
+  plannerCourses.forEach(course => {
     if (!plannable(course)) return;
     const code = course.code.toUpperCase().trim();
     const st = statusOf(code);
@@ -168,7 +177,7 @@ function runScheduler(extra) {
   const term = currentTerm();
   const notBefore = extra ? { ...extra.notBefore } : {};
   const result = scheduleEarliest({
-    courses: curriculum.majorCourses,
+    courses: plannerCourses,
     passed: passedSet,
     notBefore,
     startSem: term.sem
@@ -187,10 +196,10 @@ function runBaseline() {
   const el = document.getElementById('baselineGrad');
   const label = gradLabel(baselineResult);
   if (!label) {
-    el.textContent = 'All major courses are done. 🎉';
+    el.textContent = 'All planned requirements are done. 🎉';
   } else {
     const terms = baselineResult.gradTermIndex + 1;
-    el.textContent = `Earliest graduation: ${label} — ${terms} term${terms === 1 ? '' : 's'} of major courses left`;
+    el.textContent = `Earliest graduation: ${label} — ${terms} term${terms === 1 ? '' : 's'} of planned requirements left`;
   }
   if (baselineResult.unschedulable.length > 0) {
     el.textContent += ` (could not place: ${baselineResult.unschedulable.join(', ')})`;
@@ -202,7 +211,7 @@ function runBaseline() {
 function initWhatIfBar() {
   const select = document.getElementById('whatifCourse');
   const { statusOf } = computeStatuses();
-  const remaining = curriculum.majorCourses
+  const remaining = plannerCourses
     .filter(c => plannable(c) && statusOf(c.code.toUpperCase().trim()) !== 'passed')
     .sort((a, b) => a.code.localeCompare(b.code));
 
@@ -368,7 +377,7 @@ function renderPlannerFullscreen() {
   const nodeEls = {};
   window.nodeEls = nodeEls;
 
-  curriculum.majorCourses.forEach(course => {
+  plannerCourses.forEach(course => {
     if (!plannable(course)) return;
     const code = course.code.toUpperCase().trim();
     let termKey = globalData.plannedSchedule[code] || 'Unplanned';
@@ -506,7 +515,7 @@ function renderPlannerFullscreen() {
     gridEl.appendChild(colEl);
   });
 
-  setTimeout(() => drawArrows(curriculum.majorCourses, nodeEls, svgEl, gridEl), 100);
+  setTimeout(() => drawArrows(plannerCourses, nodeEls, svgEl, gridEl), 100);
 }
 
 function cycleCourseStatus(code) {

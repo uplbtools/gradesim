@@ -41,10 +41,11 @@ function termLabel(termIndex, startYear, startSem) {
   return `${year} ${names[sem]}`;
 }
 
-// Courses the planner can schedule: real codes only, no electives/GE slots.
+// Courses the planner can schedule: real course codes plus generic requirement
+// slots. Free elective placeholders stay out until the planner has track input.
 function plannableCourses(courses) {
   return (courses || []).filter(c =>
-    c.code && c.code !== 'Elective' && !(c.title || '').startsWith('(GE)')
+    c.code && c.code !== 'Elective'
   );
 }
 

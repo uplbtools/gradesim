@@ -2,6 +2,154 @@
 // Complete undergraduate programs for University of the Philippines Los Baños
 // NOTE: This is UPLB only - not UP Diliman, UP Manila, etc.
 
+const NON_GWA_PREFIXES = ['NSTP', 'HK', 'PE'];
+const KNOWN_GE_CODES = new Set([
+  'ARTS 1',
+  'COMM 10',
+  'ETHICS 1',
+  'HIST 1',
+  'HUM 3',
+  'KAS 1',
+  'KAS 1/HIST 1',
+  'MATH 10',
+  'PHILARTS 1',
+  'PHLO 1',
+  'PI 10',
+  'SAS 1',
+  'SCIENCE 10',
+  'SOSC 3',
+  'STS 1',
+  'WIKA 1'
+]);
+
+function normalizeCourseCode(code) {
+  return (code || '').toString().toUpperCase().replace(/\s+/g, ' ').trim();
+}
+
+function isNonGwaCourseCode(courseCode) {
+  const code = normalizeCourseCode(courseCode);
+  return NON_GWA_PREFIXES.some(prefix => code.startsWith(prefix));
+}
+
+function isGECourse(courseCode, courseTitle) {
+  if (courseTitle === undefined) {
+    courseTitle = courseCode;
+    courseCode = '';
+  }
+  const code = normalizeCourseCode(courseCode);
+  const title = (courseTitle || '').toString().toUpperCase();
+  return KNOWN_GE_CODES.has(code) ||
+    code === 'GE' ||
+    /^GE\s*\d*$/.test(code) ||
+    code.includes('GE ELECTIVE') ||
+    title.trim().startsWith('(GE)') ||
+    /\bGE\s*(ELECTIVE|COURSE|\d)\b/.test(title) ||
+    /\bGENERAL EDUCATION\b/.test(title);
+}
+
+function defaultSlot(index) {
+  return {
+    year: Math.floor(index / 2) + 1,
+    sem: index % 2 === 0 ? '1' : '2'
+  };
+}
+
+function genericRequirementCourses(program) {
+  const existing = program?.majorCourses || [];
+  const countExisting = predicate => existing.filter(predicate).length;
+  const courses = [];
+
+  const existingGE = countExisting(c => isGECourse(c.code, c.title));
+  const geRequired = program?.geCoursesRequired == null ? 9 : program.geCoursesRequired;
+  for (let i = existingGE; i < geRequired; i++) {
+    const slot = defaultSlot(i);
+    courses.push({
+      code: `GE ${i + 1}`,
+      title: 'General Education',
+      units: 3,
+      year: slot.year,
+      sem: slot.sem,
+      prereqs: [],
+      genericRequirement: 'ge'
+    });
+  }
+
+  const existingHK = countExisting(c => normalizeCourseCode(c.code).startsWith('HK') || normalizeCourseCode(c.code).startsWith('PE'));
+  const hkRequired = program?.hkCoursesRequired == null ? 2 : program.hkCoursesRequired;
+  for (let i = existingHK; i < hkRequired; i++) {
+    const slot = defaultSlot(i);
+    courses.push({
+      code: `HK ${i + 1}`,
+      title: 'Human Kinetics',
+      units: 2,
+      year: slot.year,
+      sem: slot.sem,
+      prereqs: [],
+      genericRequirement: 'hk'
+    });
+  }
+
+  const existingNSTP = countExisting(c => normalizeCourseCode(c.code).startsWith('NSTP'));
+  const nstpRequired = program?.nstpCoursesRequired == null ? 2 : program.nstpCoursesRequired;
+  for (let i = existingNSTP; i < nstpRequired; i++) {
+    const slot = defaultSlot(i);
+    courses.push({
+      code: `NSTP ${i + 1}`,
+      title: 'National Service Training Program',
+      units: 3,
+      year: slot.year,
+      sem: slot.sem,
+      prereqs: [],
+      genericRequirement: 'nstp'
+    });
+  }
+
+  return courses;
+}
+
+function getPlannerCourses(program) {
+  return [...(program?.majorCourses || []), ...genericRequirementCourses(program)];
+}
+
+function getCompletedRequirementSlotCodes(completedCourses, program) {
+  const slots = genericRequirementCourses(program);
+  const done = new Set();
+  const counts = { ge: 0, hk: 0, nstp: 0 };
+  const existingDone = { ge: 0, hk: 0, nstp: 0 };
+  const existing = { ge: new Set(), hk: new Set(), nstp: new Set() };
+
+  (program?.majorCourses || []).forEach(course => {
+    const code = normalizeCourseCode(course.code);
+    if (isGECourse(code, course.title)) existing.ge.add(code);
+    else if (code.startsWith('HK') || code.startsWith('PE')) existing.hk.add(code);
+    else if (code.startsWith('NSTP')) existing.nstp.add(code);
+  });
+
+  (completedCourses || []).forEach(course => {
+    const code = normalizeCourseCode(course.code || course.courseCode);
+    const title = course.title || course.courseTitle;
+    if (isGECourse(code, title)) {
+      counts.ge++;
+      if (existing.ge.has(code)) existingDone.ge++;
+    } else if (code.startsWith('HK') || code.startsWith('PE')) {
+      counts.hk++;
+      if (existing.hk.has(code)) existingDone.hk++;
+    } else if (code.startsWith('NSTP')) {
+      counts.nstp++;
+      if (existing.nstp.has(code)) existingDone.nstp++;
+    }
+  });
+
+  ['ge', 'hk', 'nstp'].forEach(type => {
+    slots
+      .filter(course => course.genericRequirement === type)
+      .slice(0, Math.max(0, counts[type] - existingDone[type]))
+      .forEach(course => done.add(normalizeCourseCode(course.code)));
+  });
+
+  return done;
+}
+
 const UPLB_PROGRAMS = {
   "BSCS": {
     "code": "BSCS",
@@ -11585,11 +11733,6 @@ function getFreeElectiveUnits(track) {
   return currentProgram.tracks[defaultTrack]?.freeElectiveUnits || 15;
 }
 
-// Check if a course is a GE course (title starts with "(GE)")
-function isGECourse(courseTitle) {
-  return courseTitle && courseTitle.trim().startsWith("(GE)");
-}
-
 // Check if a course is a required major course
 function isRequiredCourse(courseCode) {
   if (!currentProgram.requiredCodes) return false;
@@ -11615,7 +11758,7 @@ function getRemainingCourses(completedCourses) {
 
 // Count completed GE courses
 function countCompletedGE(completedCourses) {
-  return completedCourses.filter(c => isGECourse(c.title)).length;
+  return completedCourses.filter(c => isGECourse(c.code || c.courseCode, c.title || c.courseTitle)).length;
 }
 
 // Get remaining GE slots
@@ -11632,11 +11775,16 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     UPLB_PROGRAMS,
     COLLEGES,
+    normalizeCourseCode,
+    isNonGwaCourseCode,
     getCurrentCurriculum,
     setCurrentProgram,
     detectTrack,
     getFreeElectiveUnits,
     isGECourse,
+    genericRequirementCourses,
+    getPlannerCourses,
+    getCompletedRequirementSlotCodes,
     isRequiredCourse,
     getRemainingCourses,
     countCompletedGE,

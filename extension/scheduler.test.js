@@ -1,6 +1,6 @@
 // Self-check for scheduler.js. Run: node extension/scheduler.test.js
 const assert = require('assert');
-const { scheduleEarliest, semAt, termLabel } = require('./src/scheduler.js');
+const { scheduleEarliest, semAt, termLabel, plannableCourses } = require('./src/scheduler.js');
 
 const C = (code, units, sem, prereqs = []) => ({ code, title: code, units, sem, prereqs });
 
@@ -22,6 +22,7 @@ assert.strictEqual(termLabel(0, 2026, '1'), '2026 1st Sem');
 assert.strictEqual(termLabel(1, 2026, '1'), '2027 2nd Sem');
 assert.strictEqual(termLabel(2, 2026, '1'), '2027 Midyear');
 assert.strictEqual(termLabel(3, 2026, '1'), '2027 1st Sem');
+assert.strictEqual(plannableCourses([C('GE 1', 3), C('Elective', 3)]).length, 1);
 
 // baseline: A,E @ t0; B @ t1; D @ t2 (midyear); CC @ t3 (next 1st sem)
 let r = scheduleEarliest({ courses: COURSES, passed: new Set(), startSem: '1' });
