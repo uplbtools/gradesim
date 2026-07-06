@@ -17,7 +17,7 @@
   --card-border: #3a3a45;
   
   --text-primary: #d8d8dc;
-  --text-secondary: #8a8a94;
+  --text-secondary: #9a9aa4; /* AA contrast on --bg-light */
   --text-accent: #6ec96e;
   
   --success: #6ec96e;
@@ -1173,4 +1173,19 @@ header h1 {
   border-color: var(--warning);
   background: rgba(255, 255, 0, 0.2);
   color: var(--warning);
+}
+/* A11y: visible focus on interactive controls, calm mode for reduced motion */
+.tab:focus-visible,
+.btn:focus-visible,
+.view-btn:focus-visible,
+.wrapped-nav-btn:focus-visible {
+  outline: 2px solid var(--gem-light, #8fd48f);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

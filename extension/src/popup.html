@@ -27,7 +27,7 @@
       <button id="refreshBtn" class="btn btn-primary">Refresh</button>
     </div>
 
-    <div id="mainContent" class="hidden">
+    <main id="mainContent" class="hidden">
       <!-- Program Selector -->
       <section class="program-selector">
         <label for="programSelect">Your Program:</label>
@@ -107,15 +107,15 @@
       <p class="credits">UPLB GWA Calculator</p>
 
       <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab active" data-tab="grades">Grades</button>
-        <button class="tab" data-tab="whatif">What If?</button>
-        <button class="tab" data-tab="planner">Planner</button>
-        <button class="tab" data-tab="wrapped">Wrapped</button>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="grades" role="tab" id="tab-grades" aria-controls="gradesTab" aria-selected="true">Grades</button>
+        <button class="tab" data-tab="whatif" role="tab" id="tab-whatif" aria-controls="whatifTab" aria-selected="false">What If?</button>
+        <button class="tab" data-tab="planner" role="tab" id="tab-planner" aria-controls="plannerTab" aria-selected="false">Planner</button>
+        <button class="tab" data-tab="wrapped" role="tab" id="tab-wrapped" aria-controls="wrappedTab" aria-selected="false">Wrapped</button>
       </div>
 
       <!-- Grades Tab -->
-      <section id="gradesTab" class="tab-content active">
+      <section id="gradesTab" class="tab-content active" role="tabpanel" aria-labelledby="tab-grades">
         <div class="view-toggle">
           <button class="view-btn active" data-view="semester">By Semester</button>
           <button class="view-btn" data-view="year">By Year</button>
@@ -126,7 +126,7 @@
       </section>
 
       <!-- What If Tab -->
-      <section id="whatifTab" class="tab-content hidden">
+      <section id="whatifTab" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-whatif">
         <div class="whatif-container">
           <h3>Target Latin Honor</h3>
           <div class="honor-options">
@@ -162,7 +162,7 @@
               <input type="radio" name="targetHonor" value="custom">
               <span class="honor-label">
                 <strong>Custom Target</strong>
-                <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="e.g., 1.50">
+                <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="e.g., 1.50" aria-label="Custom target GWA">
               </span>
             </label>
           </div>
@@ -191,7 +191,7 @@
       </section>
 
       <!-- Planner Tab -->
-      <section id="plannerTab" class="tab-content hidden">
+      <section id="plannerTab" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-planner">
         <div class="planner-container">
           <div class="planner-header">
             <h3>Course Planner</h3>
@@ -202,20 +202,20 @@
       </section>
 
       <!-- Wrapped Tab -->
-      <section id="wrappedTab" class="tab-content hidden">
+      <section id="wrappedTab" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-wrapped">
         <div class="wrapped-container">
           <div id="wrappedPanel" class="wrapped-panel">
             <!-- Panels will be populated by JS -->
           </div>
           <div class="wrapped-nav">
             <button id="wrappedPrev" class="wrapped-nav-btn" disabled>← Prev</button>
-            <span id="wrappedProgress" class="wrapped-progress">1 / 5</span>
+            <span id="wrappedProgress" class="wrapped-progress"></span>
             <button id="wrappedNext" class="wrapped-nav-btn">Next →</button>
           </div>
           <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 
   <footer class="footer">

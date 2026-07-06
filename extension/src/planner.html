@@ -8,48 +8,59 @@
   <link rel="stylesheet" href="planner.css">
 </head>
 <body class="planner-page">
-  <div class="planner-full-container">
+  <main class="planner-full-container">
     <header>
       <h1><a href="https://gradesim.stimmie.dev" target="_blank" style="color: inherit; text-decoration: none;">Elbi GradeSim Course Planner</a> <span id="plannerProgram" class="planner-program"></span></h1>
     </header>
     <div class="planner-header">
       <p class="hint">
         Arrows indicate prerequisites. Hover a course to see its chain.
-        <span class="planner-completed-legend"></span> Passed
+        <span class="planner-completed-legend"></span> ✓ Passed
+        <span class="planner-available-legend"></span> Ready to take
         <span class="planner-locked-legend"></span> Locked
-        <span class="planner-failed-legend"></span> Failed
-        <span class="planner-notoffered-legend"></span> Not offered that sem
+        <span class="planner-failed-legend"></span> ✗ Failed
+        <span class="planner-invalidtiming-legend"></span> ⚠ Before its prereq
+        <span class="planner-notoffered-legend"></span> ⚑ Not offered that sem
+        <span class="planner-whatif-legend"></span> Affected by simulation
       </p>
       <p class="hint" style="margin-top: 8px; color: var(--info);">
-        <strong>Tip:</strong> Drag courses between terms. Right-click a course to toggle its status (Planned → Passed → Failed). Courses before their prerequisites glow <strong style="color: #ff4444;">red</strong>; courses in a sem they aren't offered glow <strong style="color: #e8a33d;">orange</strong>.
+        <strong>Tip:</strong> Drag courses between terms (or focus one and press <kbd>[</kbd> / <kbd>]</kbd>). Right-click or press <kbd>Enter</kbd> to toggle status (Planned → Passed → Failed → back to AMIS). ✎ marks a manual override.
       </p>
     </div>
+    <div id="plannerBanner" class="planner-banner hidden"></div>
     <div class="whatif-bar">
       <span id="baselineGrad" class="whatif-baseline" aria-live="polite"></span>
+      <details class="whatif-info">
+        <summary aria-label="How is this computed?">ⓘ</summary>
+        <p class="hint">Assumes up to 21 units per sem (6 in midyear), each course offered on its usual sem, and counts <strong>major courses only</strong> — GE and free electives aren't included in this date.</p>
+      </details>
       <span class="whatif-controls">
-        <label for="whatifCourse">What if I</label>
+        <label for="whatifMode">What if I</label>
         <select id="whatifMode" aria-label="Scenario">
           <option value="fail">fail</option>
           <option value="1">delay by 1 term</option>
           <option value="2">delay by 2 terms</option>
-          <option value="3">delay by 3 terms</option>
+          <option value="3">delay by 1 year (3 terms)</option>
         </select>
         <select id="whatifCourse" aria-label="Course to simulate">
           <option value="">— pick a course —</option>
         </select>
         <button id="whatifSimulate" class="btn btn-primary">Simulate</button>
-        <button id="whatifReset" class="btn">Reset</button>
+        <button id="whatifReset" class="btn">Clear simulation</button>
         <button id="whatifAutoplan" class="btn" title="Fill the grid below with the computed earliest plan">Auto-plan grid</button>
+        <button id="plannerResetPlan" class="btn" title="Move every course back to its default curriculum slot and clear manual status overrides">Reset plan</button>
+        <button id="plannerUndo" class="btn hidden">Undo</button>
       </span>
       <span id="whatifResult" class="whatif-result" aria-live="polite"></span>
     </div>
+    <span id="plannerStatus" class="visually-hidden" aria-live="polite"></span>
     <div class="planner-scroll-wrapper" id="plannerScrollWrapper">
       <svg id="plannerArrows" class="planner-arrows" aria-hidden="true"></svg>
       <div id="plannerGrid" class="planner-grid">
         <!-- Semesters and courses injected here -->
       </div>
     </div>
-  </div>
+  </main>
   <script src="curriculum.js"></script>
   <script src="scheduler.js"></script>
   <script src="planner.js"></script>

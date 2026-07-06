@@ -33,19 +33,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Tab handling
   const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+  const activateTab = (tab) => {
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
 
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-        content.classList.add('hidden');
-      });
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+      content.classList.add('hidden');
+    });
 
-      const tabId = tab.dataset.tab + 'Tab';
-      document.getElementById(tabId).classList.remove('hidden');
-      document.getElementById(tabId).classList.add('active');
+    const tabId = tab.dataset.tab + 'Tab';
+    document.getElementById(tabId).classList.remove('hidden');
+    document.getElementById(tabId).classList.add('active');
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus();
+      activateTab(next);
     });
   });
 
@@ -169,9 +180,10 @@ async function loadGradesData() {
     // Get data from storage
     let result = await chrome.storage.local.get(['gradesData']);
 
-    // If no data, wait a moment and try again (data might still be loading)
-    if (!result.gradesData) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    // If no data, retry a few times — the content script may still be
+    // fetching grades on a cold AMIS load
+    for (let attempt = 0; !result.gradesData && attempt < 3; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
       result = await chrome.storage.local.get(['gradesData']);
     }
 
@@ -199,13 +211,13 @@ function displayGradesData(courses) {
   // Calculate GWA with exclusions
   const { gwa, totalUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount } = calculateGWA(courses, excludedCourses);
 
-  // Display GWA
-  document.getElementById('currentGWA').textContent = gwa.toFixed(4);
+  // Display GWA — no numeric grades yet means no GWA, not 0.0000
+  document.getElementById('currentGWA').textContent = totalUnits > 0 ? gwa.toFixed(4) : '--.--';
   document.getElementById('totalUnits').textContent = excludedCount > 0 ? `${totalUnits} (${excludedUnits} excl.)` : totalUnits;
   document.getElementById('totalCourses').textContent = excludedCount > 0 ? `${totalCourses} (${excludedCount} excl.)` : totalCourses;
 
   // Display honor status
-  displayHonorStatus(gwa);
+  displayHonorStatus(totalUnits > 0 ? gwa : 99);
 
   // Display grades list (pass courses for toggle functionality)
   displayGradesList(gradesBySemester, courses);
@@ -304,12 +316,16 @@ function calculateGWA(courses, excludedIds = new Set()) {
     totalUnits += units;
     totalCourses++;
 
-    completedCourses.push({
-      code: course.courseCode,
-      title: course.courseTitle,
-      units: units,
-      grade: grade
-    });
+    // 5.0 is failed and 4.0 is conditional (pending removal exam) — both
+    // count in the GWA but the course is not completed
+    if (grade <= 3.0) {
+      completedCourses.push({
+        code: course.courseCode,
+        title: course.courseTitle,
+        units: units,
+        grade: grade
+      });
+    }
   });
 
   const gwa = totalUnits > 0 ? totalWeightedGrade / totalUnits : 0;
@@ -827,7 +843,8 @@ function generateWrappedData(courses) {
     mostRetakedCourse: null,
     totalCourses: 0,
     specialGrades: [],
-    semesterGWAs: {} // Track GWA per semester
+    semesterGWAs: {}, // Track GWA per semester
+    unitsPassed: 0 // Units actually passed (grade <= 3.0, S, or P) — for graduation progress
   };
 
   const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
@@ -842,8 +859,12 @@ function generateWrappedData(courses) {
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
     const semKey = course.term || `${course.academicYear} - ${course.semester}`;
 
-    // Skip excluded prefixes
+    // Skip excluded prefixes (still count their passed units toward graduation)
     if (excludedPrefixes.some(prefix => courseCode.toUpperCase().startsWith(prefix))) {
+      const g = parseFloat(course.grade);
+      if (gradeStr === 'S' || gradeStr === 'P' || (!isNaN(g) && g >= 1.0 && g <= 3.0)) {
+        data.unitsPassed += course.units || 0;
+      }
       return;
     }
 
@@ -855,6 +876,9 @@ function generateWrappedData(courses) {
       if (!data.specialGrades.includes(gradeStr)) {
         data.specialGrades.push(gradeStr);
       }
+      if (gradeStr === 'S' || gradeStr === 'P') {
+        data.unitsPassed += course.units || 0;
+      }
       return;
     }
 
@@ -865,12 +889,17 @@ function generateWrappedData(courses) {
 
     data.totalCourses++;
 
+    if (grade <= 3.0) {
+      data.unitsPassed += units;
+    }
+
     // Track semester GWA data
     if (!semesterData[semKey]) {
-      semesterData[semKey] = { totalWeighted: 0, totalUnits: 0 };
+      semesterData[semKey] = { totalWeighted: 0, totalUnits: 0, termId: 0 };
     }
     semesterData[semKey].totalWeighted += grade * units;
     semesterData[semKey].totalUnits += units;
+    semesterData[semKey].termId = Math.max(semesterData[semKey].termId, course.termId || 0);
 
     // Track grade distribution
     const gradeKey = grade.toFixed(2);
@@ -925,7 +954,8 @@ function generateWrappedData(courses) {
     if (semData.totalUnits > 0) {
       data.semesterGWAs[sem] = {
         gwa: semData.totalWeighted / semData.totalUnits,
-        units: semData.totalUnits
+        units: semData.totalUnits,
+        termId: semData.termId
       };
     }
   });
@@ -1037,9 +1067,9 @@ function generateCurrentSemesterPanel(data) {
     `;
   }
 
-  const latestTermKey = Object.keys(data.semesterGWAs)[
-    Object.keys(data.semesterGWAs).length - 1
-  ];
+  // Latest by AMIS termId, not object insertion order
+  const latestTermKey = Object.keys(data.semesterGWAs).reduce((best, key) =>
+    !best || data.semesterGWAs[key].termId > data.semesterGWAs[best].termId ? key : best, null);
   const latestTermData = data.semesterGWAs[latestTermKey];
 
   // alert(latestTermData.gwa)
@@ -1076,7 +1106,7 @@ function generateCurrentSemesterPanel(data) {
     <div class="panel-emoji">${emoji}</div>
     <div class="panel-title">${title}</div>
     <div class="panel-value">${latestTermData.gwa > 0 ? latestTermData.gwa.toFixed(4) : '--'}</div>
-    <div class="panel-subtitle">GWA for ${latestTermKey}</div>
+    <div class="panel-subtitle">GWA for ${sanitizeText(latestTermKey)}</div>
     <div class="panel-message">${message}</div>
   `;
 
@@ -1279,7 +1309,7 @@ function generateHighlightsPanel(data) {
 
 function generateProgressPanel(data) {
   const totalRequired = currentProgram?.totalUnitsRequired || 155;
-  const completed = data.totalUnits;
+  const completed = data.unitsPassed;
   const remaining = Math.max(0, totalRequired - completed);
   const percentage = Math.min(100, Math.round((completed / totalRequired) * 100));
 

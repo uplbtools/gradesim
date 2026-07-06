@@ -35,8 +35,8 @@
       return response;
     }
     
-    // Check if this is the grades API call
-    const url = args[0]?.toString() || '';
+    // Check if this is the grades API call (fetch accepts a string or a Request)
+    const url = (args[0] instanceof Request ? args[0].url : args[0]?.toString()) || '';
     if (url.includes('api-amis.uplb.edu.ph/api/students/grades')) {
       try {
         const clonedResponse = response.clone();

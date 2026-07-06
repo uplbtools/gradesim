@@ -244,6 +244,95 @@ body.planner-page {
   font-weight: normal;
 }
 
+/* ---------- Missing-data banner, a11y helpers ---------- */
+
+.planner-banner {
+  background: rgba(212, 168, 75, 0.15);
+  border: 1px solid var(--warning);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  color: var(--warning);
+}
+
+.planner-banner.hidden {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.whatif-info {
+  display: inline-block;
+  position: relative;
+}
+
+.whatif-info summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--info);
+}
+
+.whatif-info[open] p {
+  position: absolute;
+  z-index: 10;
+  width: 320px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 4px;
+}
+
+.planner-available-legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--info);
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+.planner-invalidtiming-legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #ff4444;
+  box-shadow: 0 0 4px rgba(255, 68, 68, 0.8);
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+.planner-whatif-legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  outline: 2px solid #b06ee8;
+  outline-offset: 1px;
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+.tab:focus-visible,
+.btn:focus-visible,
+.planner-node:focus-visible {
+  outline: 2px solid var(--gem-light, #8fd48f);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* ---------- Arrow focus mode ---------- */
 
 /* Dim by default; the full graph is context, not the message */

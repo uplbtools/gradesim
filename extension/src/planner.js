@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('plannerProgram').textContent = curriculum.name || program;
 
+  if (!globalData.gradesData || !globalData.gradesData.student_grades) {
+    const banner = document.getElementById('plannerBanner');
+    banner.classList.remove('hidden');
+    banner.textContent = 'No grades loaded yet — open AMIS while logged in, then revisit this page so your passed courses are counted. Until then this plan assumes you are starting from scratch.';
+  }
+
   initDefaultSchedule();
   initWhatIfBar();
   runBaseline();
@@ -108,12 +114,12 @@ function computeStatuses() {
     }
   }
 
-  const statusOf = (code) => {
-    if (globalData.customCourseStatus[code]) return globalData.customCourseStatus[code];
+  const autoStatusOf = (code) => {
     if (amisPassed.has(code)) return 'passed';
     if (amisFailed.has(code)) return 'failed';
     return 'planned';
   };
+  const statusOf = (code) => globalData.customCourseStatus[code] || autoStatusOf(code);
 
   const passedSet = new Set();
   curriculum.majorCourses.forEach(course => {
@@ -124,7 +130,7 @@ function computeStatuses() {
   // Substituted/AMIS codes outside the curriculum still count as passed prereqs.
   amisPassed.forEach(code => passedSet.add(code));
 
-  return { statusOf, passedSet };
+  return { statusOf, autoStatusOf, passedSet };
 }
 
 // ponytail: month heuristic for the current UPLB term (Aug-Dec 1st sem,
@@ -160,15 +166,10 @@ function computeGridStart(startSem, statusOf) {
 function runScheduler(extra) {
   const { statusOf, passedSet } = computeStatuses();
   const term = currentTerm();
-  const passed = new Set(passedSet);
-  const notBefore = {};
-  if (extra) {
-    if (extra.removePassed) passed.delete(extra.removePassed);
-    Object.assign(notBefore, extra.notBefore || {});
-  }
+  const notBefore = extra ? { ...extra.notBefore } : {};
   const result = scheduleEarliest({
     courses: curriculum.majorCourses,
-    passed,
+    passed: passedSet,
     notBefore,
     startSem: term.sem
   });
@@ -215,6 +216,12 @@ function initWhatIfBar() {
   document.getElementById('whatifSimulate').addEventListener('click', simulateWhatIf);
   document.getElementById('whatifReset').addEventListener('click', resetWhatIf);
   document.getElementById('whatifAutoplan').addEventListener('click', applyAutoPlan);
+  document.getElementById('plannerResetPlan').addEventListener('click', resetPlanToDefault);
+  document.getElementById('plannerUndo').addEventListener('click', undoPlanChange);
+}
+
+function announce(message) {
+  document.getElementById('plannerStatus').textContent = message;
 }
 
 function simulateWhatIf() {
@@ -255,11 +262,15 @@ function simulateWhatIf() {
     }
   });
 
+  const pushedLabel = pushed.length > 5
+    ? `${pushed.slice(0, 5).join(', ')} +${pushed.length - 5} more`
+    : pushed.join(', ');
+
   const verb = mode === 'fail' ? 'Failing' : 'Delaying';
   if (slip <= 0) {
-    resultEl.textContent = `${verb} ${code} does not move your graduation — still ${after}. ${pushed.length > 0 ? `Shifted: ${pushed.join(', ')}.` : 'Nothing else shifts.'}`;
+    resultEl.textContent = `${verb} ${code} does not move your graduation — still ${after}. ${pushed.length > 0 ? `Shifted: ${pushedLabel}.` : 'Nothing else shifts.'}`;
   } else {
-    resultEl.textContent = `${verb} ${code} slips graduation from ${before} to ${after} (+${slip} term${slip === 1 ? '' : 's'}). ${pushed.length > 0 ? `Also pushed later: ${pushed.join(', ')}.` : ''}`;
+    resultEl.textContent = `${verb} ${code} slips graduation from ${before} to ${after} (+${slip} term${slip === 1 ? '' : 's'}). ${pushed.length > 0 ? `Also pushed later: ${pushedLabel}.` : ''}`;
   }
 
   highlightWhatIf(code, pushed);
@@ -281,15 +292,50 @@ function resetWhatIf() {
   highlightWhatIf(null, []);
 }
 
+let undoStash = null;
+
+function stashForUndo() {
+  undoStash = {
+    plannedSchedule: { ...globalData.plannedSchedule },
+    customCourseStatus: { ...globalData.customCourseStatus }
+  };
+  document.getElementById('plannerUndo').classList.remove('hidden');
+}
+
+function undoPlanChange() {
+  if (!undoStash) return;
+  globalData.plannedSchedule = undoStash.plannedSchedule;
+  globalData.customCourseStatus = undoStash.customCourseStatus;
+  undoStash = null;
+  document.getElementById('plannerUndo').classList.add('hidden');
+  savePlannerData();
+  runBaseline();
+  renderPlannerFullscreen();
+  document.getElementById('whatifResult').textContent = 'Previous plan restored.';
+}
+
 // Write the engine's plan (simulated one if active) into the drag-drop grid.
 function applyAutoPlan() {
+  stashForUndo();
   const result = simResult || baselineResult;
   Object.entries(result.assignedTerm).forEach(([code, t]) => {
     globalData.plannedSchedule[code] = timeToKey(currentStart.gridStartTime + t);
   });
   savePlannerData();
   renderPlannerFullscreen();
-  document.getElementById('whatifResult').textContent = 'Plan applied to the grid. Drag courses to adjust.';
+  document.getElementById('whatifResult').textContent = 'Plan applied to the grid. Drag courses to adjust, or Undo to go back.';
+}
+
+// Everything back to its default curriculum slot, manual overrides cleared.
+function resetPlanToDefault() {
+  stashForUndo();
+  globalData.plannedSchedule = {};
+  globalData.customCourseStatus = {};
+  initDefaultSchedule();
+  savePlannerData();
+  runBaseline();
+  renderPlannerFullscreen();
+  document.getElementById('whatifResult').textContent = 'Plan reset to the default curriculum. Undo to go back.';
 }
 
 /* ---------- Grid ---------- */
@@ -361,6 +407,7 @@ function renderPlannerFullscreen() {
         globalData.plannedSchedule[draggedCode] = key;
         savePlannerData();
         renderPlannerFullscreen();
+        announce(`${draggedCode} moved to ${key}`);
       }
     });
 
@@ -404,16 +451,28 @@ function renderPlannerFullscreen() {
       nodeEl.id = `planner-node-${code.replace(/[^A-Z0-9]/g, '-')}`;
       nodeEl.draggable = true;
       nodeEl.dataset.code = code;
+      nodeEl.tabIndex = 0;
+      nodeEl.setAttribute('role', 'button');
 
       const semNames = { '1': '1st Sem', '2': '2nd Sem', 'midyear': 'Midyear' };
       const offeredLabel = course.sem ? semNames[course.sem] : 'any regular sem';
       const problems = [];
       if (!timingValid) problems.push('scheduled before its prerequisite');
       if (!offeredOk) problems.push(`only offered ${offeredLabel}`);
+      const isOverridden = !!globalData.customCourseStatus[code];
       nodeEl.title = `${course.code} (${course.units || '?'} units, offered ${offeredLabel})${problems.length ? ' — ' + problems.join('; ') : ''}`;
+      nodeEl.setAttribute('aria-label',
+        `${course.code}, ${status}${isOverridden ? ' (manual override)' : ''}${problems.length ? ', ' + problems.join(', ') : ''}. Enter to change status, bracket keys to move.`);
+
+      // Non-color status signal, survives grayscale and screen readers
+      let glyph = '';
+      if (status === 'failed') glyph = '✗ ';
+      else if (!timingValid) glyph = '⚠ ';
+      else if (!offeredOk) glyph = '⚑ ';
+      else if (status === 'passed') glyph = '✓ ';
 
       nodeEl.innerHTML = `
-        <span class="planner-node-code">${sanitizeText(course.code)}</span>
+        <span class="planner-node-code">${glyph}${sanitizeText(course.code)}${isOverridden ? ' ✎' : ''}</span>
         <span class="planner-node-title">${sanitizeText(course.title)}</span>
       `;
 
@@ -430,6 +489,16 @@ function renderPlannerFullscreen() {
         cycleCourseStatus(code);
       });
 
+      nodeEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          cycleCourseStatus(code);
+        } else if (e.key === '[' || e.key === ']') {
+          e.preventDefault();
+          moveCourseByKeyboard(code, e.key === ']' ? 1 : -1);
+        }
+      });
+
       colEl.appendChild(nodeEl);
       nodeEls[code] = nodeEl;
     });
@@ -441,17 +510,48 @@ function renderPlannerFullscreen() {
 }
 
 function cycleCourseStatus(code) {
-  const { statusOf } = computeStatuses();
+  const { statusOf, autoStatusOf } = computeStatuses();
   const current = statusOf(code);
   let next = 'planned';
   if (current === 'planned' || current === 'locked' || current === 'available') next = 'passed';
   else if (current === 'passed') next = 'failed';
   else if (current === 'failed') next = 'planned';
 
-  globalData.customCourseStatus[code] = next;
+  // Cycling back to what AMIS already says clears the override instead of
+  // pinning it, so real grades win again
+  if (next === autoStatusOf(code)) {
+    delete globalData.customCourseStatus[code];
+    announce(`${code} back to AMIS status: ${next}`);
+  } else {
+    globalData.customCourseStatus[code] = next;
+    announce(`${code} marked ${next}`);
+  }
   savePlannerData();
   runBaseline();
   renderPlannerFullscreen();
+  refocusNode(code);
+}
+
+function refocusNode(code) {
+  // Re-render destroys the focused element; put focus back on the same course
+  setTimeout(() => {
+    const el = (window.nodeEls || {})[code];
+    if (el) el.focus();
+  }, 0);
+}
+
+// Keyboard alternative to drag-drop: [ and ] move a course one term.
+function moveCourseByKeyboard(code, direction) {
+  const currentKey = globalData.plannedSchedule[code] || 'Unplanned';
+  let time = currentKey === 'Unplanned' ? 3 : getTermTime(currentKey);
+  time += direction;
+  if (time < 4) return; // Y1-1 is the earliest slot
+  const newKey = timeToKey(time);
+  globalData.plannedSchedule[code] = newKey;
+  savePlannerData();
+  renderPlannerFullscreen();
+  announce(`${code} moved to ${newKey}`);
+  refocusNode(code);
 }
 
 /* ---------- Arrows ---------- */
