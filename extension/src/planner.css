@@ -141,6 +141,27 @@ body.planner-page {
   opacity: 0.5;
   margin-left: 10px;
   margin-right: 4px;
+}
+
+.planner-failed-legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid #dc3545;
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
+.planner-notoffered-legend {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px dashed #e8a33d;
+  margin-left: 10px;
+  margin-right: 4px;
+}
+
 .planner-node {
   cursor: grab;
 }
@@ -156,5 +177,87 @@ body.planner-page {
 
 .planner-node.invalid-timing {
   border-color: #ff4444 !important;
+  border-style: solid;
   box-shadow: 0 0 8px rgba(255, 68, 68, 0.8) !important;
+}
+
+.planner-node.failed {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.2);
+}
+
+/* Course parked in a sem it isn't offered — dashed orange, distinct from
+   the solid red prerequisite violation for color-blind users too */
+.planner-node.not-offered {
+  border-color: #e8a33d !important;
+  border-style: dashed !important;
+  box-shadow: 0 0 8px rgba(232, 163, 61, 0.7) !important;
+}
+
+/* What-if simulation highlights */
+.planner-node.whatif-source {
+  outline: 3px solid #b06ee8;
+  outline-offset: 2px;
+}
+
+.planner-node.whatif-pushed {
+  outline: 3px dashed #b06ee8;
+  outline-offset: 2px;
+}
+
+/* ---------- What-if bar ---------- */
+
+.whatif-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+}
+
+.whatif-baseline {
+  font-weight: bold;
+  color: var(--gem-light, inherit);
+}
+
+.whatif-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.whatif-bar select {
+  background: var(--card-bg);
+  color: inherit;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.whatif-result {
+  color: var(--info);
+}
+
+.planner-program {
+  font-size: 0.6em;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+/* ---------- Arrow focus mode ---------- */
+
+/* Dim by default; the full graph is context, not the message */
+.prereq-arrow {
+  opacity: 0.15;
+  transition: opacity 0.15s;
+}
+
+/* When a course is hovered/focused, its arrows pop and the rest fade out */
+.planner-arrows.has-focus .prereq-arrow {
+  opacity: 0.05;
+}
+
+.planner-arrows.has-focus .prereq-arrow.arrow-focused {
+  opacity: 1;
+  stroke-width: 3;
 }
