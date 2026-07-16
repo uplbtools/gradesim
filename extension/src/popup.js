@@ -1313,7 +1313,7 @@ function generateGWAPanel(data) {
   } else if (gwa <= 3.00) {
     emoji = "🎮";
     title = "SURVIVAL MODE";
-    message = "Nandito ka pa, that counts. Minsan ganyan talaga UP — basta graduate, panalo.";
+    message = "Nandito ka pa, that counts. Minsan ganyan talaga UP. Basta graduate, panalo.";
   } else {
     emoji = "🌱";
     title = "COMEBACK ARC";
@@ -1359,7 +1359,7 @@ function generateSemesterPanel(data) {
       <div class="highlight-course" style="margin-top: 15px;">
         <div class="course-label">🏆 Best Semester</div>
         <div class="course-name">${sanitizeText(best.name)}</div>
-        <div class="course-grade">GWA: ${best.gwa.toFixed(4)} — ${reaction}</div>
+        <div class="course-grade">GWA: ${best.gwa.toFixed(4)}. ${reaction}</div>
       </div>
     `;
   }
@@ -1378,7 +1378,7 @@ function generateSemesterPanel(data) {
       <div class="highlight-course">
         <div class="course-label">📈 Toughest Semester</div>
         <div class="course-name">${sanitizeText(tough.name)}</div>
-        <div class="course-grade">GWA: ${tough.gwa.toFixed(4)} — ${reaction}</div>
+        <div class="course-grade">GWA: ${tough.gwa.toFixed(4)}. ${reaction}</div>
       </div>
     `;
   }
@@ -1386,9 +1386,9 @@ function generateSemesterPanel(data) {
   // Overall message
   const semCount = Object.keys(data.semesterGWAs).length;
   let overallMsg = '';
-  if (semCount >= 8) overallMsg = `${semCount} semesters completed — almost there!`;
+  if (semCount >= 8) overallMsg = `${semCount} semesters completed. Almost there!`;
   else if (semCount >= 6) overallMsg = `${semCount} sems done. The end is in sight.`;
-  else if (semCount >= 4) overallMsg = `${semCount} sems in — you're halfway through!`;
+  else if (semCount >= 4) overallMsg = `${semCount} sems in. You're halfway through!`;
   else if (semCount >= 2) overallMsg = `${semCount} semesters down, many more to go.`;
   else overallMsg = `Just getting started. Enjoy the ride!`;
   
@@ -1408,7 +1408,7 @@ function generateCollectorPanel(data) {
   if (totalDistinct >= 10) {
     emoji = "🎰";
     title = "FULL COLLECTION";
-    message = "You've seen it all — from 1.0 to 5.0, plus S, U, INC, DRP... your transcript tells a story.";
+    message = "You've seen it all: from 1.0 to 5.0, plus S, U, INC, DRP... your transcript tells a story.";
   } else if (totalDistinct >= 7) {
     emoji = "🃏";
     title = "VARIETY PACK";
@@ -1424,7 +1424,7 @@ function generateCollectorPanel(data) {
   } else {
     emoji = "📊";
     title = "STEADY GRADES";
-    message = "You stick to a range. Predictable in a good way — you know what you're doing.";
+    message = "You stick to a range. Predictable in a good way. You know what you're doing.";
   }
   
   // Build grade badges
@@ -1510,7 +1510,7 @@ function generateHighlightsPanel(data) {
       <div class="highlight-course">
         <div class="course-label">🔄 Persistence Award</div>
         <div class="course-name">${sanitizeText(data.mostRetakedCourse.code)}</div>
-        <div class="course-grade">Taken ${data.mostRetakedCourse.count}x — you didn't give up</div>
+        <div class="course-grade">Taken ${data.mostRetakedCourse.count}x. You didn't give up</div>
       </div>
     `;
   }
@@ -1536,7 +1536,7 @@ function generateProgressPanel(data) {
   if (percentage >= 100) {
     emoji = "🎓";
     title = "GRADUATION READY";
-    message = "All units done! Time to march. Congratulations — you made it.";
+    message = "All units done! Time to march. Congratulations. You made it.";
   } else if (percentage >= 80) {
     emoji = "🚀";
     title = "ALMOST THERE";
@@ -1544,7 +1544,7 @@ function generateProgressPanel(data) {
   } else if (percentage >= 60) {
     emoji = "⚡";
     title = "PAST HALFWAY";
-    message = `${remaining} units to go. More than half done — you've got momentum.`;
+    message = `${remaining} units to go. More than half done. You've got momentum.`;
   } else if (percentage >= 40) {
     emoji = "🌤️";
     title = "MAKING PROGRESS";
@@ -1556,7 +1556,7 @@ function generateProgressPanel(data) {
   } else {
     emoji = "🌱";
     title = "JUST STARTING";
-    message = `${remaining} units to complete. Welcome to the journey — it's a marathon, not a sprint.`;
+    message = `${remaining} units to complete. Welcome to the journey. It's a marathon, not a sprint.`;
   }
   
   return `
