@@ -192,6 +192,7 @@ header h1 {
 
 /* Pixel Buttons */
 .btn {
+  min-height: 44px;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
@@ -357,6 +358,7 @@ header h1 {
 
 .tab {
   flex: 1;
+  min-height: 44px;
   padding: 10px;
   background: var(--card-bg);
   border: 2px solid var(--card-border);
@@ -404,6 +406,7 @@ header h1 {
 
 .view-btn {
   flex: 1;
+  min-height: 44px;
   padding: 6px 10px;
   background: var(--card-bg);
   border: 2px solid var(--card-border);
@@ -951,6 +954,7 @@ header h1 {
   background: transparent;
   border: 2px solid var(--card-border);
   color: var(--text-secondary);
+  min-height: 44px;
   padding: 3px 6px;
   font-family: var(--font-body);
   font-size: 0.7rem;
@@ -1117,6 +1121,8 @@ header h1 {
 }
 
 .wrapped-nav-btn {
+  min-height: 44px;
+  min-width: 44px;
   background: linear-gradient(180deg, var(--gem-light) 0%, var(--gem-mid) 100%);
   color: var(--bg-dark);
   border: none;
@@ -1178,7 +1184,8 @@ header h1 {
 .tab:focus-visible,
 .btn:focus-visible,
 .view-btn:focus-visible,
-.wrapped-nav-btn:focus-visible {
+.wrapped-nav-btn:focus-visible,
+.exclude-toggle:focus-visible {
   outline: 2px solid var(--gem-light, #8fd48f);
   outline-offset: 2px;
 }
