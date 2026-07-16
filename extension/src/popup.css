@@ -38,6 +38,15 @@
   --font-mono: 'VT323', monospace;
 }
 
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--text-accent);
+  outline-offset: 3px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -306,6 +315,10 @@ header h1 {
 
 /* Pixel Buttons */
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
@@ -315,7 +328,7 @@ header h1 {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
-  transition: all 0.1s;
+  transition: transform 0.1s, box-shadow 0.1s;
   background: linear-gradient(180deg, var(--gem-light) 0%, var(--gem-mid) 50%, var(--gem-dark) 100%);
   color: var(--bg-dark);
   border: 2px solid var(--gem-dark);
@@ -1602,6 +1615,7 @@ header h1 {
 
 /* Small pixel buttons */
 .btn-sm {
+  min-height: 44px;
   padding: 6px 12px;
   font-size: 0.75rem;
   box-shadow: 
