@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const curriculumPath = '/home/stimmie/dev/personal/gradesim/extension/src/curriculum.js';
-const tempJsonPath = '/home/stimmie/dev/personal/gradesim/scratch/parsed_programs.json';
+const curriculumPath = '/home/stimmie/dev/uplbtools/gradesim/extension/src/curriculum.js';
+const tempJsonPath = '/home/stimmie/dev/uplbtools/gradesim/scratch/parsed_programs.json';
 
 const parsed = JSON.parse(fs.readFileSync(tempJsonPath, 'utf8'));
 let content = fs.readFileSync(curriculumPath, 'utf8');
