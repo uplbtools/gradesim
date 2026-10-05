@@ -47,6 +47,15 @@
         "content.js"
       ],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://gradesim.uplb.tools/*"
+      ],
+      "js": [
+        "bridge.js"
+      ],
+      "run_at": "document_start"
     }
   ]
 }

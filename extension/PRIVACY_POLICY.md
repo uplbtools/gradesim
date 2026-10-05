@@ -38,6 +38,7 @@ Your grades data is used exclusively for:
 |------------|----------------|
 | `storage` | To save your grades data locally on your device |
 | `host_permissions` for amis.uplb.edu.ph | To access the AMIS portal and read your grades |
+| `externally_connectable` for gradesim.uplb.tools (Chrome, Edge, Opera) and a content script there (Firefox) | So the Elbi GradeSim web app can ask for your grades when you click Import. They pass to the page inside your browser and are never sent over the network |
 
 ## Data Deletion
 
@@ -51,7 +52,7 @@ Chrome Settings > Privacy and Security > Clear Browsing Data > Cookies and other
 
 ## Security
 
-- The extension only works on the official UPLB AMIS website (amis.uplb.edu.ph)
+- The extension reads grades only on the official UPLB AMIS website (amis.uplb.edu.ph), and shares them only with the Elbi GradeSim web app at gradesim.uplb.tools when you ask it to
 - We use your existing AMIS session - we never ask for or store your password
 - All data processing happens locally in your browser
 
