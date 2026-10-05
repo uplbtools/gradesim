@@ -104,7 +104,12 @@ const state = {
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
-  document.querySelectorAll('[data-icon]').forEach(el => { el.outerHTML = icon(el.dataset.icon); });
+  // Parse the static icon markup with DOMParser instead of assigning
+  // outerHTML, which the Firefox add-on linter flags for review.
+  document.querySelectorAll('[data-icon]').forEach(el => {
+    const doc = new DOMParser().parseFromString(icon(el.dataset.icon), 'text/html');
+    el.replaceWith(document.importNode(doc.body.firstElementChild, true));
+  });
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
     'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme']);
   const d = state.data;
