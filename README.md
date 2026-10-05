@@ -7,18 +7,15 @@ A browser extension for UPLB students to calculate their GWA and simulate grades
 ```
 gradesim/
 ├── extension/ # Browser extension source
-│ ├── src/ # Shared source (popup, content scripts, curriculum data)
+│ ├── src/ # Shared source (popup, planner, content scripts, curriculum data)
 │ ├── manifests/ # Per-browser manifest files
 │ ├── icons/ # Extension icons
 │ └── build.sh # Build script for each browser target
-├── website/ # Next.js landing page
-│ ├── app/ # Pages and components
-│ └── public/
-│ ├── curricula/ # Curriculum images by college (PNG)
-│ ├── chrome.svg # Browser logos
-│ └── firefox.svg
+├── scratch/ # Curriculum data pipeline (PDF parsing, prereq graphs)
 └── README.md
 ```
+
+The landing page lives in a separate repo: [gradesim-website](https://github.com/smmariquit/gradesim-website).
 
 ## Extension
 
@@ -45,16 +42,6 @@ Output goes to `extension/dist/<browser>/`. Load the folder in your browser's de
 - Grades overview by semester or year
 - 30+ UPLB degree programs supported
 - 100% local: no data leaves your device
-
-## Website
-
-```bash
-cd website
-npm install
-npm run dev
-```
-
-The landing page links to both store listings and displays curriculum data.
 
 ## Privacy
 

@@ -179,6 +179,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mainContentEl = document.getElementById('mainContent');
   const refreshBtn = document.getElementById('refreshBtn');
   
+  document.getElementById('openPlannerBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('planner.html') });
+  });
+
   // Tab handling
   const tabs = document.querySelectorAll('.tab');
   tabs.forEach(tab => {
