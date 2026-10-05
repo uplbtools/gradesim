@@ -1710,7 +1710,7 @@ async function exportWrappedToPNG() {
   ctx.font = '8px "Press Start 2P", monospace';
   drawTextWithOutline('Elbi GradeSim', width / 2, 64, stravaOrangeLight);
   ctx.font = '10px "Press Start 2P", monospace';
-  drawTextWithOutline('amis.stimmie.dev', width / 2, 80, stravaOrange);
+  drawTextWithOutline('gradesim.uplb.tools', width / 2, 80, stravaOrange);
   
   // Emoji
   ctx.font = '56px Arial';
