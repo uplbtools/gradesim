@@ -12,10 +12,14 @@
     <header>
       <img class="plumbob" src="plumbob.svg" alt="">
       <div class="brand">
-        <h1>Elbi GradeSim</h1>
+        <h1><a href="https://gradesim.stimmie.dev" target="_blank" rel="noopener">Elbi GradeSim</a></h1>
         <span class="byline">by UPLB Tools</span>
       </div>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+      <div class="header-actions">
+        <button id="helpBtn" class="header-btn" type="button" title="How to use"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help</button>
+        <button id="openTabBtn" class="header-btn primary" type="button" title="Open in a full tab"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Full tab</button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+      </div>
     </header>
 
     <div id="loading" class="loading">
@@ -34,6 +38,8 @@
     </div>
 
     <div id="mainContent" class="hidden">
+      <div class="tab-layout-grid">
+        <div class="sidebar-column">
       <!-- Program Selector -->
       <section class="program-selector">
         <label for="programSelect">Your program</label>
@@ -110,6 +116,11 @@
         <div id="honorStatus" class="honor-status"></div>
       </section>
 
+      <p class="credits"><a href="https://gradesim.stimmie.dev" target="_blank" rel="noopener">gradesim.stimmie.dev</a> <span aria-hidden="true">|</span> <a href="#" id="viewTermsLink" class="terms-link">Terms and privacy</a></p>
+        </div>
+
+        <div class="content-column">
+
       <!-- Tabs -->
       <div class="tabs">
         <button class="tab active" data-tab="grades">Grades</button>
@@ -185,6 +196,29 @@
             </div>
           </div>
 
+          <!-- Course Substitutions -->
+          <div class="substitutions-container" id="substitutionsContainer">
+            <h3>Course Substitutions</h3>
+            <div id="substitutionsList" class="substitutions-list">
+              <!-- Populated by JS -->
+            </div>
+            <div class="add-sub-box">
+              <div class="sub-field">
+                <label for="subRequired">Required course</label>
+                <select id="subRequired">
+                  <option value="">Choose a required course</option>
+                </select>
+              </div>
+              <div class="sub-field">
+                <label for="subTaken">Covered by</label>
+                <select id="subTaken">
+                  <option value="">Choose a completed course</option>
+                </select>
+              </div>
+              <button id="addSubBtn" class="btn btn-secondary btn-sm" type="button">Apply substitution</button>
+            </div>
+          </div>
+
           <div class="remaining-courses">
             <h3>Remaining Courses</h3>
             <p class="hint" id="curriculumHint">Based on selected curriculum</p>
@@ -207,6 +241,126 @@
           <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
         </div>
       </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-actions-footer">
+      <button id="exportBtn" class="header-btn" type="button" title="Export grades and settings as JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export JSON</button>
+      <button id="importBtn" class="header-btn" type="button" title="Import grades and settings from JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Import JSON</button>
+      <input type="file" id="importFile" accept=".json" hidden>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="helpOverlay" class="terms-overlay hidden">
+    <div class="terms-modal help-modal">
+      <div class="terms-header">
+        <h2>How to use Elbi GradeSim</h2>
+        <button id="closeHelpBtn" class="close-terms-btn" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <div class="terms-content help-content">
+        <div class="help-item">
+          <div class="help-badge btn-primary">EXCL.</div>
+          <div class="help-text">
+            <strong>Exclude from GWA</strong>
+            <p>Toggle a subject out of your GWA calculation. This is useful for NSTP, HK, or other non-bearing subjects. Grades like INC and DRP are handled automatically.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge scholar">SCHOLAR</div>
+          <div class="help-text">
+            <strong>Scholar Status</strong>
+            <p>Automatically displayed per semester when your GWA qualifies (&le;1.45 for University Scholar, &le;1.75 for College Scholar) assuming you meet unit requirements.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge">WHAT IF</div>
+          <div class="help-text">
+            <strong>Target Latin Honors</strong>
+            <p>In the What if tab, select a target Latin Honor (e.g. Cum Laude). The app will calculate the required average grade you need for your remaining units to achieve it.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge">JSON</div>
+          <div class="help-text">
+            <strong>Backup & Restore</strong>
+            <p>Use Export JSON to save your grades and settings to a file. Use Import JSON to restore them later or on another device.</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge btn-primary">WRAPPED</div>
+          <div class="help-text">
+            <strong>Elbi GradeSim Wrapped</strong>
+            <p>Generate a fun, interactive summary of your academic journey. You can even export the final slide for your Instagram Story!</p>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-badge">GRADES</div>
+          <div class="help-text">
+            <strong>UP grading system</strong>
+            <div class="legend-grid">
+              <div class="legend-item"><span class="legend-grade">1.0</span> <span class="legend-desc">Excellent</span></div>
+              <div class="legend-item"><span class="legend-grade">1.25</span> <span class="legend-desc">Excellent</span></div>
+              <div class="legend-item"><span class="legend-grade">1.5</span> <span class="legend-desc">Very Good</span></div>
+              <div class="legend-item"><span class="legend-grade">1.75</span> <span class="legend-desc">Very Good</span></div>
+              <div class="legend-item"><span class="legend-grade">2.0</span> <span class="legend-desc">Good</span></div>
+              <div class="legend-item"><span class="legend-grade">2.25</span> <span class="legend-desc">Good</span></div>
+              <div class="legend-item"><span class="legend-grade">2.5</span> <span class="legend-desc">Satisfactory</span></div>
+              <div class="legend-item"><span class="legend-grade">2.75</span> <span class="legend-desc">Satisfactory</span></div>
+              <div class="legend-item"><span class="legend-grade">3.0</span> <span class="legend-desc">Passed</span></div>
+              <div class="legend-item"><span class="legend-grade">4.0</span> <span class="legend-desc">Conditional</span></div>
+              <div class="legend-item"><span class="legend-grade">5.0</span> <span class="legend-desc">Failed</span></div>
+              <div class="legend-item"><span class="legend-grade">INC</span> <span class="legend-desc">Incomplete</span></div>
+              <div class="legend-item"><span class="legend-grade">DRP</span> <span class="legend-desc">Dropped</span></div>
+              <div class="legend-item"><span class="legend-grade">S</span> <span class="legend-desc">Satisfactory</span></div>
+              <div class="legend-item"><span class="legend-grade">U</span> <span class="legend-desc">Unsatisfactory</span></div>
+              <div class="legend-item"><span class="legend-grade">P</span> <span class="legend-desc">Passed</span></div>
+              <div class="legend-item"><span class="legend-grade">F</span> <span class="legend-desc">Failed</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Use & Privacy Notice Modal -->
+  <div id="termsOverlay" class="terms-overlay hidden">
+    <div class="terms-modal">
+      <button id="closeTermsBtn" class="close-terms-btn hidden" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="terms-header">
+        <h2>Elbi GradeSim</h2>
+        <p>Terms of Use & Privacy Notice</p>
+      </div>
+      <div class="terms-content">
+        <div class="terms-section">
+          <h3>About This Tool</h3>
+          <p>Elbi GradeSim is an independently developed student web extension designed specifically for <strong>UP Los Baños</strong> students for GWA tracking and simulation. It is not affiliated with, endorsed by, or connected to the University of the Philippines (UP) System, UPLB, or the UPLB AMIS portal.</p>
+        </div>
+        <div class="terms-section">
+          <h3>1. Privacy & Data</h3>
+          <p>Your academic data stays on your device. We collect, transmit, and track absolutely nothing. No analytics or external servers are used.</p>
+        </div>
+        <div class="terms-section">
+          <h3>2. Saved On Your Device</h3>
+          <p>All grade data is saved only inside your browser. Uninstalling the extension or clearing your browser's data will permanently remove your stored grades.</p>
+        </div>
+        <div class="terms-section">
+          <h3>3. Accuracy Disclaimer</h3>
+          <p>All GWA calculations and target simulations are unofficial estimates. They may not account for incomplete (INC), dropped (DRP), or deferred grades. Always verify official records with the UPLB Office of the University Registrar (OUR).</p>
+        </div>
+        <div class="terms-section">
+          <h3>4. Responsibility & IP</h3>
+          <p>You assume all responsibility for actions taken using this tool. The developer assumes no liability. UP and UPLB intellectual property marks are owned by the UP System; their appearance is purely incidental.</p>
+        </div>
+      </div>
+      <div class="terms-footer">
+        <label class="terms-agreement-label">
+          <input type="checkbox" id="termsCheckbox">
+          <span>I read and agree to the Terms of Use and Privacy Notice.</span>
+        </label>
+        <button id="acceptTermsBtn" class="btn btn-primary" disabled>Accept & Proceed</button>
+      </div>
     </div>
   </div>
 

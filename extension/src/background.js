@@ -1,3 +1,5 @@
+// extension/src/background.js
+
 // Background service worker for Elbi GradeSim
 // Privacy: All data is stored locally using chrome.storage.local
 // No data is ever sent to external servers

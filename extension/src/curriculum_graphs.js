@@ -1,3 +1,5 @@
+// extension/src/curriculum_graphs.js
+
 // UPLB Curriculum Graphs Database
 // Generated automatically from official PDF checklists
 
