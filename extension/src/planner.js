@@ -48,6 +48,18 @@ function icon(name) {
   return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
 }
 
+// Build DOM from markup with DOMParser instead of assigning innerHTML, which
+// the Firefox add-on linter flags. Every caller escapes dynamic text with
+// esc(). SVG targets are parsed inside an <svg> so children keep the SVG
+// namespace.
+function setHTML(el, html) {
+  if (!html) { el.replaceChildren(); return; }
+  const isSvg = el instanceof SVGElement;
+  const doc = new DOMParser().parseFromString(isSvg ? `<svg>${html}</svg>` : html, 'text/html');
+  const host = isSvg ? doc.body.firstElementChild : doc.body;
+  el.replaceChildren(...Array.from(host.childNodes, node => document.importNode(node, true)));
+}
+
 function esc(text) {
   return String(text == null ? '' : text).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
@@ -135,7 +147,7 @@ async function init() {
   if (!d.gradesData || !d.gradesData.student_grades) {
     const banner = $('plannerBanner');
     banner.classList.remove('hidden');
-    banner.innerHTML = `${icon('info')}<span>No grades loaded yet. Open AMIS while logged in, then come back so your passed courses count. Until then this plan starts from scratch.</span>`;
+    setHTML(banner, `${icon('info')}<span>No grades loaded yet. Open AMIS while logged in, then come back so your passed courses count. Until then this plan starts from scratch.</span>`);
   }
 
   initControls();
@@ -167,7 +179,7 @@ function applyTheme(theme) {
   if (theme === 'system') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = theme;
   const btn = $('themeToggle');
-  btn.innerHTML = icon({ system: 'monitor', light: 'sun', dark: 'moon' }[theme]);
+  setHTML(btn, icon({ system: 'monitor', light: 'sun', dark: 'moon' }[theme]));
   btn.title = `Theme: ${theme}`;
   btn.setAttribute('aria-label', btn.title);
   btn.dataset.theme = theme;
@@ -382,9 +394,9 @@ function renderSummary(v) {
     const why = one
       ? `because ${one.code} ${one.source === 'whatif' ? 'is failed in this what-if' : 'failed'}`
       : `because of ${v.failures.length} failed courses`;
-    deltaEl.innerHTML = `${icon('alert')}+${termsText(delta)} ${esc(why)}`;
+    setHTML(deltaEl, `${icon('alert')}+${termsText(delta)} ${esc(why)}`);
   } else if (v.failures.length) {
-    deltaEl.innerHTML = `${icon('check')}No delay from ${v.failures.length === 1 ? esc(v.failures[0].code) : 'your failed courses'}`;
+    setHTML(deltaEl, `${icon('check')}No delay from ${v.failures.length === 1 ? esc(v.failures[0].code) : 'your failed courses'}`);
     deltaEl.classList.add('ok');
   } else {
     deltaEl.textContent = '';
@@ -400,9 +412,9 @@ function renderSummary(v) {
   $('gradSub').textContent = `${bits.join(', ')}. Free electives are not counted.`;
 
   const list = $('failCosts');
-  list.innerHTML = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif')
+  setHTML(list, v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif')
     ? v.costs.map(c => `<li class="${c.cost > 0 ? 'bad' : ''}">${icon(c.cost > 0 ? 'x' : 'check')}<strong>${esc(c.code)}</strong> ${c.source === 'whatif' ? '(what-if)' : c.past ? 'failed' : '(marked failed)'}: ${c.cost > 0 ? `+${termsText(c.cost)}` : 'no delay'}</li>`).join('')
-    : '';
+    : '');
 }
 
 /* ---------- Cards and columns ---------- */
@@ -595,7 +607,7 @@ function render() {
   v.columns = list;
   const phone = isPhone();
   document.querySelector('.pl-main').appendChild($('detail')); // may sit inside the grid on phones
-  $('plannerGrid').innerHTML = list.map(c => columnHTML(c, v, phone)).join('');
+  setHTML($('plannerGrid'), list.map(c => columnHTML(c, v, phone)).join(''));
   if (state.selected && !state.byCode.has(state.selected)) state.selected = null;
   renderDetail();
   requestAnimationFrame(() => drawEdges());
@@ -613,7 +625,7 @@ function drawEdges() {
   const svg = $('plannerArrows');
   const grid = $('plannerGrid');
   const v = state.view;
-  svg.innerHTML = '';
+  setHTML(svg, '');
   document.querySelectorAll('.pl-card.dim, .pl-card.chain, .pl-card.focus').forEach(el => el.classList.remove('dim', 'chain', 'focus'));
   if (!v) return;
 
@@ -655,10 +667,10 @@ function drawEdges() {
     const dx = Math.max(24, (x2 - x1) / 2);
     paths.push(`<path class="pl-edge ${kind}" d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2 - 4} ${y2}" marker-end="url(#pl-arrow-${kind})"/>`);
   });
-  svg.innerHTML = `<defs>
+  setHTML(svg, `<defs>
     <marker id="pl-arrow-chain" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="pl-arrowhead chain"/></marker>
     <marker id="pl-arrow-crit" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" class="pl-arrowhead crit"/></marker>
-  </defs>${paths.join('')}`;
+  </defs>${paths.join('')}`);
 }
 
 /* ---------- Detail panel ---------- */
@@ -721,7 +733,7 @@ function renderDetail() {
     ? `<label class="pl-check pl-petition"><input type="checkbox" data-act="petition"${state.data.plannerPetitions[code] ? ' checked' : ''}> Plan on a petitioned class when it is not offered. Needs about 10 students and department, college and OVCAA approval, so treat it as conditional.</label>`
     : '';
 
-  panel.innerHTML = `
+  setHTML(panel, `
     <div class="pl-detail-head">
       <div><p class="pl-detail-code">${esc(c.code)} <span class="pl-status-pill st-${card ? card.status : 'planned'}">${esc(status)}</span></p>
       <p class="pl-detail-title">${esc(c.title)}</p></div>
@@ -735,7 +747,7 @@ function renderDetail() {
     <h4>Unlocks</h4>
     ${deps.length ? `<p class="pl-deps">${deps.map(d => groupHTML([d], v)).join(' ')}</p>` : '<p class="pl-muted">Nothing else in your checklist.</p>'}
     <div class="pl-actions">${actions.join('')}</div>
-    ${petition}`;
+    ${petition}`);
   panel.classList.remove('hidden');
 
   // Phone: show it inline under the selected card. Desktop: floating panel.
@@ -796,7 +808,7 @@ function fillWhatifSelect(v) {
   const keep = sel.value || (state.whatif && state.whatif.code) || '';
   const codes = Object.keys(v.now.result.assignedTerm).sort();
   if (state.whatif && !codes.includes(state.whatif.code)) codes.push(state.whatif.code);
-  sel.innerHTML = '<option value="">pick a course</option>' + codes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  setHTML(sel, '<option value="">pick a course</option>' + codes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join(''));
   sel.value = codes.includes(keep) ? keep : '';
 }
 
