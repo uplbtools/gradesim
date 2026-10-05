@@ -882,7 +882,8 @@ function initControls() {
     .map(s => `<span class="pl-chip st-${s}">${icon(STATUS[s][0])}${STATUS[s][1]}</span>`).join('') +
     '<span class="pl-chip crit-chip">Critical</span>' +
     `<span class="pl-chip">${icon('flag')}Petition</span>`;
-  $('legend').insertAdjacentHTML('afterbegin', chips);
+  const chipDoc = new DOMParser().parseFromString(chips, 'text/html');
+  $('legend').prepend(...Array.from(chipDoc.body.childNodes, node => document.importNode(node, true)));
 
   const grid = $('plannerGrid');
   grid.addEventListener('click', e => {
