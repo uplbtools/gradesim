@@ -1,8 +1,12 @@
 # Publish the extension to the Chrome Web Store, Firefox Add-ons and Edge
-# Add-ons whenever main gets a manifest version that has not been released yet.
+# Add-ons on every commit to main that touches extension/.
 #
-# Release flow: bump "version" in every extension/manifests/*.json in the
-# staging PR, merge staging into main after review, and this job ships it.
+# Versioning: the stores need a new version for every upload. The version is
+# the manifest version when that is not released yet (bump it by hand for a
+# minor or major release), otherwise the last extension-v* tag with the patch
+# number raised by one. The chosen version is written into the built
+# manifests only; the tag records what shipped.
+#
 # A store whose secrets are missing is skipped, not failed, so stores can be
 # connected one at a time.
 #
@@ -40,26 +44,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read version and check it is new
+      - name: Pick the version to ship
         id: version
         run: |
-          versions=$(jq -r .version extension/manifests/*.json | sort -u)
-          if [ "$(echo "$versions" | wc -l)" -ne 1 ]; then
-            echo "::error::Manifest versions differ: $versions"
+          base=$(jq -r .version extension/manifests/*.json | sort -u)
+          if [ "$(echo "$base" | wc -l)" -ne 1 ]; then
+            echo "::error::Manifest versions differ: $base"
             exit 1
           fi
-          echo "version=$versions" >> "$GITHUB_OUTPUT"
-          if git rev-parse -q --verify "refs/tags/extension-v$versions" >/dev/null; then
-            echo "extension-v$versions is already released, nothing to publish."
-            echo "new=false" >> "$GITHUB_OUTPUT"
+          last=$(git tag --list 'extension-v*' | sed 's/^extension-v//' | sort -V | tail -1)
+          if [ -z "$last" ] || [ "$(printf '%s\n%s\n' "$last" "$base" | sort -V | tail -1)" = "$base" ] && [ "$base" != "$last" ]; then
+            version=$base
           else
-            echo "new=true" >> "$GITHUB_OUTPUT"
+            IFS=. read -r major minor patch <<<"$last"
+            version="$major.$minor.$((patch + 1))"
           fi
+          echo "Shipping $version (manifest $base, last tag ${last:-none})"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "new=true" >> "$GITHUB_OUTPUT"
 
       - name: Build and zip
         if: steps.version.outputs.new == 'true'
         run: |
           bash extension/build.sh all
+          for m in extension/dist/*/manifest.json; do
+            jq --arg v "${{ steps.version.outputs.version }}" '.version = $v' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
+          done
           mkdir -p release
           for target in chrome firefox opera; do
             (cd "extension/dist/$target" && zip -qr "$GITHUB_WORKSPACE/release/elbi-gradesim-$target-${{ steps.version.outputs.version }}.zip" .)
