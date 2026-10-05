@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Elbi GradeSim - UPLB GWA Calculator",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Calculate your GWA and simulate grades needed for Latin honors at UPLB. All data stays on your device.",
   "permissions": [
     "storage"
@@ -24,8 +24,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://amis.uplb.edu.ph/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://amis.uplb.edu.ph/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_start"
     }
   ]
