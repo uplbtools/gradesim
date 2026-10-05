@@ -285,7 +285,7 @@ function enrichCourses(list, catalog) {
       coi: !!(c && c.coi),
       note: (c && c.note) || null,
       offered: c ? c.offered : null,
-      catalogSem: c ? c.catalogSem || null : null,
+      catalogSem: c ? c.catalogSem || null : course.catalogSem || null,
       inCatalog: !!c,
     });
   };
@@ -294,7 +294,8 @@ function enrichCourses(list, catalog) {
     const raw = normCode(row.code);
     if (!raw || raw === 'ELECTIVE' || /^\d+$/.test(raw)) return;
     if (row.genericRequirement || CLEAN_CODE_RE.test(raw) || !/\d/.test(raw)) {
-      add({ ...row, code: raw });
+      // GE/HK/NSTP/elective slots can be filled any regular sem.
+      add(CLEAN_CODE_RE.test(raw) && !row.genericRequirement ? { ...row, code: raw } : { ...row, code: raw, catalogSem: '1s,2s' });
       return;
     }
     // Garbled row: salvage every course code in its code and title text.
@@ -304,7 +305,8 @@ function enrichCourses(list, catalog) {
     while ((m = re.exec(text))) {
       const code = normCode(`${m[1]} ${m[2]}`);
       if (!cat[code] && (m[1] !== m[1].toUpperCase() || /^[IVX]+$/.test(m[1]))) continue; // "Laboratory 3", "Calculus III 3"
-      add({ code, title: cat[code] ? cat[code].title : '', units: cat[code] ? cat[code].units : row.units, year: row.year, sem: row.sem, prereqs: [] });
+      const named = text.slice(re.lastIndex).match(/^\.?\s*([^\d]+?)(?=\s+\d|\s*$)/);
+      add({ code, title: cat[code] ? cat[code].title : (named ? named[1].trim() : ''), units: cat[code] ? cat[code].units : row.units, year: row.year, sem: row.sem, prereqs: [] });
     }
   });
   return out;

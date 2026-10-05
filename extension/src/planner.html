@@ -4,64 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Course Planner - Elbi GradeSim</title>
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="planner.css">
 </head>
 <body class="planner-page">
-  <main class="planner-full-container">
-    <header>
-      <h1><a href="https://gradesim.stimmie.dev" target="_blank" style="color: inherit; text-decoration: none;">Elbi GradeSim Course Planner</a> <span id="plannerProgram" class="planner-program"></span></h1>
-    </header>
-    <div class="planner-header">
-      <p class="hint">
-        Arrows indicate prerequisites. Hover a course to see its chain.
-        <span class="planner-completed-legend"></span> ✓ Passed
-        <span class="planner-available-legend"></span> Ready to take
-        <span class="planner-locked-legend"></span> Locked
-        <span class="planner-failed-legend"></span> ✗ Failed
-        <span class="planner-invalidtiming-legend"></span> ⚠ Before its prereq
-        <span class="planner-notoffered-legend"></span> ⚑ Not offered that sem
-        <span class="planner-whatif-legend"></span> Affected by simulation
-      </p>
-      <p class="hint" style="margin-top: 8px; color: var(--info);">
-        <strong>Tip:</strong> Drag courses between terms (or focus one and press <kbd>[</kbd> / <kbd>]</kbd>). Right-click or press <kbd>Enter</kbd> to toggle status (Planned → Passed → Failed → back to AMIS). ✎ marks a manual override.
-      </p>
+  <header class="pl-top">
+    <img class="plumbob" src="plumbob.svg" alt="">
+    <div class="brand">
+      <h1>Elbi GradeSim <span class="pl-top-sub">Course planner</span></h1>
+      <span id="plannerProgram" class="byline"></span>
     </div>
-    <div id="plannerBanner" class="planner-banner hidden"></div>
-    <div class="whatif-bar">
-      <span id="baselineGrad" class="whatif-baseline" aria-live="polite"></span>
-      <details class="whatif-info">
-        <summary aria-label="How is this computed?">ⓘ</summary>
-        <p class="hint">Assumes up to 21 units per sem (6 in midyear), each course offered on its usual sem, and uses generic GE/HK/NSTP slots. Free electives are not included in this date.</p>
-      </details>
-      <span class="whatif-controls">
-        <label for="whatifMode">What if I</label>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+  </header>
+
+  <main class="pl-main">
+    <div id="plannerBanner" class="pl-banner hidden" role="status"></div>
+
+    <section class="pl-summary" aria-live="polite">
+      <p class="pl-grad"><span id="gradTerm">Loading plan</span><span id="gradDelta" class="pl-delta"></span></p>
+      <p id="gradSub" class="pl-sub"></p>
+      <ul id="failCosts" class="pl-costs"></ul>
+    </section>
+
+    <section class="pl-controls">
+      <form id="whatifForm" class="pl-whatif">
+        <label for="whatifCourse">What if I</label>
         <select id="whatifMode" aria-label="Scenario">
           <option value="fail">fail</option>
-          <option value="1">delay by 1 term</option>
-          <option value="2">delay by 2 terms</option>
-          <option value="3">delay by 1 year (3 terms)</option>
+          <option value="1">take a term later</option>
+          <option value="3">take a year later</option>
         </select>
-        <select id="whatifCourse" aria-label="Course to simulate">
-          <option value="">— pick a course —</option>
-        </select>
-        <button id="whatifSimulate" class="btn btn-primary">Simulate</button>
-        <button id="whatifReset" class="btn">Clear simulation</button>
-        <button id="whatifAutoplan" class="btn" title="Fill the grid below with the computed earliest plan">Auto-plan grid</button>
-        <button id="plannerResetPlan" class="btn" title="Move every course back to its default curriculum slot and clear manual status overrides">Reset plan</button>
-        <button id="plannerUndo" class="btn hidden">Undo</button>
-      </span>
-      <span id="whatifResult" class="whatif-result" aria-live="polite"></span>
+        <select id="whatifCourse" aria-label="Course"></select>
+        <button class="btn btn-primary" type="submit">Simulate</button>
+        <button id="whatifClear" class="pl-textbtn hidden" type="button">Clear</button>
+      </form>
+      <details id="planMenu" class="pl-menu">
+        <summary class="btn btn-secondary">Plan options<span data-icon="chevron"></span></summary>
+        <div class="pl-menu-pop">
+          <button id="autoPlan" type="button" class="pl-menu-item">Auto-plan again<small>Drops courses you pushed later</small></button>
+          <label class="pl-menu-item">Max load per sem
+            <select id="optCap"><option value="18">18 units</option><option value="21">21 units (with lab courses)</option></select>
+          </label>
+          <label class="pl-menu-item pl-check"><input type="checkbox" id="optMidyear"> Take classes in midyear</label>
+          <label class="pl-menu-item pl-check"><input type="checkbox" id="optMidyear9"> Midyear up to 9 units (Dean's approval)</label>
+          <button id="resetPlan" type="button" class="pl-menu-item pl-danger">Reset plan<small>Clears marks, moves and petitions</small></button>
+        </div>
+      </details>
+    </section>
+
+    <div class="pl-legend" id="legend">
+      <details class="pl-tips">
+        <summary aria-label="How to use the planner"><span data-icon="info"></span>Tips</summary>
+        <div class="pl-tips-pop">
+          <p>Each column is a term. Past terms come from your AMIS grades, future terms are the earliest plan that respects prerequisites, the sems each course is actually offered, and your unit cap.</p>
+          <p>Select a course to see its full prerequisite chain, what it unlocks and how many courses a failure would block. Mark a course failed to see the retake and the delay.</p>
+          <p>Thin maroon lines are the critical path: courses where a one-term slip delays graduation.</p>
+          <p>Offerings come from AMIS class listings for 2023 to 2026. Free electives are not included.</p>
+        </div>
+      </details>
     </div>
+
+    <p id="whatifResult" class="pl-result" aria-live="polite"></p>
+
+    <div class="pl-scroll" id="plannerScroll">
+      <svg id="plannerArrows" class="pl-arrows" aria-hidden="true"></svg>
+      <div id="plannerGrid" class="pl-grid"></div>
+    </div>
+
+    <aside id="detail" class="pl-detail hidden" aria-label="Course details"></aside>
     <span id="plannerStatus" class="visually-hidden" aria-live="polite"></span>
-    <div class="planner-scroll-wrapper" id="plannerScrollWrapper">
-      <svg id="plannerArrows" class="planner-arrows" aria-hidden="true"></svg>
-      <div id="plannerGrid" class="planner-grid">
-        <!-- Semesters and courses injected here -->
-      </div>
-    </div>
   </main>
+
   <script src="curriculum.js"></script>
+  <script src="catalog.js"></script>
   <script src="scheduler.js"></script>
   <script src="planner.js"></script>
 </body>
