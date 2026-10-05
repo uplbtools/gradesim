@@ -1028,7 +1028,8 @@ async function loadPlanFile(file) {
     $('whatifCourse').value = plan.whatif.code;
     simulate({ preventDefault() {} });
   }
-  notice(`Loaded the plan saved ${String(plan.savedAt || '').slice(0, 10) || 'earlier'}.`);
+  const saved = new Date(plan.savedAt);
+  notice(`Loaded the plan saved ${Number.isNaN(saved.getTime()) ? 'earlier' : saved.toLocaleDateString('en-CA')}.`);
 }
 
 // The planner as plain data for xlsx.js: columns of cards plus a flat course list.
