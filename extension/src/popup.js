@@ -11,6 +11,33 @@ function sanitizeText(text) {
   return div.innerHTML;
 }
 
+// Inline Lucide icons (ISC license, https://lucide.dev). Static markup only.
+const ICON_PATHS = {
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  award: '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  moon: '<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>',
+  monitor: '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
+};
+function icon(name) {
+  return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
+}
+
+// Theme: 'system' | 'light' | 'dark', stored in chrome.storage.local and applied as data-theme on <html>.
+const THEMES = ['system', 'light', 'dark'];
+function applyTheme(theme) {
+  if (theme === 'system') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = theme;
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.innerHTML = icon({ system: 'monitor', light: 'sun', dark: 'moon' }[theme]);
+  btn.title = `Theme: ${theme}`;
+  btn.setAttribute('aria-label', btn.title);
+  btn.dataset.theme = theme;
+}
+
 // Store current track selection
 let currentTrack = 'sp';
 
@@ -21,6 +48,14 @@ let excludedCourses = new Set();
 let currentView = 'semester';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const { theme } = await chrome.storage.local.get(['theme']);
+  applyTheme(THEMES.includes(theme) ? theme : 'system');
+  document.getElementById('themeToggle').addEventListener('click', (e) => {
+    const next = THEMES[(THEMES.indexOf(e.currentTarget.dataset.theme) + 1) % THEMES.length];
+    applyTheme(next);
+    chrome.storage.local.set({ theme: next });
+  });
+
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
   if (savedExclusions.excludedCourses) {
@@ -313,21 +348,21 @@ function displayHonorStatus(gwa) {
   const honorEl = document.getElementById('honorStatus');
 
   if (gwa <= 1.20) {
-    honorEl.textContent = '🏆 Summa Cum Laude Track';
+    honorEl.innerHTML = icon('award') + 'Summa Cum Laude track';
     honorEl.className = 'honor-status summa';
-    honorEl.style.display = 'inline-block';
+    honorEl.style.display = '';
   } else if (gwa <= 1.45) {
-    honorEl.textContent = '🥈 Magna Cum Laude Track';
+    honorEl.innerHTML = icon('award') + 'Magna Cum Laude track';
     honorEl.className = 'honor-status magna';
-    honorEl.style.display = 'inline-block';
+    honorEl.style.display = '';
   } else if (gwa <= 1.75) {
-    honorEl.textContent = '🥉 Cum Laude Track';
+    honorEl.innerHTML = icon('award') + 'Cum Laude track';
     honorEl.className = 'honor-status cum-laude';
-    honorEl.style.display = 'inline-block';
+    honorEl.style.display = '';
   } else if (gwa <= 2.00) {
-    honorEl.textContent = '📜 Honor Roll Track';
+    honorEl.innerHTML = icon('award') + 'Honor Roll track';
     honorEl.className = 'honor-status honor-roll';
-    honorEl.style.display = 'inline-block';
+    honorEl.style.display = '';
   } else {
     // Hide the element when not on any honor track
     honorEl.textContent = '';
@@ -381,13 +416,13 @@ function displayGradesList(gradesBySemester, allCourses) {
     let scholarClass = '';
     if (groupGWA.gwa > 0) {
       if (groupGWA.gwa <= 1.45) {
-        scholarStatus = '🎓 University Scholar';
+        scholarStatus = 'University Scholar';
         scholarClass = 'university-scholar';
       } else if (groupGWA.gwa <= 1.75) {
-        scholarStatus = '📚 College Scholar';
+        scholarStatus = 'College Scholar';
         scholarClass = 'college-scholar';
       } else if (groupGWA.gwa <= 2.00) {
-        scholarStatus = '📜 Honor Roll';
+        scholarStatus = 'Honor Roll';
         scholarClass = 'honor-roll';
       }
     }
@@ -445,7 +480,7 @@ function displayGradesList(gradesBySemester, allCourses) {
         <div class="course-grade">
           ${excludeButton}
           <span class="units-badge" aria-label="${course.units} units">${course.units}u</span>
-          <span class="grade-value ${gradeClass}" aria-label="Grade: ${gradeDisplay}">${gradeDisplay}</span>
+          <span class="grade-value ${gradeClass}" aria-label="Grade: ${gradeDisplay}${gradeClass === 'failed' || gradeClass === 'unsatisfactory' ? ', failed' : ''}">${gradeClass === 'failed' || gradeClass === 'unsatisfactory' ? icon('x') : gradeClass === 'other-grade' ? icon('alert') : ''}${gradeDisplay}</span>
         </div>
       `;
 
@@ -503,8 +538,8 @@ function displayRemainingCourses(completedCourses) {
   // Check if program has curriculum data
   if (!curriculum.available) {
     listEl.innerHTML = `
-      <div class="free-elective-notice" style="background: rgba(100, 100, 0, 0.2); border-color: #666600; color: #ffff00;">
-        <strong>⚠ Curriculum Not Available</strong>
+      <div class="free-elective-notice unavailable">
+        <strong>${icon('alert')} Curriculum not available</strong>
         <br><small>The curriculum for ${curriculum.name} is coming soon. Only GWA calculation is available.</small>
       </div>
     `;
@@ -522,10 +557,10 @@ function displayRemainingCourses(completedCourses) {
       const trackInfo = curriculum.tracks[detectedTrack];
       const trackName = trackInfo ? `${trackInfo.name} (${trackInfo.code})` : detectedTrack;
       trackInfoEl.className = 'track-info detected';
-      trackInfoEl.innerHTML = `✓ Detected: <strong>${trackName}</strong>`;
+      trackInfoEl.innerHTML = `${icon('check')}<span>Detected: <strong>${trackName}</strong></span>`;
     } else {
       trackInfoEl.className = 'track-info not-detected';
-      trackInfoEl.innerHTML = `⚠ Track not yet detected. Defaulting to SP Track. Select your track below:`;
+      trackInfoEl.innerHTML = `${icon('alert')}<span>Track not yet detected. Defaulting to SP Track. Select your track below.</span>`;
     }
 
     // Set the radio button to match current track
@@ -606,12 +641,10 @@ function displayRemainingCourses(completedCourses) {
     `;
   } else {
     notice.innerHTML = `
-      <strong>Free Electives:</strong> ✓ Complete
+      <strong>Free Electives:</strong> ${icon('check')} Complete
       <br><small>Taken ${freeElectiveUnitsTaken}/${freeElectiveUnitsTotal} free elective units (${trackLabel} track).</small>
     `;
-    notice.style.background = 'rgba(0, 100, 0, 0.3)';
-    notice.style.borderColor = 'var(--gem-dark)';
-    notice.style.color = 'var(--gem-light)';
+    notice.classList.add('complete');
   }
   listEl.appendChild(notice);
 
@@ -727,32 +760,32 @@ function showResults(status, targetGWA, currentGWA, unitsCompleted, unitsRemaini
   switch (status) {
     case 'achieved':
       statusClass = 'achieved';
-      statusMessage = `🎉 You've already achieved ${targetName}!`;
+      statusMessage = `${icon('check')}<span>You've already achieved ${targetName}.</span>`;
       gradeDisplay = 'Maintain your current performance!';
       break;
     case 'impossible-low':
       statusClass = 'impossible';
-      statusMessage = `❌ ${targetName} is no longer achievable.`;
+      statusMessage = `${icon('x')}<span>${targetName} is no longer achievable.</span>`;
       gradeDisplay = `Would require avg grade of ${requiredGrade.toFixed(2)} (below 1.00 - impossible)`;
       break;
     case 'impossible-high':
       statusClass = 'impossible';
-      statusMessage = `❌ ${targetName} is not achievable with remaining courses.`;
+      statusMessage = `${icon('x')}<span>${targetName} is not achievable with remaining courses.</span>`;
       gradeDisplay = `Would require avg grade of ${requiredGrade.toFixed(2)} (above 5.00)`;
       break;
     case 'possible':
       if (requiredGrade <= 1.25) {
         statusClass = 'excellent';
-        statusMessage = `✨ ${targetName} is achievable with excellent performance!`;
+        statusMessage = `${icon('check')}<span>${targetName} is achievable with excellent performance.</span>`;
       } else if (requiredGrade <= 1.75) {
         statusClass = 'good';
-        statusMessage = `✅ ${targetName} is achievable with very good performance.`;
+        statusMessage = `${icon('check')}<span>${targetName} is achievable with very good performance.</span>`;
       } else if (requiredGrade <= 2.50) {
         statusClass = 'moderate';
-        statusMessage = `⚡ ${targetName} is achievable with good performance.`;
+        statusMessage = `${icon('alert')}<span>${targetName} is achievable with good performance.</span>`;
       } else {
         statusClass = 'difficult';
-        statusMessage = `⚠️ ${targetName} is challenging but possible.`;
+        statusMessage = `${icon('alert')}<span>${targetName} is challenging but possible.</span>`;
       }
       gradeDisplay = requiredGrade.toFixed(4);
       break;
