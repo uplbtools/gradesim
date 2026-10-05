@@ -1,3 +1,5 @@
+// content.js
+
 // Content script for Elbi GradeSim
 // Runs on amis.uplb.edu.ph pages
 // Privacy: Only captures grades data that the user already has access to.

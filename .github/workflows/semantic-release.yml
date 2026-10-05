@@ -1,0 +1,56 @@
+name: Semantic Release & Chrome Web Store Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      # Optional: You may want a step here to update manifest.json with the new version 
+      # depending on how you manage your extension's version number.
+
+      - name: Build Extension
+        run: |
+          chmod +x ./extension/build.sh
+          ./extension/build.sh chrome
+          cd extension/dist/chrome
+          zip -r ../../../chrome-extension.zip .
+        
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # You can add semantic-release plugins to update manifest.json version automatically
+
+      # To use this step, you must configure these secrets in your GitHub repository.
+      # You can get these by creating a Google Cloud Project and setting up OAuth credentials.
+      - name: Upload to Chrome Web Store
+        uses: mnao305/chrome-extension-upload@v3.0.0
+        with:
+          file-path: chrome-extension.zip
+          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          # set to true to publish automatically, false to only upload as a draft
+          publish: true 
