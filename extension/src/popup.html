@@ -4,12 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elbi GradeSim</title>
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Elbi GradeSim</h1>
+      <img class="plumbob" src="plumbob.svg" alt="">
+      <div class="brand">
+        <h1>Elbi GradeSim</h1>
+        <span class="byline">by UPLB Tools</span>
+      </div>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
     </header>
 
     <div id="loading" class="loading">
@@ -18,7 +24,7 @@
     </div>
 
     <div id="noData" class="no-data hidden">
-      <p>⚠️ No grades data found</p>
+      <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>No grades data found</p>
       <p class="hint">
         1. Go to <a href="https://amis.uplb.edu.ph" target="_blank">AMIS</a> and log in<br>
         2. The extension will automatically capture your grades<br>
@@ -30,7 +36,7 @@
     <main id="mainContent" class="hidden">
       <!-- Program Selector -->
       <section class="program-selector">
-        <label for="programSelect">Your Program:</label>
+        <label for="programSelect">Your program</label>
         <select id="programSelect">
           <optgroup label="College of Arts and Sciences">
             <option value="AASS">AA Sports Studies</option>
@@ -104,12 +110,10 @@
         <div id="honorStatus" class="honor-status"></div>
       </section>
 
-      <p class="credits">UPLB GWA Calculator</p>
-
       <!-- Tabs -->
       <div class="tabs" role="tablist">
         <button class="tab active" data-tab="grades" role="tab" id="tab-grades" aria-controls="gradesTab" aria-selected="true">Grades</button>
-        <button class="tab" data-tab="whatif" role="tab" id="tab-whatif" aria-controls="whatifTab" aria-selected="false">What If?</button>
+        <button class="tab" data-tab="whatif" role="tab" id="tab-whatif" aria-controls="whatifTab" aria-selected="false">What if</button>
         <button class="tab" data-tab="planner" role="tab" id="tab-planner" aria-controls="plannerTab" aria-selected="false">Planner</button>
         <button class="tab" data-tab="wrapped" role="tab" id="tab-wrapped" aria-controls="wrappedTab" aria-selected="false">Wrapped</button>
       </div>
@@ -208,9 +212,9 @@
             <!-- Panels will be populated by JS -->
           </div>
           <div class="wrapped-nav">
-            <button id="wrappedPrev" class="wrapped-nav-btn" disabled>← Prev</button>
+            <button id="wrappedPrev" class="wrapped-nav-btn" disabled><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Prev</button>
             <span id="wrappedProgress" class="wrapped-progress"></span>
-            <button id="wrappedNext" class="wrapped-nav-btn">Next →</button>
+            <button id="wrappedNext" class="wrapped-nav-btn">Next<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
           </div>
           <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
         </div>
@@ -221,7 +225,7 @@
   <footer class="footer">
     <p class="legal-links">
       <a href="../../PRIVACY_POLICY.md" target="_blank">Privacy</a>
-      ·
+      <span aria-hidden="true">|</span>
       <a href="../../TERMS.md" target="_blank">Terms</a>
     </p>
   </footer>
