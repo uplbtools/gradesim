@@ -28,7 +28,7 @@ build_target() {
      "$SRC_DIR"/content.js "$SRC_DIR"/background.js \
      "$SRC_DIR"/curriculum.js "$SRC_DIR"/catalog.js \
      "$SRC_DIR"/planner.html "$SRC_DIR"/planner.js "$SRC_DIR"/planner.css \
-     "$SRC_DIR"/scheduler.js "$out/"
+     "$SRC_DIR"/scheduler.js "$SRC_DIR"/xlsx.js "$out/"
 
   cp "$SRC_DIR"/tokens.css "$SRC_DIR"/plumbob.svg "$out/"
   cp -r "$SRC_DIR"/fonts "$out/"
