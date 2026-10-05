@@ -28,6 +28,9 @@ build_target() {
      "$SRC_DIR"/content.js "$SRC_DIR"/background.js \
      "$SRC_DIR"/curriculum.js "$out/"
 
+  cp "$SRC_DIR"/tokens.css "$SRC_DIR"/plumbob.svg "$out/"
+  cp -r "$SRC_DIR"/fonts "$out/"
+
   [ -f "$SRC_DIR/sims.png" ] && cp "$SRC_DIR/sims.png" "$out/"
 
   # Copy icons

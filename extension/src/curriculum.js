@@ -5,18 +5,6 @@
 // NOTE: This is UPLB only - not UP Diliman, UP Manila, etc.
 
 
-// Safe HTML setter to avoid AMO innerHTML warnings
-Object.defineProperty(Element.prototype, 'safeHTML', {
-  set: function(html) {
-    if (!html) {
-      this.replaceChildren();
-      return;
-    }
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    this.replaceChildren(...doc.body.childNodes);
-  }
-});
 const UPLB_PROGRAMS = {
   "BSCS": {
     "code": "BSCS",
