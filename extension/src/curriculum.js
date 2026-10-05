@@ -1,3 +1,5 @@
+// extension/src/curriculum.js
+
 // UPLB Curriculum Database
 // Complete undergraduate programs for University of the Philippines Los Baños
 // NOTE: This is UPLB only - not UP Diliman, UP Manila, etc.
@@ -321,7 +323,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "CMSC 131",
-        "title": "Introduction to Computer Organization and Machine Level Programming",
+        "title": "Introduction to Computer Organization and Machine Level Prog",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -550,8 +552,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 MATH 37. Mathematical Analysis II",
-        "title": "3 MATH 37. Mathematical Analysis II 5 STAT 101. Statistical Methods 3 BIO 11.1 Investigative Biology Laboratory 3 CHEM 18.1. University Chemistry Lab 3 ARTS 1. Critical Perspectives in the Arts (2) GE Elective",
+        "code": "MATH 37",
+        "title": "Mathematical Analysis II",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -619,8 +621,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activitie",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -635,8 +637,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "5    MATH 103. Elementary Theory of Numbers",
-        "title": "5    MATH 103. Elementary Theory of Numbers 3    MATH 138. Introductory Topology 4    MATH 141. Introductory Combinatorics 1    AMAT 152. Fundamentals of Mathematical Comput 3    STS 1. Science, Technology, and Society s   (2) GE Elective",
+        "code": "MATH 103",
+        "title": "Elementary Theory of Numbers",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -715,16 +717,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     MATH 120. Linear Algebra",
-        "title": "3     MATH 120. Linear Algebra 3     MATH 133.Euclidean and Non-Euclidean Geometry 3     MATH 151. Ordinary Differential Equations 3     MATH Major Elective 3     COMA 150. Workplace Communication 3 18",
+        "code": "MATH 120",
+        "title": "Linear Algebra",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3     MATH 198. Practicum",
-        "title": "3     MATH 198. Practicum 3 3 3 3 15",
+        "code": "MATH 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -769,8 +771,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 MATH 190. Special Problems",
-        "title": "3 MATH 190. Special Problems 3 MATH 192. Foundations of Mathematics 3 MATH 199. Undergraduate Seminar 3 Major Elective 3 Elective 15",
+        "code": "MATH 190",
+        "title": "Special Problems",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -791,27 +793,27 @@ const UPLB_PROGRAMS = {
       "CHEM 18",
       "KAS 1/HIST 1",
       "ETHICS 1",
-      "3 MATH 37. Mathematical Analysis II",
+      "MATH 37",
       "3",
       "MATH 38",
       "MATH 101",
       "PHYS 51",
       "PHYS 51.1",
       "GE",
-      "5    MATH 103. Elementary Theory of Numbers",
+      "MATH 103",
       "3",
       "MATH 111",
       "MATH 155",
       "MATH 195",
       "PI 10",
       "COMM 10",
-      "3     MATH 120. Linear Algebra",
-      "3     MATH 198. Practicum",
+      "MATH 120",
+      "MATH 198",
       "MATH 135",
       "MATH 165",
       "MATH 181",
       "Elective",
-      "3 MATH 190. Special Problems",
+      "MATH 190",
       "3"
     ]
   },
@@ -888,16 +890,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    MATH 37. Mathematical Analysis II",
-        "title": "3    MATH 37. Mathematical Analysis II 5    STAT 101. Statistical Methods 3    BIO 11.1. Investigative Biology Laboratory 3    CHEM 18.1. University Chemistry Laboratory 3    ARTS 1. Critical Perspectives in the Arts (2) GE Elective",
+        "code": "MATH 37",
+        "title": "Mathematical Analysis II",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced 17 Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -959,8 +961,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -975,8 +977,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    AMAT 105. Matrices and Applications",
-        "title": "3    AMAT 105. Matrices and Applications 5    AMAT 112. Introduction to Mathematical Optimization 3    AMAT 152. Fundamentals of Mathematical Computing 4    AMAT 170. Theory of Interest 1    STS 1. Science, Technology, and Society (2)",
+        "code": "AMAT 105",
+        "title": "Matrices and Applications",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -991,8 +993,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (3) Human Kinetics Activities 16 NSTP 2. National Training Service Program II",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -1063,8 +1065,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    MATH 155. Advanced Calculus I",
-        "title": "3    MATH 155. Advanced Calculus I 3    MATH 175. Numerical Analysis II 3    MATH 195. Research Methods in Mathematics 3    Elective (AMAT/MATH) 3",
+        "code": "MATH 155",
+        "title": "Advanced Calculus I",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -1079,8 +1081,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     AMAT 198. Practicum",
-        "title": "3     AMAT 198. Practicum 3 3 3 3 15",
+        "code": "AMAT 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -1127,8 +1129,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 AMAT 190. Special Problems",
-        "title": "3 AMAT 190. Special Problems 3 AMAT 199. Undergraduate Seminar 3 Elective (AMAT/MATH) 3 Elective 3 Elective 15",
+        "code": "AMAT 190",
+        "title": "Special Problems",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -1149,14 +1151,14 @@ const UPLB_PROGRAMS = {
       "CHEM 18",
       "KAS 1/HIST 1",
       "ETHICS 1",
-      "3    MATH 37. Mathematical Analysis II",
+      "MATH 37",
       "3",
       "AMAT 110",
       "MATH 38",
       "MATH 101",
       "PHYS 51",
       "PHYS 51.1",
-      "3    AMAT 105. Matrices and Applications",
+      "AMAT 105",
       "GE",
       "3",
       "MATH 151",
@@ -1165,15 +1167,15 @@ const UPLB_PROGRAMS = {
       "Elective",
       "COMM 10",
       "GE",
-      "3    MATH 155. Advanced Calculus I",
+      "MATH 155",
       "COMA 150",
-      "3     AMAT 198. Practicum",
+      "AMAT 198",
       "Elective",
       "Elective",
       "PI 10",
       "Elective",
       "Elective",
-      "3 AMAT 190. Special Problems",
+      "AMAT 190",
       "3"
     ]
   },
@@ -1246,15 +1248,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "GE",
-        "title": "Elective 3 MATH 28. Analytic Geometry and Calculus III 3 CMSC 12. Foundations of Computer Science 3 STAT 162. Experimental Designs",
+        "title": "Elective",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 15",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -1262,7 +1264,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "STAT 135",
-        "title": "Logic and Matrix Algebra 3 3     in Statistics 3     STAT 182. Statistical Packages 3 3 3 (2) 15",
+        "title": "Logic and Matrix Algebra",
         "units": 6,
         "year": 1,
         "sem": "midyear",
@@ -1316,32 +1318,32 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 MATH 182. Introduction to Stochastic Processes",
-        "title": "3 MATH 182. Introduction to Stochastic Processes 3 CMSC 22. Object-Oriented Programming 3 ABME 10. Foundations of Entrepreneurship 3 STAT 145. Introductory Statistical Theory II 3 STAT 163. Survey Designs",
+        "code": "MATH 182",
+        "title": "Introduction to Stochastic Processes",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 15 NSTP 1. National Training Service Program I",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3     GE Elective",
-        "title": "3     GE Elective 3     GE Elective 3 3 3 (2) (3) 15",
+        "code": "GE",
+        "title": "Elective",
         "units": 6,
         "year": 2,
         "sem": "midyear",
@@ -1430,15 +1432,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "STAT 147",
-        "title": "Introduction to the Theory of 3    Nonparametric Statistics 3    STAT 151. Applied Regression and Correlation 3    STAT 156. Introductory Time Series Analysis 3 (3) 18",
+        "title": "Introduction to the Theory of",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3     STAT 198. Practicum",
-        "title": "3     STAT 198. Practicum 3 3 3 3 15",
+        "code": "STAT 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -1513,8 +1515,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    PI 10. The Life and Works of Jose Rizal",
-        "title": "3    PI 10. The Life and Works of Jose Rizal 3    STAT 157. Financial Risk Analysis 3    STAT 167. Statistical Quality Control 3    STAT 183. Introductory Data Analytics 1    STAT 190. Special Problem 3    STAT 199. Undergraduate Seminar 3 1 20",
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -1543,8 +1545,8 @@ const UPLB_PROGRAMS = {
       "ECON 11",
       "STAT 144",
       "STAT 168",
-      "3 MATH 182. Introduction to Stochastic Processes",
-      "3     GE Elective",
+      "MATH 182",
+      "GE",
       "COMM 10",
       "Elective",
       "STAT 146",
@@ -1554,7 +1556,7 @@ const UPLB_PROGRAMS = {
       "3",
       "Elective",
       "STAT 147",
-      "3     STAT 198. Practicum",
+      "STAT 198",
       "Elective",
       "ENG 10",
       "STAT 148",
@@ -1563,7 +1565,7 @@ const UPLB_PROGRAMS = {
       "STAT 191",
       "STAT 174",
       "STAT 192.1",
-      "3    PI 10. The Life and Works of Jose Rizal",
+      "PI 10",
       "3"
     ]
   },
@@ -1797,16 +1799,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    BIO 11.1. Investigative Biology Laboratory",
-        "title": "3    BIO 11.1. Investigative Biology Laboratory 3    CHEM 18.1 University Chemistry Laboratory ms       3    BIO 30. Genetics 3    PI 10. The Life and Works of Jose Rizal 3   GE Elective 3   GE Elective",
+        "code": "BIO 11.1",
+        "title": "Investigative Biology Laboratory",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 16,
         "year": 1,
         "sem": "2",
@@ -1869,8 +1871,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Hum Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -1885,8 +1887,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "5 PHYS 51. Elements of Physics",
-        "title": "5 PHYS 51. Elements of Physics 3 PHYS 51.1. Elements of Physics Laboratory 3 BIO 101. Introductory Molecular Biology 3 CHEM 160.1. Introductory Biochemistry Laboratory 4 BIO 140. Evolutionary Biology an (2)",
+        "code": "PHYS 51",
+        "title": "Elements of Physics",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -1901,8 +1903,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) 18 Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -1949,8 +1951,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    BIO 195. Research Methods in the Biological Sciences",
-        "title": "3    BIO 195. Research Methods in the Biological Sciences 3    BIO 127. Developmental Biology",
+        "code": "BIO 195",
+        "title": "Research Methods in the Biological Sciences",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -1958,7 +1960,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning in Everyday 3 3    Life 3 Major 3   Major 3   Elective 18",
+        "title": "Ethics and Moral Reasoning in Everyday",
         "units": 18,
         "year": 3,
         "sem": "2",
@@ -2005,8 +2007,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 Major",
-        "title": "3 Major 1 Elective 3 BIO 200. Undergraduate Thesis 3 3 3 3 19",
+        "code": "Elective",
+        "title": "",
         "units": 9,
         "year": 4,
         "sem": "2",
@@ -2020,7 +2022,7 @@ const UPLB_PROGRAMS = {
       "KAS 1/HIST 1",
       "ARTS 1",
       "STS 1",
-      "3    BIO 11.1. Investigative Biology Laboratory",
+      "BIO 11.1",
       "CHEM 40",
       "CHEM 40.1",
       "BIO 14",
@@ -2028,13 +2030,13 @@ const UPLB_PROGRAMS = {
       "ZOO 14",
       "CHEM 160",
       "BIO 150",
-      "5 PHYS 51. Elements of Physics",
+      "PHYS 51",
       "GE",
       "STAT 164",
       "BIO 120",
       "BIO 142",
       "COMM 10",
-      "3    BIO 195. Research Methods in the Biological Sciences",
+      "BIO 195",
       "ETHICS 1",
       "BIO 198",
       "COMA 150",
@@ -2112,16 +2114,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    CHEM 19. Chemical Structure and Properties",
-        "title": "3    CHEM 19. Chemical Structure and Properties 3    CHEM 18.1 University Chemistry Laboratory 3    MATH 28. Analytic Geometry and Calculus III 3    PHYS 71. University Physics I 3    PHYS 71.1. University Physics I Laboratory ry        3    GE Elective",
+        "code": "CHEM 19",
+        "title": "Chemical Structure and Properties",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 16,
         "year": 1,
         "sem": "2",
@@ -2182,8 +2184,8 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "CMSC 12/AMAT 152",
-        "title": "Foundations of Computer Science/Fund",
+        "code": "CMSC 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -2210,16 +2212,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kin Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 CHEM 43.1. Organic Chemistry I Laboratory",
-        "title": "3 CHEM 43.1. Organic Chemistry I Laboratory 4 CHEM 112. Physical Chemistry II 1 GE Elective amentals 3 of STAT Mathematical 162. Experimental Computing Designs 3 PI 10. The Life and Works of Jose Rizal",
+        "code": "CHEM 43.1",
+        "title": "Organic Chemistry I Laboratory",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -2227,7 +2229,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "COMM 10",
-        "title": "Critical Perspectives in 3 3 Communication etics          HK 12/13. Human Kinetics Activities/Advanced (2) Human Kinetics Activities",
+        "title": "Critical Perspectives in",
         "units": 2,
         "year": 2,
         "sem": "2",
@@ -2329,8 +2331,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198.",
-        "title": "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198. 3 CHEM 115. Physical Chemistry III 3 CHEM 137.1. Modern Analytical Chem Laboratory2 4 CHEM 161.1. General Biochemistry Laboratory 3 CHEM 180. Environmental Chemistry cation 3 CHEM 161B. Biochemistry II (3) 18",
+        "code": "CHEM 112.1",
+        "title": "Physical Chemistry II Laboratory",
         "units": 15,
         "year": 3,
         "sem": "2",
@@ -2385,8 +2387,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 CHEM 120.1. Inorganic Chemistry Laboratory",
-        "title": "3 CHEM 120.1. Inorganic Chemistry Laboratory 4 CHEM 171. Industrial Chemistry 3 CHEM 199. Undergraduate Seminar 3 CHEM 200. Undegraduate Thesis 3 Elective (CHEM) 16",
+        "code": "CHEM 120.1",
+        "title": "Inorganic Chemistry Laboratory",
         "units": 12,
         "year": 4,
         "sem": "2",
@@ -2400,16 +2402,16 @@ const UPLB_PROGRAMS = {
       "MATH 27",
       "ETHICS 1",
       "KAS 1/HIST 1",
-      "3    CHEM 19. Chemical Structure and Properties",
+      "CHEM 19",
       "CHEM 32",
       "CHEM 32.1",
       "CHEM 43",
       "PHYS 72",
       "PHYS 72.1",
-      "CMSC 12/AMAT 152",
+      "CMSC 12",
       "CHEM 111",
       "GE",
-      "3 CHEM 43.1. Organic Chemistry I Laboratory",
+      "CHEM 43.1",
       "COMM 10",
       "CHEM 44",
       "CHEM 44.1",
@@ -2419,14 +2421,14 @@ const UPLB_PROGRAMS = {
       "CHEM 140",
       "CHEM 161A",
       "CHEM 192",
-      "2 CHEM 112.1. Physical Chemistry II Laboratory 2 CHEM 198.",
+      "CHEM 112.1",
       "Practicum",
       "CHEM 120",
       "CHEM 131",
       "CHEM 200",
       "Elective",
       "STS 1",
-      "3 CHEM 120.1. Inorganic Chemistry Laboratory"
+      "CHEM 120.1"
     ]
   },
   "BSAPPHY": {
@@ -2489,16 +2491,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "4    PHYS 102. Electromagnetism",
-        "title": "4    PHYS 102. Electromagnetism 3    PHYS 111. Mathematical Methods of Physics I 3    MATH 28. Analytic Geometry and Calculus III 3    COMA 150. Workplace Communication e 3    CHEM 18.1. University Chemistry Laboratory 2 (2) GE Elective",
+        "code": "PHYS 102",
+        "title": "Electromagnetism",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) 16 Human Kinetics Activities 19",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -2560,8 +2562,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -2576,8 +2578,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1 APHY 101. Physics in Scientific Instruments",
-        "title": "1 APHY 101. Physics in Scientific Instruments ynamics 4 PHYS 104. Modern Physics 4 PHYS 113. Mathematical Methods of Physics III 3 PHYS 131. Electromagnetic Theory I y 3",
+        "code": "APHY 101",
+        "title": "Physics in Scientific Instruments",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -2592,8 +2594,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced (2) 3 Human Kinetics Activities (2) NSTP 2. National Training Service Program II (3) 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 17,
         "year": 2,
         "sem": "2",
@@ -2655,8 +2657,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "4 APHY 102. Physics of Electronic Devices",
-        "title": "4 APHY 102. Physics of Electronic Devices 3 PHYS 151. Statistical Physics I 3 PHYS 165. Optical Physics 3 PHYS 192.1. Experimental Physics I",
+        "code": "APHY 102",
+        "title": "Physics of Electronic Devices",
         "units": 2,
         "year": 3,
         "sem": "2",
@@ -2664,7 +2666,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "COMM 10",
-        "title": "Critical Perspectives in Communication 3 3 Elective (APHY/PHYS) 19",
+        "title": "Critical Perspectives in Communication",
         "units": 17,
         "year": 3,
         "sem": "2",
@@ -2729,8 +2731,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 APHY 191. Special Topics",
-        "title": "3 APHY 191. Special Topics 3 APHY 199. Undegraduate Seminar 3 APHY 200. Undergraduate Thesis 3 STS 1. Science, Technology, and Society 3 Elective (APHY/PHYS) 3 Elective 18",
+        "code": "APHY 191",
+        "title": "Special Topics",
         "units": 16,
         "year": 4,
         "sem": "2",
@@ -2743,14 +2745,14 @@ const UPLB_PROGRAMS = {
       "MATH 27",
       "ARTS 1",
       "KAS 1/HIST 1",
-      "4    PHYS 102. Electromagnetism",
+      "PHYS 102",
       "APHY 10.1",
       "PHYS 103",
       "PHYS 112",
       "PHYS 121",
       "ETHICS 1",
       "GE",
-      "1 APHY 101. Physics in Scientific Instruments",
+      "APHY 101",
       "GE",
       "PHYS 115",
       "PHYS 122",
@@ -2758,7 +2760,7 @@ const UPLB_PROGRAMS = {
       "PHYS 141",
       "PHYS 195",
       "PI 10",
-      "4 APHY 102. Physics of Electronic Devices",
+      "APHY 102",
       "COMM 10",
       "APHY 198",
       "APHY 200",
@@ -2767,7 +2769,7 @@ const UPLB_PROGRAMS = {
       "Elective",
       "Elective",
       "Elective",
-      "3 APHY 191. Special Topics"
+      "APHY 191"
     ]
   },
   "BACOMM": {
@@ -2850,15 +2852,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning in Everyday 3 3    STS 1. Science, Technology, and Society 3    GE Elective 3  COMA 102. Language and Culture 3  ENG 100. Rereading the Literary Canons 3  SPCM 101. Rhetoric",
+        "title": "Ethics and Moral Reasoning in Everyday",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -2921,8 +2923,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -2937,16 +2939,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 COMA 103. Introduction to Discourse Analysis",
-        "title": "3 COMA 103. Introduction to Discourse Analysis 3 COMA 192. Introduction to Research 3 SPCM 104. Occasional Speeches 3 Major 3 Major 3 Major",
+        "code": "COMA 103",
+        "title": "Introduction to Discourse Analysis",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Training Service Program II 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -3009,8 +3011,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    COMA 150. Workplace Communication",
-        "title": "3    COMA 150. Workplace Communication 3 COMA 193. Workshop 3 COMA 199. Undergraduate Seminar 3 Major 3 Major 3 Elective (Foreign Language) 18",
+        "code": "COMA 150",
+        "title": "Workplace Communication",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -3065,8 +3067,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     GE Elective",
-        "title": "3     GE Elective 3     PI 10. The Life and Works of José Rizal 3     COMA 200. Undergraduate Thesis 3     HUM 104. Culture and Arts Management 3     HUM 170. Philippine Art and Society 3     Elective (SOSC or PHLO) 18",
+        "code": "GE",
+        "title": "Elective",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -3096,7 +3098,7 @@ const UPLB_PROGRAMS = {
       "HUM 101",
       "THEA 101",
       "THEA 102",
-      "3 COMA 103. Introduction to Discourse Analysis",
+      "COMA 103",
       "3",
       "COMA 105",
       "COMA 190",
@@ -3104,14 +3106,14 @@ const UPLB_PROGRAMS = {
       "Elective",
       "Elective",
       "Elective",
-      "3    COMA 150. Workplace Communication",
+      "COMA 150",
       "3",
       "COMA",
       "COMA 200",
       "COMA",
       "HUM 102",
       "THEA 103",
-      "3     GE Elective",
+      "GE",
       "3"
     ]
   },
@@ -3175,16 +3177,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 GE Elective",
-        "title": "3 GE Elective 3 HIST 10. Introduction to History 3 SOC 100. Social Organization y    3 POSC 10. Principles of Government and Politic 3 SOC 110. Sociology of the Family (2) HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 15",
+        "code": "GE",
+        "title": "Elective",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 STS 1. Science,",
-        "title": "3 STS 1. Science, Technology, and Society 3 GE Elective 3 s 3 (2) 15",
+        "code": "STS 1",
+        "title": "Science,",
         "units": 3,
         "year": 1,
         "sem": "midyear",
@@ -3231,8 +3233,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -3247,16 +3249,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 AERS 160. Rural Sociology",
-        "title": "3 AERS 160. Rural Sociology 3    SOC 140. Introduction to Demography 3    Elective (SOSC) 3    Elective (SOSC) 3    Elective (2) HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities (3) NSTP 2. National Training Service Program II 15",
+        "code": "AERS 160",
+        "title": "Rural Sociology",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 PI 10. The Life",
-        "title": "3 PI 10. The Life and Works of Jose Rizal 3 GE Elective 3 3 3 (2) (3) 15",
+        "code": "PI 10",
+        "title": "The Life",
         "units": 6,
         "year": 2,
         "sem": "midyear",
@@ -3311,16 +3313,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 SOC 166. Social Program Evaluation",
-        "title": "3 SOC 166. Social Program Evaluation 3 SOC 152. Contemporary Sociological Theories 3 SOC 192. Introduction to Qualitative Social Research 3 COMM 10. Critical Perspectives in Communication 2 Elective 1 15",
+        "code": "SOC 166",
+        "title": "Social Program Evaluation",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 SOC 198.",
-        "title": "3 SOC 198. Internship 3 3 3 3 15",
+        "code": "SOC 198",
+        "title": "",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -3375,8 +3377,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1    SOC 112. Sociology of Politics",
-        "title": "1    SOC 112. Sociology of Politics 3    SOC 160/SOC 165. Social Change/Sociology o Development 3     SOC 170/SOC 175. Social Problems/Deviance 3     SOC 200. Undergraduate Thesis 3     Elective 3 16",
+        "code": "SOC 112",
+        "title": "Sociology of Politics",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -3397,30 +3399,30 @@ const UPLB_PROGRAMS = {
       "SOC 10",
       "ANTH 10",
       "PSY 10",
-      "3 GE Elective",
-      "3 STS 1. Science,",
+      "GE",
+      "STS 1",
       "ARTS 1",
       "ECON 11",
       "STAT 166",
       "SOC 116",
       "SOC 130/SOC 135",
-      "3 AERS 160. Rural Sociology",
-      "3 PI 10. The Life",
+      "AERS 160",
+      "PI 10",
       "Elective",
       "Elective",
       "SOC 107",
       "SOC 151",
       "SOC 195",
       "SOC 195.1",
-      "3 SOC 166. Social Program Evaluation",
-      "3 SOC 198.",
+      "SOC 166",
+      "SOC 198",
       "SOC 199",
       "SOC 114",
       "SOC 120",
       "SOC 180",
       "SOC 191",
       "SOC 200",
-      "1    SOC 112. Sociology of Politics",
+      "SOC 112",
       "3"
     ]
   },
@@ -3503,16 +3505,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ife       3      PI 10. The Life and Works of Jose Rizal",
-        "title": "ife       3      PI 10. The Life and Works of Jose Rizal istory    3    GE Elective 3    PHLO 150. Epistemology 3    PHLO 171. Ethics 3    ECON 11/POSC 10. General Economics/Principles of Governmen 3    SPEC. Readings in Speculative Thought",
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal ife",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -3583,24 +3585,24 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 PHLO Elective",
-        "title": "3 PHLO Elective 3 PHLO 111. Medieval Philosophy 3 PHLO 120. Philosophical Reasoning 3 GE Elective 3 Elective",
+        "code": "PHLO Elective",
+        "title": "",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic 3 Activities (3) NSTP 2. National Training Service Program II (2) 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -3655,8 +3657,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 PHLO 113. Contemporary Philosophy",
-        "title": "3 PHLO 113. Contemporary Philosophy 3 PHLO 182. Philosophy and Semiotics 3 Specialized course. Elective in one discipline 3 Elective (PHLO) 3 Elective (PHLO) 15 Elective",
+        "code": "PHLO 113",
+        "title": "Contemporary Philosophy",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -3703,8 +3705,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3      PHLO 160. Philosophy of Science",
-        "title": "3      PHLO 160. Philosophy of Science 3      PHLO 184. Feminist Philosophy 3      PHLO 185. Critical Perspectives in Filipino Philosophy 3      PHLO 190. Special Problems 3      Specialized course. Elective in one discipline 15",
+        "code": "PHLO 160",
+        "title": "Philosophy of Science",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -3726,7 +3728,7 @@ const UPLB_PROGRAMS = {
       "STS 1",
       "PHLO 11",
       "PHLO 12",
-      "ife       3      PI 10. The Life and Works of Jose Rizal",
+      "PI 10",
       "3",
       "COMM 10",
       "GE",
@@ -3734,20 +3736,20 @@ const UPLB_PROGRAMS = {
       "PHLO 110",
       "PHLO 112",
       "PHLO 173",
-      "3 PHLO Elective",
+      "PHLO Elective",
       "3",
       "PHLO 197",
       "PHLO 174",
       "PHLO 181",
       "PHLO 195",
       "Elective",
-      "3 PHLO 113. Contemporary Philosophy",
+      "PHLO 113",
       "3",
       "PHLO 178",
       "PHLO 176",
       "PHLO 190",
       "Elective",
-      "3      PHLO 160. Philosophy of Science",
+      "PHLO 160",
       "3"
     ]
   },
@@ -4201,8 +4203,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "MAJOR 200/MAJOR 190",
-        "title": "3 Undergraduate Seminar",
+        "code": "MAJOR 200",
+        "title": "Unknown Title",
         "units": 1,
         "year": 4,
         "sem": "1",
@@ -4254,7 +4256,7 @@ const UPLB_PROGRAMS = {
       "MAJOR",
       "MAJOR",
       "ABE 1",
-      "MAJOR 200/MAJOR 190",
+      "MAJOR 200",
       "COMM 10",
       "2"
     ]
@@ -4319,8 +4321,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1    AGRI 22. Introduction to Livestock and Poultry Productio",
-        "title": "1    AGRI 22. Introduction to Livestock and Poultry Productio 3    AGRI 32. Fundamentals of Crop Science II 3    AGRI 41. Principles of Crop Protection 3    CHEM 18.1. University Chemistry Laboratory 3    HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History 3    ETHICS 1. Ethics and Moral Reasoning in Everyday Life",
+        "code": "AGRI 22",
+        "title": "Introduction to Livestock and Poultry Productio",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -4391,16 +4393,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "4    CHEM 160. Introductory Biochemistry",
-        "title": "4    CHEM 160. Introductory Biochemistry 1    ABT 101. Fundamentals of Agricultural Biotechnology 3    STAT 162. Experimental Designs I 3    CMSC 12. Introduction to Computer Science 3    MATH 25. Fundamental Calculus 3    AGRI 51. Principles of Soil Science (2) Elective GE",
+        "code": "CHEM 160",
+        "title": "Introductory Biochemistry",
         "units": 2,
         "year": 2,
         "sem": "2",
@@ -4487,16 +4489,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ABT 106. Molecular Markers",
-        "title": "3 ABT 106. Molecular Markers 3  ABT 104. Experimental Techniques in Agricultural Biotechno 3  Elective course 3  ECON 11. General Economics 3  AGRI 171. Ethics, Laws, and Policies in Agriculture 3  SPECIALIZATION COURSE",
+        "code": "ABT 106",
+        "title": "Molecular Markers",
         "units": 1,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human 3 Kinetics Activities (3) 21",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -4528,7 +4530,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ABT 107",
-        "title": "Recombinant DNA Technology SPECIALIZATION COURSE SPECIALIZATION COURSE SPECIALIZATION COURSE",
+        "title": "Recombinant DNA Technology SPECIALIZATION COURSE SPECIALIZAT",
         "units": 4,
         "year": 4,
         "sem": "1",
@@ -4543,8 +4545,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -4560,7 +4562,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ABT 108",
-        "title": "Issues and Regulation of Agricultural Biotechno 3    ABT 199. Undergraduate Seminar 3    AGRI 199. Colloquium in Agriculture 3    Elective Course 3    ABT 200/190. Undergraduate Thesis/Special Problems 3 (2) 18",
+        "title": "Issues and Regulation of Agricultural Biotechno",
         "units": 2,
         "year": 4,
         "sem": "2",
@@ -4582,7 +4584,7 @@ const UPLB_PROGRAMS = {
       "AGRI 31",
       "ARTS 1",
       "STS 1",
-      "1    AGRI 22. Introduction to Livestock and Poultry Productio",
+      "AGRI 22",
       "n",
       "CHEM 40",
       "CHEM 40.1",
@@ -4590,7 +4592,7 @@ const UPLB_PROGRAMS = {
       "MCB 11",
       "Elective",
       "BIO 30",
-      "4    CHEM 160. Introductory Biochemistry",
+      "CHEM 160",
       "3",
       "ABT 103",
       "BIO 101",
@@ -4599,7 +4601,7 @@ const UPLB_PROGRAMS = {
       "ABME 10",
       "COMM 10",
       "Elective",
-      "3 ABT 106. Molecular Markers",
+      "ABT 106",
       "3",
       "ABT",
       "MGT 101",
@@ -4876,7 +4878,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 200",
-        "title": "3 FST HIST1/KAS1                                    3 AGRI 18 Total no. of units:",
+        "title": "",
         "units": 143,
         "year": 4,
         "sem": "1",
@@ -4991,8 +4993,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    CHEM 19. Chemical Structure and Properties",
-        "title": "3    CHEM 19. Chemical Structure and Properties 3    MATH 28. Analytic Geometry and Calculus III 3    BIO 30. Genetics 3    AGRI 31. Fundamentals of Crop Science I 3    CHEM 18.1 University Chemistry Laboratory 3    GE Elective (2)   HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 18",
+        "code": "CHEM 19",
+        "title": "Chemical Structure and Properties",
         "units": 17,
         "year": 1,
         "sem": "midyear",
@@ -5042,8 +5044,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "CMSC 12/AMAT 152",
-        "title": "Foundations of Computer Science/Fundamentals of Mathema",
+        "code": "CMSC 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -5058,8 +5060,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -5074,8 +5076,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory",
-        "title": "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory 3    CHEM 43.1. Organic Chemistry I Laboratory 4    PHYS 72. University Physics II 1    PHYS 72.1. University Physics II Laboratory 3    AGRI 21. Introduction to Animal Science 3    AGRI 32. Fundamentals of Crop Science II 3    CHEM 32. Quantitative Inorganic Analysis (2)   HK 12/13. Human Kinetics Activities/Advanced Human Kinetics Activities 20    NSTP 1. National Training Service Program I 18",
+        "code": "CHEM 32.1",
+        "title": "Quantitative Inorganic Analysis Laboratory",
         "units": 3,
         "year": 2,
         "sem": "midyear",
@@ -5142,8 +5144,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I",
-        "title": "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I 3    CHEM 131. Technical Analysis I (Foods and Feeds)                          4 3    CHEM 44.1. Organic Chemistry II Laboratory 3    COMM 10. Critical Perspectives in Communication 3    AGRI 51. Principles of Soil Science 3    AGRI 41. Principles of Crop Protection (3) 18",
+        "code": "CHEM 111",
+        "title": "Physical Chemistry I",
         "units": 18,
         "year": 3,
         "sem": "midyear",
@@ -5258,16 +5260,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum",
-        "title": "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum 3     CHEM 115. Physical Chemistry III                                          3 3     CHEM 137.1. Modern Analytical Chem Laboratory 3     CHEM 161.1. General Biochemistry Laboratory 4     CHEM 192. Chemical Information, Literature and Communication 3     SPECIALIZATION 3     SPECIALIZATION 21",
+        "code": "CHEM 112.1",
+        "title": "Physical Chemistry II Laboratory",
         "units": 18,
         "year": 4,
         "sem": "midyear",
         "prereqs": []
       },
       {
-        "code": "FIFTH",
-        "title": "YEAR 3     CHEM 133. Technical Analysis II (Soils, Fertilizers, and Pesticides) 3     CHEM 185. Structure and Reactivity of Agricultural Chemicals 1     AGRI 199. Colloquium in Agriculture 3     ACHEM 200. Undergraduate Thesis 3     GE Elective 3     SPECIALIZATION 3 19",
+        "code": "YEAR 3",
+        "title": "CHEM",
         "units": 17,
         "year": 4,
         "sem": "midyear",
@@ -5281,23 +5283,23 @@ const UPLB_PROGRAMS = {
       "MATH 27",
       "ETHICS 1",
       "KAS 1/HIST 1",
-      "3    CHEM 19. Chemical Structure and Properties",
+      "CHEM 19",
       "ECON 11",
       "CHEM 43",
       "PHYS 71",
       "PHYS 71.1",
       "BOT 20",
-      "CMSC 12/AMAT 152",
+      "CMSC 12",
       "PI 10",
       "tical Computing",
-      "3    CHEM 32.1. Quantitative Inorganic Analysis Laboratory",
+      "CHEM 32.1",
       "CHEM 44",
       "STAT 162",
       "AGRI 22",
       "AAE 111/AAE 120",
       "AGRI 61",
       "GE",
-      "3    CHEM 111. Physical Chemistry I                                            3    CHEM 161A. Biochemistry I",
+      "CHEM 111",
       "CHEM 111.1",
       "CHEM 112",
       "CHEM 137",
@@ -5310,7 +5312,7 @@ const UPLB_PROGRAMS = {
       "AGRI 171",
       "ACHM 200",
       "STS 1",
-      "2     CHEM 112.1. Physical Chemistry II Laboratory                              2    CHEM 198. Practicum",
+      "CHEM 112.1",
       "FIFTH"
     ]
   },
@@ -5918,16 +5920,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1 CHEM 18.1. University Chemistry Laboratory",
-        "title": "1 CHEM 18.1. University Chemistry Laboratory 3 MCB 11. Biology and Applications of Microorganisms 3 ENSC 11. Statics of Rigid Bodies 4 MATH 28. Analytic Geometry and Calculus III 1 HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History",
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Ki 3 Activities (2) NSTP 1. National Service Training Program 15",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -6011,8 +6013,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -6027,16 +6029,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "4 ENSC 26. Computer Applications in Engineering",
-        "title": "4 ENSC 26. Computer Applications in Engineering 2 ChE 32. Industrial Stoichiometry 3 ENSC 12. Dynamics of Rigid Bodies 3 ENSC 21. Mathematical Methods in Engineering 2 CHEM 111. Physical Chemistry I 4 CHEM 160. Introductory Biochemistry 1 GE",
+        "code": "ENSC 26",
+        "title": "Computer Applications in Engineering",
         "units": 2,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Ki (2) Activities (3) 19",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6087,8 +6089,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ChE 143. Chemical Engineering Thermodynamics II",
-        "title": "3 ChE 143. Chemical Engineering Thermodynamics II g      3 ChE 145. Chemical Reaction Engineering 3 ChE 153. Transfer Operations I 3 ChE 154. Transfer Operations II 3 ENSC 13. Strength of Materials 3 CHEM 111.1. Physical Chemistry I Laboratory 3 ENG 10. Writing of Scientific Papers 21",
+        "code": "II 3",
+        "title": "ChE",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6111,8 +6113,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "2 ChE 170. Instrumentation and Process Dynamics and Cont",
-        "title": "2 ChE 170. Instrumentation and Process Dynamics and Cont 3 ChE 185. Chemical Engg Laws, Ethics, Specifications an 3 ChE 193. Plant Design 3 ChE 199. Plant Inspection and Seminar ChE 200/200b/200c. Undergraduate Thesis/Innovationeeri 3 Engineering Industry Research 3 Cognate 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Life GE 20",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life GE",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6134,7 +6136,7 @@ const UPLB_PROGRAMS = {
       "PHYS 51",
       "PHYS 51.1",
       "PI 10",
-      "1 CHEM 18.1. University Chemistry Laboratory",
+      "CHEM 18.1",
       "STS 1",
       "ARTS 1",
       "ChE 30. Fundamentals of Chemical Engineering",
@@ -6144,7 +6146,7 @@ const UPLB_PROGRAMS = {
       "CHEM 32.1",
       "CHEM 40",
       "CHEM 40.1",
-      "4 ENSC 26. Computer Applications in Engineering",
+      "ENSC 26",
       "3",
       "ChE 142. Chemical Engineering Thermodynamics I",
       "CHEM 112",
@@ -6186,7 +6188,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "GE",
-        "title": "Elective HIST1/KAS1. Kasaysayan ng Pilipinas/Philippine History",
+        "title": "Elective",
         "units": 3,
         "year": 1,
         "sem": "1",
@@ -6217,8 +6219,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     ENSC 10.1. Engineering Graphics Laboratory",
-        "title": "3     ENSC 10.1. Engineering Graphics Laboratory 1     ENSC 11. Statics of Rigid Bodies 3     MATH 28. Analytic Geometry and Calculus III 3     PHYS 72. University Physics II 3     PHYS 72.1. University Physics II Laboratory 4     STS 1. Science, Technology and Society 1     GE Elective",
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -6313,16 +6315,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 CHEM 18. University Chemistry",
-        "title": "3 CHEM 18. University Chemistry 3 CHEM 18.1. University Chemistry Laboratory 3 CE 120. Higher Surveying 3 CE 131. Structural Analysis I 3 ENSC 16. Fluid Mechanics 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Lif 3 PI 10. The Life, Works, and Writings of Rizal",
+        "code": "CHEM 18",
+        "title": "University Chemistry",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Activities (3) NSTP 2. National Service Training Program 21",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6393,24 +6395,24 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 CE 122. Transportation Engineering II",
-        "title": "3 CE 122. Transportation Engineering II 3 CE 134. Design of Reinforced Concrete Members 3 CE 152. Sanitary Engineering II 3 CE 161. Construction Materials & Testing 3 CE 163. Civil Engineering Laws, Contracts and Ethics 3 ENSC 16.1. Fluid Mechanics Laboratory 3 IE 184. Project Development and Management s (2) 21",
+        "code": "CE 122",
+        "title": "Transportation Engineering II",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 CE 198. Practicum",
-        "title": "3 CE 198. Practicum 4 3 3 2 2 3 20",
+        "code": "CE 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -6465,8 +6467,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     ABE 67. Irrigation & Drainage Engineering",
-        "title": "3     ABE 67. Irrigation & Drainage Engineering 3     CE 197. Civil Engineering Project Integration 3     CE 199. Seminar 4     CE 200/200b. Thesis/Innovationeering 3     COMM 10. Critical Perspectives in Communication 3     ENG 10. Writing of Scientific Papers",
+        "code": "ABE 67",
+        "title": "Irrigation & Drainage Engineering",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6496,7 +6498,7 @@ const UPLB_PROGRAMS = {
       "MATH 27",
       "PHYS 71",
       "PHYS 71.1",
-      "3     ENSC 10.1. Engineering Graphics Laboratory",
+      "ENSC 10.1",
       "2",
       "EE 1",
       "ENSC 12",
@@ -6505,7 +6507,7 @@ const UPLB_PROGRAMS = {
       "STAT 101",
       "GE",
       "ABE 48",
-      "3 CHEM 18. University Chemistry",
+      "CHEM 18",
       "3",
       "ABE 57",
       "CE 121",
@@ -6514,15 +6516,15 @@ const UPLB_PROGRAMS = {
       "CE 151",
       "CE 170",
       "FPPS 183",
-      "3 CE 122. Transportation Engineering II",
-      "3 CE 198. Practicum",
+      "CE 122",
+      "CE 198",
       "CE 135",
       "CE 137",
       "CE 141",
       "CE 164",
       "CE 171",
       "CE",
-      "3     ABE 67. Irrigation & Drainage Engineering",
+      "ABE 67",
       "ENSC 26",
       "3"
     ]
@@ -6611,16 +6613,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 MATH 28. Analytic Geometry and Calculus III",
-        "title": "3 MATH 28. Analytic Geometry and Calculus III 4 PHYS 72. University Physics II 1 PHYS 72.1. University Physics II Laboratory 1 ENSC 10.1. Engineering Graphics Laboratory 3 ENSC 11. Statics of Rigid Bodies 3 GE Elective 3 GE Elective",
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus III",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Service Training Program II 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -6683,24 +6685,24 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "4 EE 50. Fundamentals of Electrical Engineering II",
-        "title": "4 EE 50. Fundamentals of Electrical Engineering II 3 EE 51. Electromechanical Energy Conversion for DC 3 EE 55. Semiconductor Devices 5 ENSC 26. Computer Applications in Engineering 3 KAS 1/HIST 1. Kasaysayan ng Pilipinas/Philippine History 3 GE Elective",
+        "code": "EE 50",
+        "title": "Fundamentals of Electrical Engineering II",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities 21",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6763,8 +6765,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 EE 70. Instrumentation Engineering",
-        "title": "3 EE 70. Instrumentation Engineering 4 EE 75. Digital Electronics 4 EE 71. Analysis of Power Systems 3 EE 79. Electrical Engineering Law, Ethics, and Contracts s    3 FPPS 183. Engineering Economic Analysis 3 IE 184. Project Development and Management",
+        "code": "EE 70",
+        "title": "Instrumentation Engineering",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6779,8 +6781,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "4 EE 198. Internship",
-        "title": "4 EE 198. Internship 4 3 1 3 3 1 19",
+        "code": "EE 198",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -6827,16 +6829,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "EE",
-        "title": "200/200b/200c. Undergraduate Thesis/Innovationeering/Engineering Industry Research Specialization Course",
+        "code": "EE 200",
+        "title": "Unknown Title",
         "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "EE",
-        "title": "200/200b/200c. Undergraduate Thesis/ 3 Innovationeering/Engineering Industry Research 3 Specialization Course 3 Specialization Course 3 Elective 3 Elective 3 EE 91. Electrical System Design, Planning, and Estimatio 3 21",
+        "code": "EE 200",
+        "title": "Unknown Title",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6859,7 +6861,7 @@ const UPLB_PROGRAMS = {
       "PI 10",
       "ARTS 1",
       "ETHICS 1",
-      "3 MATH 28. Analytic Geometry and Calculus III",
+      "MATH 28",
       "3",
       "EE 40",
       "EE 45",
@@ -6867,7 +6869,7 @@ const UPLB_PROGRAMS = {
       "ENSC",
       "ENSC 21",
       "STS 1",
-      "4 EE 50. Fundamentals of Electrical Engineering II",
+      "EE 50",
       "4",
       "EE 60",
       "EE 65",
@@ -6875,9 +6877,9 @@ const UPLB_PROGRAMS = {
       "EE 62",
       "EE 66",
       "ENG 10",
-      "3 EE 70. Instrumentation Engineering",
+      "EE 70",
       "EE 199",
-      "4 EE 198. Internship",
+      "EE 198",
       "EE 85",
       "EE 80",
       "EE 86",
@@ -6980,16 +6982,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ENSC 11. Statics of Rigid Bodies",
-        "title": "3 ENSC 11. Statics of Rigid Bodies 3 MATH 28. Analytic Geometry and Calculus III 3 IE 31. Industrial Organization and Manageme 1 IE 21. Industrial Processes 4 STAT 101. Statistical Methods 1 KAS 1/HIST 1. Kasaysayan ng Pilipinas/Phili 3 GE Elective. General Education",
+        "code": "ENSC 11",
+        "title": "Statics of Rigid Bodies",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanc 2 Activities (2) NSTP 2. National Service Training Program (3) 20",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -7060,8 +7062,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ETHICS 1. Ethics and Moral Reasoning in Eve",
-        "title": "3 ETHICS 1. Ethics and Moral Reasoning in Eve 3 IE 142. Operations Research II 3 ENSC 12. Dynamics of Rigid Bodies 5 ENSC 10.1. Engineering Graphics Laboratory 5 IE 151. Production Systems cs Activities        (2) IE 150. Systems Evaluation",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Eve",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -7084,8 +7086,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ryday Life          3     IE 198. Internship",
-        "title": "ryday Life          3     IE 198. Internship 3 3 2 3 3 3 ed Human Kinetics (2) 20",
+        "code": "IE 198",
+        "title": "Internship ryday Life",
         "units": 3,
         "year": 2,
         "sem": "midyear",
@@ -7140,8 +7142,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ENSC 16. Fluid Mechanics",
-        "title": "3 ENSC 16. Fluid Mechanics 3 ENSC 14a. Engineering Thermodynamics and He 3 IE 144. Systems Simulation 3 IE 184. Project Development and Management 3 IE 164. Informations Systems I 3 IE 136. Industrial Safety and Health 18",
+        "code": "ENSC 16",
+        "title": "Fluid Mechanics",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -7212,8 +7214,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 Technical Cognate",
-        "title": "3 Technical Cognate 3 IE 90. Ethics for Industrial Engineers 3 COMM 10. Critical Perspectives in Communica 3 GE Elective. General Education 3 GE Elective. General Education 1 EE 1. Basic Electrical Engineering 3 IE 200/200b/200c. Thesis/Innovationeering/E 19",
+        "code": "IE 90",
+        "title": "Ethics for Industrial Engineers",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -7245,7 +7247,7 @@ const UPLB_PROGRAMS = {
       "PHYS 51.1",
       "CHEM 18",
       "CHEM 18.1",
-      "3 ENSC 11. Statics of Rigid Bodies",
+      "ENSC 11",
       "3",
       "II",
       "PI 10",
@@ -7253,16 +7255,16 @@ const UPLB_PROGRAMS = {
       "IE 141",
       "IE 132",
       "IE 125",
-      "3 ETHICS 1. Ethics and Moral Reasoning in Eve",
+      "ETHICS 1",
       "MGT 111",
-      "ryday Life          3     IE 198. Internship",
+      "IE 198",
       "ENSC 13",
       "IE 143",
       "ABE 43",
       "IE 152",
       "ENSC 26",
       "IE 134",
-      "3 ENSC 16. Fluid Mechanics",
+      "ENSC 16",
       "3",
       "Technical Cognate",
       "ENG 10",
@@ -7360,8 +7362,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "y      3 ARTS 1. Critical Perspectives in the Arts",
-        "title": "y      3 ARTS 1. Critical Perspectives in the Arts 3 EE 1. Basic Electrical Engineering 3 PI 10. The Life, Works, and Writings of Rizal 3 ENSC 11. Statics of Rigid Bodies 2 MATH 28. Analytic Geometry and Calculus III 3 IE 31. Industrial Organization and Management 4 ME 43**. Engineering Shop 1 NSTP 1. National Service Training Program (2) HK 12. Human Kinetics Activities 19",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts y",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -7432,24 +7434,24 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 EE 3*. DC and AC Machinery",
-        "title": "3 EE 3*. DC and AC Machinery 4 ENSC 15. Fundamentals of Heat Transfer 3 ENSC 16. Fluid Mechanics 3 ENSC 21. Mathematical Methods in Engineering 3 ME 45*. Analysis of Machine Elements 3 ME 70*. Mechanical Engineering Thermodynamics",
+        "code": "EE 3",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (3) Activities (2) 19",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -7520,16 +7522,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     COMM 10. Critical Perspectives in Communication",
-        "title": "3     COMM 10. Critical Perspectives in Communication 3     ENG 10. Writing of Scientific Papers 3     ENSC 26. Computer Applications in Engineering 3     ME 154*. Design of Machinery 3     ME 173.1*. Mechanical Engineering Laboratory I 2     ME 176*. Air Conditioning and Ventilation Systems 3     IE 184. Project Development and Management 21",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 ME 198. Practicum",
-        "title": "3 ME 198. Practicum 3 3 3 1 3 19",
+        "code": "ME 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -7592,16 +7594,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 Elective GE Course",
-        "title": "3 Elective GE Course 3 Elective GE Course 3 ME 181*. Industrial Plant Engineering and Design Standards 2 ME 182*. Power Plant Engineering and Design",
+        "code": "Elective",
+        "title": "GE Course",
         "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "ME",
-        "title": "200/b/c*. Undergraduate Thesis/Engineering Industry 2 Research/ Innovationeering 1 Elective* Research/ 3     Innovationeering 3 20",
+        "code": "ME 200",
+        "title": "Unknown Title",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -7625,7 +7627,7 @@ const UPLB_PROGRAMS = {
       "MATH 27",
       "PHYS 71",
       "PHYS 71.1",
-      "y      3 ARTS 1. Critical Perspectives in the Arts",
+      "ARTS 1",
       "3",
       "ETHICS 1",
       "EE",
@@ -7633,7 +7635,7 @@ const UPLB_PROGRAMS = {
       "ENSC 13",
       "ENSC 14",
       "ME",
-      "3 EE 3*. DC and AC Machinery",
+      "EE 3",
       "4",
       "STS 1",
       "IE 150",
@@ -7642,8 +7644,8 @@ const UPLB_PROGRAMS = {
       "ME",
       "ME",
       "ME",
-      "3     COMM 10. Critical Perspectives in Communication",
-      "3 ME 198. Practicum",
+      "COMM 10",
+      "ME 198",
       "Elective",
       "EE",
       "STAT 101",
@@ -7651,7 +7653,7 @@ const UPLB_PROGRAMS = {
       "ME",
       "ME",
       "ME",
-      "3 Elective GE Course",
+      "Elective",
       "ME",
       "3"
     ]
@@ -8006,16 +8008,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 GE Elective",
-        "title": "3 GE Elective 3 GE Elective 3 MGT 101. Concepts and Dynamics of Management 3 COST 10. Introduction to Collective Action 3 ECON 101. Intermediate Macroeconomic Theory (2) ECON 102. Intermediate Microeconomic Theory",
+        "code": "GE",
+        "title": "Elective",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK 12/HK 13",
-        "title": "Human Kinetics Activities/Advanced Human Kinetics Activities 15",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -8047,7 +8049,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ECON 103",
-        "title": "Introduction to Growth Theory and Open Economy Macroeconomics",
+        "title": "Introduction to Growth Theory and Open Economy Macroeconomic",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8055,7 +8057,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ECON 104",
-        "title": "Introduction to Factor Market Analysis, General Equilibri & Welfare Economics",
+        "title": "Introduction to Factor Market Analysis, General Equilibri &",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8071,7 +8073,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "NSTP 1",
-        "title": "National Service Training Program I HK12/HK13. Human Kinetics Activities / Advanced Human Kinetics Activities",
+        "title": "National Service Training Program I HK",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8079,7 +8081,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning in Everyday 3 Language Elective 3 MGT 111. Principles of Accounting 3 ECON 130. Elements of Mathematical Economics",
+        "title": "Ethics and Moral Reasoning in Everyday",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -8087,7 +8089,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ECON 137",
-        "title": "Introduction to Econometrics 3 um          NSTP 2. National Service Training Program II 3 HK12/HK13.Human Kinetics Activities / Advance 3 Human Kinetics Activities (3) (2) 18",
+        "title": "Introduction to Econometrics",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -8150,8 +8152,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 COMM 10. Critical Perspectives in Communication",
-        "title": "3 COMM 10. Critical Perspectives in Communication 3      ENG 10. Writing of Scientific Papers 3      ECON 141. International Economics 3      ECON 151. Public Economics 3      Specialization Course. Mandatory 3      Specialization Course. Elective 18",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -8191,15 +8193,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ECON 200",
-        "title": "Undergraduate Thesis Specialization Course. Mandatory Specialization Course. Mandatory Specialization Course. Elective",
+        "title": "Undergraduate Thesis Specialization Course",
         "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3      Free Elective",
-        "title": "3      Free Elective 1      ECON 110. History of Economic Doctrines 3      ECON 185. Development Economics 3      ECON 199. Undergraduate Seminar 3      ECON 200. Undergraduate Thesis 3      Specialization Course. Elective 16",
+        "code": "Elective",
+        "title": "",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -8220,7 +8222,7 @@ const UPLB_PROGRAMS = {
       "STS 1",
       "MATH 25",
       "ECON 11",
-      "3 GE Elective",
+      "GE",
       "3",
       "GE",
       "PI 10",
@@ -8236,13 +8238,13 @@ const UPLB_PROGRAMS = {
       "ECON 170",
       "ECON 175",
       "MGT 115",
-      "3 COMM 10. Critical Perspectives in Communication",
+      "COMM 10",
       "3",
       "ECON 198",
       "Elective",
       "ECON 199",
       "ECON 200",
-      "3      Free Elective",
+      "Elective",
       "3"
     ]
   },
@@ -8258,15 +8260,17 @@ const UPLB_PROGRAMS = {
       "thesis": {
         "name": "Thesis Track",
         "code": "AAE 200",
-        "freeElectiveUnits": 9
+        "freeElectiveUnits": 0,
+        "majorElectiveUnits": 15
       },
-      "sp": {
-        "name": "Special Problem Track",
-        "code": "AAE 199",
-        "freeElectiveUnits": 12
+      "mfp": {
+        "name": "Major Farm Practice Track",
+        "code": "AAE 200A",
+        "freeElectiveUnits": 0,
+        "majorElectiveUnits": 15
       }
     },
-    "defaultTrack": "sp",
+    "defaultTrack": "thesis",
     "majorCourses": [
       {
         "code": "KAS 1/HIST 1",
@@ -8333,8 +8337,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     ETHICS 1. Ethics and Moral Reason",
-        "title": "3     ETHICS 1. Ethics and Moral Reason 1     AGRI 21. Introduction to Animal S 3     AGRI 31. Fundamentals of Crop Sci 3     AAE 111. Farm Management 3     ECON 102. Intermediate Microecono 3     STAT 101. Statistical Methods (2)   HK 12/13. Human Kinetics Activiti 1 17",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reason",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -8350,7 +8354,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AAE 103",
-        "title": "Statistical Analysis of Agricultural and Applied Economics Data",
+        "title": "Statistical Analysis of Agricultural and Applied Economics D",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8397,8 +8401,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8413,16 +8417,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3     GE Elective",
-        "title": "3     GE Elective 3     ARTS 1. Critical Perspectives in 3     PI 10. Life and Works of Rizal 3     HNF 141. Food Nutrition System 3     NRC 170. Watershed Management 3     ECON 130. Elements of Mathematica (2)   HK 12/13. Human Kinetics Activiti (3)   NSTP 2. National Service Training 18",
+        "code": "GE",
+        "title": "Elective",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3",
-        "title": "3 the Arts 3 3 3 l Economics es/Advanced Human Kinetics Program II 18",
+        "code": "II 18",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "midyear",
@@ -8470,15 +8474,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AAE 171",
-        "title": "Feasibility Studies of Agri-Based Enterprises and Agro-Industrial Development Projects",
+        "title": "Feasibility Studies of Agri-Based Enterprises and Agro-Indus",
         "units": 3,
         "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3     COMM 10. Critical Perspectives in",
-        "title": "3     COMM 10. Critical Perspectives in",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -8486,15 +8490,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AAE 195",
-        "title": "Introduction to Research 3 Economics 3     AAE 161. Introduction to Food and 3     AAE 123. Agricultural and Interna 3     AAE/ECON/MGT/COST Track Course 3 18",
+        "title": "Introduction to Research",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "Communication                          3      AAE 198. Internship",
-        "title": "Communication                          3      AAE 198. Internship Methods in Agricultural and Applied 3 Nutrition Economics tional Trade 3 15",
+        "code": "AAE 198",
+        "title": "Internship Communication",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -8518,15 +8522,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AAE 199",
-        "title": "Undergraduate Seminar Technical Track Course AAE/ECON/MGT/COST Track Course AAE/ECON/MGT/COST Track Course",
+        "title": "Undergraduate Seminar Technical Track Course AAE",
         "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3    AAE 150. Economics of Agricultura",
-        "title": "3    AAE 150. Economics of Agricultura 3    AAE 200/200a. Undergraduate Thesi 1    STS 1. Science, Technology and So 3    GE Elective 3    GE Elective 3 16",
+        "code": "AAE 150",
+        "title": "Economics of Agricultura",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -8549,7 +8553,7 @@ const UPLB_PROGRAMS = {
       "MATH 25",
       "ECON 11",
       "COST 10",
-      "3     ETHICS 1. Ethics and Moral Reason",
+      "ETHICS 1",
       "ing in Everyday Life",
       "AAE 103",
       "AAE 120",
@@ -8557,7 +8561,7 @@ const UPLB_PROGRAMS = {
       "AGRI 22",
       "AGRI 32",
       "ECON 101",
-      "3     GE Elective",
+      "GE",
       "3",
       "ENG 10",
       "ABE 2",
@@ -8565,13 +8569,13 @@ const UPLB_PROGRAMS = {
       "AAE 130",
       "AAE 142",
       "AAE 171",
-      "3     COMM 10. Critical Perspectives in",
+      "COMM 10",
       "AAE 195",
-      "Communication                          3      AAE 198. Internship",
+      "AAE 198",
       "AAE 151",
       "AAE",
       "AAE 199",
-      "3    AAE 150. Economics of Agricultura",
+      "AAE 150",
       "l Development"
     ]
   },
@@ -8623,7 +8627,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ABT 10",
-        "title": "Traditional and Modern Biotechnology: Principles an Applications",
+        "title": "Traditional and Modern Biotechnology",
         "units": 3,
         "year": 1,
         "sem": "1",
@@ -8662,16 +8666,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    AGRI 21. Introduction to Animal Science",
-        "title": "3    AGRI 21. Introduction to Animal Science 1    AGRI 31. Fundamentals of Crop Science I 3    MGT 101. Concepts and Dynamics of Management d 3    MGT 111. Principles of Accounting 3    ETHICS 1. Ethics and Moral Reasoning for Everyday Li 3    KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine Hi",
+        "code": "AGRI 21",
+        "title": "Introduction to Animal Science",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human K 1 Activities (2) 17",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -8734,8 +8738,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -8750,8 +8754,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 ECON 102. Intermediate Microeconomic Theory",
-        "title": "3 ECON 102. Intermediate Microeconomic Theory 3 ABE 2. Fundamentals of Agricultural Engineering II 3 MGT 113. Managerial Accounting",
+        "code": "ECON 102",
+        "title": "Intermediate Microeconomic Theory",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -8759,15 +8763,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MGT 131",
-        "title": "Introduction to Human Relations and Behavior 3 Organization 3 MGT 141. Fundamentals of Operations Management 3 ABME 172. Product Ideation and Creation",
+        "title": "Introduction to Human Relations and Behavior",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kin (2) Activities (3) NSTP 2. National Service Training Program II 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -8822,8 +8826,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    PI 10. The Life Works and Writing of Jose Rizal",
-        "title": "3    PI 10. The Life Works and Writing of Jose Rizal 3    STAT 101. Statistical Methods 3    Elective 3    Track Course 3    GE Elective 3 18",
+        "code": "PI 10",
+        "title": "The Life Works and Writing of Jose Rizal",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -8870,8 +8874,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    ABME 190. Special Problems",
-        "title": "3    ABME 190. Special Problems 3    MGT 155. International Marketing 3    MGT 181. Fundamentals of Strategic Business Manageme 3    STS 1. Science, Technology and Society 3    Elective 15",
+        "code": "ABME 190",
+        "title": "Special Problems",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -8894,7 +8898,7 @@ const UPLB_PROGRAMS = {
       "ECON 11",
       "MATH 25",
       "COST 10",
-      "3    AGRI 21. Introduction to Animal Science",
+      "AGRI 21",
       "3",
       "ABME 103",
       "AGRI 22",
@@ -8902,7 +8906,7 @@ const UPLB_PROGRAMS = {
       "MGT 121",
       "MGT 151",
       "GE",
-      "3 ECON 102. Intermediate Microeconomic Theory",
+      "ECON 102",
       "MGT 131",
       "3",
       "ECON 101",
@@ -8910,13 +8914,13 @@ const UPLB_PROGRAMS = {
       "AAE 111",
       "COMM 10",
       "GE",
-      "3    PI 10. The Life Works and Writing of Jose Rizal",
+      "PI 10",
       "ABME",
       "MGT 161",
       "ARTS 1",
       "Elective",
       "Elective",
-      "3    ABME 190. Special Problems",
+      "ABME 190",
       "3"
     ]
   },
@@ -9739,8 +9743,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 SFFG 101. Principles and Concepts of Social Forestry",
-        "title": "3 SFFG 101. Principles and Concepts of Social Forestry 3 FRM 92. Forest Engineering 4 FBS 21. Taxonomy of Forest Plants 3 FRM 120. Forestry Economics 3 GE Elective 3 GE Elective (2) HK 12/13. Human Kinetics Activities/Advanced Human Ki 19",
+        "code": "SFFG 101",
+        "title": "Principles and Concepts of Social Forestry",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -9811,16 +9815,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 NRC 170. Watershed Management",
-        "title": "3 NRC 170. Watershed Management 3 FPPS 127. Properties and Utilization of Forest Product 3 FBS 36. Fundamentals of Forest Ecology 3 SFI 103. Fundamentals of Agroforestry s    3 GE Elective 3 STS 1. Science, Technology, and Society (3) NSTP 2. National Service Training Program II (2) HK 12/13. Human Kinetics Activities/Advanced Human Ki 18",
+        "code": "NRC 170",
+        "title": "Watershed Management",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -9875,16 +9879,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    FPPS 128. Non-Timber Forest Products",
-        "title": "3    FPPS 128. Non-Timber Forest Products 3    SFI 142. Plantation Forestry 4    FBS 172. Forest Genetics 3    FOR 195. Research Methods in Forestry and Natural R 3    FRM 61. Forest Biometry 3    Specialization Course 19",
+        "code": "FPPS 128",
+        "title": "Non-Timber Forest Products",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3 FOR 198. Internship",
-        "title": "3 FOR 198. Internship 3 3 esources 3 3 18",
+        "code": "FOR 198",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -9939,8 +9943,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 FOR 200. Undergraduate Thesis",
-        "title": "3 FOR 200. Undergraduate Thesis 3 FPPS 147. Furniture and Handicraft Production 3 FRM 183. Timber Production Management 3 FRM 184. Integrated Forest Resource Management 3 Specialization Course 1 16",
+        "code": "FOR 200",
+        "title": "Undergraduate Thesis",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -9962,7 +9966,7 @@ const UPLB_PROGRAMS = {
       "ECON 11",
       "ARTS 1",
       "PI 10",
-      "3 SFFG 101. Principles and Concepts of Social Forestry",
+      "SFFG 101",
       "3",
       "SFFG 123",
       "FPPS 11",
@@ -9970,22 +9974,22 @@ const UPLB_PROGRAMS = {
       "NRC 140",
       "KAS 1/HIST 1",
       "ETHICS 1",
-      "3 NRC 170. Watershed Management",
+      "NRC 170",
       "3",
       "Specialization Course",
       "SFI 140",
       "FBS 45",
       "SFFG 113",
       "FBS 101",
-      "3    FPPS 128. Non-Timber Forest Products",
-      "3 FOR 198. Internship",
+      "FPPS 128",
+      "FOR 198",
       "FOR 200",
       "SFFG 125",
       "FRM 131",
       "COMM 10",
       "SFFG 152",
       "FOR 199",
-      "3 FOR 200. Undergraduate Thesis",
+      "FOR 200",
       "3"
     ]
   },
@@ -10177,16 +10181,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "y         HUME 112. Sustainability Science",
-        "title": "y         HUME 112. Sustainability Science 3 3  HUME 107. Principles of Human Development 3  HUME 105. Humans and Their Environment 3  SOC 140. Introduction to Demography 3  BIO 150. Ecology",
+        "code": "HUME 112",
+        "title": "Sustainability Science y         HUME",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities 15",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -10194,7 +10198,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning 3 in Everyday Life 3 ARTS 1. Critical Perspectives in the Arts 3 3 4 s (2) 16",
+        "title": "Ethics and Moral Reasoning",
         "units": 6,
         "year": 1,
         "sem": "midyear",
@@ -10241,8 +10245,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -10257,16 +10261,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 STS 1. Science, Technology, and Society",
-        "title": "3 STS 1. Science, Technology, and Society 3 STAT 166. Statistics for the Social Sciences 3 HUME 114. Material and Energy Flows 3 CERP 161. Planning Theory and Practice I 3 HUME 113. Community Study in Human Welfare",
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetic (2) Activities (3) NSTP 2. National Training Service Program II 15",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -10274,7 +10278,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "COMM 10",
-        "title": "Critical Perspectives in 3 Communication 3 GE Elective 3 GE Elective 3 Student may take 6-9 units of GE based 3 on their specific major program s (2) (3) 15",
+        "title": "Critical Perspectives in",
         "units": 9,
         "year": 2,
         "sem": "midyear",
@@ -10313,8 +10317,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 HUME 125. Human Ecological Systems Mapping",
-        "title": "3 HUME 125. Human Ecological Systems Mapping 3 HUME 124. Environmental Health 3 SDS 172. Techniques in Community Organizing 3 HFDS 110. Migration 3 Major 15",
+        "code": "HUME 125",
+        "title": "Human Ecological Systems Mapping",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -10330,7 +10334,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "HUME 123",
-        "title": "Climate Change Adaptation and Disaster Risk Reduction in Human Ecosystems",
+        "title": "Climate Change Adaptation and Disaster Risk Reduction in Hum",
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -10338,15 +10342,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "HNF 141",
-        "title": "Food and Nutrition Systems Major Major CERP/HFDS/SDS 200. Undergraduate Thesis Student may add another major course depending on their program",
+        "title": "Food and Nutrition Systems Major Major CERP",
         "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3 HUME 200a. Supervised Field Experience",
-        "title": "3 HUME 200a. Supervised Field Experience 3 HUME 199. Seminar in Human Ecology 3 CERP/HFDS/SDS 200. Undergraduate Thesis 3 3 15 Student may add another major course depending on their program",
+        "code": "HUME 200",
+        "title": "a",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -10367,24 +10371,24 @@ const UPLB_PROGRAMS = {
       "HUME 100",
       "CERP 101",
       "SDS 101",
-      "y         HUME 112. Sustainability Science",
+      "HUME 112",
       "ETHICS 1",
       "HUME 110",
       "HUME 111",
       "HUME 115",
       "PI 10",
       "GE",
-      "3 STS 1. Science, Technology, and Society",
+      "STS 1",
       "COMM 10",
       "CERP 140",
       "HUME 122",
       "SDS 173",
       "HUME 195",
-      "3 HUME 125. Human Ecological Systems Mapping",
+      "HUME 125",
       "3 Major",
       "HUME 123",
       "HNF 141",
-      "3 HUME 200a. Supervised Field Experience",
+      "HUME 200",
       "6"
     ]
   },
@@ -10475,16 +10479,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History",
-        "title": "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History 3 ETHICS 1. Ethics and Moral Reasoning in Everyday Life 3 GE Elective 3 CHEM 40. Organic Chemistry 3 CHEM 40.1. Organic Chemistry Laboratory 3 MCB 11. Biology and Applications of Microorganisms 2 HNF 101. Food Selection and Preparation",
+        "code": "KAS 1",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics (2) Activities 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -10547,8 +10551,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activitie/Advanced Human Kinetic Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -10563,16 +10567,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    STS 1. Science, Technology, and Society",
-        "title": "3    STS 1. Science, Technology, and Society 3    PI 10. The Life and Works of Jose Rizal 4    GE Elective 3    GE Elective 3    STAT 101. Statistical Methods 4    MGT 111. Principles of Accounting s (2) HNF 123. Nutritional Assessment",
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activitie /Advanced Human Kineti (3) Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -10635,8 +10639,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    HNF 105. Food Service Systems II",
-        "title": "3    HNF 105. Food Service Systems II 3    HNF 143. Nutrition Education 4    HNF 129. Medical Nutrition Therapy II 5    HNF 200. Undergraduate Thesis 3    HNF 126. Sports Nutrition",
+        "code": "HNF 105",
+        "title": "Food Service Systems II",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -10651,8 +10655,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3 HNF 200. Undergraduate Thesis",
-        "title": "3 HNF 200. Undergraduate Thesis 3 5 3 2 3 19",
+        "code": "HNF 200",
+        "title": "Undergraduate Thesis",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -10675,8 +10679,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "1     HNF 200b. Practicum II",
-        "title": "1     HNF 200b. Practicum II 12 13",
+        "code": "HNF 200",
+        "title": "b",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -10699,7 +10703,7 @@ const UPLB_PROGRAMS = {
       "HFDS 130",
       "CHEM 18",
       "CHEM 18.1",
-      "1 KAS 1/HIST 1. Kasaysayang ng Pilipinas/Philippine History",
+      "KAS 1",
       "3",
       "MGT 101",
       "HNF 103",
@@ -10707,19 +10711,19 @@ const UPLB_PROGRAMS = {
       "HNF 141",
       "CHEM 160",
       "HNF 102",
-      "3    STS 1. Science, Technology, and Society",
+      "STS 1",
       "3",
       "HNF 142",
       "HNF 104",
       "HNF 127",
       "HNF 128",
       "HNF 195",
-      "3    HNF 105. Food Service Systems II",
+      "HNF 105",
       "COMM 10",
-      "3 HNF 200. Undergraduate Thesis",
+      "HNF 200",
       "HNF 199",
       "HNF",
-      "1     HNF 200b. Practicum II",
+      "HNF 200",
       "12"
     ]
   },
@@ -10799,8 +10803,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "KAS 1/HIST 1",
-        "title": "Kasaysayan ng Pilipinas/Philippine 3 3    History 3    ETHICS 1. Ethics and Moral Reasoning in Everyday Life 3    DEVC 20. Fundamentals of Development Journalism n    3    DEVC 30. Fundamentals of Community Broadcasting 3",
+        "code": "KAS 1",
+        "title": "Unknown Title",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -10808,15 +10812,15 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "DEVC 40",
-        "title": "Fundamentals of Educational Communication and 3 Technology 3 DEVC 50. Introduction to Science Communication",
+        "title": "Fundamentals of Educational Communication and",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human (2) Kinetics Activities (3) NSTP 2. National Training Service Program II 18",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 18,
         "year": 1,
         "sem": "2",
@@ -10871,8 +10875,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Huma Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -10888,7 +10892,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "DEVC 125",
-        "title": "Writing and Reporting for Development         3 DEVC 3     DEVC 135. Multi-media Materials Plannning and Design 3     STAT 166. Statistics for the Social Sciences nt 3      Elective (Technical) 3     Elective (Technical) 3 n (2) 18",
+        "title": "Writing and Reporting for Development",
         "units": 15,
         "year": 2,
         "sem": "2",
@@ -10951,16 +10955,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Huma Kinetics Activities",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3    DEVC 136. Multi-media Materials Production and Management",
-        "title": "3    DEVC 136. Multi-media Materials Production and Management 3 DEVC 198. 3    DEVC 154. Communicating Science for Development 3    DEVC 195. Introduction to Communication Research 3    Elective (Technical) 3    Elective (SOSC) 3    Elective (SOSC) n (2) 18 18",
+        "code": "DEVC 136",
+        "title": "Multi-media Materials Production and Management",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -11023,8 +11027,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    DEVC 128. Science Journalism",
-        "title": "3    DEVC 128. Science Journalism t 3     DEVC 155. Knowledge Management for Development 3     DEVC 180. Communication Campaigns and Programs 3     DEVC 199. Undergraduate Seminar 3     DEVC 200. Undergraduate Thesis 3     Elective (SOSC) 18",
+        "code": "DEVC 128",
+        "title": "Science Journalism",
         "units": 16,
         "year": 4,
         "sem": "2",
@@ -11055,7 +11059,7 @@ const UPLB_PROGRAMS = {
       "GE",
       "Elective",
       "Elective",
-      "3    DEVC 136. Multi-media Materials Production and Management",
+      "DEVC 136",
       "Internship",
       "DEVC 127",
       "DEVC 145",
@@ -11063,7 +11067,7 @@ const UPLB_PROGRAMS = {
       "Elective",
       "Elective",
       "Elective",
-      "3    DEVC 128. Science Journalism"
+      "DEVC 128"
     ]
   },
   "ASDC": {
@@ -11230,16 +11234,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "3    ARTS 1. Critical Perspectives in the Arts",
-        "title": "3    ARTS 1. Critical Perspectives in the Arts 3    GE Elective 3    CHEM 18.1. University Chemistry Laboratory 3    STAT 164. Statistics for the Biological Scien 3    ZOTC 111. General Principles of Animal Produc 3    NSTP 2. National Training Service Program II (3)   HK 12/13. Human Kinetics Activities/Advanced (2) 18",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3    CHEM 40. Basic Organic Chemistry",
-        "title": "3    CHEM 40. Basic Organic Chemistry 3    CHEM 40.1. Basic Organic Chemistry Laboratory 2 ces tion (3) Human Kinetics Activities 14",
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
         "units": 2,
         "year": 1,
         "sem": "midyear",
@@ -11294,16 +11298,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "HK",
-        "title": "12/13. Human Kinetics Activities/Advanced Human Kinetics Activitie",
+        "code": "HK 12",
+        "title": "Unknown Title",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "3    COMM 10. Critical Perspectives in Communicati",
-        "title": "3    COMM 10. Critical Perspectives in Communicati 3    VETA 101. Macroscopic Anatomy I 3    VETA 105. Microscopic and Developmental Anato 3    ZOTC 113. Principles of Animal Nutrition 3    VPHY 141. General Physiology",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communicati",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -11318,8 +11322,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "on                          3     VMCB 121. General Microbiology",
-        "title": "on                          3     VMCB 121. General Microbiology 5 my I 3 4 Human Kinetics Activities 18",
+        "code": "VMCB 121",
+        "title": "General Microbiology on",
         "units": 2,
         "year": 2,
         "sem": "midyear",
@@ -11358,16 +11362,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "4     VMCB 123. Veterinary Virology",
-        "title": "4     VMCB 123. Veterinary Virology 4     VPAR 131. Veterinary Entomology and Protozool 4     VPHM 141. Veterinary Pharmacology and Therape 3     ZOTC 115. Ruminant Production 15    VMCB 122. Veterinary Bacteriology and Mycolog",
+        "code": "VMCB 123",
+        "title": "Veterinary Virology",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "3     VPTH 121. General Pathology",
-        "title": "3     VPTH 121. General Pathology ogy                         4     ZOTC 116. Poultry Production utics I                     4 3 y 17",
+        "code": "VPTH 121",
+        "title": "General Pathology",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -11518,16 +11522,16 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "2    VMED 151. General Principles of Veterinary Me",
-        "title": "2    VMED 151. General Principles of Veterinary Me 4    VMED 195. Research Methods in Veterinary Medi 3    VPH 122. Zoonoses 4    VPTH 123. Clinical Pathology 3    VPHY 143. Veterinary Endocrinology and Reprod 2    VSUR 151. Principles of Veterinary Anesthesio 3 21",
+        "code": "VMED 151",
+        "title": "General Principles of Veterinary Me",
         "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "FIFTH",
-        "title": "YEAR 2     VETC 172. Clinical Clerkship 2     VMED 155. Theriogenology 4     VMED 161. Equine Medicine 3     VMED 163. Ruminant Medicine 4     VMED 164. Swine Medicine 4     VMED 165. Aquatic and Wildlife Medicine 19    VSUR 153. Large Animal Surgery",
+        "code": "YEAR 2",
+        "title": "VETC",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -11542,8 +11546,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "SIXTH",
-        "title": "YEAR 1    VETC 174. Clinical Conference II 6    VETC 176. Clinical Internship II 2 2 3 14",
+        "code": "YEAR 1",
+        "title": "VETC",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -11565,22 +11569,22 @@ const UPLB_PROGRAMS = {
       "VMED 101",
       "STS 1",
       "CHEM 18",
-      "3    ARTS 1. Critical Perspectives in the Arts",
-      "3    CHEM 40. Basic Organic Chemistry",
+      "ARTS 1",
+      "CHEM 40",
       "GE",
       "GE",
       "ABME 10",
       "ZOTC 112",
       "CHEM 160",
       "VPHY 140",
-      "3    COMM 10. Critical Perspectives in Communicati",
-      "on                          3     VMCB 121. General Microbiology",
+      "COMM 10",
+      "VMCB 121",
       "VETA 102",
       "VETA 106",
       "VPHY 142",
       "ZOTC 114",
-      "4     VMCB 123. Veterinary Virology",
-      "3     VPTH 121. General Pathology",
+      "VMCB 123",
+      "VPTH 121",
       "VMCB 124",
       "VPAR 132",
       "VPH 121",
@@ -11599,7 +11603,7 @@ const UPLB_PROGRAMS = {
       "VELD 161.1",
       "VMED 156",
       "VMED 200",
-      "2    VMED 151. General Principles of Veterinary Me",
+      "VMED 151",
       "FIFTH",
       "VMED 200",
       "SIXTH",
@@ -11681,7 +11685,7 @@ function updateTrackOptionsUI() {
     `;
   }
   
-  trackOptions.innerHTML = html;
+  trackOptions.safeHTML = html;
   
   // Re-attach event listeners to the new radio buttons
   document.querySelectorAll('input[name="track"]').forEach(radio => {
