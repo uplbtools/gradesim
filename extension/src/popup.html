@@ -4,25 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elbi GradeSim</title>
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1><a href="https://gradesim.stimmie.dev" target="_blank" style="color: inherit; text-decoration: none;">Elbi GradeSim</a></h1>
+      <img class="plumbob" src="plumbob.svg" alt="">
+      <div class="brand">
+        <h1><a href="https://gradesim.uplb.tools" target="_blank" rel="noopener">Elbi GradeSim</a></h1>
+        <span class="byline">by UPLB Tools</span>
+      </div>
       <div class="header-actions">
-        <button id="helpBtn" class="header-btn" title="How to Use">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
-          </svg>
-          Help
-        </button>
-        <button id="openTabBtn" class="header-btn primary" title="Open in Full Tab">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-          </svg>
-          Open Full Screen
-        </button>
+        <button id="helpBtn" class="header-btn" type="button" title="How to use"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help</button>
+        <button id="openTabBtn" class="header-btn primary" type="button" title="Open in a full tab"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Full tab</button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
       </div>
     </header>
 
@@ -32,7 +28,7 @@
     </div>
 
     <div id="noData" class="no-data hidden">
-      <p>⚠️ No grades data found</p>
+      <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>No grades data found</p>
       <p class="hint">
         1. Go to <a href="https://amis.uplb.edu.ph" target="_blank">AMIS</a> and log in<br>
         2. The extension will automatically capture your grades<br>
@@ -46,7 +42,7 @@
         <div class="sidebar-column">
       <!-- Program Selector -->
       <section class="program-selector">
-        <label for="programSelect">Your Program:</label>
+        <label for="programSelect">Your program</label>
         <select id="programSelect">
           <optgroup label="College of Arts and Sciences">
             <option value="AASS">AA Sports Studies</option>
@@ -120,7 +116,7 @@
         <div id="honorStatus" class="honor-status"></div>
       </section>
 
-      <p class="credits"><a href="https://gradesim.stimmie.dev" target="_blank" style="color: inherit; text-decoration: none;">gradesim.stimmie.dev</a> | <a href="#" id="viewTermsLink" class="terms-link">Terms & Privacy</a></p>
+      <p class="credits"><a href="https://gradesim.uplb.tools" target="_blank" rel="noopener">gradesim.uplb.tools</a> <span aria-hidden="true">|</span> <a href="#" id="viewTermsLink" class="terms-link">Terms and privacy</a></p>
         </div>
 
         <div class="content-column">
@@ -128,7 +124,8 @@
       <!-- Tabs -->
       <div class="tabs">
         <button class="tab active" data-tab="grades">Grades</button>
-        <button class="tab" data-tab="whatif">What If?</button>
+        <button class="tab" data-tab="whatif">What if</button>
+        <button class="tab" data-tab="planner">Planner</button>
         <button class="tab" data-tab="wrapped">Wrapped</button>
       </div>
 
@@ -208,18 +205,18 @@
             </div>
             <div class="add-sub-box">
               <div class="sub-field">
-                <label for="subRequired">Required:</label>
+                <label for="subRequired">Required course</label>
                 <select id="subRequired">
-                  <option value="">-- Select Required Course --</option>
+                  <option value="">Choose a required course</option>
                 </select>
               </div>
               <div class="sub-field">
-                <label for="subTaken">Substituted By:</label>
+                <label for="subTaken">Covered by</label>
                 <select id="subTaken">
-                  <option value="">-- Select Completed Course --</option>
+                  <option value="">Choose a completed course</option>
                 </select>
               </div>
-              <button id="addSubBtn" class="btn btn-secondary btn-sm">Apply Substitution</button>
+              <button id="addSubBtn" class="btn btn-secondary btn-sm" type="button">Apply substitution</button>
             </div>
           </div>
 
@@ -231,6 +228,13 @@
         </div>
       </section>
 
+      <!-- Planner Tab -->
+      <section id="plannerTab" class="tab-content hidden">
+        <h3>Course planner</h3>
+        <p class="hint">See your earliest graduation term, the courses on your critical path, and what a failed course would cost. Opens in a new tab.</p>
+        <button id="openPlannerBtn" class="btn btn-primary">Open planner</button>
+      </section>
+
       <!-- Wrapped Tab -->
       <section id="wrappedTab" class="tab-content hidden">
         <div class="wrapped-container">
@@ -238,9 +242,9 @@
             <!-- Panels will be populated by JS -->
           </div>
           <div class="wrapped-nav">
-            <button id="wrappedPrev" class="wrapped-nav-btn" disabled>← Prev</button>
+            <button id="wrappedPrev" class="wrapped-nav-btn" disabled><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Prev</button>
             <span id="wrappedProgress" class="wrapped-progress">1 / 5</span>
-            <button id="wrappedNext" class="wrapped-nav-btn">Next →</button>
+            <button id="wrappedNext" class="wrapped-nav-btn">Next<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
           </div>
           <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
         </div>
@@ -250,18 +254,18 @@
     </div>
 
     <div class="data-actions-footer">
-      <button id="exportBtn" class="header-btn" title="Export grades and settings as JSON" style="font-family: var(--font-mono); font-size: 0.9rem;">EXPORT JSON</button>
-      <button id="importBtn" class="header-btn" title="Import grades and settings from JSON" style="font-family: var(--font-mono); font-size: 0.9rem;">IMPORT JSON</button>
-      <input type="file" id="importFile" accept=".json" style="display: none;">
+      <button id="exportBtn" class="header-btn" type="button" title="Export grades and settings as JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export JSON</button>
+      <button id="importBtn" class="header-btn" type="button" title="Import grades and settings from JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Import JSON</button>
+      <input type="file" id="importFile" accept=".json" hidden>
     </div>
   </div>
 
   <!-- Help Modal -->
   <div id="helpOverlay" class="terms-overlay hidden">
     <div class="terms-modal help-modal">
-      <div class="terms-header" style="position: relative;">
-        <h2 style="font-size: 1.1rem; margin-bottom: 0;">How to use Elbi GradeSim</h2>
-        <button id="closeHelpBtn" class="close-terms-btn" aria-label="Close" style="top: 50%; transform: translateY(-50%);">&times;</button>
+      <div class="terms-header">
+        <h2>How to use Elbi GradeSim</h2>
+        <button id="closeHelpBtn" class="close-terms-btn" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
       </div>
       <div class="terms-content help-content">
         <div class="help-item">
@@ -272,21 +276,21 @@
           </div>
         </div>
         <div class="help-item">
-          <div class="help-badge" style="background: linear-gradient(180deg, #dfc785 0%, #c0a060 100%); color: #1a1a1c; font-weight: 700;">SCHOLAR</div>
+          <div class="help-badge scholar">SCHOLAR</div>
           <div class="help-text">
             <strong>Scholar Status</strong>
             <p>Automatically displayed per semester when your GWA qualifies (&le;1.45 for University Scholar, &le;1.75 for College Scholar) assuming you meet unit requirements.</p>
           </div>
         </div>
         <div class="help-item">
-          <div class="help-badge" style="background: var(--bg-mid); border: 1px solid var(--card-border);">WHAT IF?</div>
+          <div class="help-badge">WHAT IF</div>
           <div class="help-text">
             <strong>Target Latin Honors</strong>
-            <p>In the "What If?" tab, select a target Latin Honor (e.g. Cum Laude). The app will calculate the required average grade you need for your remaining units to achieve it.</p>
+            <p>In the What if tab, select a target Latin Honor (e.g. Cum Laude). The app will calculate the required average grade you need for your remaining units to achieve it.</p>
           </div>
         </div>
         <div class="help-item">
-          <div class="help-badge" style="background: var(--card-bg); border: 1px solid var(--card-border);">EXPORT JSON</div>
+          <div class="help-badge">JSON</div>
           <div class="help-text">
             <strong>Backup & Restore</strong>
             <p>Use Export JSON to save your grades and settings to a file. Use Import JSON to restore them later or on another device.</p>
@@ -300,9 +304,9 @@
           </div>
         </div>
         <div class="help-item">
-          <div class="help-badge" style="background: var(--bg-light); border: 1px solid var(--card-border);">GRADES</div>
-          <div class="help-text" style="width: 100%;">
-            <strong style="display: block; margin-bottom: 8px;">UP Grading System</strong>
+          <div class="help-badge">GRADES</div>
+          <div class="help-text">
+            <strong>UP grading system</strong>
             <div class="legend-grid">
               <div class="legend-item"><span class="legend-grade">1.0</span> <span class="legend-desc">Excellent</span></div>
               <div class="legend-item"><span class="legend-grade">1.25</span> <span class="legend-desc">Excellent</span></div>
@@ -331,7 +335,7 @@
   <!-- Terms of Use & Privacy Notice Modal -->
   <div id="termsOverlay" class="terms-overlay hidden">
     <div class="terms-modal">
-      <button id="closeTermsBtn" class="close-terms-btn hidden" aria-label="Close">&times;</button>
+      <button id="closeTermsBtn" class="close-terms-btn hidden" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
       <div class="terms-header">
         <h2>Elbi GradeSim</h2>
         <p>Terms of Use & Privacy Notice</p>
@@ -367,6 +371,14 @@
       </div>
     </div>
   </div>
+
+  <footer class="footer">
+    <p class="legal-links">
+      <a href="https://gradesim.uplb.tools/privacy/" target="_blank">Privacy</a>
+      <span aria-hidden="true">|</span>
+      <a href="https://gradesim.uplb.tools/terms/" target="_blank">Terms</a>
+    </p>
+  </footer>
 
   <script src="curriculum.js"></script>
   <script src="popup.js"></script>

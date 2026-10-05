@@ -25,11 +25,11 @@ A Chrome extension for UPLB students to calculate their GWA and simulate grades 
 ### 4. "What If?" Simulator
 - Calculate what grades you need in remaining courses to achieve a target GWA
 - Preset targets:
-  - **Summa Cum Laude**: GWA ≤ 1.20
-  - **Magna Cum Laude**: GWA ≤ 1.45
-  - **Cum Laude**: GWA ≤ 1.75
-  - **Honor Roll**: GWA ≤ 2.00
-  - **Custom**: Enter any target GWA
+ - **Summa Cum Laude**: GWA ≤ 1.20
+ - **Magna Cum Laude**: GWA ≤ 1.45
+ - **Cum Laude**: GWA ≤ 1.75
+ - **Honor Roll**: GWA ≤ 2.00
+ - **Custom**: Enter any target GWA
 - Shows remaining courses based on your selected curriculum
 - Calculates required average grade for remaining courses
 
@@ -41,10 +41,11 @@ A Chrome extension for UPLB students to calculate their GWA and simulate grades 
 
 ### Developer Mode (Manual Installation)
 1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in the top right)
-4. Click "Load unpacked"
-5. Select the `Elbi Gradesim` folder
+2. Run `cd extension && ./build.sh chrome`
+3. Open Chrome and go to `chrome://extensions/`
+4. Enable "Developer mode" (toggle in the top right)
+5. Click "Load unpacked"
+6. Select `extension/dist/chrome`
 
 ## Usage
 

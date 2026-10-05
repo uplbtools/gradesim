@@ -1,13 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Elbi GradeSim - UPLB GWA Calculator",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "browser_specific_settings": {
     "gecko": {
       "id": "elbigradesim@stimmie.dev",
       "strict_min_version": "109.0",
       "data_collection_permissions": {
-        "required": ["none"]
+        "required": [
+          "none"
+        ]
       }
     },
     "gecko_android": {
@@ -32,12 +34,18 @@
     "128": "sims.png"
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
-      "matches": ["https://amis.uplb.edu.ph/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://amis.uplb.edu.ph/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_start"
     }
   ]

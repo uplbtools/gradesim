@@ -365,8 +365,8 @@ def merge_parsed_curriculum(code, parsed_sems):
     return major_courses, required_codes
 
 def update_curriculum_database():
-    pdf_dir = "/home/stimmie/dev/personal/gradesim/scratch/pdfs"
-    curriculum_path = "/home/stimmie/dev/personal/gradesim/extension/src/curriculum.js"
+    pdf_dir = "/home/stimmie/dev/uplbtools/gradesim/scratch/pdfs"
+    curriculum_path = "/home/stimmie/dev/uplbtools/gradesim/extension/src/curriculum.js"
     
     # 1. Read existing curriculum.js
     with open(curriculum_path, "r", encoding="utf-8") as f:
@@ -403,7 +403,7 @@ def update_curriculum_database():
                 print(f"Error parsing PDF {filename}: {e}")
                 
     # Save the parsed programs to a temp JSON file
-    temp_json_path = "/home/stimmie/dev/personal/gradesim/scratch/parsed_programs.json"
+    temp_json_path = "/home/stimmie/dev/uplbtools/gradesim/scratch/parsed_programs.json"
     with open(temp_json_path, "w", encoding="utf-8") as f:
         json.dump(parsed_programs, f, indent=2)
         
@@ -412,8 +412,8 @@ def update_curriculum_database():
 const fs = require('fs');
 const path = require('path');
 
-const curriculumPath = '/home/stimmie/dev/personal/gradesim/extension/src/curriculum.js';
-const tempJsonPath = '/home/stimmie/dev/personal/gradesim/scratch/parsed_programs.json';
+const curriculumPath = '/home/stimmie/dev/uplbtools/gradesim/extension/src/curriculum.js';
+const tempJsonPath = '/home/stimmie/dev/uplbtools/gradesim/scratch/parsed_programs.json';
 
 const parsed = JSON.parse(fs.readFileSync(tempJsonPath, 'utf8'));
 let content = fs.readFileSync(curriculumPath, 'utf8');
@@ -670,7 +670,7 @@ fs.writeFileSync(curriculumPath, newContent + helperCode, 'utf8');
 console.log('Successfully updated curriculum.js with structured course graphs!');
 """
     
-    node_temp_path = "/home/stimmie/dev/personal/gradesim/scratch/update_db.js"
+    node_temp_path = "/home/stimmie/dev/uplbtools/gradesim/scratch/update_db.js"
     with open(node_temp_path, "w", encoding="utf-8") as f:
         f.write(node_script)
         

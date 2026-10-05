@@ -156,7 +156,7 @@ def parse_curriculum_layout(layout_text):
     return curriculum
 
 if __name__ == "__main__":
-    pdf = "/home/stimmie/dev/personal/gradesim/scratch/pdfs/BS-Chemistry.pdf"
+    pdf = "/home/stimmie/dev/uplbtools/gradesim/scratch/pdfs/BS-Chemistry.pdf"
     txt = pdf_to_layout_text(pdf)
     res = parse_curriculum_layout(txt)
     print(json.dumps(res, indent=2))

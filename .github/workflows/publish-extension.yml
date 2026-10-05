@@ -1,0 +1,122 @@
+# Publish the extension to the Chrome Web Store, Firefox Add-ons and Edge
+# Add-ons on every commit to main that touches extension/.
+#
+# Versioning: the stores need a new version for every upload. The version is
+# the manifest version when that is not released yet (bump it by hand for a
+# minor or major release), otherwise the last extension-v* tag with the patch
+# number raised by one. The chosen version is written into the built
+# manifests only; the tag records what shipped.
+#
+# A store whose secrets are missing is skipped, not failed, so stores can be
+# connected one at a time.
+#
+# Secrets (repo settings, Actions):
+#   CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN   Chrome Web Store API
+#   AMO_JWT_ISSUER, AMO_JWT_SECRET                        addons.mozilla.org API key
+#   EDGE_PRODUCT_ID, EDGE_CLIENT_ID, EDGE_API_KEY         Edge Add-ons API v1.1
+name: Publish extension
+
+on:
+  push:
+    branches: [main]
+    paths: ["extension/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: publish-extension
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  CWS_EXTENSION_ID: mlhklblbhkikcmobmmajckjcbmdinldb
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      HAS_CWS: ${{ secrets.CWS_REFRESH_TOKEN != '' }}
+      HAS_AMO: ${{ secrets.AMO_JWT_SECRET != '' }}
+      HAS_EDGE: ${{ secrets.EDGE_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pick the version to ship
+        id: version
+        run: |
+          base=$(jq -r .version extension/manifests/*.json | sort -u)
+          if [ "$(echo "$base" | wc -l)" -ne 1 ]; then
+            echo "::error::Manifest versions differ: $base"
+            exit 1
+          fi
+          last=$(git tag --list 'extension-v*' | sed 's/^extension-v//' | sort -V | tail -1)
+          if [ -z "$last" ] || [ "$(printf '%s\n%s\n' "$last" "$base" | sort -V | tail -1)" = "$base" ] && [ "$base" != "$last" ]; then
+            version=$base
+          else
+            IFS=. read -r major minor patch <<<"$last"
+            version="$major.$minor.$((patch + 1))"
+          fi
+          echo "Shipping $version (manifest $base, last tag ${last:-none})"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "new=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build and zip
+        if: steps.version.outputs.new == 'true'
+        run: |
+          bash extension/build.sh all
+          for m in extension/dist/*/manifest.json; do
+            jq --arg v "${{ steps.version.outputs.version }}" '.version = $v' "$m" > "$m.tmp" && mv "$m.tmp" "$m"
+          done
+          mkdir -p release
+          for target in chrome firefox opera; do
+            (cd "extension/dist/$target" && zip -qr "$GITHUB_WORKSPACE/release/elbi-gradesim-$target-${{ steps.version.outputs.version }}.zip" .)
+          done
+          ls -l release
+
+      - name: Chrome Web Store
+        if: steps.version.outputs.new == 'true' && env.HAS_CWS == 'true'
+        env:
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          EXTENSION_ID: ${{ env.CWS_EXTENSION_ID }}
+        run: npx -y chrome-webstore-upload-cli@3 --source "release/elbi-gradesim-chrome-${{ steps.version.outputs.version }}.zip"
+
+      - name: Firefox Add-ons
+        if: steps.version.outputs.new == 'true' && env.HAS_AMO == 'true'
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: npx -y web-ext@8 sign --channel listed --source-dir extension/dist/firefox --artifacts-dir release/amo
+
+      - name: Edge Add-ons
+        if: steps.version.outputs.new == 'true' && env.HAS_EDGE == 'true'
+        env:
+          EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+        run: |
+          base="https://api.addons.microsoftedge.microsoft.com/v1/products/$EDGE_PRODUCT_ID/submissions"
+          auth=(-H "Authorization: ApiKey $EDGE_API_KEY" -H "X-ClientID: $EDGE_CLIENT_ID")
+          # Edge uses the Chrome build.
+          upload=$(curl -sS -D - -o /dev/null "${auth[@]}" -H "Content-Type: application/zip" \
+            --data-binary "@release/elbi-gradesim-chrome-${{ steps.version.outputs.version }}.zip" \
+            "$base/draft/package" | tr -d '\r' | awk -F': ' 'tolower($1)=="location"{print $2}')
+          for _ in $(seq 1 30); do
+            status=$(curl -sS "${auth[@]}" "$base/draft/package/operations/$upload" | jq -r .status)
+            [ "$status" != "InProgress" ] && break
+            sleep 10
+          done
+          [ "$status" = "Succeeded" ] || { echo "::error::Edge upload status $status"; exit 1; }
+          curl -sS -f "${auth[@]}" -X POST -d '{"notes":"Release ${{ steps.version.outputs.version }}"}' "$base"
+
+      - name: Tag and GitHub release
+        if: steps.version.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="extension-v${{ steps.version.outputs.version }}"
+          gh release create "$tag" release/*.zip --target "$GITHUB_SHA" --title "Elbi GradeSim ${{ steps.version.outputs.version }}" --generate-notes

@@ -1,24 +1,21 @@
 # Elbi GradeSim
 
-A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on Chrome, Firefox, Opera, and Edge.
+A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on **Chrome**, **Firefox**, Opera, and Edge.
 
 ## Repository Structure
 
 ```
 gradesim/
-├── extension/           # Browser extension source
-│   ├── src/             # Shared source (popup, content scripts, curriculum data)
-│   ├── manifests/       # Per-browser manifest files
-│   ├── icons/           # Extension icons
-│   └── build.sh         # Build script for each browser target
-├── website/             # Next.js landing page
-│   ├── app/             # Pages and components
-│   └── public/
-│       ├── curricula/   # Curriculum images by college (PNG)
-│       ├── chrome.svg   # Browser logos
-│       └── firefox.svg
+├── extension/ # Browser extension source
+│ ├── src/ # Shared source (popup, planner, content scripts, curriculum data)
+│ ├── manifests/ # Per-browser manifest files
+│ ├── icons/ # Extension icons
+│ └── build.sh # Build script for each browser target
+├── scratch/ # Curriculum data pipeline (PDF parsing, prereq graphs)
 └── README.md
 ```
+
+The landing page lives in a separate repo: [gradesim-website](https://github.com/smmariquit/gradesim-website).
 
 ## Extension
 
@@ -26,9 +23,9 @@ gradesim/
 
 ```bash
 cd extension
-./build.sh all        # Build all browsers
-./build.sh chrome     # Build Chrome only
-./build.sh firefox    # Build Firefox only
+./build.sh all # Build all browsers
+./build.sh chrome # Build Chrome only
+./build.sh firefox # Build Firefox only
 ```
 
 Output goes to `extension/dist/<browser>/`. Load the folder in your browser's developer mode.
@@ -44,17 +41,7 @@ Output goes to `extension/dist/<browser>/`. Load the folder in your browser's de
 - "What If?" simulator for Latin honor targets
 - Grades overview by semester or year
 - 30+ UPLB degree programs supported
-- 100% local; no data leaves your device
-
-## Website
-
-```bash
-cd website
-npm install
-npm run dev
-```
-
-The landing page links to both store listings and displays curriculum data.
+- 100% local: no data leaves your device
 
 ## Privacy
 
