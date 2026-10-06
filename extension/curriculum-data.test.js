@@ -88,5 +88,36 @@ Object.values(UPLB_PROGRAMS).filter(p => p.tracks).forEach(p => {
   if (p.defaultTrack && !p.tracks[p.defaultTrack]) fail(p.code, `default track ${p.defaultTrack} does not exist`);
 });
 
+// Specializations come from the official catalog. Every pool course must be
+// a real course (in the AMIS catalog or some checklist), not already required
+// by the program, and every pool must fill MAJ slots the checklist has.
+// FRM 110 is on CEM catalog page 97 but had no AMIS class in the terms we have.
+const NOT_IN_AMIS = new Set(['FRM 110']);
+const checklistCodes = new Set(Object.values(UPLB_PROGRAMS).flatMap(p => (p.majorCourses || []).map(c => normalizeCourseCode(c.code))));
+Object.values(UPLB_PROGRAMS).filter(p => p.specializations).forEach(p => {
+  const rows = new Map((p.majorCourses || []).map(c => [normalizeCourseCode(c.code), c]));
+  const baseUnits = getPlannerCourses(p, p.defaultTrack).reduce((s, c) => s + c.units, 0);
+  Object.entries(p.specializations).forEach(([key, spec]) => {
+    if (!spec.name || !/page \d+/.test(spec.source || '')) fail(p.code, `specialization ${key} needs a name and a catalog page`);
+    spec.pools.forEach(pool => {
+      if (pool.courses.length < pool.slots.length) fail(p.code, `${key} ${pool.name} has fewer courses than slots`);
+      pool.slots.forEach(slot => {
+        const row = rows.get(slot);
+        if (!row || row.genericRequirement !== 'elective') fail(p.code, `${key} slot ${slot} is not a MAJ elective row`);
+      });
+      pool.courses.forEach(code => {
+        const why = codeProblem(code);
+        if (why) fail(p.code, `${key}: ${why}: "${code}"`);
+        if (!UPLB_CATALOG[code] && !checklistCodes.has(code) && !NOT_IN_AMIS.has(code)) fail(p.code, `${key}: ${code} is in no catalog or checklist`);
+        if (rows.has(code)) fail(p.code, `${key}: ${code} is already required`);
+      });
+    });
+    const plan = getPlannerCourses(p, p.defaultTrack, key);
+    const codes = plan.map(c => normalizeCourseCode(c.code));
+    if (new Set(codes).size !== codes.length) fail(p.code, `${key} plans a course twice`);
+    if (plan.reduce((s, c) => s + c.units, 0) !== baseUnits) fail(p.code, `${key} changes the unit total`);
+  });
+});
+
 assert.deepStrictEqual(failures, [], `\n${failures.join('\n')}`);
 console.log(`curriculum-data.test.js: ${available.length} available programs pass`);

@@ -1088,6 +1088,19 @@ input[type="checkbox"] {
   border-top: 1px solid var(--border);
 }
 
+/* Specialization courses, one list per pool */
+.spec-courses h4 {
+  margin: 14px 0 2px;
+}
+
+.spec-courses .hint {
+  margin: 0 0 4px;
+}
+
+.spec-courses .course-row {
+  padding: 8px 0;
+}
+
 /* Course substitutions */
 .substitutions-list {
   display: flex;

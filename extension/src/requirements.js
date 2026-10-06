@@ -37,8 +37,9 @@ function amisCourses(gradesData) {
 
 // Put rows ({ code, title, units }) into planner slots. A named checklist
 // course fills itself and a substitution fills its required course. Then GE,
-// HK and NSTP courses fill their placeholder slots and any other course with
-// units fills a free elective slot, one course per slot.
+// HK and NSTP courses fill their placeholder slots, a course a specialization
+// pool lists fills that pool's slot, and any other course with units fills a
+// free elective slot, one course per slot.
 // Returns Map(slot code -> row).
 // ponytail: one course per 3-unit elective slot, so a 6-unit elective fills one.
 // UPLB accepts these in place of the checklist course without a petition.
@@ -67,6 +68,14 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
     seen.add(code);
     return true;
   });
+  // Specialization slots take only the courses their pool lists.
+  const pooled = new Set();
+  courses.filter(c => c.options).forEach(slot => {
+    const row = outside.find(r => !pooled.has(r) && slot.options.includes(norm(r)));
+    if (!row) return;
+    pooled.add(row);
+    fill.set(normalizeCourseCode(slot.code), row);
+  });
   const kindOf = r => {
     const code = norm(r);
     if (isGECourse(code, r.title)) return 'ge';
@@ -75,18 +84,19 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
     return r.units > 0 ? 'elective' : null;
   };
   ['ge', 'hk', 'nstp', 'elective'].forEach(kind => {
-    const taken = outside.filter(r => kindOf(r) === kind);
-    courses.filter(c => c.genericRequirement === kind).forEach((slot, i) => {
+    const taken = outside.filter(r => !pooled.has(r) && kindOf(r) === kind);
+    courses.filter(c => c.genericRequirement === kind && !c.options).forEach((slot, i) => {
       if (taken[i]) fill.set(normalizeCourseCode(slot.code), taken[i]);
     });
   });
   return fill;
 }
 
-// The planner's course list: checklist rows for the track plus GE, HK, NSTP
-// and free elective slots, with catalog units, offerings and prerequisites.
-function plannerCourseList(program, track, catalog) {
-  return enrichCourses(getPlannerCourses(program, track), catalog || {});
+// The planner's course list: checklist rows for the track and specialization
+// plus GE, HK, NSTP and free elective slots, with catalog units, offerings and
+// prerequisites.
+function plannerCourseList(program, track, catalog, specKey) {
+  return enrichCourses(getPlannerCourses(program, track, specKey), catalog || {});
 }
 
 // What is left of a plannerCourseList for passed rows. overrides are the
