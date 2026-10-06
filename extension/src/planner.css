@@ -331,11 +331,11 @@ body.planner-page {
 
 /* The map is a lattice: every card is the same height, so card rows line up
    across semesters, and the gaps between columns and between rows are the
-   lanes the prerequisite arrows travel in (planner.js routeEdge). Each gap
-   fits four arrow lanes; change these three numbers together. */
+   lanes the prerequisite arrows travel in (route-edges.js). Arrows sharing a
+   gap spread evenly across it, so keep the gaps wide enough for a few lanes. */
 .pl-grid {
-  --pl-col-gap: 32px;
-  --pl-row-gap: 16px;
+  --pl-col-gap: 36px;
+  --pl-row-gap: 20px;
   --pl-card-h: 110px;
   display: flex;
   align-items: flex-start;
