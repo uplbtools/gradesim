@@ -13,7 +13,7 @@ const SEM_CYCLE = ['1', '2', 'midyear'];
 const SEM_DIGIT = { '1': 1, '2': 2, 'midyear': 3 };
 // Load rules from the UPLB catalog: 18 units a regular sem (21 with lab
 // courses), midyear 6 (the Dean may allow 9).
-const DEFAULT_UNIT_CAPS = { '1': 21, '2': 21, 'midyear': 6 };
+const DEFAULT_UNIT_CAPS = { '1': 18, '2': 18, 'midyear': 6 };
 // Assumption: UPLB does not publish standing thresholds in the catalog we have;
 // junior = 50% and senior = 75% of the program's total units.
 const STANDING_FRACTION = { junior: 0.5, senior: 0.75 };
@@ -259,7 +259,17 @@ const CLEAN_CODE_RE = /^[A-Z]{2,6} \d{1,3}(\.\d{1,2})?[A-Z]?$/;
 // Turn checklist rows (some garbled by PDF parsing, e.g. code "3 CHEM 18.
 // University Chemistry" with several courses run together in the title) into
 // clean planner courses, then attach catalog data: units, offerings and
-// requisites. Catalog requisites win over checklist prereqs when present.
+// requisites. Catalog requisites and units win over the checklist when present,
+// since PDF parsing garbled some checklist units (CHEM 18 at 51).
+// ponytail: SP and thesis courses (190, 200, 200A) keep checklist units; AMIS
+// lists them as variable 1-unit enrollments, so the catalog number undercounts.
+const VARIABLE_UNIT_RE = / (190|200)[A-Z]?$/;
+function unitsFor(course, c) {
+  if (c && c.units != null && !VARIABLE_UNIT_RE.test(normCode(course.code))) return c.units;
+  if (course.units != null) return course.units;
+  return c ? c.units : 3;
+}
+
 function enrichCourses(list, catalog) {
   const cat = catalog || {};
   const out = [];
@@ -279,7 +289,7 @@ function enrichCourses(list, catalog) {
       ...course,
       code,
       title: course.title || (c && c.title) || course.code,
-      units: course.units != null ? course.units : (c ? c.units : 3),
+      units: unitsFor(course, c),
       pre: hasReq ? (c.pre || []) : (course.prereqs || []).map(p => [extractCode(p) || normCode(p)]),
       co: hasReq ? (c.co || []) : [],
       standing: hasReq ? c.standing || null : null,
@@ -404,8 +414,10 @@ function scheduleEarliest(opts) {
     let candidates = Array.from(remaining).filter(code => {
       const course = byCode.get(code);
       if (!offeredIn(course, sem) && !course.petition) return false;
-      // Most students skip midyear; only checklist midyear courses go there unless opted in.
-      if (sem === 'midyear' && opts.useMidyear === false && course.sem !== 'midyear') return false;
+      // Most students skip midyear; only checklist midyear courses, and courses
+      // AMIS only ever offers in midyear (BA 183), go there unless opted in.
+      if (sem === 'midyear' && opts.useMidyear === false && course.sem !== 'midyear' &&
+        (offeredIn(course, '1') || offeredIn(course, '2'))) return false;
       if ((notBefore[code] || 0) > t) return false;
       const need = course.standing && STANDING_FRACTION[course.standing];
       if (need && doneUnits < need * totalUnits) return false;
