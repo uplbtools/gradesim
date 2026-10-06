@@ -2,7 +2,7 @@
 
 Elbi GradeSim is a browser extension for UPLB students. It reads your grades from AMIS, works out your GWA, shows what you need for Latin honors, and plans the courses you still have to take.
 
-It is not affiliated with UP. The GWA it shows is an unofficial estimate, so always verify with the OUR.
+Not affiliated with UP. Unofficial estimate. INC/DRP may not reflect correctly. Always verify with the OUR.
 
 ## Get it
 

@@ -17,92 +17,44 @@
         <span class="byline">by UPLB Tools</span>
       </div>
       <div class="header-actions">
-        <button id="helpBtn" class="header-btn" type="button" aria-haspopup="dialog"><span data-icon="help"></span>Help</button>
+        <button id="helpBtn" class="theme-toggle" type="button" aria-haspopup="dialog" aria-label="Help" title="Help"><span data-icon="help"></span></button>
         <button id="openTabBtn" class="header-btn primary" type="button" title="Open in a full tab"><span data-icon="external"></span>Full tab</button>
         <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme, system" title="Theme, system"></button>
       </div>
     </header>
 
+    <div id="termsNotice"></div>
+    <div id="syncNotice" role="status"></div>
+
     <div id="loading" class="loading" role="status">
       <p>Loading your grades</p>
-      <p class="hint">Make sure you are logged in to AMIS and have opened the Personal Information page.</p>
+      <p class="hint">Reading the grades saved in this browser.</p>
     </div>
 
     <div id="noData" class="no-data hidden">
-      <p class="no-data-title"><span data-icon="alert"></span>No grades found yet</p>
+      <p class="no-data-title"><span data-icon="alert"></span>No grades yet</p>
       <ol class="hint steps">
-        <li>Log in to <a href="https://amis.uplb.edu.ph" target="_blank" rel="noopener">AMIS</a>.</li>
-        <li>GradeSim reads your grades from the page by itself.</li>
-        <li>Come back here and select Refresh.</li>
+        <li>Log in to <a href="https://amis.uplb.edu.ph" target="_blank" rel="noopener">AMIS</a> in a tab.</li>
+        <li>Open Elbi GradeSim from the toolbar.</li>
+        <li>Press Refresh.</li>
       </ol>
       <button id="refreshBtn" class="btn btn-primary" type="button">Refresh</button>
-      <p id="refreshStatus" class="hint" role="status"></p>
     </div>
 
     <div id="mainContent" class="hidden">
       <div class="tab-layout-grid">
         <div class="sidebar-column">
           <section class="card program-selector">
-            <label for="programSelect">Your program</label>
-            <select id="programSelect">
-              <optgroup label="College of Arts and Sciences">
-              <option value="AASS">AA Sports Studies</option>
-              <option value="BACOMM">BA Communication Arts</option>
-              <option value="BAPHILO">BA Philosophy</option>
-              <option value="BASOCIO">BA Sociology</option>
-              <option value="BSAPMATH">BS Applied Mathematics</option>
-              <option value="BSBIO">BS Biology</option>
-              <option value="BSCHEM">BS Chemistry</option>
-              <option value="BSCS" selected>BS Computer Science</option>
-              <option value="BSMATH">BS Mathematics</option>
-              <option value="BSAPPHY">BS Applied Physics</option>
-              <option value="BSSTAT">BS Statistics</option>
-            </optgroup>
-            <optgroup label="College of Agriculture and Food Science">
-              <option value="BSABIO">BS Agricultural Biotechnology</option>
-              <option value="BSACHEM">BS Agricultural Chemistry</option>
-              <option value="BSAGRI">BS Agriculture</option>
-              <option value="BSFST">BS Food Science and Technology</option>
-            </optgroup>
-            <optgroup label="College of Development Communication">
-              <option value="ASDC">AS Development Communication</option>
-              <option value="BSDC">BS Development Communication</option>
-            </optgroup>
-            <optgroup label="College of Economics and Management">
-              <option value="AAENTREP">AA Entrepreneurship</option>
-              <option value="BSABME">BS Agribusiness Management and Entrepreneurship</option>
-              <option value="BSAAE">BS Agricultural and Applied Economics</option>
-              <option value="BSACCT">BS Accountancy</option>
-              <option value="BSECON">BS Economics</option>
-            </optgroup>
-            <optgroup label="College of Engineering and Agro-Industrial Technology">
-              <option value="BSABE">BS Agricultural and Biosystems Engineering</option>
-              <option value="BSCHE">BS Chemical Engineering</option>
-              <option value="BSCE">BS Civil Engineering</option>
-              <option value="BSEE">BS Electrical Engineering</option>
-              <option value="BSIE">BS Industrial Engineering</option>
-              <option value="BSMATE">BS Materials Engineering</option>
-              <option value="BSME">BS Mechanical Engineering</option>
-            </optgroup>
-            <optgroup label="College of Forestry and Natural Resources">
-              <option value="AAFOR">Associate in Forestry</option>
-              <option value="BSFOR">BS Forestry</option>
-            </optgroup>
-            <optgroup label="College of Human Ecology">
-              <option value="BSHE">BS Human Ecology</option>
-              <option value="BSNUTRI">BS Nutrition</option>
-            </optgroup>
-            <optgroup label="College of Veterinary Medicine">
-              <option value="DVM">Doctor of Veterinary Medicine</option>
-            </optgroup>
-            </select>
+            <label for="programSelect" id="programLabel">Your program</label>
+            <select id="programSelect"></select>
           </section>
 
           <section class="card gwa-section" aria-labelledby="gwaHeading">
             <h2 id="gwaHeading">My Elbi GWA</h2>
             <span id="currentGWA" class="gwa-value">--.--</span>
-            <div id="gwaStats" class="gwa-stats"></div>
             <div id="honorStatus" class="honor-status"></div>
+            <p class="disclaimer">Not affiliated with UP. Unofficial estimate. INC/DRP may not reflect correctly. Always verify with the OUR.</p>
+            <div id="gwaStats" class="gwa-stats"></div>
           </section>
 
           <p class="credits"><a href="https://gradesim.uplb.tools" target="_blank" rel="noopener">gradesim.uplb.tools</a> <span aria-hidden="true">|</span> <button type="button" id="viewTermsLink" class="btn-text terms-link" aria-haspopup="dialog">Terms and privacy</button></p>
@@ -125,45 +77,45 @@
           </section>
 
           <section id="whatifTab" class="tab-content" hidden>
-            <div class="whatif-container">
-              <fieldset class="honor-fieldset">
-                <legend><h3>Target Latin honor</h3></legend>
-                <div class="honor-options">
-                  <label class="choice">
-                    <input type="radio" name="targetHonor" value="1.20">
-                    <span class="choice-label"><strong>Summa cum laude</strong><small>GWA of 1.20 or better</small></span>
-                  </label>
-                  <label class="choice">
-                    <input type="radio" name="targetHonor" value="1.45">
-                    <span class="choice-label"><strong>Magna cum laude</strong><small>GWA of 1.45 or better</small></span>
-                  </label>
-                  <label class="choice">
-                    <input type="radio" name="targetHonor" value="1.75">
-                    <span class="choice-label"><strong>Cum laude</strong><small>GWA of 1.75 or better</small></span>
-                  </label>
-                  <label class="choice">
-                    <input type="radio" name="targetHonor" value="custom">
-                    <span class="choice-label">
-                      <strong>Custom target</strong>
-                      <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="1.50" aria-label="Custom target GWA">
-                    </span>
-                  </label>
-                </div>
-              </fieldset>
+            <div id="whatifQuality"></div>
+            <div id="whatifResults" class="card whatif-results" aria-live="polite"></div>
 
-              <button id="calculateBtn" class="btn btn-primary" type="button">Calculate required grades</button>
-
-              <div id="whatifResults" class="card whatif-results" aria-live="polite">
-                <div id="resultsContent"></div>
+            <fieldset class="honor-fieldset">
+              <legend>Target</legend>
+              <div class="honor-options">
+                <label class="choice">
+                  <input type="radio" name="targetHonor" value="1.20">
+                  <span class="choice-label"><strong>Summa cum laude</strong><small>1.20 or better</small></span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="targetHonor" value="1.45">
+                  <span class="choice-label"><strong>Magna cum laude</strong><small>1.45 or better</small></span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="targetHonor" value="1.75">
+                  <span class="choice-label"><strong>Cum laude</strong><small>1.75 or better</small></span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="targetHonor" value="custom">
+                  <span class="choice-label">
+                    <strong>Custom</strong>
+                    <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="1.50" aria-label="Custom target GWA">
+                  </span>
+                </label>
               </div>
+            </fieldset>
 
-              <div class="card track-selector" id="trackSelector">
+            <div id="remainingSummary" class="remaining-summary"></div>
+
+            <details class="card whatif-more">
+              <summary>Track and substitutions<span data-icon="chevron"></span></summary>
+              <div class="track-selector" id="trackSelector">
                 <h3>Your track</h3>
                 <div id="trackInfo"></div>
                 <div class="track-options" id="trackOptions" role="radiogroup" aria-label="Track"></div>
               </div>
 
-              <div class="card substitutions-container" id="substitutionsContainer">
+              <div class="substitutions-container" id="substitutionsContainer">
                 <h3>Course substitutions</h3>
                 <div id="substitutionsList" class="substitutions-list"></div>
                 <div class="add-sub-box">
@@ -179,14 +131,7 @@
                   <button id="addSubBtn" class="btn btn-secondary btn-sm" type="button">Apply substitution</button>
                 </div>
               </div>
-
-              <div class="remaining-courses">
-                <h3>Remaining courses</h3>
-                <p class="hint" id="curriculumHint">Based on the selected curriculum</p>
-                <div id="remainingList" class="list-card" role="list"></div>
-                <div id="remainingNotes"></div>
-              </div>
-            </div>
+            </details>
           </section>
 
           <section id="plannerTab" class="tab-content" hidden>
@@ -324,11 +269,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <label class="terms-agreement-label">
-        <input type="checkbox" id="termsCheckbox">
-        <span>I have read and agree to the Terms of Use and Privacy Notice.</span>
-      </label>
-      <button id="acceptTermsBtn" class="btn btn-primary" type="button" disabled>Accept and continue</button>
+      <button class="btn btn-primary" type="button" data-close>Close</button>
     </div>
   </dialog>
 
@@ -341,6 +282,9 @@
   </footer>
 
   <script src="curriculum.js"></script>
+  <script src="requirements.js"></script>
+  <script src="catalog.js"></script>
+  <script src="scheduler.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
