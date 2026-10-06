@@ -27,7 +27,7 @@ build_target() {
   # Copy shared source
   cp "$SRC_DIR"/popup.js "$SRC_DIR"/popup.css "$SRC_DIR"/popup.html \
      "$SRC_DIR"/content.js "$SRC_DIR"/background.js "$SRC_DIR"/bridge.js \
-     "$SRC_DIR"/curriculum.js "$SRC_DIR"/catalog.js \
+     "$SRC_DIR"/curriculum.js "$SRC_DIR"/requirements.js "$SRC_DIR"/catalog.js \
      "$SRC_DIR"/planner.html "$SRC_DIR"/planner.js "$SRC_DIR"/planner.css \
      "$SRC_DIR"/scheduler.js "$SRC_DIR"/components.js "$out/"
 

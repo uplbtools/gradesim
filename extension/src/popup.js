@@ -20,6 +20,9 @@ let currentView = 'semester';
 // Store course substitutions - requiredCode -> takenCode
 let substitutions = {};
 
+// Courses marked passed or failed in the planner, so both count the same.
+let customCourseStatus = {};
+
 const NON_NUMERIC_GRADES = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
 // PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
 // Education majors) and similar codes in.
@@ -50,45 +53,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   const help = modal($('helpDialog'));
   $('helpBtn').addEventListener('click', () => help.open());
 
-  // Terms: the first run locks the dialog until the user agrees.
-  const savedTerms = await chrome.storage.local.get(['termsAccepted']);
-  let isTermsAccepted = !!savedTerms.termsAccepted;
-
-  const termsDialog = $('termsDialog');
-  const terms = modal(termsDialog);
-  const closeTermsBtn = $('closeTermsBtn');
-  const termsCheckbox = $('termsCheckbox');
-  const acceptTermsBtn = $('acceptTermsBtn');
-
-  const showTerms = (forceAcceptMode) => {
-    closeTermsBtn.hidden = forceAcceptMode;
-    if (forceAcceptMode) {
-      acceptTermsBtn.textContent = 'Accept and continue';
-      acceptTermsBtn.disabled = !termsCheckbox.checked;
-    } else {
-      acceptTermsBtn.textContent = 'Close';
-      acceptTermsBtn.disabled = false;
-    }
-    terms.open({ lock: forceAcceptMode });
-  };
-
-  if (!isTermsAccepted) showTerms(true);
-
-  termsCheckbox.addEventListener('change', () => {
-    if (!isTermsAccepted) {
-      acceptTermsBtn.disabled = !termsCheckbox.checked;
-    }
-  });
-
-  acceptTermsBtn.addEventListener('click', async () => {
-    if (!isTermsAccepted) {
-      await chrome.storage.local.set({ termsAccepted: true });
-      isTermsAccepted = true;
-    }
-    terms.close();
-  });
-
-  $('viewTermsLink').addEventListener('click', () => showTerms(!isTermsAccepted));
+  // Terms: one quiet line on first run, the full text one tap away.
+  const terms = modal($('termsDialog'));
+  $('viewTermsLink').addEventListener('click', () => terms.open());
+  const { termsAccepted, lastError } = await chrome.storage.local.get(['termsAccepted', 'lastError']);
+  if (!termsAccepted) {
+    $('termsNotice').replaceChildren(notice({
+      icon: 'info', class: 'terms-notice',
+      body: 'Unofficial tool. Your grades stay on this device.',
+      action: [
+        button({ variant: 'text', text: 'Terms', 'aria-haspopup': 'dialog', onclick: () => terms.open() }),
+        button({
+          text: 'Got it', small: true,
+          onclick: async () => {
+            await chrome.storage.local.set({ termsAccepted: true });
+            $('termsNotice').replaceChildren();
+          },
+        }),
+      ],
+    }));
+  }
+  showSyncError(lastError);
 
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
@@ -97,38 +82,44 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Load substitutions from storage
-  const savedSubstitutions = await chrome.storage.local.get(['substitutions']);
+  const savedSubstitutions = await chrome.storage.local.get(['substitutions', 'customCourseStatus']);
   if (savedSubstitutions.substitutions) {
     substitutions = savedSubstitutions.substitutions;
   }
+  customCourseStatus = savedSubstitutions.customCourseStatus || {};
 
-  $('openPlannerBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('planner.html') });
+  $('openPlannerBtn').addEventListener('click', () => openPlanner());
+
+  // In the small popup, a tab switch brings the tab's answer to the top so
+  // the What if result shows without scrolling.
+  const tablist = document.querySelector('.tabs');
+  let firstTab = true;
+  tabBar(tablist, () => {
+    if (!firstTab && !document.body.classList.contains('tab-mode')) tablist.scrollIntoView({ block: 'start' });
+    firstTab = false;
   });
 
-  tabBar(document.querySelector('.tabs'));
-
-  // Program selection handling
+  // Program: the first run (or a stored code GradeSim no longer has) asks
+  // before showing anything that depends on it.
   const programSelect = $('programSelect');
   const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks']);
   window.selectedTracks = savedProgram.selectedTracks || {};
-  if (savedProgram.selectedProgram) {
-    programSelect.value = savedProgram.selectedProgram;
-    selectProgram(savedProgram.selectedProgram);
-  } else {
-    // Initialize with default program (BSCS)
-    selectProgram('BSCS');
+  const known = UPLB_PROGRAMS[savedProgram.selectedProgram] ? savedProgram.selectedProgram : null;
+  fillProgramSelect(programSelect, known);
+  if (known) selectProgram(known);
+  else {
+    document.body.classList.add('needs-program');
+    $('programLabel').textContent = 'Pick your program to start';
   }
 
   programSelect.addEventListener('change', (e) => {
     const programCode = e.target.value;
     selectProgram(programCode);
     chrome.storage.local.set({ selectedProgram: programCode });
-
-    // Recalculate remaining courses with new program
-    if (window.gradesData && window.gradesData.completedCourses) {
-      displayRemainingCourses(window.gradesData.completedCourses);
-    }
+    document.body.classList.remove('needs-program');
+    $('programLabel').textContent = 'Your program';
+    programSelect.querySelector('option[value=""]')?.remove();
+    if (window.gradesData) displayRemaining();
   });
 
   // View toggle handling (semester or year)
@@ -151,11 +142,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   wireBackup();
   wireClearData();
 
-  $('calculateBtn').addEventListener('click', calculateWhatIf);
-
+  document.querySelectorAll('input[name="targetHonor"]').forEach(r => r.addEventListener('change', renderWhatIf));
   $('customGWA').addEventListener('focus', () => {
     document.querySelector('input[value="custom"]').checked = true;
   });
+  $('customGWA').addEventListener('input', renderWhatIf);
 
   $('addSubBtn').addEventListener('click', async () => {
     const reqSelect = $('subRequired');
@@ -183,11 +174,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   initializeWrapped();
 });
 
-// Set the curriculum and redraw the track picker and hint for it.
+// Programs grouped by college. Programs without a checklist yet show as
+// disabled options marked coming soon.
+function fillProgramSelect(select, current) {
+  const byName = (a, b) => a.name.localeCompare(b.name);
+  select.replaceChildren(...flat([
+    !current && h('option', { value: '', disabled: true, selected: true }, 'Choose your program'),
+    Object.values(COLLEGES).filter(c => c.programs.length).map(c => h('optgroup', { label: c.name },
+      [...c.programs].sort(byName).map(p => h('option', { value: p.code, disabled: !p.available, selected: p.code === current },
+        p.available ? p.name : `${p.name}, coming soon`)))),
+  ]));
+}
+
+function openPlanner(failedCode) {
+  const q = failedCode ? `?whatif=${encodeURIComponent(failedCode)}` : '';
+  chrome.tabs.create({ url: chrome.runtime.getURL(`planner.html${q}`) });
+}
+
+// Set the curriculum and redraw the track picker for it.
 function selectProgram(code) {
   if (!setCurrentProgram(code)) return;
   updateTrackOptionsUI();
-  $('curriculumHint').textContent = `Based on the ${getCurrentCurriculum().name} curriculum`;
 }
 
 // Track radios for the current program.
@@ -209,9 +216,7 @@ function updateTrackOptionsUI() {
           // Remember the pick per program; the planner reads it too.
           window.selectedTracks = { ...(window.selectedTracks || {}), [program.code]: e.target.value };
           chrome.storage.local.set({ selectedTracks: window.selectedTracks });
-          if (window.gradesData && window.gradesData.completedCourses) {
-            displayRemainingCourses(window.gradesData.completedCourses);
-          }
+          if (window.gradesData) displayRemaining();
         },
       }),
       h('span', { class: 'choice-label' }, h('strong', {}, trackInfo.name), h('small', {}, details.join(', '))));
@@ -251,6 +256,10 @@ function parseAMISData(data) {
   return courses;
 }
 
+// The stored AMIS data and when it was fetched, for requirements and Refresh.
+let rawGrades = null;
+let fetchedAt = null;
+
 async function loadGradesData() {
   const loadingEl = $('loading');
   const noDataEl = $('noData');
@@ -261,15 +270,17 @@ async function loadGradesData() {
   mainContentEl.classList.add('hidden');
 
   try {
-    let result = await chrome.storage.local.get(['gradesData']);
+    let result = await chrome.storage.local.get(['gradesData', 'fetchedAt']);
 
     // If no data, wait a moment and try again (data might still be loading)
     if (!result.gradesData) {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      result = await chrome.storage.local.get(['gradesData']);
+      result = await chrome.storage.local.get(['gradesData', 'fetchedAt']);
     }
 
     const courses = parseAMISData(result.gradesData);
+    rawGrades = result.gradesData;
+    fetchedAt = result.fetchedAt;
 
     if (courses && courses.length > 0) {
       displayGradesData(courses);
@@ -290,14 +301,11 @@ function displayGradesData(courses) {
 
   // The main GWA keeps four decimals; every other figure uses two.
   $('currentGWA').textContent = gwa.toFixed(4);
-  $('gwaStats').replaceChildren(
-    stat('Units passed', passedUnits, { note: excludedCount > 0 && `${unitsText(excludedUnits)} left out` }),
-    stat('Courses completed', totalCourses, { note: excludedCount > 0 && `${plural(excludedCount, 'course')} left out` }));
-
-  displayHonorStatus(gwa, totalUnits);
-  displayGradesList(gradesBySemester, courses);
-  displayRemainingCourses(completedCourses, courses);
-  displayWrapped(courses);
+  $('gwaStats').replaceChildren(...flat([
+    stat('Units passed', passedUnits, { variant: 'row' }),
+    stat('Courses in your GWA', totalCourses, { variant: 'row' }),
+    excludedCount > 0 && stat('Left out by you', `${plural(excludedCount, 'course')}, ${unitsText(excludedUnits)}`, { variant: 'row' }),
+    syncStatus(fetchedAt, refreshGrades)]));
 
   // Store calculated data for What If
   window.gradesData = {
@@ -307,6 +315,11 @@ function displayGradesData(courses) {
     completedCourses,
     courses
   };
+
+  displayHonorStatus(gwa, totalUnits);
+  displayGradesList(gradesBySemester, courses);
+  displayRemaining();
+  displayWrapped(courses);
 }
 
 function calculateGWA(courses, excludedIds = new Set()) {
@@ -520,22 +533,25 @@ function option(value, text) {
   return h('option', { value }, text);
 }
 
-// allCourses: every AMIS row, including courses being taken now, so the track
-// is known the moment someone enrolls in the SP or thesis course.
-function displayRemainingCourses(completedCourses, allCourses = window.gradesData?.courses || completedCourses) {
-  const listEl = $('remainingList');
-  const notesEl = $('remainingNotes');
+// What if tab: the track, the substitution pickers, the count of what is
+// left, then the answer. Counts come from requirements.js, the same code the
+// planner uses, so both show the same units left.
+function displayRemaining() {
+  const allCourses = window.gradesData?.courses || [];
+  const completedCourses = window.gradesData?.completedCourses || [];
   const trackInfoEl = $('trackInfo');
-
   const curriculum = getCurrentCurriculum();
 
+  const quality = getProgramDataQuality(curriculum.code);
+  showNotice($('whatifQuality'), !quality.confident && {
+    tone: 'warn', icon: 'alert', title: 'Treat these numbers as a rough guide', body: quality.reasons.join(' '),
+  });
+
   if (!curriculum.available) {
-    listEl.replaceChildren();
-    showNotice(notesEl, {
-      tone: 'warn', icon: 'alert', title: 'Curriculum not available yet',
-      body: `GradeSim does not have the ${curriculum.name} checklist yet, so only the GWA works for now.`,
-    });
+    window.requirementsLeft = null;
+    $('remainingSummary').replaceChildren();
     trackInfoEl.replaceChildren();
+    renderWhatIf();
     return;
   }
 
@@ -565,46 +581,13 @@ function displayRemainingCourses(completedCourses, allCourses = window.gradesDat
     trackInfoEl.replaceChildren();
   }
 
-  const freeElectiveUnitsTotal = getFreeElectiveUnits(currentTrack);
-
-  const completedCodes = new Set();
-  completedCourses.forEach(c => completedCodes.add(c.code.toUpperCase().trim()));
-
-  // Add required course codes to completedCodes if their taken courses are completed
-  for (const [reqCode, takenCode] of Object.entries(substitutions)) {
-    if (completedCodes.has(takenCode.toUpperCase().trim())) {
-      completedCodes.add(reqCode.toUpperCase().trim());
-    }
-  }
-
-  const remaining = trackCourses(curriculum, currentTrack).filter(course => {
-    return !completedCodes.has(course.code.toUpperCase().trim());
-  });
-
-  // Count completed GE courses (title starts with "(GE)")
-  const completedGECount = completedCourses.filter(c =>
-    c.title && c.title.trim().startsWith("(GE)")
-  ).length;
-  const geRequired = curriculum.geCoursesRequired || 9;
-  const remainingGESlots = Math.max(0, geRequired - completedGECount);
-
-  // Free electives = courses that are NOT required AND NOT GE courses
-  const requiredCodesSet = new Set((curriculum.requiredCodes || []).map(c => c.toUpperCase().trim()));
-  const freeElectives = completedCourses.filter(c => {
-    const code = c.code.toUpperCase().trim();
-    // It's required if it's in the requiredCodes list, OR if it's substituted for something in requiredCodes
-    const isSubstitutedForRequired = Object.entries(substitutions).some(([req, taken]) =>
-      taken.toUpperCase().trim() === code && requiredCodesSet.has(req.toUpperCase().trim())
-    );
-    const isRequired = requiredCodesSet.has(code) || isSubstitutedForRequired;
-    const isGE = c.title && c.title.trim().startsWith("(GE)");
-    return !isRequired && !isGE;
-  });
-
-  const freeElectiveUnitsTaken = freeElectives.reduce((sum, c) => sum + c.units, 0);
-  const freeElectiveUnitsRemaining = Math.max(0, freeElectiveUnitsTotal - freeElectiveUnitsTaken);
+  const passedRows = amisCourses(rawGrades).filter(r => r.result === 'passed');
+  const courses = plannerCourseList(curriculum, currentTrack, UPLB_CATALOG);
+  const left = remainingRequirements(courses, passedRows, { substitutions, overrides: customCourseStatus });
+  window.requirementsLeft = left;
 
   // Substitution pickers, sorted by code
+  const requiredCodesSet = new Set((curriculum.requiredCodes || []).map(c => c.toUpperCase().trim()));
   const sortedRequired = [...(curriculum.majorCourses || [])].sort((a, b) => a.code.localeCompare(b.code));
   $('subRequired').replaceChildren(option('', 'Choose a required course'),
     ...sortedRequired.map(course => option(course.code.toUpperCase().trim(), `${course.code}, ${unitsText(course.units)}`)));
@@ -613,10 +596,9 @@ function displayRemainingCourses(completedCourses, allCourses = window.gradesDat
   $('subTaken').replaceChildren(option('', 'Choose a completed course'),
     ...sortedCompleted.filter(c => {
       const code = c.code.toUpperCase().trim();
-      const isGE = c.title && c.title.trim().startsWith("(GE)");
       const isAlreadyUsed = Object.values(substitutions).some(taken => taken.toUpperCase().trim() === code);
-      // Only show if not a required curriculum code, not GE, and not already used in another substitution
-      return !requiredCodesSet.has(code) && !isGE && !isAlreadyUsed;
+      // Not a required code, not a GE, and not already standing in for another course
+      return !requiredCodesSet.has(code) && !isGECourse(c.code, c.title) && !isAlreadyUsed;
     }).map(c => option(c.code.toUpperCase().trim(), `${c.code}, ${unitsText(c.units)}, grade ${c.grade}`)));
 
   // Active substitutions
@@ -635,25 +617,16 @@ function displayRemainingCourses(completedCourses, allCourses = window.gradesDat
         },
       })))));
 
-  listEl.replaceChildren(...remaining.map(course => courseRow({ code: course.code, units: course.units, role: 'listitem' })));
+  $('remainingSummary').replaceChildren(...flat([
+    h('h3', {}, 'Left to take'),
+    stat('Courses', left.left.length, { variant: 'row' }),
+    stat('Units', left.units, { variant: 'row' }),
+    stat('GE courses done', `${left.ge.done} of ${left.ge.total}`, { variant: 'row' }),
+    left.electives.totalUnits > 0 && stat('Free elective units done', `${left.electives.doneUnits} of ${left.electives.totalUnits}`, { variant: 'row' }),
+    button({ text: 'See them in the planner', icon: 'external', class: 'remaining-link', onclick: () => openPlanner() })]));
 
-  const trackLabel = currentTrack === 'thesis' ? 'thesis' : 'SP';
-  notesEl.replaceChildren(...flat([
-    remainingGESlots > 0 && notice({
-      icon: 'info',
-      title: `${plural(remainingGESlots, 'more GE course')} needed`,
-      body: `${completedGECount} of ${geRequired} required GE courses done.`,
-    }),
-    notice(freeElectiveUnitsRemaining > 0
-      ? { icon: 'info', title: `${unitsText(freeElectiveUnitsRemaining)} of free electives left`, body: `Taken ${freeElectiveUnitsTaken} of ${freeElectiveUnitsTotal} free elective units on the ${trackLabel} track.` }
-      : { tone: 'ok', icon: 'check', title: 'Free electives complete', body: `Taken ${freeElectiveUnitsTaken} of ${freeElectiveUnitsTotal} free elective units on the ${trackLabel} track.` }),
-  ]));
-
-  // Store remaining courses for What If calculation
-  window.remainingCourses = remaining;
-  window.freeElectiveUnitsRemaining = freeElectiveUnitsRemaining;
-  window.remainingGESlots = remainingGESlots;
   window.currentTrack = currentTrack;
+  renderWhatIf();
 }
 
 // Toggle course exclusion (for shiftees)
@@ -674,103 +647,77 @@ async function toggleCourseExclusion(courseId, allCourses) {
   if (row) row.focus();
 }
 
-function calculateWhatIf() {
-  const targetRadio = document.querySelector('input[name="targetHonor"]:checked');
-  if (!targetRadio) {
-    showResults('error', 'Pick a target honor first.');
-    return;
-  }
+const HONOR_NAMES = Object.fromEntries(LATIN_HONORS.map(([name, cut]) => [cut.toFixed(2), name]));
 
-  let targetGWA;
-  if (targetRadio.value === 'custom') {
-    targetGWA = parseFloat($('customGWA').value);
-    if (isNaN(targetGWA) || targetGWA < 1.0 || targetGWA > 5.0) {
-      showResults('error', 'Enter a target GWA from 1.00 to 5.00.');
-      return;
-    }
-  } else {
-    targetGWA = parseFloat(targetRadio.value);
-  }
-
-  const data = window.gradesData;
-  const remaining = window.remainingCourses || [];
-  const freeElectiveUnits = window.freeElectiveUnitsRemaining || 0;
-
-  // Calculate remaining units (excluding PE/NSTP)
-  let remainingUnits = remaining.reduce((sum, c) => sum + c.units, 0) + freeElectiveUnits;
-
-  // Add GE remaining units (assume 3 units each)
-  const remainingGEUnits = (window.remainingGESlots || 0) * 3;
-  remainingUnits += remainingGEUnits;
-
-  const currentWeightedSum = data.gwa * data.totalUnits;
-  const totalUnitsAfter = data.totalUnits + remainingUnits;
-
-  if (data.gwa <= targetGWA) {
-    showResults('achieved', targetGWA, data.gwa, data.totalUnits, remainingUnits, data.gwa);
-    return;
-  }
-
-  const requiredWeightedSum = targetGWA * totalUnitsAfter;
-  const remainingWeightedSumNeeded = requiredWeightedSum - currentWeightedSum;
-  const requiredAvgGrade = remainingUnits > 0 ? remainingWeightedSumNeeded / remainingUnits : 0;
-
-  if (requiredAvgGrade < 1.0) {
-    showResults('impossible-low', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
-  } else if (requiredAvgGrade > 5.0) {
-    showResults('impossible-high', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
-  } else {
-    showResults('possible', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
-  }
+// The newest failed course not passed since, for the planner link.
+function latestOpenFailure() {
+  const rows = amisCourses(rawGrades);
+  const passed = new Set(rows.filter(r => r.result === 'passed').map(r => r.code));
+  const failed = rows.filter(r => r.result === 'failed' && !passed.has(r.code));
+  return failed.length ? failed[failed.length - 1].code : null;
 }
 
-function showResults(status, targetGWA, currentGWA, unitsCompleted, unitsRemaining, requiredGrade) {
-  const contentEl = $('resultsContent');
-
-  if (status === 'error') {
-    showNotice(contentEl, { tone: 'bad', icon: 'alert', body: targetGWA });
+// The answer leads: the average needed for the picked target, or the best
+// GWA still possible when the target is out of reach.
+function renderWhatIf() {
+  const el = $('whatifResults');
+  const data = window.gradesData;
+  const left = window.requirementsLeft;
+  if (!data) { el.replaceChildren(); return; }
+  if (!left) {
+    showNotice(el, { tone: 'warn', icon: 'alert', body: `GradeSim does not have the ${getCurrentCurriculum().name} checklist yet, so it cannot count your remaining units. Your GWA above still works.` });
     return;
   }
 
-  const honorNames = {
-    1.20: 'Summa cum laude',
-    1.45: 'Magna cum laude',
-    1.75: 'Cum laude',
-    2.00: 'Honor roll'
-  };
-  const targetName = honorNames[targetGWA] || `A GWA of ${targetGWA.toFixed(2)}`;
-
-  let tone, ic, message, gradeText;
-  switch (status) {
-    case 'achieved':
-      [tone, ic, message] = ['ok', 'check', `You already have ${targetName.toLowerCase()}.`];
-      gradeText = 'Keep your current grades';
-      break;
-    case 'impossible-low':
-      [tone, ic, message] = ['bad', 'x', `${targetName} is no longer reachable.`];
-      gradeText = `${requiredGrade.toFixed(2)}, better than the best grade of 1.00`;
-      break;
-    case 'impossible-high':
-      [tone, ic, message] = ['bad', 'x', `${targetName} is not reachable with your remaining courses.`];
-      gradeText = `${requiredGrade.toFixed(2)}, above 5.00`;
-      break;
-    case 'possible':
-      if (requiredGrade <= 1.25) [tone, ic, message] = ['ok', 'check', `${targetName} is reachable with excellent grades.`];
-      else if (requiredGrade <= 1.75) [tone, ic, message] = ['ok', 'check', `${targetName} is reachable with very good grades.`];
-      else if (requiredGrade <= 2.50) [tone, ic, message] = ['warn', 'alert', `${targetName} is reachable with good grades.`];
-      else [tone, ic, message] = ['warn', 'alert', `${targetName} is hard but possible.`];
-      gradeText = requiredGrade.toFixed(2);
-      break;
+  let radio = document.querySelector('input[name="targetHonor"]:checked');
+  if (!radio) {
+    // Start on the best honor still in reach, or cum laude.
+    const best = gwaOutlook(data.gwa, data.totalUnits, left.gwaUnits, 1.75).bestHonor;
+    radio = document.querySelector(`input[name="targetHonor"][value="${(best ? best[1] : 1.75).toFixed(2)}"]`);
+    radio.checked = true;
+  }
+  const target = parseFloat(radio.value === 'custom' ? $('customGWA').value : radio.value);
+  if (!(target >= 1 && target <= 5)) {
+    showNotice(el, { tone: 'info', icon: 'info', body: 'Enter a target GWA from 1.00 to 5.00.' });
+    return;
   }
 
-  contentEl.replaceChildren(
-    notice({ tone, icon: ic, body: message }),
+  const o = gwaOutlook(data.gwa, data.totalUnits, left.gwaUnits, target);
+  const name = HONOR_NAMES[target.toFixed(2)] || `A GWA of ${target.toFixed(2)}`;
+  let hero;
+  let tone;
+  let ic;
+  let message;
+  let action = null;
+  if (o.status === 'out-of-reach') {
+    hero = stat('Best GWA still possible', o.ceiling.toFixed(2), { variant: 'hero', note: 'with 1.00 in every course left' });
+    [tone, ic] = ['bad', 'x'];
+    const best = o.bestHonor && gwaOutlook(data.gwa, data.totalUnits, left.gwaUnits, o.bestHonor[1]);
+    message = `${name} is out of reach. ` + (best
+      ? `${o.bestHonor[0]} is still possible ${best.status === 'any-pass' ? 'if you pass everything' : `with an average of ${best.required.toFixed(2)} or better`}.`
+      : 'No Latin honor is in reach now, but every grade better than your GWA still raises it.');
+    const failed = latestOpenFailure();
+    if (failed) action = button({ variant: 'text', text: 'See what this costs', icon: 'external', 'aria-label': `See what failing ${failed} costs in the planner`, onclick: () => openPlanner(failed) });
+  } else if (o.status === 'any-pass') {
+    hero = stat('Average you need', '3.00', { variant: 'hero', note: 'any passing grade' });
+    [tone, ic] = ['ok', 'check'];
+    message = data.gwa <= target ? `You are at ${name.toLowerCase()} now. Pass every course left and you keep it.` : `Pass every course left and you reach ${name.toLowerCase()}.`;
+  } else {
+    hero = stat('Average you need', o.required.toFixed(2), { variant: 'hero', note: `on your ${unitsText(left.gwaUnits)} left` });
+    const r = o.required;
+    [tone, ic] = r <= 1.75 ? ['warn', 'alert'] : ['ok', 'check'];
+    const how = r <= 1.25 ? 'excellent grades' : r <= 1.75 ? 'very good grades' : r <= 2.5 ? 'good grades' : 'grades a little better than passing';
+    message = `${name} is in reach with ${how}.`;
+  }
+
+  el.replaceChildren(
+    hero,
+    notice({ tone, icon: ic, body: message, action }),
     h('div', { class: 'result-details' },
-      stat('Current GWA', currentGWA.toFixed(4), { variant: 'row' }),
-      stat('Target GWA', `${targetGWA.toFixed(2)} or better`, { variant: 'row' }),
-      stat('Units completed', unitsCompleted, { variant: 'row' }),
-      stat('Units remaining', unitsRemaining, { variant: 'row' }),
-      stat('Required average', gradeText, { variant: 'row', highlight: true })));
+      stat('Current GWA', data.gwa.toFixed(4), { variant: 'row' }),
+      stat('Target', `${target.toFixed(2)} or better`, { variant: 'row' }),
+      stat('GWA units so far', data.totalUnits, { variant: 'row' }),
+      stat('GWA units left', left.gwaUnits, { variant: 'row' })));
 }
 
 /* ---------- Wrapped ---------- */
@@ -1231,26 +1178,46 @@ async function exportWrappedToPNG() {
 
 /* ---------- Grade refresh, backup and clear data (platform) ---------- */
 
+const SYNC_ERRORS = {
+  'not-logged-in': 'Log in to AMIS, then press Refresh.',
+  'amis-error': 'AMIS did not answer, try again later.',
+  'no-tab': 'Open AMIS in a tab first.',
+  'no-answer': 'Reload your AMIS tab once, then press Refresh.',
+};
+
+// Show a refresh problem at the top, or clear it with null.
+function showSyncError(code) {
+  showNotice($('syncNotice'), SYNC_ERRORS[code] && {
+    tone: 'warn', icon: 'alert', body: SYNC_ERRORS[code],
+    action: (code === 'no-tab' || code === 'not-logged-in') && button({
+      variant: 'text', text: 'Open AMIS', icon: 'external',
+      onclick: () => chrome.tabs.create({ url: 'https://amis.uplb.edu.ph/' }),
+    }),
+  });
+}
+
 // Asks the open AMIS tab to fetch grades now. content.js answers with
 // { ok, lastError, fetchedAt } and writes them to storage.
 async function refreshGrades() {
-  const say = text => { $('refreshStatus').textContent = text; };
-  const [tab] = await chrome.tabs.query({ url: 'https://amis.uplb.edu.ph/*' });
-  if (!tab) {
-    say('Open AMIS in a tab and log in, then press Refresh.');
-    return;
-  }
-  say('Getting your grades from AMIS');
-  let res;
+  const btns = document.querySelectorAll('#refreshBtn, .refresh-btn');
+  btns.forEach(b => { b.disabled = true; });
   try {
-    res = await chrome.tabs.sendMessage(tab.id, { type: 'FETCH_GRADES', force: true });
-  } catch (e) {
-    say('Reload your AMIS tab once, then press Refresh.');
-    return;
+    const [tab] = await chrome.tabs.query({ url: 'https://amis.uplb.edu.ph/*' });
+    if (!tab) { showSyncError('no-tab'); return; }
+    showNotice($('syncNotice'), { tone: 'info', icon: 'clock', body: 'Getting your grades from AMIS.' });
+    let res;
+    try {
+      res = await chrome.tabs.sendMessage(tab.id, { type: 'FETCH_GRADES', force: true });
+    } catch (e) {
+      showSyncError('no-answer');
+      return;
+    }
+    if (res && res.lastError) { showSyncError(res.lastError); return; }
+    showSyncError(null);
+    await loadGradesData();
+  } finally {
+    btns.forEach(b => { b.disabled = false; });
   }
-  if (res && res.lastError === 'not-logged-in') say('You are logged out of AMIS. Log in, then press Refresh.');
-  else if (res && res.lastError) say('AMIS did not answer. Try again in a minute.');
-  else { say(''); loadGradesData(); }
 }
 
 const BACKUP_SCHEMA_VERSION = 2;

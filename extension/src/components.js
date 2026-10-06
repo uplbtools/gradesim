@@ -180,10 +180,29 @@ function courseRow({ code, title, units, below, aside, class: cls, ...props }) {
 }
 
 // Callout with a tone. tone: neutral | ok | warn | bad | info
-function notice({ tone = 'neutral', icon: ic, title, body, class: cls, ...props }) {
+// action: an optional element (usually a button) on the right.
+function notice({ tone = 'neutral', icon: ic, title, body, action, class: cls, ...props }) {
   return h('div', { class: `notice notice-${tone}${cls ? ` ${cls}` : ''}`, ...props },
     ic && icon(ic),
-    h('div', { class: 'notice-text' }, title && h('strong', {}, title), body && h('span', {}, body)));
+    h('div', { class: 'notice-text' }, title && h('strong', {}, title), body && h('span', {}, body)),
+    action && h('div', { class: 'notice-action' }, action));
+}
+
+// "Last updated 3 hours ago" with a Refresh button. Past an hour it says the
+// grades may be out of date. fetchedAt is a ms timestamp or empty.
+function syncStatus(fetchedAt, onRefresh) {
+  const min = fetchedAt ? Math.max(0, Math.round((Date.now() - fetchedAt) / 60000)) : null;
+  let text = 'Press Refresh to get your latest grades.';
+  if (min != null) {
+    const ago = min < 1 ? 'just now'
+      : min < 60 ? `${plural(min, 'minute')} ago`
+      : min < 24 * 60 ? `${plural(Math.round(min / 60), 'hour')} ago`
+      : `${plural(Math.round(min / 1440), 'day')} ago`;
+    text = `Last updated ${ago}${min >= 60 ? ', so it may be out of date' : ''}.`;
+  }
+  return h('div', { class: `sync-status${min == null || min >= 60 ? ' stale' : ''}` },
+    h('span', {}, text),
+    button({ variant: 'text', icon: 'retake', text: 'Refresh', class: 'refresh-btn', onclick: onRefresh }));
 }
 
 function emptyState(text, { icon: ic, action } = {}) {

@@ -45,11 +45,7 @@ const ayLabel = abs => {
   return `AY ${ay}-${String(ay + 1).slice(2)}`;
 };
 
-// AMIS term ids are 12<year digit><term digit>: 1251 = AY 2025-26 1st sem.
-function amisTermToAbs(id) {
-  const m = String(id).match(/^12(\d)([123])$/);
-  return m ? (2020 + Number(m[1])) * 3 + Number(m[2]) - 1 : null;
-}
+// amisTermToAbs, gradeResult and the requirement slots come from requirements.js.
 
 // ponytail: month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
 // Jun-Jul midyear). Only used when AMIS grades are older than the calendar.
@@ -91,10 +87,11 @@ async function init() {
     requestAnimationFrame(() => drawEdges());
   });
 
-  const programCode = d.selectedProgram || 'BSCS';
+  const programCode = d.selectedProgram;
   state.program = typeof UPLB_PROGRAMS !== 'undefined' ? UPLB_PROGRAMS[programCode] : null;
   if (!state.program || !state.program.majorCourses) {
     $('gradTerm').textContent = 'Pick your program in the extension popup first.';
+    document.body.classList.add('pl-no-program');
     return;
   }
   $('plannerProgram').textContent = state.program.name || programCode;
@@ -111,32 +108,33 @@ async function init() {
   if (trackInfo) {
     $('plannerProgram').textContent += `, ${trackInfo.name} (${trackInfo.code})`;
   }
-  state.courses = enrichCourses(getPlannerCourses(state.program, state.track), catalog);
+  state.courses = plannerCourseList(state.program, state.track, catalog);
   state.courses.forEach(c => state.byCode.set(c.code, c));
   state.graph = analyzeGraph(state.courses);
-  d.plannerOptions = { cap: defaultCap(), midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
+  // 18 units a sem unless the student picks 21 in Plan options.
+  d.plannerOptions = { cap: 18, midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
 
-  if (!d.gradesData || !d.gradesData.student_grades) {
-    $('plannerBanner').replaceChildren(notice({
+  const quality = getProgramDataQuality(programCode, catalog);
+  $('plannerBanner').replaceChildren(...flat([
+    !quality.confident && notice({ tone: 'warn', icon: 'alert', title: 'Treat this plan as a rough guide', body: quality.reasons.join(' ') }),
+    !(d.gradesData && d.gradesData.student_grades) && notice({
       tone: 'info', icon: 'info',
-      body: 'No grades loaded yet. Open AMIS while logged in, then come back so your passed courses count. Until then this plan starts from scratch.',
-    }));
-  }
+      body: 'No grades loaded yet. Log in to AMIS, open the extension and press Refresh so your passed courses count. Until then this plan starts from scratch.',
+    }),
+  ]));
 
   initControls();
   render();
-  window.addEventListener('resize', () => drawEdges());
-}
+  window.addEventListener('resize', () => { drawEdges(); updateScrollHint(); });
+  $('plannerScroll').addEventListener('scroll', updateScrollHint, { passive: true });
 
-// 21 units when the program's own checklist already has a regular term above 18.
-function defaultCap() {
-  const load = {};
-  (state.program.majorCourses || []).forEach(c => {
-    if (c.sem === 'midyear') return;
-    const k = `${c.year}-${c.sem}`;
-    load[k] = (load[k] || 0) + (Number(c.units) || 0);
-  });
-  return Object.values(load).some(u => u > 18) ? 21 : 18;
+  // The popup's "See what this costs" link opens planner.html?whatif=CODE.
+  const prefill = normCode(new URLSearchParams(location.search).get('whatif') || '');
+  if (prefill && state.byCode.has(prefill)) {
+    $('whatifMode').value = 'fail';
+    $('whatifCourse').value = prefill;
+    if ($('whatifCourse').value === prefill) simulate();
+  }
 }
 
 function save(keys) {
@@ -146,15 +144,6 @@ function save(keys) {
 }
 
 /* ---------- AMIS history ---------- */
-
-function gradeResult(raw) {
-  const g = (raw == null ? '' : String(raw)).toUpperCase().trim();
-  const n = parseFloat(g);
-  if (g === 'S' || g === 'P' || (n >= 1 && n <= 3)) return 'passed';
-  if (n === 5 || g === 'F' || g === 'U') return 'failed';
-  if (!g) return 'nograde';
-  return 'other'; // INC, DRP, 4.00: not passed, not a fail
-}
 
 // Map AMIS attempts onto curriculum codes, with the term each happened in.
 function readHistory() {
@@ -195,36 +184,11 @@ function readHistory() {
   const push = (code, a) => { (byCurr[code] = byCurr[code] || []).push(a); };
   attempts.forEach(a => { if (state.byCode.has(a.code)) push(a.code, a); });
 
+  // GE, HK, NSTP and free elective slots, and substitutions, filled the same
+  // way the popup What if tab counts them.
   const doneOrNow = attempts.filter(a => a.result === 'passed' || a.result === 'inprogress');
-  const slotDone = getCompletedRequirementSlotCodes(
-    doneOrNow.map(a => ({ code: a.code, title: a.title })), state.program);
-  const kinds = [
-    ['ge', a => isGECourse(a.code, a.title) && !state.byCode.has(a.code)],
-    ['hk', a => /^(HK|PE)\b/.test(a.code) && !state.byCode.has(a.code)],
-    ['nstp', a => /^NSTP\b/.test(a.code) && !state.byCode.has(a.code)],
-  ];
-  kinds.forEach(([kind, match]) => {
-    const slots = state.courses.filter(c => c.genericRequirement === kind && slotDone.has(c.code));
-    const taken = doneOrNow.filter(match);
-    slots.forEach((slot, i) => {
-      const a = taken[i];
-      if (a) push(slot.code, { ...a, via: a.code });
-    });
-  });
-  // Free electives: any other course with units that the curriculum does not
-  // name and that is not standing in for a required one.
-  // ponytail: one course per 3-unit slot; a 6-unit elective fills only one.
-  const subbed = new Set(Object.values(state.data.substitutions).map(normCode));
-  const electives = doneOrNow.filter(a => a.units > 0 && !state.byCode.has(a.code) &&
-    !subbed.has(a.code) && !kinds.some(([, match]) => match(a)));
-  state.courses.filter(c => c.genericRequirement === 'elective').forEach((slot, i) => {
-    const a = electives[i];
-    if (a) push(slot.code, { ...a, via: a.code });
-  });
-  Object.entries(state.data.substitutions).forEach(([req, taken]) => {
-    const r = normCode(req);
-    const a = doneOrNow.find(x => x.code === normCode(taken));
-    if (a && state.byCode.has(r)) push(r, { ...a, via: a.code });
+  fillRequirementSlots(state.courses, doneOrNow, state.data.substitutions).forEach((a, slot) => {
+    if (a.code !== slot && state.byCode.has(slot)) push(slot, { ...a, via: a.code });
   });
 
   return { attempts, byCurr, latestAbs, passedOutside: new Set(doneOrNow.map(a => a.code)) };
@@ -322,8 +286,11 @@ function compute() {
   // Baseline with the what-if removed, for the "what changed" message.
   const noWhatif = wi ? run(failures.filter(f => f.source !== 'whatif'), false) : null;
   const slips = computeSlips(now.runOpts, now.result);
+  // Same count as the popup What if tab: passed AMIS courses plus manual marks.
+  const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
+    { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps };
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left };
 }
 
 /* ---------- Summary ---------- */
@@ -365,12 +332,12 @@ function renderSummary(v) {
   if (!(v.failures.length && delta <= 0)) deltaEl.classList.remove('ok');
 
   const termsLeft = r.plan.filter(p => p.courses.length).length;
-  const bits = [];
-  if (gradAbs != null) bits.push(`That is ${ayLabel(gradAbs)}`);
-  if (gradAbs != null) bits.push(`${termsLeft} term${termsLeft === 1 ? '' : 's'} with classes left, starting ${absLabel(v.startAbs)}`);
-  bits.push(`up to ${v.unitCaps['1']} units a sem`);
-  bits.push(state.data.plannerOptions.midyear ? `midyear up to ${v.unitCaps.midyear}` : 'midyear only where the checklist puts it');
-  $('gradSub').textContent = `${bits.join(', ')}. Free electives are not counted.`;
+  const nowTaking = Object.values(v.info).some(i => i.status === 'inprogress');
+  const sentences = [];
+  if (gradAbs != null) sentences.push(`That is ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
+  sentences.push(`You have ${unitsText(v.left.units)} left to pass${nowTaking ? ', counting this term' : ''}.`);
+  sentences.push(`The plan takes up to ${v.unitCaps['1']} units a sem and ${state.data.plannerOptions.midyear ? `up to ${v.unitCaps.midyear} in midyear` : 'midyear only where the checklist puts it'}.`);
+  $('gradSub').textContent = sentences.join(' ');
 
   const list = $('failCosts');
   const showCosts = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif');
@@ -493,7 +460,8 @@ function orderColumns(list, primary) {
 function courseCard(card, v) {
   const c = state.byCode.get(card.code);
   const slip = v.slips[card.code];
-  const crit = !card.history && slip > 0 && !['passed', 'inprogress', 'failed'].includes(card.status);
+  // Free elective cards are placeholders for any course, so never critical.
+  const crit = !card.history && slip > 0 && c.genericRequirement !== 'elective' && !['passed', 'inprogress', 'failed'].includes(card.status);
   const classes = ['pl-card', `st-${card.status}`];
   if (crit) classes.push('crit');
   if (card.history || card.hypothetical) classes.push('history');
@@ -563,7 +531,19 @@ function render() {
   $('plannerGrid').replaceChildren(...list.map(c => semesterColumn(c, v, phone)));
   if (state.selected && !state.byCode.has(state.selected)) state.selected = null;
   renderDetail();
-  requestAnimationFrame(() => drawEdges());
+  requestAnimationFrame(() => { drawEdges(); updateScrollHint(); });
+}
+
+// When terms run past the right edge, say how many and offer a jump there.
+function updateScrollHint() {
+  const sc = $('plannerScroll');
+  const right = sc.getBoundingClientRect().right;
+  const hiddenCols = isPhone() ? 0 : Array.from(sc.querySelectorAll('.pl-col'))
+    .filter(col => col.getBoundingClientRect().right > right + 1).length;
+  $('scrollHint').replaceChildren(hiddenCols ? button({
+    variant: 'chip', icon: 'next', text: `${plural(hiddenCols, 'more term')} to the right`,
+    onclick: () => { sc.scrollLeft = sc.scrollWidth; },
+  }) : '');
 }
 
 /* ---------- Edges and focus ---------- */
@@ -596,7 +576,7 @@ function drawEdges() {
   svg.setAttribute('width', grid.scrollWidth);
   svg.setAttribute('height', grid.scrollHeight);
   const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
-  const crit = code => v.slips[code] > 0;
+  const crit = code => v.slips[code] > 0 && state.byCode.get(code).genericRequirement !== 'elective';
   const paths = [];
 
   // Arrows travel the lattice lanes (see .pl-grid in planner.css): out of the
@@ -825,11 +805,27 @@ function fillWhatifSelect(v) {
 }
 
 function simulate(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const code = $('whatifCourse').value;
   const mode = $('whatifMode').value;
   if (!code) {
     $('whatifResult').textContent = 'Pick a course first.';
+    return;
+  }
+  // A course already failed on AMIS: its retake is in the plan, so report
+  // what that failure costs instead of failing it a second time.
+  const pastFail = mode === 'fail' && state.view.costs.find(c => c.code === code && c.past);
+  if (pastFail) {
+    const v = state.view;
+    const t = v.now.result.assignedTerm[code];
+    const retake = t === undefined ? '' : ` The retake is planned for ${absLabel(v.startAbs + t)}.`;
+    $('whatifResult').textContent = pastFail.cost > 0
+      ? `${code} is failed on AMIS, which moves graduation ${termsText(pastFail.cost)} later, to ${absLabel(v.startAbs + v.now.result.gradTermIndex)}.${retake}`
+      : `${code} is failed on AMIS, but it does not move graduation.${retake}`;
+    $('whatifClear').classList.remove('hidden');
+    state.selected = code;
+    renderDetail();
+    drawEdges();
     return;
   }
   state.whatif = { code, mode };
@@ -877,14 +873,19 @@ function initControls() {
     render();
     announce('Plan recomputed from scratch.');
   });
+  const resetDialog = modal($('resetDialog'));
   $('resetPlan').addEventListener('click', () => {
-    if (!confirm('Reset the plan? This clears courses you marked passed or failed, courses you moved, and petitions. Your AMIS grades stay.')) return;
+    $('planMenu').open = false;
+    resetDialog.open();
+  });
+  $('resetConfirm').addEventListener('click', () => {
     Object.assign(state.data, { customCourseStatus: {}, plannerPins: {}, plannerPetitions: {} });
     save(['customCourseStatus', 'plannerPins', 'plannerPetitions']);
     state.whatif = null;
     $('whatifResult').textContent = '';
-    $('planMenu').open = false;
+    resetDialog.close();
     render();
+    announce('Plan reset. Your AMIS grades stay.');
   });
   $('whatifForm').addEventListener('submit', simulate);
   $('whatifClear').addEventListener('click', clearWhatif);

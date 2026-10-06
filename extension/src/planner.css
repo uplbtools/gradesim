@@ -37,6 +37,21 @@ body.planner-page {
   padding: 8px 24px 40px;
 }
 
+/* No program picked yet: only the heading and the disclaimer. */
+.pl-no-program .pl-controls,
+.pl-no-program .pl-legend,
+.pl-no-program .pl-result-row,
+.pl-no-program .pl-scroll {
+  display: none;
+}
+
+.pl-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 80ch;
+}
+
 .pl-banner:empty {
   display: none;
 }
@@ -73,9 +88,14 @@ body.planner-page {
 }
 
 .pl-sub {
+  max-width: 70ch;
   margin-top: 4px;
-  color: var(--muted);
+  color: var(--body);
   font-size: 0.88rem;
+}
+
+.pl-summary .disclaimer {
+  margin-top: 8px;
 }
 
 .pl-costs {
@@ -267,11 +287,23 @@ body.planner-page {
   margin-top: 8px;
 }
 
-.pl-result {
-  min-height: 1.2em;
+.pl-result-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   margin: 4px 0 8px;
+}
+
+.pl-result {
+  flex: 1;
+  max-width: 70ch;
+  min-height: 1.2em;
   color: var(--ink);
   font-weight: 500;
+}
+
+.pl-scroll-hint {
+  margin-left: auto;
 }
 
 /* Grid */
@@ -508,8 +540,10 @@ body.planner-page {
 .pl-card.st-locked .pl-code,
 .pl-card.st-locked .pl-title { color: var(--muted); }
 
+/* Earlier attempts and what-if failures: a quieter surface, full text contrast. */
 .pl-card.history {
-  opacity: 0.6;
+  background: var(--bg-card);
+  box-shadow: none;
 }
 
 .pl-card.crit {
