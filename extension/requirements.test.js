@@ -4,7 +4,7 @@
 const assert = require('assert');
 Object.assign(globalThis, require('./src/curriculum.js'), require('./src/scheduler.js'));
 const { UPLB_CATALOG } = require('./src/catalog.js');
-const { amisTermToAbs, gradeResult, amisCourses, plannerCourseList, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
+const { amisTermToAbs, gradeResult, removalKey, applyRemovals, amisCourses, plannerCourseList, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
 
 assert.strictEqual(amisTermToAbs(1251), 2025 * 3);
 assert.strictEqual(amisTermToAbs('1232'), 2023 * 3 + 1);
@@ -13,6 +13,18 @@ assert.strictEqual(amisTermToAbs(1301), 2030 * 3);
 assert.strictEqual(amisTermToAbs(1312), 2031 * 3 + 1);
 assert.strictEqual(amisTermToAbs(1254), null);
 assert.strictEqual(amisTermToAbs('abc'), null);
+
+// A 4.00 removal exam: pass gives 3.00, fail gives 5.00, other grades stay.
+const fours = { student_grades: { 1251: { values: [
+  { course: { course_code: 'MATH 27' }, grade: '4.00', unit_taken: '3' },
+  { course: { course_code: 'CHEM 18' }, grade: '4.00', unit_taken: '3' },
+  { course: { course_code: 'STS 1' }, grade: '2.00', unit_taken: '3' },
+] } } };
+const removed = applyRemovals(fours, { [removalKey(1251, 'math 27')]: 'pass', [removalKey(1251, 'CHEM 18')]: 'fail', [removalKey(1251, 'STS 1')]: 'fail' });
+assert.deepStrictEqual(amisCourses(removed).map(r => [r.code, r.grade, r.result]),
+  [['MATH 27', '3.00', 'passed'], ['CHEM 18', '5.00', 'failed'], ['STS 1', '2.00', 'passed']]);
+assert.strictEqual(fours.student_grades[1251].values[0].grade, '4.00', 'stored AMIS data is not changed');
+assert.strictEqual(applyRemovals(fours, {}), fours);
 
 assert.strictEqual(gradeResult('1.00'), 'passed');
 assert.strictEqual(gradeResult('P'), 'passed');

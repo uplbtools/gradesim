@@ -23,11 +23,15 @@ let substitutions = {};
 // Courses marked passed or failed in the planner, so both count the same.
 let customCourseStatus = {};
 
+// Removal exam results for 4.00 grades, removalKey(termId, code) -> pass | fail.
+let removals = {};
+
 const NON_NUMERIC_GRADES = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
 // PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
 // Education majors) and similar codes in.
 const NON_GWA_PREFIX = /^(NSTP|HK|PE)\b/i;
 const courseIdOf = course => String(course.id || `${course.courseCode}-${course.termId}`);
+const semKeyOf = course => course.term || `${course.academicYear} - ${course.semester}`;
 
 // Replace a container's children with one notice (or clear it).
 function showNotice(el, opts) {
@@ -132,8 +136,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       currentView = btn.dataset.view;
       if (window.gradesData && window.gradesData.courses) {
-        const { gradesBySemester } = calculateGWA(window.gradesData.courses, excludedCourses);
-        displayGradesList(gradesBySemester, window.gradesData.courses);
+        const { gradesBySemester, holds } = calculateGWA(window.gradesData.courses, excludedCourses);
+        displayGradesList(gradesBySemester, window.gradesData.courses, holds);
       }
     });
   });
@@ -238,14 +242,18 @@ function renderSpecializationCourses(passed = new Set()) {
       h('p', { class: 'hint' }, 'Pick yours to see its courses. They fill the matching slots in your checklist.')]));
     return;
   }
+  // Courses a specialization adds outright (BS MST) show as one take-all list.
+  const rows = new Map((spec.courses || []).map(c => [c.code, c]));
+  const pools = [...(spec.pools || []),
+    ...(rows.size ? [{ name: 'Courses for this specialization', slots: [...rows.keys()], courses: [...rows.keys()] }] : [])];
   $('specCourses').replaceChildren(...flat([
-    spec.pools.map(pool => [
+    pools.map(pool => [
       h('h4', {}, pool.name),
       h('p', { class: 'hint' }, pool.courses.length > pool.slots.length
         ? `Take ${pool.slots.length} of these ${pool.courses.length}.`
         : `Take all ${pool.courses.length}.`),
       pool.courses.map(code => {
-        const entry = UPLB_CATALOG[code];
+        const entry = UPLB_CATALOG[code] || rows.get(code);
         return courseRow({
           code,
           title: entry && entry.title.replace(/\.$/, ''),
@@ -305,6 +313,7 @@ function parseAMISData(data) {
         courseTitle: courseData.course?.title || 'Unknown',
         units: parseInt(courseData.unit_taken) || 0,
         grade: courseData.grade,
+        removalFrom: courseData.removalFrom,
         section: courseData.section,
         termId: termId,
         term: termInfo,
@@ -332,7 +341,7 @@ async function loadGradesData() {
   mainContentEl.classList.add('hidden');
 
   try {
-    let result = await chrome.storage.local.get(['gradesData', 'fetchedAt']);
+    let result = await chrome.storage.local.get(['gradesData', 'fetchedAt', 'removals']);
 
     // If no data, wait a moment and try again (data might still be loading)
     if (!result.gradesData) {
@@ -340,8 +349,9 @@ async function loadGradesData() {
       result = await chrome.storage.local.get(['gradesData', 'fetchedAt']);
     }
 
-    const courses = parseAMISData(result.gradesData);
-    rawGrades = result.gradesData;
+    removals = result.removals || {};
+    rawGrades = applyRemovals(result.gradesData, removals);
+    const courses = parseAMISData(rawGrades);
     fetchedAt = result.fetchedAt;
 
     if (courses && courses.length > 0) {
@@ -359,7 +369,7 @@ async function loadGradesData() {
 }
 
 function displayGradesData(courses) {
-  const { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount } = calculateGWA(courses, excludedCourses);
+  const { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount, holds } = calculateGWA(courses, excludedCourses);
 
   // The main GWA keeps four decimals; every other figure uses two.
   $('currentGWA').textContent = gwa.toFixed(4);
@@ -379,7 +389,7 @@ function displayGradesData(courses) {
   };
 
   displayHonorStatus(gwa, totalUnits);
-  displayGradesList(gradesBySemester, courses);
+  displayGradesList(gradesBySemester, courses, holds);
   displayRemaining();
   displayWrapped(courses);
 }
@@ -392,6 +402,9 @@ function calculateGWA(courses, excludedIds = new Set()) {
   let excludedUnits = 0;
   let excludedCount = 0;
   const gradesBySemester = {};
+  // Terms with a failing or INC grade in HK or NSTP. Those courses stay out of
+  // the GWA, but the scholar lists still need them passed.
+  const holds = new Set();
   const completedCourses = [];
 
   courses.forEach(course => {
@@ -399,8 +412,11 @@ function calculateGWA(courses, excludedIds = new Set()) {
     const courseId = courseIdOf(course);
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
 
-    // Skip NSTP, HK, PE courses entirely
+    const semKey = semKeyOf(course);
+
+    // NSTP, HK and PE are not in the GWA.
     if (NON_GWA_PREFIX.test(courseCode.trim())) {
+      if (gradeStr === 'INC' || parseFloat(gradeStr) > 3) holds.add(semKey);
       return;
     }
 
@@ -408,7 +424,6 @@ function calculateGWA(courses, excludedIds = new Set()) {
     const isNonNumericGrade = NON_NUMERIC_GRADES.includes(gradeStr);
 
     // Group by semester (for display - includes all courses)
-    const semKey = course.term || `${course.academicYear} - ${course.semester}`;
     if (!gradesBySemester[semKey]) {
       gradesBySemester[semKey] = [];
     }
@@ -461,7 +476,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
 
   const gwa = totalUnits > 0 ? totalWeightedGrade / totalUnits : 0;
 
-  return { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount };
+  return { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount, holds };
 }
 
 function displayHonorStatus(gwa, totalUnits) {
@@ -482,10 +497,11 @@ function gradeDisplay(course) {
   const grade = parseFloat(course.grade);
   if (isNaN(grade)) return { text: gradeStr, cls: 'other-grade', icon: 'alert' };
   if (grade >= 5.00) return { text: grade.toFixed(2), cls: 'failed', icon: 'x', failed: true };
+  if (grade > 3.00) return { text: grade.toFixed(2), cls: 'other-grade', icon: 'alert' };
   return { text: grade.toFixed(2), cls: grade <= 1.50 ? 'excellent' : grade <= 2.00 ? 'good' : 'passing' };
 }
 
-function displayGradesList(gradesBySemester, allCourses) {
+function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
   const listEl = $('gradesList');
 
   // Group courses based on current view mode
@@ -526,8 +542,10 @@ function displayGradesList(gradesBySemester, allCourses) {
   listEl.replaceChildren(...sortedGroups.map(groupKey => {
     const courses = groupedCourses[groupKey];
     const groupGWA = calculateGroupGWA(courses);
+    if (courses.some(c => holds.has(semKeyOf(c)))) groupGWA.hasFailOrInc = true;
 
-    // Scholar lists need a full load (15 units) and no 5.00, 4.00 or INC.
+    // Scholar lists need 15 academic units (HK and NSTP do not count) and no
+    // 5.00, 4.00 or INC in any course, HK and NSTP included.
     let scholar = null;
     if (groupGWA.gwa > 0 && groupGWA.totalUnits >= 15 && !groupGWA.hasFailOrInc) {
       if (groupGWA.gwa <= 1.45) scholar = 'university';
@@ -553,12 +571,12 @@ function displayGradesList(gradesBySemester, allCourses) {
           class: (isExcluded ? 'excluded' : '') + (counts ? '' : ' non-numeric'),
           dataset: { courseId },
           // Only numeric grades have a GWA to leave out of.
-          below: counts && button({
+          below: [counts && button({
             variant: 'text', class: 'exclude-toggle',
             text: isExcluded ? 'Count in GWA' : 'Leave out of GWA',
             'aria-label': `${isExcluded ? 'Count' : 'Leave'} ${code} ${isExcluded ? 'in' : 'out of'} the GWA`,
             onclick: () => toggleCourseExclusion(courseId, allCourses),
-          }),
+          }), removalPicker(course)],
           aside: h('span', { class: `grade-value ${g.cls}`, 'aria-label': `Grade ${g.text}${g.failed ? ', failed' : ''}` },
             g.icon && icon(g.icon), g.text),
         });
@@ -690,6 +708,29 @@ function displayRemaining() {
 
   window.currentTrack = currentTrack;
   renderWhatIf();
+}
+
+// A 4.00 gets one removal exam. Picking its result recomputes everything as
+// if AMIS already showed 3.00 (pass) or 5.00 (fail).
+function removalPicker(course) {
+  if (parseFloat(course.removalFrom || course.grade) !== 4) return null;
+  const key = removalKey(course.termId, course.courseCode);
+  const select = h('select', {
+    class: 'removal-select',
+    dataset: { removal: key },
+    'aria-label': `Removal exam result for ${course.courseCode}`,
+    onchange: async () => {
+      if (select.value) removals[key] = select.value;
+      else delete removals[key];
+      await chrome.storage.local.set({ removals });
+      await loadGradesData();
+      // The list was rebuilt; keep keyboard focus on the same picker.
+      const again = document.querySelector(`.removal-select[data-removal="${CSS.escape(key)}"]`);
+      if (again) again.focus();
+    },
+  }, option('', 'Removal exam not taken'), option('pass', 'Passed removal, 3.00'), option('fail', 'Failed removal, 5.00'));
+  select.value = removals[key] || '';
+  return select;
 }
 
 // Toggle course exclusion (for shiftees)
@@ -1288,7 +1329,7 @@ const BACKUP_SCHEMA_VERSION = 2;
 // termsAccepted (each person accepts the terms on their own device) or
 // lastError (it describes this browser only).
 const BACKUP_KEYS = ['gradesData', 'fetchedAt', 'selectedProgram', 'selectedTracks', 'selectedSpecializations', 'excludedCourses',
-  'substitutions', 'customCourseStatus', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme'];
+  'substitutions', 'customCourseStatus', 'removals', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme'];
 
 function wireBackup() {
   const importFile = $('importFile');
