@@ -8,7 +8,9 @@
 # manifests only; the tag records what shipped.
 #
 # A store whose secrets are missing is skipped, not failed, so stores can be
-# connected one at a time.
+# connected one at a time. A store that rejects an upload (for example Chrome
+# while the previous version is still in review) does not stop the other
+# stores or the release; the run is marked failed at the end so it shows up.
 #
 # Secrets (repo settings, Actions):
 #   CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN   Chrome Web Store API
@@ -77,6 +79,8 @@ jobs:
           ls -l release
 
       - name: Chrome Web Store
+        id: cws
+        continue-on-error: true
         if: steps.version.outputs.new == 'true' && env.HAS_CWS == 'true'
         env:
           CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
@@ -86,6 +90,8 @@ jobs:
         run: npx -y chrome-webstore-upload-cli@3 --source "release/elbi-gradesim-chrome-${{ steps.version.outputs.version }}.zip"
 
       - name: Firefox Add-ons
+        id: amo
+        continue-on-error: true
         if: steps.version.outputs.new == 'true' && env.HAS_AMO == 'true'
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
@@ -93,6 +99,8 @@ jobs:
         run: npx -y web-ext@8 sign --channel listed --source-dir extension/dist/firefox --artifacts-dir release/amo
 
       - name: Edge Add-ons
+        id: edge
+        continue-on-error: true
         if: steps.version.outputs.new == 'true' && env.HAS_EDGE == 'true'
         env:
           EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
@@ -120,3 +128,9 @@ jobs:
         run: |
           tag="extension-v${{ steps.version.outputs.version }}"
           gh release create "$tag" release/*.zip --target "$GITHUB_SHA" --title "Elbi GradeSim ${{ steps.version.outputs.version }}" --generate-notes
+
+      - name: Fail if a store rejected the upload
+        if: steps.cws.outcome == 'failure' || steps.amo.outcome == 'failure' || steps.edge.outcome == 'failure'
+        run: |
+          echo "::error::Store results: Chrome=${{ steps.cws.outcome }} Firefox=${{ steps.amo.outcome }} Edge=${{ steps.edge.outcome }}. Re-run this workflow once the store accepts uploads again."
+          exit 1
