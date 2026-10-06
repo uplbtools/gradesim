@@ -579,8 +579,8 @@ function cardHTML(card, v) {
     <span class="pl-card-top"><span class="pl-status">${icon(ic)}${statusLabel}</span><span class="pl-units">${esc(c.units)}u</span></span>
     <span class="pl-code">${esc(c.code)}${card.pinned ? '<span class="pl-pin" title="Moved later by you"> *</span>' : ''}</span>
     <span class="pl-title">${esc(c.title)}</span>
-    <span class="pl-card-foot"><span class="pl-offer">${esc(offeringLabel(c))}</span>${crit ? '<span class="pl-crit">Critical</span>' : ''}</span>
     ${extra}
+    <span class="pl-card-foot"><span class="pl-offer">${esc(offeringLabel(c))}</span>${crit ? '<span class="pl-crit">Critical</span>' : ''}</span>
   </div>`;
 }
 
@@ -668,34 +668,52 @@ function drawEdges() {
   const crit = code => v.slips[code] > 0;
   const paths = [];
 
-  // Arrows run along the gutters between columns: out of the prerequisite,
-  // along a gutter to the target's height, then in. A long arrow still has to
-  // cross the columns in between, so it crosses at whichever end (the
-  // prerequisite's row or the target's row) hits fewer visible cards. Arrows
-  // sharing a gutter get their own lane so they do not merge into one line.
-  const GUTTER = 11; // half of .pl-grid gap
-  const visible = Array.from(grid.querySelectorAll('.pl-card:not(.dim)'))
-    .filter(el => !el.closest('details:not([open])'))
-    .map(el => el.getBoundingClientRect());
-  // Cards strictly between the two columns whose height range contains y.
-  const crossings = (y, xa, xb) => visible.filter(r =>
-    r.left > xa && r.right < xb && y > r.top && y < r.bottom).length;
-  const lanes = new Map();
-  const lane = gx => {
-    const n = lanes.get(gx) || 0;
-    lanes.set(gx, n + 1);
-    return gx + ((n % 4) - 1.5) * 5; // four lanes fit the 22px gap
+  // Arrows travel the lattice lanes (see .pl-grid in planner.css): out of the
+  // prerequisite into the column gap beside it, along the row gap next to the
+  // target's row across any semesters in between, down the column gap before
+  // the target, then in. Cards share one height, so row gaps line up across
+  // columns and an arrow never passes under a card. Arrows sharing a gap get
+  // their own lane, four per gap, so they do not merge into one line.
+  const css = getComputedStyle(grid);
+  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 32;
+  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 16;
+  const used = new Map();
+  const lane = (key, center, gap) => {
+    const n = used.get(key) || 0;
+    used.set(key, n + 1);
+    return center + ((n % 4) - 1.5) * (gap / 5);
   };
+  // Orthogonal polyline with rounded corners.
+  function polyline(pts) {
+    let d = `M ${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [px, py] = pts[i - 1];
+      const [cx, cy] = pts[i];
+      const [nx, ny] = pts[i + 1];
+      const r = Math.min(6, Math.hypot(cx - px, cy - py) / 2, Math.hypot(nx - cx, ny - cy) / 2);
+      const ix = cx - Math.sign(cx - px) * r;
+      const iy = cy - Math.sign(cy - py) * r;
+      const ox = cx + Math.sign(nx - cx) * r;
+      const oy = cy + Math.sign(ny - cy) * r;
+      d += ` L ${ix} ${iy} Q ${cx} ${cy} ${ox} ${oy}`;
+    }
+    const [lx, ly] = pts[pts.length - 1];
+    return `${d} L ${lx} ${ly}`;
+  }
   function routeEdge(x1, y1, x2, y2, ra, rb) {
-    const viaSourceRow = crossings(y1 + gridRect.top, ra.right, rb.left);
-    const viaTargetRow = crossings(y2 + gridRect.top, ra.right, rb.left);
-    const gx = lane(Math.round(viaSourceRow < viaTargetRow ? x2 - GUTTER : x1 + GUTTER));
-    const dy = y2 - y1;
-    if (Math.abs(dy) < 1) return `M ${x1} ${y1} H ${x2 - 4}`;
-    const r = Math.min(6, Math.abs(dy) / 2);
-    const s = Math.sign(dy);
-    return `M ${x1} ${y1} H ${gx - r} Q ${gx} ${y1} ${gx} ${y1 + s * r} ` +
-      `V ${y2 - s * r} Q ${gx} ${y2} ${gx + r} ${y2} H ${x2 - 4}`;
+    const end = x2 - 4;
+    const gxS = ra.right - gridRect.left + colGap / 2;
+    const gxT = rb.left - gridRect.left - colGap / 2;
+    if (gxT - gxS < colGap) { // neighbouring semesters: one column gap
+      const gx = lane(`c${Math.round(gxS)}`, gxS, colGap);
+      return Math.abs(y2 - y1) < 1 ? `M ${x1} ${y1} L ${end} ${y2}`
+        : polyline([[x1, y1], [gx, y1], [gx, y2], [end, y2]]);
+    }
+    const rowY = y1 <= y2 ? rb.top - rowGap / 2 : rb.bottom + rowGap / 2;
+    const ly = lane(`r${Math.round(rowY)}`, rowY - gridRect.top, rowGap);
+    const a = lane(`c${Math.round(gxS)}`, gxS, colGap);
+    const b = lane(`c${Math.round(gxT)}`, gxT, colGap);
+    return polyline([[x1, y1], [a, y1], [a, ly], [b, ly], [b, y2], [end, y2]]);
   }
   state.graph.edges.forEach(({ from, to }) => {
     let kind = null;
