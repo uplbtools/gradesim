@@ -113,6 +113,18 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
   return fill;
 }
 
+// Latin honors count only as many electives as the program requires, the
+// earliest first (UPLB catalog, Graduation with Honors). Returns the passed
+// rows that fill no slot, which the honors GWA leaves out. A program with no
+// elective slots returns none, since its data cannot tell extra from missing.
+function surplusElectives(courses, passedRows, substitutions = {}) {
+  if (!courses.some(c => c.genericRequirement === 'elective')) return [];
+  const used = new Set(fillRequirementSlots(courses, passedRows, substitutions).values());
+  const named = new Set(courses.filter(c => !c.genericRequirement).map(c => normalizeCourseCode(c.code)));
+  return passedRows.filter(r => !used.has(r) && !named.has(normalizeCourseCode(r.code)) &&
+    !isNonGwaCourseCode(r.code) && r.units > 0);
+}
+
 // The planner's course list: checklist rows for the track and specialization
 // plus GE, HK, NSTP and free elective slots, with catalog units, offerings and
 // prerequisites.
@@ -169,5 +181,5 @@ function gwaOutlook(gwa, units, left, target) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { gradeResult, amisTermToAbs, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, remainingRequirements, gwaOutlook, LATIN_HONORS };
+  module.exports = { gradeResult, amisTermToAbs, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, surplusElectives, remainingRequirements, gwaOutlook, LATIN_HONORS };
 }

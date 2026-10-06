@@ -622,6 +622,8 @@ function displayRemaining() {
   const trackInfoEl = $('trackInfo');
   const curriculum = getCurrentCurriculum();
 
+  $('honorsGwa').replaceChildren();
+  if (window.gradesData) displayHonorStatus(window.gradesData.gwa, window.gradesData.totalUnits);
   const quality = getProgramDataQuality(curriculum.code);
   showNotice($('whatifQuality'), !quality.confident && {
     tone: 'warn', icon: 'alert', title: 'Treat these numbers as a rough guide', body: quality.reasons.join(' '),
@@ -666,6 +668,7 @@ function displayRemaining() {
   renderSpecializationCourses(new Set(passedRows.map(r => r.code)));
   const left = remainingRequirements(courses, passedRows, { substitutions, overrides: customCourseStatus });
   window.requirementsLeft = left;
+  displayHonorsGwa(surplusElectives(courses, passedRows, substitutions), allCourses);
 
   // Substitution pickers, sorted by code
   const requiredCodesSet = new Set((curriculum.requiredCodes || []).map(c => c.toUpperCase().trim()));
@@ -708,6 +711,19 @@ function displayRemaining() {
 
   window.currentTrack = currentTrack;
   renderWhatIf();
+}
+
+// Extra electives stay in the GWA but not in the one for Latin honors, so the
+// honor badge follows the honors GWA and the card says what it left out.
+function displayHonorsGwa(surplus, allCourses) {
+  if (!surplus.length) return;
+  const skip = new Set(surplus.map(r => removalKey(r.termId, r.code)));
+  const { gwa, totalUnits } = calculateGWA(allCourses.filter(c => !skip.has(removalKey(c.termId, c.courseCode))), excludedCourses);
+  displayHonorStatus(gwa, totalUnits);
+  $('honorsGwa').replaceChildren(stat('GWA for Latin honors', gwa.toFixed(4), {
+    variant: 'row',
+    note: `Counts only the electives your program requires, the earliest first. Leaves out ${surplus.map(r => r.code).join(', ')}.`,
+  }));
 }
 
 // A 4.00 gets one removal exam. Picking its result recomputes everything as
