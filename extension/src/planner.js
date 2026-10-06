@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', init);
 async function init() {
   hydrateIcons();
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
-    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks']);
+    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks', 'selectedSpecializations']);
   const d = state.data;
   d.customCourseStatus = d.customCourseStatus || {};
   d.substitutions = d.substitutions || {};
@@ -94,7 +94,6 @@ async function init() {
     document.body.classList.add('pl-no-program');
     return;
   }
-  $('plannerProgram').textContent = state.program.name || programCode;
   const catalog = typeof UPLB_CATALOG !== 'undefined' ? UPLB_CATALOG : {};
   // An SP or thesis course on AMIS (passed, failed, or being taken now) wins;
   // otherwise the track picked in the popup, otherwise the program default.
@@ -104,13 +103,8 @@ async function init() {
     .filter(r => r.code);
   state.track = detectTrack(amisRows, state.program) ||
     resolveTrack(state.program, (d.selectedTracks || {})[programCode]);
-  const trackInfo = state.track && state.program.tracks[state.track];
-  if (trackInfo) {
-    $('plannerProgram').textContent += `, ${trackInfo.name} (${trackInfo.code})`;
-  }
-  state.courses = plannerCourseList(state.program, state.track, catalog);
-  state.courses.forEach(c => state.byCode.set(c.code, c));
-  state.graph = analyzeGraph(state.courses);
+  d.selectedSpecializations = d.selectedSpecializations || {};
+  loadCourses();
   // 18 units a sem unless the student picks 21 in Plan options.
   d.plannerOptions = { cap: 18, midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
 
@@ -135,6 +129,25 @@ async function init() {
     $('whatifCourse').value = prefill;
     if ($('whatifCourse').value === prefill) simulate();
   }
+}
+
+// The chosen specialization key for this program, or null.
+function specKey() {
+  const key = state.data.selectedSpecializations[state.program.code];
+  return state.program.specializations && state.program.specializations[key] ? key : null;
+}
+
+// Course list for the program, track and specialization, and the byline.
+function loadCourses() {
+  const p = state.program;
+  const catalog = typeof UPLB_CATALOG !== 'undefined' ? UPLB_CATALOG : {};
+  const spec = specKey();
+  state.courses = plannerCourseList(p, state.track, catalog, spec);
+  state.byCode = new Map(state.courses.map(c => [c.code, c]));
+  state.graph = analyzeGraph(state.courses);
+  const trackInfo = state.track && p.tracks[state.track];
+  $('plannerProgram').textContent = [p.name || p.code, trackInfo && `${trackInfo.name} (${trackInfo.code})`,
+    spec && p.specializations[spec].name].filter(Boolean).join(', ');
 }
 
 function save(keys) {
@@ -697,6 +710,7 @@ function renderDetail() {
   const groups = preGroups(c);
 
   const facts = [];
+  const catalog = typeof UPLB_CATALOG !== 'undefined' ? UPLB_CATALOG : {};
   facts.push(`${unitsText(c.units)}, offered ${offeringLabel(c).toLowerCase()}${c.offered ? ` (${c.offered[1]} of 4 first sems, ${c.offered[2]} of 3 second sems, ${c.offered[3]} of 2 midyears seen)` : ''}`);
   if (t !== undefined) facts.push(`Planned for ${absLabel(v.startAbs + t)}`);
   const metrics = h('ul', { class: 'pl-metrics' },
@@ -733,6 +747,9 @@ function renderDetail() {
     h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
     card && card.waitingOn && h('p', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`),
     metrics,
+    c.options && [h('h4', {}, 'Take one of these'), h('ul', { class: 'pl-reqs' }, c.options.map(o => h('li', {},
+      h('strong', {}, o), catalog[o] ? ` ${catalog[o].title.replace(/\.$/, '')}` : '',
+      v.passed.has(o) ? ', passed' : '')))],
     h('h4', {}, 'Requires'),
     reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
     h('h4', {}, 'Unlocks'),
@@ -866,6 +883,24 @@ function initControls() {
     render();
   };
   ['optCap', 'optMidyear', 'optMidyear9'].forEach(id => $(id).addEventListener('change', setOpt));
+  // Specialization: same pick as the popup What if tab.
+  const specs = state.program.specializations;
+  $('optSpecRow').hidden = !specs;
+  if (specs) {
+    $('optSpec').replaceChildren(h('option', { value: '' }, 'Not chosen yet'),
+      ...Object.entries(specs).map(([key, s]) => h('option', { value: key }, s.name)));
+    $('optSpec').value = specKey() || '';
+    $('optSpec').addEventListener('change', () => {
+      const all = state.data.selectedSpecializations;
+      if ($('optSpec').value) all[state.program.code] = $('optSpec').value;
+      else delete all[state.program.code];
+      save(['selectedSpecializations']);
+      loadCourses();
+      state.selected = null;
+      clearWhatif();
+      announce(`Planning for ${specKey() ? specs[specKey()].name : 'no specialization'}.`);
+    });
+  }
   $('autoPlan').addEventListener('click', () => {
     state.data.plannerPins = {};
     save(['plannerPins']);

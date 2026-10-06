@@ -156,9 +156,30 @@ function freeElectiveCourses(program, track) {
   return courses;
 }
 
-function getPlannerCourses(program, track) {
+// A specialization (field or track of a major, like BS AAE's Agricultural
+// Marketing and Prices) fills the program's MAJ slots from its pools. A pool
+// with one course per slot puts those courses in the slots. A pool with more
+// courses than slots keeps the slots and lists the courses as `options`.
+function applySpecialization(rows, program, specKey) {
+  const spec = program?.specializations?.[specKey];
+  if (!spec) return rows;
+  const bySlot = new Map();
+  spec.pools.forEach(pool => pool.slots.forEach((slot, i) => bySlot.set(slot, { pool, i })));
+  return rows.map(row => {
+    const hit = bySlot.get(row.code);
+    if (!hit) return row;
+    const { pool, i } = hit;
+    if (pool.courses.length === pool.slots.length) {
+      // Title, prerequisites and offerings come from the catalog.
+      return { code: pool.courses[i], title: '', units: row.units, year: row.year, sem: row.sem, prereqs: [] };
+    }
+    return { ...row, title: `${pool.name}, ${spec.name}`, options: pool.courses };
+  });
+}
+
+function getPlannerCourses(program, track, specKey) {
   return [
-    ...trackCourses(program, track),
+    ...applySpecialization(trackCourses(program, track), program, specKey),
     ...genericRequirementCourses(program),
     ...freeElectiveCourses(program, track)
   ];
@@ -9644,6 +9665,104 @@ const UPLB_PROGRAMS = {
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
+    "specializations": {
+      "development": {
+        "name": "Development Economics",
+        "source": "UPLB catalog, College of Economics and Management, page 97",
+        "note": "Up to two mandatory courses of the other field can count as specialization electives.",
+        "pools": [
+          {
+            "name": "Mandatory specialization course",
+            "slots": [
+              "MAJ 3",
+              "MAJ 5",
+              "MAJ 6"
+            ],
+            "courses": [
+              "ECON 134",
+              "ECON 155",
+              "ECON 181"
+            ]
+          },
+          {
+            "name": "Specialization elective",
+            "slots": [
+              "MAJ 4",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "AAE 110",
+              "AAE 145",
+              "AAE 171",
+              "AAE 150",
+              "AAE 151",
+              "AGRS 115",
+              "COST 110",
+              "ECON 106",
+              "ECON 191",
+              "FRM 110",
+              "FRM 184",
+              "MGT 131",
+              "SFFG 120",
+              "SFFG 133",
+              "SFFG 152",
+              "ECON 166",
+              "ECON 172",
+              "ECON 176"
+            ]
+          }
+        ]
+      },
+      "environmental": {
+        "name": "Environmental Economics",
+        "source": "UPLB catalog, College of Economics and Management, page 97",
+        "note": "Up to two mandatory courses of the other field can count as specialization electives.",
+        "pools": [
+          {
+            "name": "Mandatory specialization course",
+            "slots": [
+              "MAJ 3",
+              "MAJ 5",
+              "MAJ 6"
+            ],
+            "courses": [
+              "ECON 166",
+              "ECON 172",
+              "ECON 176"
+            ]
+          },
+          {
+            "name": "Specialization elective",
+            "slots": [
+              "MAJ 4",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "AAE 110",
+              "AAE 145",
+              "AAE 171",
+              "AAE 150",
+              "AAE 151",
+              "AGRS 115",
+              "COST 110",
+              "ECON 106",
+              "ECON 191",
+              "FRM 110",
+              "FRM 184",
+              "MGT 131",
+              "SFFG 120",
+              "SFFG 133",
+              "SFFG 152",
+              "ECON 134",
+              "ECON 155",
+              "ECON 181"
+            ]
+          }
+        ]
+      }
+    },
     "majorCourses": [
       {
         "code": "KAS 1",
@@ -10037,6 +10156,162 @@ const UPLB_PROGRAMS = {
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
+    "specializations": {
+      "pefm": {
+        "name": "Production Economics and Farm Management",
+        "source": "UPLB catalog, College of Economics and Management, page 95",
+        "pools": [
+          {
+            "name": "Technical course",
+            "slots": [
+              "MAJ 2"
+            ],
+            "courses": [
+              "AGRI 41",
+              "ABE 1"
+            ]
+          },
+          {
+            "name": "AAE course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 3",
+              "MAJ 4"
+            ],
+            "courses": [
+              "AAE 113",
+              "AAE 115",
+              "AAE 117",
+              "AAE 145"
+            ]
+          }
+        ]
+      },
+      "amp": {
+        "name": "Agricultural Marketing and Prices",
+        "source": "UPLB catalog, College of Economics and Management, page 95",
+        "pools": [
+          {
+            "name": "Technical course",
+            "slots": [
+              "MAJ 2"
+            ],
+            "courses": [
+              "AGRI 41",
+              "FST 11"
+            ]
+          },
+          {
+            "name": "AAE course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 3",
+              "MAJ 4"
+            ],
+            "courses": [
+              "AAE 121",
+              "AAE 122",
+              "AAE 125",
+              "MGT 151"
+            ]
+          }
+        ]
+      },
+      "rfc": {
+        "name": "Rural Finance and Cooperatives",
+        "source": "UPLB catalog, College of Economics and Management, page 95",
+        "pools": [
+          {
+            "name": "Technical course",
+            "slots": [
+              "MAJ 2"
+            ],
+            "courses": [
+              "AGRI 41",
+              "AGRI 61"
+            ]
+          },
+          {
+            "name": "AAE course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 3",
+              "MAJ 4"
+            ],
+            "courses": [
+              "AAE 133",
+              "AAE 135",
+              "ECON 121",
+              "COST 110",
+              "COST 140"
+            ]
+          }
+        ]
+      },
+      "nre": {
+        "name": "Natural Resource Economics",
+        "source": "UPLB catalog, College of Economics and Management, page 95",
+        "pools": [
+          {
+            "name": "Technical course",
+            "slots": [
+              "MAJ 2"
+            ],
+            "courses": [
+              "ABE 1",
+              "SFFG 120",
+              "SFFG 152"
+            ]
+          },
+          {
+            "name": "AAE course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 3",
+              "MAJ 4"
+            ],
+            "courses": [
+              "AAE 117",
+              "AAE 143",
+              "AAE 145",
+              "AAE 148",
+              "ECON 166"
+            ]
+          }
+        ]
+      },
+      "fne": {
+        "name": "Food and Nutrition Economics",
+        "source": "UPLB catalog, College of Economics and Management, page 95",
+        "note": "The catalog lists FST 11 and HNF 121 as the prescribed technical course.",
+        "pools": [
+          {
+            "name": "Prescribed technical course",
+            "slots": [
+              "MAJ 2"
+            ],
+            "courses": [
+              "FST 11",
+              "HNF 121"
+            ]
+          },
+          {
+            "name": "AAE course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 3",
+              "MAJ 4"
+            ],
+            "courses": [
+              "AAE 121",
+              "AAE 125",
+              "AAE 163",
+              "ECON 106"
+            ]
+          }
+        ]
+      }
+    },
     "tracks": {
       "thesis": {
         "name": "Thesis Track",
@@ -10474,6 +10749,46 @@ const UPLB_PROGRAMS = {
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
+    "specializations": {
+      "management": {
+        "name": "Agribusiness Management",
+        "source": "UPLB catalog, College of Economics and Management, page 93",
+        "pools": [
+          {
+            "name": "Track course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3"
+            ],
+            "courses": [
+              "MGT 115",
+              "MGT 133",
+              "ABME 195"
+            ]
+          }
+        ]
+      },
+      "entrepreneurship": {
+        "name": "Agribusiness Entrepreneurship",
+        "source": "UPLB catalog, College of Economics and Management, page 93",
+        "pools": [
+          {
+            "name": "Track course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3"
+            ],
+            "courses": [
+              "ABME 115",
+              "ABME 174",
+              "ABME 176"
+            ]
+          }
+        ]
+      }
+    },
     "majorCourses": [
       {
         "code": "ABME 10",
@@ -14096,6 +14411,7 @@ if (typeof module !== 'undefined' && module.exports) {
     freeElectiveCourses,
     isGECourse,
     genericRequirementCourses,
+    applySpecialization,
     getPlannerCourses,
     getCompletedRequirementSlotCodes,
     isRequiredCourse,

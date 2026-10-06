@@ -102,8 +102,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Program: the first run (or a stored code GradeSim no longer has) asks
   // before showing anything that depends on it.
   const programSelect = $('programSelect');
-  const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks']);
+  const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks', 'selectedSpecializations']);
   window.selectedTracks = savedProgram.selectedTracks || {};
+  window.selectedSpecializations = savedProgram.selectedSpecializations || {};
   const known = UPLB_PROGRAMS[savedProgram.selectedProgram] ? savedProgram.selectedProgram : null;
   fillProgramSelect(programSelect, known);
   if (known) selectProgram(known);
@@ -191,10 +192,71 @@ function openPlanner(failedCode) {
   chrome.tabs.create({ url: chrome.runtime.getURL(`planner.html${q}`) });
 }
 
-// Set the curriculum and redraw the track picker for it.
+// Set the curriculum and redraw the track and specialization pickers for it.
 function selectProgram(code) {
   if (!setCurrentProgram(code)) return;
   updateTrackOptionsUI();
+  updateSpecializationUI();
+}
+
+// The specialization picked for the current program, or null.
+function currentSpecialization() {
+  const program = getCurrentCurriculum();
+  const key = (window.selectedSpecializations || {})[program.code];
+  return program.specializations && program.specializations[key] ? key : null;
+}
+
+// Specialization picker for programs whose catalog lists fields or tracks.
+function updateSpecializationUI() {
+  const program = getCurrentCurriculum();
+  const specs = program.specializations;
+  $('specSelector').hidden = !specs;
+  $('whatifMoreLabel').textContent = specs ? 'Track, specialization and substitutions' : 'Track and substitutions';
+  if (!specs) return;
+  const chosen = currentSpecialization();
+  const select = $('specSelect');
+  select.replaceChildren(option('', 'Not chosen yet'),
+    ...Object.entries(specs).map(([key, spec]) => option(key, spec.name)));
+  select.value = chosen || '';
+  select.onchange = () => {
+    // Remember the pick per program; the planner reads it too.
+    window.selectedSpecializations = { ...(window.selectedSpecializations || {}), [program.code]: select.value };
+    if (!select.value) delete window.selectedSpecializations[program.code];
+    chrome.storage.local.set({ selectedSpecializations: window.selectedSpecializations });
+    if (window.gradesData) displayRemaining();
+    else renderSpecializationCourses();
+  };
+  renderSpecializationCourses();
+}
+
+// The chosen specialization's courses by pool, with the ones already passed.
+function renderSpecializationCourses(passed = new Set()) {
+  const program = getCurrentCurriculum();
+  const spec = program.specializations && program.specializations[currentSpecialization()];
+  if (!spec) {
+    $('specCourses').replaceChildren(...flat([program.specializations &&
+      h('p', { class: 'hint' }, 'Pick yours to see its courses. They fill the matching slots in your checklist.')]));
+    return;
+  }
+  $('specCourses').replaceChildren(...flat([
+    spec.pools.map(pool => [
+      h('h4', {}, pool.name),
+      h('p', { class: 'hint' }, pool.courses.length > pool.slots.length
+        ? `Take ${pool.slots.length} of these ${pool.courses.length}.`
+        : `Take all ${pool.courses.length}.`),
+      pool.courses.map(code => {
+        const entry = UPLB_CATALOG[code];
+        return courseRow({
+          code,
+          title: entry && entry.title.replace(/\.$/, ''),
+          units: entry ? entry.units : null,
+          aside: passed.has(code) && badge('Passed', { tone: 'ok', icon: 'check' }),
+        });
+      }),
+    ]),
+    spec.note && h('p', { class: 'hint' }, spec.note),
+    h('p', { class: 'hint' }, `From the ${spec.source}.`),
+  ]));
 }
 
 // Track radios for the current program.
@@ -582,7 +644,8 @@ function displayRemaining() {
   }
 
   const passedRows = amisCourses(rawGrades).filter(r => r.result === 'passed');
-  const courses = plannerCourseList(curriculum, currentTrack, UPLB_CATALOG);
+  const courses = plannerCourseList(curriculum, currentTrack, UPLB_CATALOG, currentSpecialization());
+  renderSpecializationCourses(new Set(passedRows.map(r => r.code)));
   const left = remainingRequirements(courses, passedRows, { substitutions, overrides: customCourseStatus });
   window.requirementsLeft = left;
 
@@ -1224,7 +1287,7 @@ const BACKUP_SCHEMA_VERSION = 2;
 // Export writes every stored key. Import restores only these: never
 // termsAccepted (each person accepts the terms on their own device) or
 // lastError (it describes this browser only).
-const BACKUP_KEYS = ['gradesData', 'fetchedAt', 'selectedProgram', 'selectedTracks', 'excludedCourses',
+const BACKUP_KEYS = ['gradesData', 'fetchedAt', 'selectedProgram', 'selectedTracks', 'selectedSpecializations', 'excludedCourses',
   'substitutions', 'customCourseStatus', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme'];
 
 function wireBackup() {
