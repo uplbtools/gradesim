@@ -335,10 +335,17 @@ body.planner-page {
   overflow: visible;
 }
 
+/* The map is a lattice: every card is the same height, so card rows line up
+   across semesters, and the gaps between columns and between rows are the
+   lanes the prerequisite arrows travel in (planner.js routeEdge). Each gap
+   fits four arrow lanes; change these three numbers together. */
 .pl-grid {
+  --pl-col-gap: 32px;
+  --pl-row-gap: 16px;
+  --pl-card-h: 110px;
   display: flex;
   align-items: flex-start;
-  gap: 22px;
+  gap: var(--pl-col-gap);
   width: max-content;
   padding: 4px 2px;
 }
@@ -362,7 +369,8 @@ body.planner-page {
   flex-direction: column;
   gap: 2px;
   padding: 0 2px 8px;
-  margin-bottom: 8px;
+  /* The first row lane sits between the header and the first card. */
+  margin-bottom: var(--pl-row-gap);
   border-bottom: 2px solid var(--border);
 }
 
@@ -425,7 +433,7 @@ body.planner-page {
 .pl-cards {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--pl-row-gap);
 }
 
 .pl-empty {
@@ -441,6 +449,9 @@ body.planner-page {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  height: var(--pl-card-h);
+  box-sizing: border-box;
+  overflow: hidden;
   padding: 7px 9px 8px;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -506,9 +517,21 @@ body.planner-page {
   overflow: hidden;
 }
 
+/* A note (waiting, petition, via) takes the title's second line. */
+.pl-card:has(.pl-note) .pl-title {
+  -webkit-line-clamp: 1;
+}
+
+.pl-card-foot {
+  margin-top: auto; /* foot sits on the card's bottom edge at fixed height */
+}
+
 .pl-offer {
   font-size: 0.68rem;
   color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pl-crit {
@@ -524,6 +547,9 @@ body.planner-page {
   align-items: center;
   gap: 4px;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--body);
@@ -603,9 +629,29 @@ body.planner-page {
   stroke-width: 2;
 }
 
+/* While a course is focused its arrows draw over the cards, so a long arrow
+   visibly crosses a card in between instead of vanishing under it and seeming
+   to start from it. The halo keeps crossings readable. */
+.pl-arrows.over {
+  z-index: 3;
+}
+
+.pl-edge-halo {
+  fill: none;
+  stroke: var(--bg-elevated);
+  stroke-width: 6;
+}
+
 .pl-arrowhead.crit,
 .pl-arrowhead.chain {
   fill: var(--brand);
+}
+
+/* Dot on the prerequisite's edge marks where each arrow starts. */
+.pl-arrowtail {
+  fill: var(--bg-elevated);
+  stroke: var(--brand);
+  stroke-width: 1.5;
 }
 
 /* Detail panel: floating on desktop, inline under the card on phones. */
@@ -876,6 +922,11 @@ button.pl-link:hover {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 8px;
+  }
+
+  /* No arrows on phones, so cards size to their content. */
+  .pl-card {
+    height: auto;
   }
 
   .pl-detail {

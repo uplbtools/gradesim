@@ -45,4 +45,32 @@ const oneListedGE = {
 const listedOnly = getCompletedRequirementSlotCodes([{ code: 'ARTS 1', title: 'Critical Perspectives in the Arts' }], oneListedGE);
 assert.deepStrictEqual(Array.from(listedOnly), []);
 
+// Tracks: CMSC 190 (SP, 18 free elective units) or CMSC 200 (thesis, 15), never both.
+const { detectTrack, getPlannerCourses, trackCourses, getFreeElectiveUnits } = require('./src/curriculum.js');
+const BSCS = UPLB_PROGRAMS.BSCS;
+const codesOf = list => list.map(c => c.code);
+const feUnits = list => list.filter(c => c.genericRequirement === 'elective').reduce((s, c) => s + c.units, 0);
+
+const spPlan = getPlannerCourses(BSCS, 'sp');
+assert.ok(codesOf(spPlan).includes('CMSC 190'));
+assert.ok(!codesOf(spPlan).includes('CMSC 200'));
+assert.strictEqual(feUnits(spPlan), 18);
+
+const thesisPlan = getPlannerCourses(BSCS, 'thesis');
+assert.ok(codesOf(thesisPlan).includes('CMSC 200'));
+assert.ok(!codesOf(thesisPlan).includes('CMSC 190'));
+assert.strictEqual(feUnits(thesisPlan), 15);
+
+// Unknown track falls back to the program default (SP for BSCS).
+assert.ok(codesOf(trackCourses(BSCS, undefined)).includes('CMSC 190'));
+assert.strictEqual(getFreeElectiveUnits('thesis', BSCS), 15);
+
+// Detection counts the course being taken now (no grade) and ignores drops.
+assert.strictEqual(detectTrack([{ courseCode: 'CMSC 200', grade: null }], BSCS), 'thesis');
+assert.strictEqual(detectTrack([{ code: 'CMSC 190', grade: '' }], BSCS), 'sp');
+assert.strictEqual(detectTrack([{ courseCode: 'CMSC 200', grade: 'DRP' }], BSCS), null);
+assert.strictEqual(detectTrack([{ courseCode: 'CMSC 12', grade: '1.00' }], BSCS), null);
+// Longest code wins: AAE 200A is the MFP track, not thesis AAE 200.
+assert.strictEqual(detectTrack([{ code: 'AAE 200A' }], UPLB_PROGRAMS.BSAAE), 'mfp');
+
 console.log('curriculum.test.js: all assertions passed');
