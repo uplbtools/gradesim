@@ -73,4 +73,18 @@ assert.strictEqual(detectTrack([{ courseCode: 'CMSC 12', grade: '1.00' }], BSCS)
 // Longest code wins: AAE 200A is the MFP track, not thesis AAE 200.
 assert.strictEqual(detectTrack([{ code: 'AAE 200A' }], UPLB_PROGRAMS.BSAAE), 'mfp');
 
+// Data quality for the low-confidence banner (#79).
+const { getProgramDataQuality } = require('./src/curriculum.js');
+const { UPLB_CATALOG } = require('./src/catalog.js');
+const good = getProgramDataQuality('BSCS', UPLB_CATALOG);
+assert.strictEqual(good.confident, true);
+assert.ok(good.prereqShare >= 0.3);
+assert.deepStrictEqual(good.reasons, []);
+const thin = getProgramDataQuality('BAPHILO', UPLB_CATALOG);
+assert.strictEqual(thin.confident, false);
+assert.ok(thin.prereqShare < 0.3 && thin.reasons.length === 1);
+const soon = getProgramDataQuality('ASDC', UPLB_CATALOG);
+assert.strictEqual(soon.confident, false);
+assert.strictEqual(getProgramDataQuality('NOPE').confident, false);
+
 console.log('curriculum.test.js: all assertions passed');
