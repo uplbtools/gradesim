@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Elbi GradeSim - UPLB GWA Calculator",
+  "name": "Elbi GradeSim",
   "version": "2.0.0",
   "browser_specific_settings": {
     "gecko": {
@@ -16,7 +16,7 @@
       "strict_min_version": "120.0"
     }
   },
-  "description": "Calculate your GWA and simulate grades needed for Latin honors at UPLB. All data stays on your device.",
+  "description": "UPLB GWA calculator and Latin honors simulator, with a planner for your remaining courses. Your grades stay on your device.",
   "permissions": [
     "storage"
   ],
@@ -27,11 +27,17 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "128": "sims.png"
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "icons": {
-    "128": "sims.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "background": {
     "scripts": [
@@ -46,7 +52,7 @@
       "js": [
         "content.js"
       ],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     },
     {
       "matches": [

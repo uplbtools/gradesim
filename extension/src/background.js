@@ -4,24 +4,12 @@
 // Privacy: All data is stored locally using chrome.storage.local
 // No data is ever sent to external servers
 
-// Store for grades data (in-memory cache)
-let gradesData = null;
-
-// Listen for messages from content script
+// Clear my data (popup Help). Removes every key this extension stored.
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'GRADES_DATA') {
-    gradesData = message.data;
-    // Store locally for popup access
-    chrome.storage.local.set({ gradesData: message.data });
-  }
-  
-  if (message.type === 'GET_GRADES_DATA') {
-    sendResponse({ data: gradesData });
-  }
-  
+  if (!message || message.type !== 'CLEAR_DATA') return false;
+  chrome.storage.local.clear().then(() => sendResponse({ ok: true }));
   return true;
 });
-
 
 // Web app bridge (Chrome, Edge, Opera, Brave). The manifest lists
 // https://gradesim.uplb.tools under externally_connectable, so only that site

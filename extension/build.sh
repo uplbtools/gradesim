@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Build browser-specific extension packages from shared source.
-# Usage: ./build.sh [chrome|firefox|opera|edge|all]
+# Usage: ./build.sh [chrome|firefox|opera|all]
+# Edge installs the Chrome build, so `edge` is an alias for `chrome`.
 
 set -euo pipefail
 
@@ -15,7 +16,7 @@ build_target() {
   local manifest="$MANIFESTS_DIR/manifest.${target}.json"
 
   if [ ! -f "$manifest" ]; then
-    echo "⚠ No manifest found for '$target' at $manifest — skipping"
+    echo "No manifest for '$target' at $manifest, skipping"
     return 1
   fi
 
@@ -33,8 +34,6 @@ build_target() {
   cp "$SRC_DIR"/tokens.css "$SRC_DIR"/plumbob.svg "$out/"
   cp -r "$SRC_DIR"/fonts "$out/"
 
-  [ -f "$SRC_DIR/sims.png" ] && cp "$SRC_DIR/sims.png" "$out/"
-
   # Copy icons
   mkdir -p "$out/icons"
   cp "$ICONS_DIR"/* "$out/icons/"
@@ -46,11 +45,12 @@ build_target() {
 }
 
 targets="${1:-all}"
+[ "$targets" = "edge" ] && targets="chrome"
 
 if [ "$targets" = "all" ]; then
   for manifest in "$MANIFESTS_DIR"/manifest.*.json; do
     name=$(basename "$manifest" .json | sed 's/manifest\.//')
-    build_target "$name" || true
+    build_target "$name"
   done
 else
   build_target "$targets"

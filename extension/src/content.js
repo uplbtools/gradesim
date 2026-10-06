@@ -1,160 +1,92 @@
 // extension/src/content.js
 
-// Content script for Elbi GradeSim
-// Runs on amis.uplb.edu.ph pages
-// Privacy: Only captures grades data that the user already has access to.
-// All data is stored locally on the user's device and never sent to external servers.
+// Content script for Elbi GradeSim. Runs on amis.uplb.edu.ph.
+// It calls the AMIS grades API once with the student's own login token, keeps
+// only the course fields the extension reads, and saves them in
+// chrome.storage.local. Nothing leaves the browser.
+//
+// Storage keys written here:
+//   gradesData  { student_grades: { <termId>: { term, values: [course] } } }
+//   fetchedAt   ms timestamp of the last successful fetch
+//   lastError   'not-logged-in', 'amis-error' or null
 
-(function() {
+(function () {
   'use strict';
-  
-  // Flag to track if we already have data this session
-  let hasData = false;
-  let isFetching = false;
-  
-  // Get auth token from localStorage (user's own session)
-  function getAuthToken() {
-    const token = localStorage.getItem('auth._token.local');
-    if (token) {
-      return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
-    }
-    return null;
+
+  const API = 'https://api-amis.uplb.edu.ph/api/students/grades?summarize=true';
+  const MAX_AGE_MS = 60 * 60 * 1000;
+  let inFlight = null;
+
+  // AMIS (Nuxt auth) keeps the token here and writes the string "false" on logout.
+  function authToken() {
+    const t = localStorage.getItem('auth._token.local');
+    if (!t || t === 'false') return null;
+    return t.startsWith('Bearer ') ? t : `Bearer ${t}`;
   }
-  
-  // Get session ID (user's own session)
-  function getSessionId() {
-    return localStorage.getItem('x-session-id');
+
+  // Keep the AMIS shape (popup.js, planner.js and the web app read it) but drop
+  // every field they do not use.
+  function slim(data) {
+    const out = {};
+    for (const [termId, t] of Object.entries(data.student_grades)) {
+      if (!t || !Array.isArray(t.values)) continue;
+      out[termId] = {
+        term: typeof t.term === 'string' ? t.term : undefined,
+        values: t.values.map(v => ({
+          id: v.id,
+          grade: v.grade,
+          unit_taken: v.unit_taken,
+          section: v.section,
+          status: v.status,
+          course: { course_code: v.course?.course_code, title: v.course?.title },
+          grade_term: { term: v.grade_term?.term, ay: v.grade_term?.ay },
+        })),
+      };
+    }
+    return { student_grades: out };
   }
-  
-  // Intercept fetch requests to capture grades data from AMIS
-  // This only captures responses that the page already receives
-  const originalFetch = window.fetch;
-  window.fetch = async function(...args) {
-    const response = await originalFetch.apply(this, args);
-    
-    // Skip if we're the ones fetching
-    if (isFetching) {
-      return response;
-    }
-    
-    // Check if this is the grades API call (fetch accepts a string or a Request)
-    const url = (args[0] instanceof Request ? args[0].url : args[0]?.toString()) || '';
-    if (url.includes('api-amis.uplb.edu.ph/api/students/grades')) {
-      try {
-        const clonedResponse = response.clone();
-        const data = await clonedResponse.json();
-        
-        // Only send if we got valid data (not an error response)
-        if (data && data.student_grades) {
-          hasData = true;
-          chrome.runtime.sendMessage({
-            type: 'GRADES_DATA',
-            data: data
-          });
-        }
-      } catch (e) {
-        // Silently ignore parsing errors
-      }
-    }
-    
-    return response;
-  };
-  
-  // Also intercept XMLHttpRequest for compatibility
-  const originalXHROpen = XMLHttpRequest.prototype.open;
-  const originalXHRSend = XMLHttpRequest.prototype.send;
-  
-  XMLHttpRequest.prototype.open = function(method, url, ...rest) {
-    this._url = url;
-    return originalXHROpen.apply(this, [method, url, ...rest]);
-  };
-  
-  XMLHttpRequest.prototype.send = function(...args) {
-    this.addEventListener('load', function() {
-      if (this._url && this._url.includes('api-amis.uplb.edu.ph/api/students/grades')) {
-        try {
-          const data = JSON.parse(this.responseText);
-          if (data && data.student_grades) {
-            hasData = true;
-            chrome.runtime.sendMessage({
-              type: 'GRADES_DATA',
-              data: data
-            });
-          }
-        } catch (e) {
-          // Silently ignore parsing errors
-        }
-      }
-    });
-    return originalXHRSend.apply(this, args);
-  };
-  
-  // Function to fetch grades (only if we don't have data yet)
-  async function fetchGradesData() {
-    if (hasData || isFetching) {
-      return;
-    }
-    
-    const token = getAuthToken();
-    const sessionId = getSessionId();
-    
-    if (!token) {
-      return; // User not logged in
-    }
-    
-    isFetching = true;
-    
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    };
-    
-    if (sessionId) {
-      headers['X-Session-Id'] = sessionId;
-    }
-    
+
+  async function fetchGrades() {
+    const token = authToken();
+    if (!token) return { lastError: 'not-logged-in' };
+    const headers = { Accept: 'application/json', Authorization: token };
+    const sessionId = localStorage.getItem('x-session-id');
+    if (sessionId) headers['X-Session-Id'] = sessionId;
     try {
-      const response = await originalFetch('https://api-amis.uplb.edu.ph/api/students/grades?summarize=true', {
-        method: 'GET',
-        credentials: 'include',
-        headers: headers
-      });
-      
-      isFetching = false;
-      
-      if (!response.ok) {
-        return;
-      }
-      
-      const data = await response.json();
-      
-      if (data && data.student_grades) {
-        hasData = true;
-        chrome.runtime.sendMessage({
-          type: 'GRADES_DATA',
-          data: data
-        });
-      }
+      const res = await fetch(API, { credentials: 'include', headers });
+      if (res.status === 401 || res.status === 403) return { lastError: 'not-logged-in' };
+      if (!res.ok) return { lastError: 'amis-error' };
+      const data = await res.json();
+      if (!data || !data.student_grades || typeof data.student_grades !== 'object') return { lastError: 'amis-error' };
+      return { gradesData: slim(data), fetchedAt: Date.now(), lastError: null };
     } catch (e) {
-      isFetching = false;
+      return { lastError: 'amis-error' };
     }
   }
-  
-  // Listen for messages from popup
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type === 'FETCH_GRADES') {
-      if (message.force) {
-        hasData = false;
-        isFetching = false;
-      }
-      fetchGradesData();
+
+  // Resolves to { ok, lastError, fetchedAt, skipped? }.
+  async function refresh(force) {
+    if (!force) {
+      const { fetchedAt } = await chrome.storage.local.get('fetchedAt');
+      if (fetchedAt && Date.now() - fetchedAt < MAX_AGE_MS) return { ok: true, skipped: true, lastError: null, fetchedAt };
     }
+    if (!inFlight) {
+      inFlight = fetchGrades()
+        .then(async result => {
+          await chrome.storage.local.set(result);
+          return { ok: !result.lastError, lastError: result.lastError, fetchedAt: result.fetchedAt };
+        })
+        .finally(() => { inFlight = null; });
+    }
+    return inFlight;
+  }
+
+  // The popup's Refresh button sends { type: 'FETCH_GRADES', force: true }.
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (!message || message.type !== 'FETCH_GRADES') return false;
+    refresh(!!message.force).then(sendResponse);
     return true;
   });
 
-  // Auto-fetch once on page load (with delay to ensure page is ready)
-  if (window.location.hostname.includes('amis.uplb.edu.ph')) {
-    setTimeout(fetchGradesData, 2000);
-  }
+  refresh(false);
 })();
