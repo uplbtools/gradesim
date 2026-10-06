@@ -65,6 +65,9 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "new=true" >> "$GITHUB_OUTPUT"
 
+      - name: Test
+        run: for t in extension/*.test.js; do node "$t"; done
+
       - name: Build and zip
         if: steps.version.outputs.new == 'true'
         run: |

@@ -24,3 +24,9 @@ jobs:
             exit 1
           fi
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extension tests
+        run: for t in extension/*.test.js; do node "$t"; done
