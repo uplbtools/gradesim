@@ -1,65 +1,55 @@
 # Elbi GradeSim
 
-A browser extension for UPLB students to calculate their GWA and simulate grades needed for Latin honors. Available on **Chrome**, **Firefox**, Opera, and Edge.
+Elbi GradeSim is a browser extension for UPLB students. It reads your grades from AMIS, works out your GWA, shows what you need for Latin honors, and plans the courses you still have to take.
 
-## Repository Structure
+It is not affiliated with UP. The GWA it shows is an unofficial estimate, so always verify with the OUR.
 
-```
-gradesim/
-├── extension/ # Browser extension source
-│ ├── src/ # Shared source (popup, planner, content scripts, curriculum data)
-│ ├── manifests/ # Per-browser manifest files
-│ ├── icons/ # Extension icons
-│ └── build.sh # Build script for each browser target
-├── scratch/ # Curriculum data pipeline (PDF parsing, prereq graphs)
-└── README.md
-```
+## Get it
 
-The landing page lives in a separate repo: [gradesim-website](https://github.com/smmariquit/gradesim-website).
+- [Chrome Web Store](https://chromewebstore.google.com/detail/elbi-gradesim-uplb-gwa-ca/mlhklblbhkikcmobmmajckjcbmdinldb) (also works in Brave)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/elbi-gradesim/), desktop and Android
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/elbi-gradesim-uplb-gwa-/ebiakebpglddgmkdehdjiadnjgkmgnga)
 
-## Extension
+No extension? The web app at [gradesim.uplb.tools](https://gradesim.uplb.tools) does the same math with grades you import or type in.
 
-### Build
+## What it does
 
-```bash
-cd extension
-./build.sh all # Build all browsers
-./build.sh chrome # Build Chrome only
-./build.sh firefox # Build Firefox only
-```
-
-Output goes to `extension/dist/<browser>/`. Load the folder in your browser's developer mode.
-
-### Install from Store
-
-- [Chrome Web Store](https://chromewebstore.google.com/detail/elbi-gradesim-uplb-gwa-ca/mlhklblbhkikcmobmmajckjcbmdinldb)
-- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/elbi-gradesim/)
-
-### Features
-
-- Automatic GWA calculation from AMIS
-- "What If?" simulator for Latin honor targets
-- Grades overview by semester or year
-- 30+ UPLB degree programs supported
-- 100% local: no data leaves your device
+- Reads your grades from AMIS while you are logged in and computes your GWA
+- Shows your Latin honors standing and the average you need on your remaining units
+- Lists your grades by semester or year, with per-term scholar status
+- Lets you leave courses out of the GWA and record substitutions
+- Plans your remaining courses term by term on a curriculum map, using real prerequisites
+- Covers 30+ UPLB degree programs
+- Backs up and restores all your data as a JSON file, and clears it with one button
 
 ## Privacy
 
-All data stays on your device. No servers, no analytics, no tracking. See [PRIVACY_POLICY.md](extension/PRIVACY_POLICY.md).
+Your grades stay in your browser. The extension calls the AMIS grades API with your own login, keeps only the course fields it needs in `chrome.storage.local`, and sends nothing to any server. There are no analytics. It hands your grades to the web app only when you press Import there. Full policy at [gradesim.uplb.tools/privacy](https://gradesim.uplb.tools/privacy/).
+
+## Build from source
+
+```sh
+bash extension/build.sh all       # chrome, firefox and opera
+bash extension/build.sh firefox   # one target; edge is an alias for chrome
+for t in extension/*.test.js; do node "$t"; done
+```
+
+Load `extension/dist/<browser>/` as an unpacked extension in developer mode. See [CONTRIBUTING.md](CONTRIBUTING.md) for the branch flow.
+
+## Repository
+
+```text
+extension/
+  src/         popup, planner, content and background scripts, curriculum data
+  manifests/   one manifest per browser
+  icons/       16, 32, 48 and 128 px icons
+  build.sh     copies src and the right manifest into dist/<browser>/
+  *.test.js    node self-checks
+scratch/       curriculum pipeline (checklist PDFs, parsers, prerequisite graphs)
+```
+
+The web app lives in [uplbtools/gradesim-website](https://github.com/uplbtools/gradesim-website).
 
 ## License
 
 MIT
-
-
----
-*If this project helped you out, consider [treating me to a coffee](https://kape.stimmie.dev) ☕*
-
-## 📊 Current State of the Code
-- **Tech Stack:** Static / Basic Scripts
-- **Repository Size:** 131 tracked files
-- **Latest Update:** `8c99fa0 chore: add stale issue and PR validators`
-
-
----
-*☕ If you found this project useful, you can support my work at [kape.stimmie.dev](https://kape.stimmie.dev)!*
