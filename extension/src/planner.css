@@ -37,21 +37,8 @@ body.planner-page {
   padding: 8px 24px 40px;
 }
 
-.pl-banner {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  padding: 10px 14px;
-  margin-bottom: 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-elevated);
-  color: var(--body);
-}
-
-.pl-banner .icon {
-  color: var(--info);
-  margin-top: 2px;
+.pl-banner:empty {
+  display: none;
 }
 
 /* Summary: the answer first. */
@@ -156,19 +143,6 @@ body.planner-page {
   width: auto;
 }
 
-.pl-textbtn {
-  min-height: 40px;
-  padding: 6px 10px;
-  border: 0;
-  background: none;
-  color: var(--brand);
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 .pl-menu {
   position: relative;
 }
@@ -246,19 +220,7 @@ body.planner-page {
   margin: 12px 0 6px;
 }
 
-.pl-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 9px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--bg-card);
-  color: var(--body);
-  font-size: 0.78rem;
-}
-
-.pl-chip.crit-chip {
+.pl-legend .crit-chip {
   border: 2px solid var(--brand);
   color: var(--brand);
   font-weight: 600;
@@ -408,37 +370,14 @@ body.planner-page {
   color: var(--warn);
 }
 
-.pl-tag {
-  padding: 1px 6px;
-  border-radius: var(--radius-pill);
-  background: var(--brand);
-  color: var(--on-brand);
-  font-family: var(--font-sans);
-  font-size: 0.66rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.pl-tag.now {
-  background: var(--info);
-  color: var(--bg-elevated);
-}
-
-.pl-tag.past {
-  background: var(--border);
-  color: var(--body);
-}
-
 .pl-cards {
   display: flex;
   flex-direction: column;
   gap: var(--pl-row-gap);
 }
 
-.pl-empty {
+.pl-cards .empty-state {
   font-size: 0.78rem;
-  color: var(--muted);
   padding: 8px 2px;
 }
 
@@ -477,21 +416,14 @@ body.planner-page {
   gap: 4px;
 }
 
-.pl-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  font-weight: 650;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--muted);
+.pl-card .status {
+  font-size: 0.74rem;
 }
 
-.pl-units {
+.pl-card .units-badge {
   font-size: 0.7rem;
   font-weight: 600;
-  padding: 0 5px;
+  padding: 0 6px;
   border-radius: var(--radius-pill);
   background: var(--brand-tint);
   color: var(--body);
@@ -538,8 +470,6 @@ body.planner-page {
   font-size: 0.66rem;
   font-weight: 700;
   color: var(--brand);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
 .pl-note {
@@ -559,28 +489,16 @@ body.planner-page {
   color: var(--warn);
 }
 
-.st-passed .pl-status,
-.pl-chip.st-passed .icon { color: var(--ok); }
-
-.st-inprogress .pl-status,
-.pl-chip.st-inprogress .icon { color: var(--info); }
-
 .pl-card.st-failed {
   border-color: var(--bad);
 }
-.st-failed .pl-status,
-.pl-chip.st-failed .icon { color: var(--bad); }
 
 .pl-card.st-retake {
   border: 1.5px dashed var(--bad);
   background: var(--bg-card);
 }
-.st-retake .pl-status,
-.pl-chip.st-retake .icon { color: var(--bad); }
 
 .pl-card.st-ready { border-color: var(--brand-line); }
-.st-ready .pl-status,
-.pl-chip.st-ready .icon { color: var(--brand); }
 
 .pl-card.st-locked {
   border-style: dashed;
@@ -674,10 +592,9 @@ body.planner-page {
 
 .pl-detail h4 {
   margin: 12px 0 4px;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .pl-detail-head {
@@ -701,35 +618,10 @@ body.planner-page {
   color: var(--ink);
 }
 
-.pl-status-pill {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 1px 7px;
-  border: 1px solid currentColor;
-  border-radius: var(--radius-pill);
-  color: var(--muted);
-}
-
-.pl-status-pill.st-passed { color: var(--ok); }
-.pl-status-pill.st-failed,
-.pl-status-pill.st-retake { color: var(--bad); }
-.pl-status-pill.st-ready { color: var(--brand); }
-.pl-status-pill.st-inprogress { color: var(--info); }
-
 .pl-close {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
   background: var(--bg-card);
   color: var(--ink);
-  cursor: pointer;
 }
 
 .pl-muted {
@@ -805,10 +697,11 @@ button.pl-link:hover {
   margin-top: 14px;
 }
 
+.pl-actions .btn-text {
+  font-size: 0.82rem;
+}
+
 .pl-actions .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
   min-height: 40px;
   padding: 6px 12px;
   font-size: 0.82rem;
@@ -943,4 +836,16 @@ button.pl-link:hover {
   .pl-card {
     transition: none;
   }
+}
+
+.pl-col-name .badge {
+  padding: 1px 7px;
+  font-size: 0.68rem;
+}
+
+.pl-legend .badge {
+  padding: 2px 9px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--body);
 }
