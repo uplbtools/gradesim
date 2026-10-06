@@ -108,11 +108,20 @@
             <div id="remainingSummary" class="remaining-summary"></div>
 
             <details class="card whatif-more">
-              <summary>Track and substitutions<span data-icon="chevron"></span></summary>
+              <summary><span id="whatifMoreLabel">Track and substitutions</span><span data-icon="chevron"></span></summary>
               <div class="track-selector" id="trackSelector">
                 <h3>Your track</h3>
                 <div id="trackInfo"></div>
                 <div class="track-options" id="trackOptions" role="radiogroup" aria-label="Track"></div>
+              </div>
+
+              <div class="track-selector" id="specSelector" hidden>
+                <h3>Your specialization</h3>
+                <div class="sub-field">
+                  <label for="specSelect">Field of specialization</label>
+                  <select id="specSelect"></select>
+                </div>
+                <div id="specCourses" class="spec-courses"></div>
               </div>
 
               <div class="substitutions-container" id="substitutionsContainer">

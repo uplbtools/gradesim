@@ -3,7 +3,7 @@
 //
 // Reads every amis-*.json (shape { term_id, classes: [...] }), keeps only the
 // course catalog fields (code, title, units, sem_offered, requisites) for
-// courses that some curriculum.js program lists, and counts in how many
+// courses that some curriculum.js program lists or a specialization names, and counts in how many
 // observed 1st sem / 2nd sem / midyear terms each course had an active
 // section. No faculty, room or enrollment data is written.
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -27,6 +27,9 @@ Object.values(UPLB_PROGRAMS).forEach(p => (p.majorCourses || []).forEach(c => {
   const code = extractCode(c.code);
   if (code) wanted.add(code);
 }));
+// Specialization pools list courses that are not checklist rows.
+Object.values(UPLB_PROGRAMS).forEach(p => Object.values(p.specializations || {})
+  .forEach(s => s.pools.forEach(pool => pool.courses.forEach(code => wanted.add(code)))));
 
 const files = readdirSync(dataDir).filter(f => /^amis-.*\.json$/.test(f));
 const terms = [];

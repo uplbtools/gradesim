@@ -71,6 +71,39 @@ assert.strictEqual(remainingRequirements(plannerCourseList(UPLB_PROGRAMS.BSFST, 
 const marked = remainingRequirements(courses, passedRows, { overrides: { 'CMSC 123': 'passed', 'CMSC 12': 'failed' } });
 assert.strictEqual(marked.units, left.units);
 
+// A prescribed course skipped in its term stays left and gets planned (tester
+// concern 1). This BS AAE student passed all of 1st year except AGRI 21.
+const BSAAE = UPLB_PROGRAMS.BSAAE;
+const aaeCourses = plannerCourseList(BSAAE, 'thesis', UPLB_CATALOG);
+const firstYear = BSAAE.majorCourses.filter(c => c.year === 1 && c.code !== 'AGRI 21')
+  .map(c => ({ code: c.code, title: c.title, units: c.units }));
+const aaeLeft = remainingRequirements(aaeCourses, firstYear);
+assert.ok(aaeLeft.left.some(c => c.code === 'AGRI 21'), 'AGRI 21 is still left');
+assert.ok(!aaeLeft.left.some(c => c.code === 'AGRI 31'), 'AGRI 31 is done');
+const aaePlan = scheduleEarliest({ courses: aaeCourses, passed: new Set(aaeLeft.fill.keys()), startSem: '1', useMidyear: false, totalUnits: BSAAE.totalUnitsRequired });
+assert.ok(aaePlan.assignedTerm['AGRI 21'] !== undefined, 'the planner places AGRI 21');
+assert.ok(!aaePlan.unschedulable.includes('AGRI 21'));
+
+// Specializations: a chosen BS AAE field lists its pool courses on the track
+// slots, and only those courses fill them.
+const amp = plannerCourseList(BSAAE, 'thesis', UPLB_CATALOG, 'amp');
+assert.deepStrictEqual(amp.find(c => c.code === 'MAJ 2').options, ['AGRI 41', 'FST 11']);
+assert.ok(amp.find(c => c.code === 'MAJ 1').options.includes('AAE 125'));
+const took = [{ code: 'AAE 125', title: 'Agricultural and Food Supply Chains', units: 3 }, { code: 'CMSC 12', title: 'Foundations', units: 3 }];
+const ampFill = remainingRequirements(amp, took).fill;
+assert.strictEqual(ampFill.get('MAJ 1').code, 'AAE 125');
+assert.ok(![...ampFill.values()].some(r => r.code === 'CMSC 12'), 'an outside course does not fill a specialization slot');
+// With no specialization picked, any course still fills a MAJ slot.
+assert.strictEqual(remainingRequirements(aaeCourses, took).fill.size, 2);
+// A pool with one course per slot plans the real courses, with catalog prerequisites.
+const abme = plannerCourseList(UPLB_PROGRAMS.BSABME, null, UPLB_CATALOG, 'entrepreneurship');
+assert.ok(!abme.some(c => /^MAJ/.test(c.code)));
+assert.deepStrictEqual(abme.find(c => c.code === 'ABME 176').pre, [['ABME 174']]);
+const abmePlan = scheduleEarliest({ courses: abme, passed: new Set(), startSem: '1', useMidyear: false, totalUnits: UPLB_PROGRAMS.BSABME.totalUnitsRequired });
+assert.ok(abmePlan.assignedTerm['ABME 174'] < abmePlan.assignedTerm['ABME 176']);
+// An unknown key leaves the slots as they are.
+assert.deepStrictEqual(plannerCourseList(BSAAE, 'thesis', UPLB_CATALOG, 'nope'), aaeCourses);
+
 // Outlook (#95): a target the remaining units cannot reach shows the ceiling
 // and the best honor still possible.
 const out = gwaOutlook(1.9, 60, 60, 1.2);

@@ -9,10 +9,13 @@ const { enrichCourses, scheduleEarliest, semAt } = require('./src/scheduler.js')
 const failures = [];
 Object.values(UPLB_PROGRAMS).filter(p => p.available).forEach(p => {
   const years = Math.max(...p.majorCourses.map(c => c.year));
-  (p.tracks ? Object.keys(p.tracks) : [null]).forEach(track => {
-    const label = track ? `${p.code} (${track})` : p.code;
+  // Every track, and every specialization on the default track.
+  const runs = [...(p.tracks ? Object.keys(p.tracks) : [null]).map(track => [track, null]),
+    ...Object.keys(p.specializations || {}).map(spec => [p.defaultTrack || null, spec])];
+  runs.forEach(([track, spec]) => {
+    const label = [p.code, track, spec].filter(Boolean).join(' ');
     const r = scheduleEarliest({
-      courses: enrichCourses(getPlannerCourses(p, track), UPLB_CATALOG),
+      courses: enrichCourses(getPlannerCourses(p, track, spec), UPLB_CATALOG),
       passed: new Set(),
       useMidyear: false,
       totalUnits: p.totalUnitsRequired,
