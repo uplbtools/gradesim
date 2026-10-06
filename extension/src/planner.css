@@ -603,9 +603,29 @@ body.planner-page {
   stroke-width: 2;
 }
 
+/* While a course is focused its arrows draw over the cards, so a long arrow
+   visibly crosses a card in between instead of vanishing under it and seeming
+   to start from it. The halo keeps crossings readable. */
+.pl-arrows.over {
+  z-index: 3;
+}
+
+.pl-edge-halo {
+  fill: none;
+  stroke: var(--bg-elevated);
+  stroke-width: 6;
+}
+
 .pl-arrowhead.crit,
 .pl-arrowhead.chain {
   fill: var(--brand);
+}
+
+/* Dot on the prerequisite's edge marks where each arrow starts. */
+.pl-arrowtail {
+  fill: var(--bg-elevated);
+  stroke: var(--brand);
+  stroke-width: 1.5;
 }
 
 /* Detail panel: floating on desktop, inline under the card on phones. */

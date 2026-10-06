@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', init);
 async function init() {
   document.querySelectorAll('[data-icon]').forEach(el => { el.outerHTML = icon(el.dataset.icon); });
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
-    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme']);
+    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks']);
   const d = state.data;
   d.customCourseStatus = d.customCourseStatus || {};
   d.substitutions = d.substitutions || {};
@@ -650,6 +650,36 @@ function drawEdges() {
   const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
   const crit = code => v.slips[code] > 0;
   const paths = [];
+
+  // Arrows run along the gutters between columns: out of the prerequisite,
+  // along a gutter to the target's height, then in. A long arrow still has to
+  // cross the columns in between, so it crosses at whichever end (the
+  // prerequisite's row or the target's row) hits fewer visible cards. Arrows
+  // sharing a gutter get their own lane so they do not merge into one line.
+  const GUTTER = 11; // half of .pl-grid gap
+  const visible = Array.from(grid.querySelectorAll('.pl-card:not(.dim)'))
+    .filter(el => !el.closest('details:not([open])'))
+    .map(el => el.getBoundingClientRect());
+  // Cards strictly between the two columns whose height range contains y.
+  const crossings = (y, xa, xb) => visible.filter(r =>
+    r.left > xa && r.right < xb && y > r.top && y < r.bottom).length;
+  const lanes = new Map();
+  const lane = gx => {
+    const n = lanes.get(gx) || 0;
+    lanes.set(gx, n + 1);
+    return gx + ((n % 4) - 1.5) * 5; // four lanes fit the 22px gap
+  };
+  function routeEdge(x1, y1, x2, y2, ra, rb) {
+    const viaSourceRow = crossings(y1 + gridRect.top, ra.right, rb.left);
+    const viaTargetRow = crossings(y2 + gridRect.top, ra.right, rb.left);
+    const gx = lane(Math.round(viaSourceRow < viaTargetRow ? x2 - GUTTER : x1 + GUTTER));
+    const dy = y2 - y1;
+    if (Math.abs(dy) < 1) return `M ${x1} ${y1} H ${x2 - 4}`;
+    const r = Math.min(6, Math.abs(dy) / 2);
+    const s = Math.sign(dy);
+    return `M ${x1} ${y1} H ${gx - r} Q ${gx} ${y1} ${gx} ${y1 + s * r} ` +
+      `V ${y2 - s * r} Q ${gx} ${y2} ${gx + r} ${y2} H ${x2 - 4}`;
+  }
   state.graph.edges.forEach(({ from, to }) => {
     let kind = null;
     if (chain) {
@@ -669,12 +699,15 @@ function drawEdges() {
     const y1 = ra.top + ra.height / 2 - gridRect.top;
     const x2 = rb.left - gridRect.left;
     const y2 = rb.top + rb.height / 2 - gridRect.top;
-    const dx = Math.max(24, (x2 - x1) / 2);
-    paths.push(`<path class="pl-edge ${kind}" d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2 - 4} ${y2}" marker-end="url(#pl-arrow-${kind})"/>`);
+    const d = routeEdge(x1, y1, x2, y2, ra, rb);
+    if (kind === 'chain') paths.push(`<path class="pl-edge-halo" d="${d}"/>`);
+    paths.push(`<path class="pl-edge ${kind}" d="${d}" marker-start="url(#pl-tail)" marker-end="url(#pl-arrow-${kind})"/>`);
   });
+  svg.classList.toggle('over', !!chain);
   svg.innerHTML = `<defs>
     <marker id="pl-arrow-chain" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="pl-arrowhead chain"/></marker>
     <marker id="pl-arrow-crit" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" class="pl-arrowhead crit"/></marker>
+    <marker id="pl-tail" markerWidth="8" markerHeight="8" refX="4" refY="4" markerUnits="userSpaceOnUse"><circle cx="4" cy="4" r="3" class="pl-arrowtail"/></marker>
   </defs>${paths.join('')}`;
 }
 
