@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Elbi GradeSim",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "UPLB GWA calculator and Latin honors simulator, with a planner for your remaining courses. Your grades stay on your device.",
   "permissions": [
     "storage"

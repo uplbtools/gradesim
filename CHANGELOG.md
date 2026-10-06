@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## 2.1.0 (2026-10-06)
 
 ### Features
 - The web app at gradesim.uplb.tools can import your grades straight from the extension when you press Import there.
