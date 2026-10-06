@@ -41,18 +41,24 @@ function amisCourses(gradesData) {
 // units fills a free elective slot, one course per slot.
 // Returns Map(slot code -> row).
 // ponytail: one course per 3-unit elective slot, so a 6-unit elective fills one.
+// UPLB accepts these in place of the checklist course without a petition.
+// The student's own substitutions are applied first and win.
+const BUILT_IN_EQUIVALENTS = [['KAS 1', 'HIST 1']];
+
 function fillRequirementSlots(courses, rows, substitutions = {}) {
   const norm = r => normalizeCourseCode(r.code);
   const named = new Set(courses.filter(c => !c.genericRequirement).map(c => normalizeCourseCode(c.code)));
   const fill = new Map();
   rows.forEach(r => { if (named.has(norm(r)) && !fill.has(norm(r))) fill.set(norm(r), r); });
   const used = new Set();
-  Object.entries(substitutions || {}).forEach(([req, taken]) => {
+  [...Object.entries(substitutions || {}), ...BUILT_IN_EQUIVALENTS].forEach(([req, taken]) => {
     const code = normalizeCourseCode(req);
     const row = rows.find(r => norm(r) === normalizeCourseCode(taken));
-    if (!row) return;
+    if (!row || used.has(norm(row)) || !named.has(code) || fill.has(code)) return;
+    // Only a course that actually fills the requirement is used up; otherwise
+    // it still counts toward GE or electives.
     used.add(norm(row));
-    if (named.has(code) && !fill.has(code)) fill.set(code, row);
+    fill.set(code, row);
   });
   const seen = new Set();
   const outside = rows.filter(r => {
