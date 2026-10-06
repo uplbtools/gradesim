@@ -247,10 +247,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load grades data
   loadGradesData();
   
-  // Refresh button
-  refreshBtn.addEventListener('click', () => {
-    loadGradesData();
-  });
+  refreshBtn.addEventListener('click', refreshGrades);
+  wireBackup();
+  wireClearData();
   
   // Calculate button
   document.getElementById('calculateBtn').addEventListener('click', calculateWhatIf);
@@ -289,85 +288,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Export JSON functionality
-  const exportBtn = document.getElementById('exportBtn');
-  if (exportBtn) {
-    exportBtn.addEventListener('click', async () => {
-      try {
-        const data = await chrome.storage.local.get([
-          'gradesData',
-          'selectedProgram',
-          'excludedCourses',
-          'substitutions'
-        ]);
-        
-        const exportObj = {
-          source: 'elbi-gradesim',
-          timestamp: new Date().toISOString(),
-          selectedProgram: data.selectedProgram || 'BSCS',
-          excludedCourses: data.excludedCourses || [],
-          substitutions: data.substitutions || {},
-          gradesData: data.gradesData || null
-        };
-        
-        const jsonString = JSON.stringify(exportObj, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `elbi-gradesim-backup-${new Date().toISOString().slice(0, 10)}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } catch (err) {
-        alert('Failed to export data: ' + err.message);
-      }
-    });
-  }
-
-  // Import JSON functionality
-  const importBtn = document.getElementById('importBtn');
-  const importFile = document.getElementById('importFile');
-  if (importBtn && importFile) {
-    importBtn.addEventListener('click', () => {
-      importFile.click();
-    });
-    
-    importFile.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = async (evt) => {
-        try {
-          const importObj = JSON.parse(evt.target.result);
-          
-          if (importObj.source !== 'elbi-gradesim') {
-            throw new Error('Invalid backup file. Must be a valid Elbi GradeSim JSON backup.');
-          }
-          
-          const toSave = {};
-          if (importObj.selectedProgram) toSave.selectedProgram = importObj.selectedProgram;
-          if (importObj.excludedCourses) toSave.excludedCourses = importObj.excludedCourses;
-          if (importObj.substitutions) toSave.substitutions = importObj.substitutions;
-          if (importObj.gradesData) toSave.gradesData = importObj.gradesData;
-          
-          // Always mark terms as accepted when importing data
-          toSave.termsAccepted = true;
-          
-          await chrome.storage.local.set(toSave);
-          alert('Data imported successfully! The extension will now reload.');
-          window.location.reload();
-        } catch (err) {
-          alert('Failed to import data: ' + err.message);
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
-    });
-  }
 });
 
 // Parse the AMIS data structure into a flat array of courses
@@ -1845,3 +1765,101 @@ async function exportWrappedToPNG() {
 document.addEventListener('DOMContentLoaded', () => {
   initializeWrapped();
 });
+
+/* ---------- Grade refresh, backup and clear data (platform) ---------- */
+
+// Asks the open AMIS tab to fetch grades now. content.js answers with
+// { ok, lastError, fetchedAt } and writes them to storage.
+async function refreshGrades() {
+  const status = document.getElementById('refreshStatus');
+  const say = text => { if (status) status.textContent = text; };
+  const [tab] = await chrome.tabs.query({ url: 'https://amis.uplb.edu.ph/*' });
+  if (!tab) {
+    say('Open AMIS in a tab and log in, then press Refresh.');
+    return;
+  }
+  say('Getting your grades from AMIS...');
+  let res;
+  try {
+    res = await chrome.tabs.sendMessage(tab.id, { type: 'FETCH_GRADES', force: true });
+  } catch (e) {
+    say('Reload your AMIS tab once, then press Refresh.');
+    return;
+  }
+  if (res && res.lastError === 'not-logged-in') say('You are logged out of AMIS. Log in, then press Refresh.');
+  else if (res && res.lastError) say('AMIS did not answer. Try again in a minute.');
+  else { say(''); loadGradesData(); }
+}
+
+const BACKUP_SCHEMA_VERSION = 2;
+// Export writes every stored key. Import restores only these: never
+// termsAccepted (each person accepts the terms on their own device) or
+// lastError (it describes this browser only).
+const BACKUP_KEYS = ['gradesData', 'fetchedAt', 'selectedProgram', 'selectedTracks', 'excludedCourses',
+  'substitutions', 'customCourseStatus', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme'];
+
+function wireBackup() {
+  const exportBtn = document.getElementById('exportBtn');
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+  if (exportBtn) exportBtn.addEventListener('click', async () => {
+    const data = await chrome.storage.local.get(null);
+    // Top-level gradesData, selectedProgram, excludedCourses and substitutions
+    // keep the file loadable by the web app importer.
+    const backup = { source: 'elbi-gradesim', schemaVersion: BACKUP_SCHEMA_VERSION, timestamp: new Date().toISOString(), ...data };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `elbi-gradesim-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  if (importBtn && importFile) {
+    importBtn.addEventListener('click', () => importFile.click());
+    importFile.addEventListener('change', async e => {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      try {
+        const toSave = parseBackup(await file.text());
+        await chrome.storage.local.set(toSave);
+        window.location.reload();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
+}
+
+// Throws with a message the student can read. Files without schemaVersion come
+// from version 1 or the web app and use the same keys.
+function parseBackup(text) {
+  let obj;
+  try { obj = JSON.parse(text); } catch (e) { throw new Error('That file is not valid JSON, so nothing was changed.'); }
+  if (!obj || obj.source !== 'elbi-gradesim') throw new Error('That file is not an Elbi GradeSim backup.');
+  const v = obj.schemaVersion == null ? 1 : obj.schemaVersion;
+  if (!Number.isInteger(v) || v < 1 || v > BACKUP_SCHEMA_VERSION) {
+    throw new Error('That backup comes from a newer version of Elbi GradeSim. Update the extension first.');
+  }
+  const toSave = {};
+  BACKUP_KEYS.forEach(k => { if (obj[k] != null) toSave[k] = obj[k]; });
+  return toSave;
+}
+
+// Two clicks: the first arms the button, the second deletes everything.
+function wireClearData() {
+  const btn = document.getElementById('clearDataBtn');
+  if (!btn) return;
+  const label = btn.textContent;
+  let armed = false;
+  btn.addEventListener('click', async () => {
+    if (!armed) {
+      armed = true;
+      btn.textContent = 'Press again to delete all GradeSim data';
+      setTimeout(() => { armed = false; btn.textContent = label; }, 5000);
+      return;
+    }
+    await chrome.runtime.sendMessage({ type: 'CLEAR_DATA' });
+    window.location.reload();
+  });
+}
