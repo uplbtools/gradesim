@@ -84,3 +84,18 @@ assert.strictEqual(gwaOutlook(1.5, 60, 10, 1.75).status, 'any-pass');
 assert.strictEqual(gwaOutlook(2.5, 60, 0, 1.75).status, 'out-of-reach');
 
 console.log('requirements.test.js: all assertions passed');
+
+// Tester feedback (BS Economics): HIST 1 stands in for KAS 1, and a course
+// used that way does not also fill a GE or free elective slot.
+{
+  const econ = plannerCourseList(UPLB_PROGRAMS.BSECON, undefined, UPLB_CATALOG);
+  const histOnly = [{ code: 'HIST 1', title: 'Philippine History', units: 3, result: 'passed' }];
+  const r = remainingRequirements(econ, histOnly);
+  assert.ok(r.fill.has('KAS 1'), 'HIST 1 should satisfy KAS 1');
+  assert.strictEqual(r.electives.doneUnits, 0, 'HIST 1 must not also count as a free elective');
+  const both = [...histOnly, { code: 'KAS 1', title: 'Kasaysayan ng Pilipinas', units: 3, result: 'passed' }];
+  const r2 = remainingRequirements(econ, both);
+  assert.strictEqual(r2.fill.get('KAS 1').code, 'KAS 1', 'KAS 1 fills itself when taken');
+  assert.strictEqual(remainingRequirements(econ, []).electives.doneUnits, 0, 'no electives done with nothing taken');
+  console.log('requirements.test.js: HIST 1 for KAS 1 passed');
+}
