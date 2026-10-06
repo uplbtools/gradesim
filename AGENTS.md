@@ -2,69 +2,58 @@
 
 **Human developers:** start with [README.md](README.md).
 
-Org-wide agent defaults: see [room-tba/AGENTS.md](https://github.com/uplbtools/room-tba/blob/main/AGENTS.md). This file tailors that playbook to the **GradeSim browser extension**.
+Org-wide agent defaults are in [room-tba/AGENTS.md](https://github.com/uplbtools/room-tba/blob/main/AGENTS.md). This file tailors them to the GradeSim browser extension.
 
 ## Doc map
 
 | When | Read |
 | --- | --- |
+| How grades get in, storage keys, permissions | [extension/README.md](extension/README.md) |
 | Build all browsers | `extension/build.sh` |
 | Per-browser manifests | `extension/manifests/` |
-| Landing / marketing site | [uplbtools/gradesim-website](https://github.com/uplbtools/gradesim-website) |
-| Store listings | Chrome Web Store, Firefox Add-ons URLs in README |
+| Web app | [uplbtools/gradesim-website](https://github.com/uplbtools/gradesim-website), live at <https://gradesim.uplb.tools> |
+| Store listings | README |
 
 ## Stack
 
-- **Platform:** Manifest V3 **browser extension** (vanilla JavaScript: no bundler in root)
-- **Targets:** Chrome, Firefox, Opera, Edge (separate manifests)
-- **Build:** `extension/build.sh [chrome|firefox|opera|edge|all]` → `extension/dist/<browser>/`
-- **Host permission:** `amis.uplb.edu.ph`: content scripts read AMIS DOM locally
-- **No server**: 100% client-side; no `package.json` scripts at repo root
+- Manifest V3 browser extension in plain JavaScript, no bundler and no root `package.json`
+- Targets are Chrome, Firefox and Opera manifests. Edge and Brave install the Chrome build.
+- `extension/build.sh [chrome|firefox|opera|edge|all]` writes `extension/dist/<browser>/`. `edge` is an alias for `chrome`.
+- Grades come from the AMIS JSON API, not page scraping. `content.js` calls `api-amis.uplb.edu.ph/api/students/grades` with the token AMIS keeps in `localStorage`, then stores only the course fields.
+- No server. Everything stays in `chrome.storage.local`.
 
 ## Branches and release
 
 | Branch | Role |
 | --- | --- |
-| **`staging`** | Default branch: integration |
-| **`main`** | Release line for store submissions |
+| `staging` | Default branch. All pull requests go here. |
+| `main` | Release line. A push that touches `extension/` publishes to the Chrome, Firefox and Edge stores through `.github/workflows/publish-extension.yml`. |
 
-**Ship flow:** merge to `main`, build with `./build.sh all`, upload zips to each browser store. Store review is human-gated: do not auto-close issues that depend on store approval.
-
-There is no Vercel/CI deploy: verification is local build + manual load in browser dev mode.
+Never push or open pull requests to `main` directly. Store review is human-gated, so do not close issues that wait on store approval.
 
 ## Verify before done
 
 | Step | When |
 | --- | --- |
-| `cd extension &&./build.sh chrome` | Minimum before any extension change |
-| `./build.sh all` | Before store release |
-| Manual AMIS | Load unpacked extension; open AMIS schedule page; confirm GWA/simulator still works |
-| Manifest diff | When touching permissions: review all files in `extension/manifests/` |
-
-## Architecture (short)
-
-```
-extension/
- src/ # Popup, content scripts, curriculum data
- manifests/ # Per-browser manifest.json variants
- icons/
- build.sh # Copies src + manifest → dist/<browser>/
-website/ # Legacy copy: canonical website is gradesim-website repo
-```
+| `for t in extension/*.test.js; do node "$t"; done` | Every change (CI runs it too) |
+| `bash extension/build.sh all` | Every extension change |
+| `npx -y web-ext@8 lint -s extension/dist/firefox` | Must show 0 errors and 0 warnings |
+| Manual AMIS check | Load the unpacked build, log in to AMIS, press Refresh in the popup, confirm grades and GWA |
+| Manifest diff | When touching permissions, update every file in `extension/manifests/` |
 
 ## Extension rules
 
-- **Privacy:** Never send grades or student data to a server: local `chrome.storage` / `browser.storage` only
-- **AMIS DOM scraping:** AMIS markup changes break the extension: prefer defensive selectors; add fixture HTML tests when possible
-- **Multi-browser parity:** A manifest or permission change often needs all four manifest files updated
-- **No decorative UI motion** in popup: keep the panel calm and readable
+- Never send grades or student data to a server.
+- Keep the stored grades shape (`gradesData.student_grades`) compatible with the web app importer in gradesim-website `src/lib/importers.ts`.
+- Firefox add-on review rejects `innerHTML`, `outerHTML` and `insertAdjacentHTML` with dynamic strings. Build markup with `DOMParser` or DOM calls.
+- No decorative motion in the popup. Keep the panel calm and readable.
 
 ## Commits
 
-- Conventional Commits: `fix(content): …`, `feat(curriculum): …`, `chore(build): …`
-- Note which browsers were manually tested in the PR body
+- Conventional Commits, for example `fix(content): ...`, `feat(planner): ...`, `chore(build): ...`
+- Note which browsers you tested in the PR body.
 
 ## Security
 
-- Do not add broad `<all_urls>` permissions without maintainer approval
-- Never exfiltrate AMIS page content to third-party analytics
+- Do not add `<all_urls>` or other broad permissions without maintainer approval.
+- Never send AMIS content to analytics or third parties.

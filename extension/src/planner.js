@@ -1,7 +1,8 @@
 // planner.js - curriculum map and course planner.
 // Framework free. Talks to the browser only through `store` below, so the same
 // file can run on a plain web page (gradesim.uplb.tools) with localStorage.
-// Depends on globals from curriculum.js, catalog.js and scheduler.js.
+// Depends on globals from components.js, curriculum.js, catalog.js and
+// scheduler.js. Every piece of UI is built with the components.js helpers.
 
 /* ---------- Storage adapter ---------- */
 
@@ -25,45 +26,6 @@ const store = {
   },
 };
 
-/* ---------- Icons (Lucide, ISC license) ---------- */
-
-const ICONS = {
-  check: '<path d="M20 6 9 17l-5-5"/>',
-  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-  lock: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
-  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-  retake: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
-  ready: '<circle cx="12" cy="12" r="10"/><path d="m12 16 4-4-4-4"/><path d="M8 12h8"/>',
-  planned: '<circle cx="12" cy="12" r="10"/>',
-  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',
-  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
-  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
-  chevron: '<path d="m6 9 6 6 6-6"/>',
-  close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
-  moon: '<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>',
-  monitor: '<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/>',
-};
-function icon(name) {
-  return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
-}
-
-// Build DOM from markup with DOMParser instead of assigning innerHTML, which
-// the Firefox add-on linter flags. Every caller escapes dynamic text with
-// esc(). SVG targets are parsed inside an <svg> so children keep the SVG
-// namespace.
-function setHTML(el, html) {
-  if (!html) { el.replaceChildren(); return; }
-  const isSvg = el instanceof SVGElement;
-  const doc = new DOMParser().parseFromString(isSvg ? `<svg>${html}</svg>` : html, 'text/html');
-  const host = isSvg ? doc.body.firstElementChild : doc.body;
-  el.replaceChildren(...Array.from(host.childNodes, node => document.importNode(node, true)));
-}
-
-function esc(text) {
-  return String(text == null ? '' : text).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-}
-
 const $ = id => document.getElementById(id);
 
 /* ---------- Terms ---------- */
@@ -83,11 +45,7 @@ const ayLabel = abs => {
   return `AY ${ay}-${String(ay + 1).slice(2)}`;
 };
 
-// AMIS term ids are 12<year digit><term digit>: 1251 = AY 2025-26 1st sem.
-function amisTermToAbs(id) {
-  const m = String(id).match(/^12(\d)([123])$/);
-  return m ? (2020 + Number(m[1])) * 3 + Number(m[2]) - 1 : null;
-}
+// amisTermToAbs, gradeResult and the requirement slots come from requirements.js.
 
 // ponytail: month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
 // Jun-Jul midyear). Only used when AMIS grades are older than the calendar.
@@ -116,12 +74,7 @@ const state = {
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
-  // Parse the static icon markup with DOMParser instead of assigning
-  // outerHTML, which the Firefox add-on linter flags for review.
-  document.querySelectorAll('[data-icon]').forEach(el => {
-    const doc = new DOMParser().parseFromString(icon(el.dataset.icon), 'text/html');
-    el.replaceWith(document.importNode(doc.body.firstElementChild, true));
-  });
+  hydrateIcons();
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
     'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks']);
   const d = state.data;
@@ -129,12 +82,16 @@ async function init() {
   d.substitutions = d.substitutions || {};
   d.plannerPins = d.plannerPins || {};
   d.plannerPetitions = d.plannerPetitions || {};
-  initTheme(d.theme);
+  themeToggle($('themeToggle'), d.theme, next => {
+    store.set({ theme: next });
+    requestAnimationFrame(() => drawEdges());
+  });
 
-  const programCode = d.selectedProgram || 'BSCS';
+  const programCode = d.selectedProgram;
   state.program = typeof UPLB_PROGRAMS !== 'undefined' ? UPLB_PROGRAMS[programCode] : null;
   if (!state.program || !state.program.majorCourses) {
     $('gradTerm').textContent = 'Pick your program in the extension popup first.';
+    document.body.classList.add('pl-no-program');
     return;
   }
   $('plannerProgram').textContent = state.program.name || programCode;
@@ -151,31 +108,33 @@ async function init() {
   if (trackInfo) {
     $('plannerProgram').textContent += `, ${trackInfo.name} (${trackInfo.code})`;
   }
-  state.courses = enrichCourses(getPlannerCourses(state.program, state.track), catalog);
+  state.courses = plannerCourseList(state.program, state.track, catalog);
   state.courses.forEach(c => state.byCode.set(c.code, c));
   state.graph = analyzeGraph(state.courses);
-  d.plannerOptions = { cap: defaultCap(), midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
+  // 18 units a sem unless the student picks 21 in Plan options.
+  d.plannerOptions = { cap: 18, midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
 
-  if (!d.gradesData || !d.gradesData.student_grades) {
-    const banner = $('plannerBanner');
-    banner.classList.remove('hidden');
-    setHTML(banner, `${icon('info')}<span>No grades loaded yet. Open AMIS while logged in, then come back so your passed courses count. Until then this plan starts from scratch.</span>`);
-  }
+  const quality = getProgramDataQuality(programCode, catalog);
+  $('plannerBanner').replaceChildren(...flat([
+    !quality.confident && notice({ tone: 'warn', icon: 'alert', title: 'Treat this plan as a rough guide', body: quality.reasons.join(' ') }),
+    !(d.gradesData && d.gradesData.student_grades) && notice({
+      tone: 'info', icon: 'info',
+      body: 'No grades loaded yet. Log in to AMIS, open the extension and press Refresh so your passed courses count. Until then this plan starts from scratch.',
+    }),
+  ]));
 
   initControls();
   render();
-  window.addEventListener('resize', () => drawEdges());
-}
+  window.addEventListener('resize', () => { drawEdges(); updateScrollHint(); });
+  $('plannerScroll').addEventListener('scroll', updateScrollHint, { passive: true });
 
-// 21 units when the program's own checklist already has a regular term above 18.
-function defaultCap() {
-  const load = {};
-  (state.program.majorCourses || []).forEach(c => {
-    if (c.sem === 'midyear') return;
-    const k = `${c.year}-${c.sem}`;
-    load[k] = (load[k] || 0) + (Number(c.units) || 0);
-  });
-  return Object.values(load).some(u => u > 18) ? 21 : 18;
+  // The popup's "See what this costs" link opens planner.html?whatif=CODE.
+  const prefill = normCode(new URLSearchParams(location.search).get('whatif') || '');
+  if (prefill && state.byCode.has(prefill)) {
+    $('whatifMode').value = 'fail';
+    $('whatifCourse').value = prefill;
+    if ($('whatifCourse').value === prefill) simulate();
+  }
 }
 
 function save(keys) {
@@ -184,38 +143,7 @@ function save(keys) {
   store.set(obj);
 }
 
-/* ---------- Theme ---------- */
-
-const THEMES = ['system', 'light', 'dark'];
-function applyTheme(theme) {
-  if (theme === 'system') delete document.documentElement.dataset.theme;
-  else document.documentElement.dataset.theme = theme;
-  const btn = $('themeToggle');
-  setHTML(btn, icon({ system: 'monitor', light: 'sun', dark: 'moon' }[theme]));
-  btn.title = `Theme: ${theme}`;
-  btn.setAttribute('aria-label', btn.title);
-  btn.dataset.theme = theme;
-}
-function initTheme(theme) {
-  applyTheme(THEMES.includes(theme) ? theme : 'system');
-  $('themeToggle').addEventListener('click', e => {
-    const next = THEMES[(THEMES.indexOf(e.currentTarget.dataset.theme) + 1) % THEMES.length];
-    applyTheme(next);
-    store.set({ theme: next });
-    requestAnimationFrame(() => drawEdges());
-  });
-}
-
 /* ---------- AMIS history ---------- */
-
-function gradeResult(raw) {
-  const g = (raw == null ? '' : String(raw)).toUpperCase().trim();
-  const n = parseFloat(g);
-  if (g === 'S' || g === 'P' || (n >= 1 && n <= 3)) return 'passed';
-  if (n === 5 || g === 'F' || g === 'U') return 'failed';
-  if (!g) return 'nograde';
-  return 'other'; // INC, DRP, 4.00: not passed, not a fail
-}
 
 // Map AMIS attempts onto curriculum codes, with the term each happened in.
 function readHistory() {
@@ -256,36 +184,11 @@ function readHistory() {
   const push = (code, a) => { (byCurr[code] = byCurr[code] || []).push(a); };
   attempts.forEach(a => { if (state.byCode.has(a.code)) push(a.code, a); });
 
+  // GE, HK, NSTP and free elective slots, and substitutions, filled the same
+  // way the popup What if tab counts them.
   const doneOrNow = attempts.filter(a => a.result === 'passed' || a.result === 'inprogress');
-  const slotDone = getCompletedRequirementSlotCodes(
-    doneOrNow.map(a => ({ code: a.code, title: a.title })), state.program);
-  const kinds = [
-    ['ge', a => isGECourse(a.code, a.title) && !state.byCode.has(a.code)],
-    ['hk', a => /^(HK|PE)\b/.test(a.code) && !state.byCode.has(a.code)],
-    ['nstp', a => /^NSTP\b/.test(a.code) && !state.byCode.has(a.code)],
-  ];
-  kinds.forEach(([kind, match]) => {
-    const slots = state.courses.filter(c => c.genericRequirement === kind && slotDone.has(c.code));
-    const taken = doneOrNow.filter(match);
-    slots.forEach((slot, i) => {
-      const a = taken[i];
-      if (a) push(slot.code, { ...a, via: a.code });
-    });
-  });
-  // Free electives: any other course with units that the curriculum does not
-  // name and that is not standing in for a required one.
-  // ponytail: one course per 3-unit slot; a 6-unit elective fills only one.
-  const subbed = new Set(Object.values(state.data.substitutions).map(normCode));
-  const electives = doneOrNow.filter(a => a.units > 0 && !state.byCode.has(a.code) &&
-    !subbed.has(a.code) && !kinds.some(([, match]) => match(a)));
-  state.courses.filter(c => c.genericRequirement === 'elective').forEach((slot, i) => {
-    const a = electives[i];
-    if (a) push(slot.code, { ...a, via: a.code });
-  });
-  Object.entries(state.data.substitutions).forEach(([req, taken]) => {
-    const r = normCode(req);
-    const a = doneOrNow.find(x => x.code === normCode(taken));
-    if (a && state.byCode.has(r)) push(r, { ...a, via: a.code });
+  fillRequirementSlots(state.courses, doneOrNow, state.data.substitutions).forEach((a, slot) => {
+    if (a.code !== slot && state.byCode.has(slot)) push(slot, { ...a, via: a.code });
   });
 
   return { attempts, byCurr, latestAbs, passedOutside: new Set(doneOrNow.map(a => a.code)) };
@@ -383,8 +286,11 @@ function compute() {
   // Baseline with the what-if removed, for the "what changed" message.
   const noWhatif = wi ? run(failures.filter(f => f.source !== 'whatif'), false) : null;
   const slips = computeSlips(now.runOpts, now.result);
+  // Same count as the popup What if tab: passed AMIS courses plus manual marks.
+  const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
+    { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps };
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left };
 }
 
 /* ---------- Summary ---------- */
@@ -416,9 +322,9 @@ function renderSummary(v) {
     const why = one
       ? `because ${one.code} ${one.source === 'whatif' ? 'is failed in this what-if' : 'failed'}`
       : `because of ${v.failures.length} failed courses`;
-    setHTML(deltaEl, `${icon('alert')}+${termsText(delta)} ${esc(why)}`);
+    deltaEl.replaceChildren(icon('alert'), `${termsText(delta)} later ${why}`);
   } else if (v.failures.length) {
-    setHTML(deltaEl, `${icon('check')}No delay from ${v.failures.length === 1 ? esc(v.failures[0].code) : 'your failed courses'}`);
+    deltaEl.replaceChildren(icon('check'), `No delay from ${v.failures.length === 1 ? v.failures[0].code : 'your failed courses'}`);
     deltaEl.classList.add('ok');
   } else {
     deltaEl.textContent = '';
@@ -426,17 +332,19 @@ function renderSummary(v) {
   if (!(v.failures.length && delta <= 0)) deltaEl.classList.remove('ok');
 
   const termsLeft = r.plan.filter(p => p.courses.length).length;
-  const bits = [];
-  if (gradAbs != null) bits.push(`That is ${ayLabel(gradAbs)}`);
-  if (gradAbs != null) bits.push(`${termsLeft} term${termsLeft === 1 ? '' : 's'} with classes left, starting ${absLabel(v.startAbs)}`);
-  bits.push(`up to ${v.unitCaps['1']} units a sem`);
-  bits.push(state.data.plannerOptions.midyear ? `midyear up to ${v.unitCaps.midyear}` : 'midyear only where the checklist puts it');
-  $('gradSub').textContent = `${bits.join(', ')}. Free electives are not counted.`;
+  const nowTaking = Object.values(v.info).some(i => i.status === 'inprogress');
+  const sentences = [];
+  if (gradAbs != null) sentences.push(`That is ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
+  sentences.push(`You have ${unitsText(v.left.units)} left to pass${nowTaking ? ', counting this term' : ''}.`);
+  sentences.push(`The plan takes up to ${v.unitCaps['1']} units a sem and ${state.data.plannerOptions.midyear ? `up to ${v.unitCaps.midyear} in midyear` : 'midyear only where the checklist puts it'}.`);
+  $('gradSub').textContent = sentences.join(' ');
 
   const list = $('failCosts');
-  setHTML(list, v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif')
-    ? v.costs.map(c => `<li class="${c.cost > 0 ? 'bad' : ''}">${icon(c.cost > 0 ? 'x' : 'check')}<strong>${esc(c.code)}</strong> ${c.source === 'whatif' ? '(what-if)' : c.past ? 'failed' : '(marked failed)'}: ${c.cost > 0 ? `+${termsText(c.cost)}` : 'no delay'}</li>`).join('')
-    : '');
+  const showCosts = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif');
+  list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
+    icon(c.cost > 0 ? 'x' : 'check'),
+    h('strong', {}, c.code),
+    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []));
 }
 
 /* ---------- Cards and columns ---------- */
@@ -453,16 +361,6 @@ function offeringLabel(c) {
 function restricted(c) {
   return !(offeredIn(c, '1') && offeredIn(c, '2'));
 }
-
-const STATUS = {
-  passed: ['check', 'Passed'],
-  inprogress: ['clock', 'Taking now'],
-  failed: ['x', 'Failed'],
-  retake: ['retake', 'Retake'],
-  ready: ['ready', 'Ready'],
-  planned: ['planned', 'Planned'],
-  locked: ['lock', 'Waiting'],
-};
 
 // Nearest failed course upstream of `code`, if any.
 function waitingOn(code, v) {
@@ -559,32 +457,34 @@ function orderColumns(list, primary) {
   }
 }
 
-function cardHTML(card, v) {
+function courseCard(card, v) {
   const c = state.byCode.get(card.code);
-  const [ic, label] = STATUS[card.status];
   const slip = v.slips[card.code];
-  const crit = !card.history && slip > 0 && !['passed', 'inprogress', 'failed'].includes(card.status);
+  // Free elective cards are placeholders for any course, so never critical.
+  const crit = !card.history && slip > 0 && c.genericRequirement !== 'elective' && !['passed', 'inprogress', 'failed'].includes(card.status);
   const classes = ['pl-card', `st-${card.status}`];
   if (crit) classes.push('crit');
   if (card.history || card.hypothetical) classes.push('history');
-  let extra = '';
-  if (card.waitingOn) extra = `<span class="pl-note">${icon('lock')}Waiting on ${esc(card.waitingOn)}</span>`;
-  else if (card.conditional) extra = `<span class="pl-note warn">${icon('flag')}Petition needed</span>`;
-  else if (card.unplaceable) extra = `<span class="pl-note warn">${icon('alert')}Can't place</span>`;
-  else if (card.via && card.via !== card.code) extra = `<span class="pl-note">via ${esc(card.via)}</span>`;
-  else if (card.hypothetical) extra = '<span class="pl-note">If failed here</span>';
-  const statusLabel = card.status === 'failed' && card.history ? 'Failed' : label;
-  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${c.units} units, ${offeringLabel(c)}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
-  return `<div class="${classes.join(' ')}" role="button" tabindex="0" data-code="${esc(card.code)}"${v.primary[card.code] === card ? ' data-primary="1"' : ''} aria-label="${esc(aria)}">
-    <span class="pl-card-top"><span class="pl-status">${icon(ic)}${statusLabel}</span><span class="pl-units">${esc(c.units)}u</span></span>
-    <span class="pl-code">${esc(c.code)}${card.pinned ? '<span class="pl-pin" title="Moved later by you"> *</span>' : ''}</span>
-    <span class="pl-title">${esc(c.title)}</span>
-    ${extra}
-    <span class="pl-card-foot"><span class="pl-offer">${esc(offeringLabel(c))}</span>${crit ? '<span class="pl-crit">Critical</span>' : ''}</span>
-  </div>`;
+  let extra = null;
+  if (card.waitingOn) extra = h('span', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`);
+  else if (card.conditional) extra = h('span', { class: 'pl-note warn' }, icon('flag'), 'Petition needed');
+  else if (card.unplaceable) extra = h('span', { class: 'pl-note warn' }, icon('alert'), "Can't place");
+  else if (card.via && card.via !== card.code) extra = h('span', { class: 'pl-note' }, `via ${card.via}`);
+  else if (card.hypothetical) extra = h('span', { class: 'pl-note' }, 'If failed here');
+  const statusLabel = COURSE_STATUS[card.status][1];
+  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}, ${offeringLabel(c)}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
+  return h('div', {
+    class: classes.join(' '), role: 'button', tabindex: '0', 'aria-label': aria,
+    dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
+  },
+  h('span', { class: 'pl-card-top' }, statusPill(card.status, { variant: 'plain' }), unitsBadge(c.units)),
+  h('span', { class: 'pl-code' }, c.code, card.pinned && h('span', { class: 'pl-pin', title: 'Moved later by you' }, ' *')),
+  h('span', { class: 'pl-title' }, c.title),
+  extra,
+  h('span', { class: 'pl-card-foot' }, h('span', { class: 'pl-offer' }, offeringLabel(c)), crit && h('span', { class: 'pl-crit' }, 'Critical')));
 }
 
-function columnHTML(column, v, phone) {
+function semesterColumn(column, v, phone) {
   const isPast = column.abs < v.startAbs;
   let name;
   let sub;
@@ -597,24 +497,23 @@ function columnHTML(column, v, phone) {
   let warn = '';
   if (!isPast && Number.isFinite(column.abs) && column.abs >= 0) {
     if (isMid && units > 6) warn = "Over 6 units in midyear needs the Dean's approval (max 9).";
-    else if (!isMid && units > v.unitCaps['1']) warn = `Over your ${v.unitCaps['1']}-unit cap: needs an overload approval.`;
-    else if (!isMid && units > 18) warn = 'Over 18 units: allowed up to 21 when the term has lab courses.';
+    else if (!isMid && units > v.unitCaps['1']) warn = `Over your ${v.unitCaps['1']}-unit cap, so it needs an overload approval.`;
+    else if (!isMid && units > 18) warn = 'Over 18 units, which is allowed up to 21 when the term has lab courses.';
   }
+  const loud = warn && (isMid || units > v.unitCaps['1']);
   const nowTerm = column.cards.some(c => c.status === 'inprogress');
-  const tag = column.abs === v.startAbs ? '<span class="pl-tag">Next</span>'
-    : nowTerm ? '<span class="pl-tag now">Now</span>'
-    : isPast && column.abs >= 0 ? '<span class="pl-tag past">Taken</span>' : '';
-  const open = !(phone && isPast) ? ' open' : '';
-  return `<section class="pl-col${isPast ? ' past' : ''}" data-abs="${column.abs}">
-    <details${open}>
-      <summary class="pl-col-head">
-        <span class="pl-col-name">${esc(name)} ${tag}</span>
-        <span class="pl-col-sub">${esc(sub)}<span class="pl-col-units${warn && (isMid || units > v.unitCaps['1']) ? ' warn' : ''}"${warn ? ` title="${esc(warn)}"` : ''}>${warn && (isMid || units > v.unitCaps['1']) ? icon('alert') : ''}${units} units</span></span>
-        ${warn ? `<span class="visually-hidden">${esc(warn)}</span>` : ''}
-      </summary>
-      <div class="pl-cards">${column.cards.map(card => cardHTML(card, v)).join('') || '<p class="pl-empty">Nothing offered that fits</p>'}</div>
-    </details>
-  </section>`;
+  const tag = column.abs === v.startAbs ? badge('Next', { tone: 'strong' })
+    : nowTerm ? badge('Now', { tone: 'info' })
+    : isPast && column.abs >= 0 ? badge('Taken') : null;
+  return h('section', { class: `pl-col${isPast ? ' past' : ''}`, dataset: { abs: column.abs } },
+    h('details', { open: !(phone && isPast) },
+      h('summary', { class: 'pl-col-head' },
+        h('span', { class: 'pl-col-name' }, name, tag),
+        h('span', { class: 'pl-col-sub' }, sub,
+          h('span', { class: `pl-col-units${loud ? ' warn' : ''}`, title: warn || null }, loud && icon('alert'), unitsText(units))),
+        warn && h('span', { class: 'visually-hidden' }, warn)),
+      h('div', { class: 'pl-cards' },
+        column.cards.length ? column.cards.map(card => courseCard(card, v)) : emptyState('Nothing offered that fits'))));
 }
 
 const isPhone = () => window.matchMedia('(max-width: 719px)').matches;
@@ -629,10 +528,22 @@ function render() {
   v.columns = list;
   const phone = isPhone();
   document.querySelector('.pl-main').appendChild($('detail')); // may sit inside the grid on phones
-  setHTML($('plannerGrid'), list.map(c => columnHTML(c, v, phone)).join(''));
+  $('plannerGrid').replaceChildren(...list.map(c => semesterColumn(c, v, phone)));
   if (state.selected && !state.byCode.has(state.selected)) state.selected = null;
   renderDetail();
-  requestAnimationFrame(() => drawEdges());
+  requestAnimationFrame(() => { drawEdges(); updateScrollHint(); });
+}
+
+// When terms run past the right edge, say how many and offer a jump there.
+function updateScrollHint() {
+  const sc = $('plannerScroll');
+  const right = sc.getBoundingClientRect().right;
+  const hiddenCols = isPhone() ? 0 : Array.from(sc.querySelectorAll('.pl-col'))
+    .filter(col => col.getBoundingClientRect().right > right + 1).length;
+  $('scrollHint').replaceChildren(hiddenCols ? button({
+    variant: 'chip', icon: 'next', text: `${plural(hiddenCols, 'more term')} to the right`,
+    onclick: () => { sc.scrollLeft = sc.scrollWidth; },
+  }) : '');
 }
 
 /* ---------- Edges and focus ---------- */
@@ -647,7 +558,7 @@ function drawEdges() {
   const svg = $('plannerArrows');
   const grid = $('plannerGrid');
   const v = state.view;
-  setHTML(svg, '');
+  svg.replaceChildren();
   document.querySelectorAll('.pl-card.dim, .pl-card.chain, .pl-card.focus').forEach(el => el.classList.remove('dim', 'chain', 'focus'));
   if (!v) return;
 
@@ -665,7 +576,7 @@ function drawEdges() {
   svg.setAttribute('width', grid.scrollWidth);
   svg.setAttribute('height', grid.scrollHeight);
   const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
-  const crit = code => v.slips[code] > 0;
+  const crit = code => v.slips[code] > 0 && state.byCode.get(code).genericRequirement !== 'elective';
   const paths = [];
 
   // Arrows travel the lattice lanes (see .pl-grid in planner.css): out of the
@@ -735,27 +646,36 @@ function drawEdges() {
     const x2 = rb.left - gridRect.left;
     const y2 = rb.top + rb.height / 2 - gridRect.top;
     const d = routeEdge(x1, y1, x2, y2, ra, rb);
-    if (kind === 'chain') paths.push(`<path class="pl-edge-halo" d="${d}"/>`);
-    paths.push(`<path class="pl-edge ${kind}" d="${d}" marker-start="url(#pl-tail)" marker-end="url(#pl-arrow-${kind})"/>`);
+    if (kind === 'chain') paths.push(svgEl('path', { class: 'pl-edge-halo', d }));
+    paths.push(svgEl('path', { class: `pl-edge ${kind}`, d, 'marker-start': 'url(#pl-tail)', 'marker-end': `url(#pl-arrow-${kind})` }));
   });
   svg.classList.toggle('over', !!chain);
-  setHTML(svg, `<defs>
-    <marker id="pl-arrow-chain" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="pl-arrowhead chain"/></marker>
-    <marker id="pl-arrow-crit" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" class="pl-arrowhead crit"/></marker>
-    <marker id="pl-tail" markerWidth="8" markerHeight="8" refX="4" refY="4" markerUnits="userSpaceOnUse"><circle cx="4" cy="4" r="3" class="pl-arrowtail"/></marker>
-  </defs>${paths.join('')}`);
+  const marker = (id, size, ref, shape, shapeAttrs, extra = {}) => {
+    const m = svgEl('marker', { id, markerWidth: size, markerHeight: size, refX: ref[0], refY: ref[1], ...extra });
+    m.append(svgEl(shape, shapeAttrs));
+    return m;
+  };
+  const defs = svgEl('defs');
+  defs.append(
+    marker('pl-arrow-chain', 8, [6, 4], 'path', { d: 'M0 0 L8 4 L0 8 z', class: 'pl-arrowhead chain' }, { orient: 'auto' }),
+    marker('pl-arrow-crit', 6, [5, 3], 'path', { d: 'M0 0 L6 3 L0 6 z', class: 'pl-arrowhead crit' }, { orient: 'auto' }),
+    marker('pl-tail', 8, [4, 4], 'circle', { cx: 4, cy: 4, r: 3, class: 'pl-arrowtail' }, { markerUnits: 'userSpaceOnUse' }));
+  svg.replaceChildren(defs, ...paths);
 }
 
 /* ---------- Detail panel ---------- */
 
-function groupHTML(group, v) {
-  return group.map(code => {
+// Prerequisite alternatives as course links: "A or B".
+function courseLinks(group, v) {
+  return group.flatMap((code, i) => {
     const c = state.byCode.get(code);
     const st = v.passed.has(code) ? 'passed' : v.failures.some(f => f.code === code) ? 'failed' : c ? 'todo' : 'outside';
     const ic = st === 'passed' ? 'check' : st === 'failed' ? 'x' : 'planned';
-    const inner = `${icon(ic)}${esc(code)}`;
-    return c ? `<button type="button" class="pl-link st-${st}" data-goto="${esc(code)}">${inner}</button>` : `<span class="pl-link st-${st}" title="Not in your checklist">${inner}</span>`;
-  }).join(' <span class="pl-or">or</span> ');
+    const link = c
+      ? h('button', { type: 'button', class: `pl-link st-${st}`, dataset: { goto: code } }, icon(ic), code)
+      : h('span', { class: `pl-link st-${st}`, title: 'Not in your checklist' }, icon(ic), code);
+    return i ? [' ', h('span', { class: 'pl-or' }, 'or'), ' ', link] : [link];
+  });
 }
 
 function renderDetail() {
@@ -769,7 +689,6 @@ function renderDetail() {
   const c = state.byCode.get(code);
   const i = v.info[code];
   const card = v.primary[code];
-  const status = card ? STATUS[card.status][1] : (i.status === 'failed' ? 'Failed' : 'Planned');
   const t = v.now.result.assignedTerm[code];
   const slip = v.slips[code];
   const blocking = state.graph.blocking[code] || 0;
@@ -778,49 +697,49 @@ function renderDetail() {
   const groups = preGroups(c);
 
   const facts = [];
-  facts.push(`${c.units} units, offered ${offeringLabel(c).toLowerCase()}${c.offered ? ` (${c.offered[1]} of 4 first sems, ${c.offered[2]} of 3 second sems, ${c.offered[3]} of 2 midyears seen)` : ''}`);
+  facts.push(`${unitsText(c.units)}, offered ${offeringLabel(c).toLowerCase()}${c.offered ? ` (${c.offered[1]} of 4 first sems, ${c.offered[2]} of 3 second sems, ${c.offered[3]} of 2 midyears seen)` : ''}`);
   if (t !== undefined) facts.push(`Planned for ${absLabel(v.startAbs + t)}`);
-  const metrics = `<ul class="pl-metrics">
-    <li><strong>${blocking}</strong> course${blocking === 1 ? '' : 's'} blocked if this is failed</li>
-    <li><strong>${delay}</strong> course${delay === 1 ? '' : 's'} on the longest chain through it</li>
-    ${slip === undefined ? '' : slip > 0
-      ? `<li class="bad"><strong>Critical.</strong> Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.</li>`
-      : '<li>Has slack: taking it a term later does not move graduation.</li>'}
-  </ul>`;
+  const metrics = h('ul', { class: 'pl-metrics' },
+    h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
+    h('li', {}, h('strong', {}, delay), ` ${delay === 1 ? 'course' : 'courses'} on the longest chain through it`),
+    slip === undefined ? null : slip > 0
+      ? h('li', { class: 'bad' }, h('strong', {}, 'Critical.'), ` Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.`)
+      : h('li', {}, 'Has slack. Taking it a term later does not move graduation.'));
 
   const reqs = [];
-  groups.forEach(g => reqs.push(`<li>${groupHTML(g, v)}</li>`));
-  (c.co || []).forEach(x => reqs.push(`<li>Take with ${groupHTML([x], v)} (corequisite)</li>`));
-  if (c.standing) reqs.push(`<li>${c.standing === 'senior' ? 'Senior' : 'Junior'} standing (assumed ${c.standing === 'senior' ? '75' : '50'}% of total units)</li>`);
-  if (c.coi) reqs.push('<li>Consent of instructor (COI) also works</li>');
-  if (c.note) reqs.push(`<li class="pl-muted">AMIS says: ${esc(c.note)}</li>`);
+  groups.forEach(g => reqs.push(h('li', {}, courseLinks(g, v))));
+  (c.co || []).forEach(x => reqs.push(h('li', {}, 'Take with ', courseLinks([x], v), ' (corequisite)')));
+  if (c.standing) reqs.push(h('li', {}, `${c.standing === 'senior' ? 'Senior' : 'Junior'} standing (assumed ${c.standing === 'senior' ? '75' : '50'}% of total units)`));
+  if (c.coi) reqs.push(h('li', {}, 'Consent of instructor (COI) also works'));
+  if (c.note) reqs.push(h('li', { class: 'pl-muted' }, 'AMIS note ', h('q', {}, c.note)));
 
   const actions = [];
   const past = i.tries.length > 0;
-  if (i.status !== 'passed') actions.push(`<button type="button" class="btn btn-secondary" data-act="passed">${icon('check')}Mark passed</button>`);
-  if (i.status !== 'failed') actions.push(`<button type="button" class="btn btn-secondary" data-act="failed">${icon('x')}${past || i.status === 'inprogress' ? 'Mark failed' : 'Mark failed (what-if)'}</button>`);
-  if (i.override) actions.push(`<button type="button" class="pl-textbtn" data-act="clear">Use ${past ? 'AMIS status' : 'plan'} again</button>`);
-  if (t !== undefined) actions.push(`<button type="button" class="pl-textbtn" data-act="later">Take a term later</button>`);
-  if (state.data.plannerPins[code] != null) actions.push('<button type="button" class="pl-textbtn" data-act="unpin">Back to earliest</button>');
-  const petition = restricted(c) && i.status !== 'passed'
-    ? `<label class="pl-check pl-petition"><input type="checkbox" data-act="petition"${state.data.plannerPetitions[code] ? ' checked' : ''}> Plan on a petitioned class when it is not offered. Needs about 10 students and department, college and OVCAA approval, so treat it as conditional.</label>`
-    : '';
+  if (i.status !== 'passed') actions.push(button({ icon: 'check', text: 'Mark passed', dataset: { act: 'passed' } }));
+  if (i.status !== 'failed') actions.push(button({ icon: 'x', text: past || i.status === 'inprogress' ? 'Mark failed' : 'Mark failed (what-if)', dataset: { act: 'failed' } }));
+  if (i.override) actions.push(button({ variant: 'text', text: `Use ${past ? 'AMIS status' : 'plan'} again`, dataset: { act: 'clear' } }));
+  if (t !== undefined) actions.push(button({ variant: 'text', text: 'Take a term later', dataset: { act: 'later' } }));
+  if (state.data.plannerPins[code] != null) actions.push(button({ variant: 'text', text: 'Back to earliest', dataset: { act: 'unpin' } }));
+  const petition = restricted(c) && i.status !== 'passed' && h('label', { class: 'pl-check pl-petition' },
+    h('input', { type: 'checkbox', dataset: { act: 'petition' }, checked: !!state.data.plannerPetitions[code] }),
+    ' Plan on a petitioned class when it is not offered. Needs about 10 students and department, college and OVCAA approval, so treat it as conditional.');
 
-  setHTML(panel, `
-    <div class="pl-detail-head">
-      <div><p class="pl-detail-code">${esc(c.code)} <span class="pl-status-pill st-${card ? card.status : 'planned'}">${esc(status)}</span></p>
-      <p class="pl-detail-title">${esc(c.title)}</p></div>
-      <button type="button" class="pl-close" data-act="close" aria-label="Close details">${icon('close')}</button>
-    </div>
-    <p class="pl-muted">${facts.map(esc).join('. ')}.</p>
-    ${card && card.waitingOn ? `<p class="pl-note">${icon('lock')}Waiting on ${esc(card.waitingOn)}</p>` : ''}
-    ${metrics}
-    <h4>Requires</h4>
-    ${reqs.length ? `<ul class="pl-reqs">${reqs.join('')}</ul>` : '<p class="pl-muted">No prerequisites.</p>'}
-    <h4>Unlocks</h4>
-    ${deps.length ? `<p class="pl-deps">${deps.map(d => groupHTML([d], v)).join(' ')}</p>` : '<p class="pl-muted">Nothing else in your checklist.</p>'}
-    <div class="pl-actions">${actions.join('')}</div>
-    ${petition}`);
+  panel.replaceChildren(...flat([
+    h('div', { class: 'pl-detail-head' },
+      h('div', {},
+        h('p', { class: 'pl-detail-code' }, c.code, ' ', statusPill(card ? card.status : (i.status === 'failed' ? 'failed' : 'planned'))),
+        h('p', { class: 'pl-detail-title' }, c.title)),
+      button({ variant: 'icon', icon: 'x', class: 'pl-close', 'aria-label': 'Close details', dataset: { act: 'close' } })),
+    h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
+    card && card.waitingOn && h('p', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`),
+    metrics,
+    h('h4', {}, 'Requires'),
+    reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
+    h('h4', {}, 'Unlocks'),
+    deps.length ? h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v))) : h('p', { class: 'pl-muted' }, 'Nothing else in your checklist.'),
+    h('div', { class: 'pl-actions' }, actions),
+    petition,
+  ]));
   panel.classList.remove('hidden');
 
   // Phone: show it inline under the selected card. Desktop: floating panel.
@@ -881,16 +800,32 @@ function fillWhatifSelect(v) {
   const keep = sel.value || (state.whatif && state.whatif.code) || '';
   const codes = Object.keys(v.now.result.assignedTerm).sort();
   if (state.whatif && !codes.includes(state.whatif.code)) codes.push(state.whatif.code);
-  setHTML(sel, '<option value="">pick a course</option>' + codes.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join(''));
+  sel.replaceChildren(h('option', { value: '' }, 'pick a course'), ...codes.map(c => h('option', { value: c }, c)));
   sel.value = codes.includes(keep) ? keep : '';
 }
 
 function simulate(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const code = $('whatifCourse').value;
   const mode = $('whatifMode').value;
   if (!code) {
     $('whatifResult').textContent = 'Pick a course first.';
+    return;
+  }
+  // A course already failed on AMIS: its retake is in the plan, so report
+  // what that failure costs instead of failing it a second time.
+  const pastFail = mode === 'fail' && state.view.costs.find(c => c.code === code && c.past);
+  if (pastFail) {
+    const v = state.view;
+    const t = v.now.result.assignedTerm[code];
+    const retake = t === undefined ? '' : ` The retake is planned for ${absLabel(v.startAbs + t)}.`;
+    $('whatifResult').textContent = pastFail.cost > 0
+      ? `${code} is failed on AMIS, which moves graduation ${termsText(pastFail.cost)} later, to ${absLabel(v.startAbs + v.now.result.gradTermIndex)}.${retake}`
+      : `${code} is failed on AMIS, but it does not move graduation.${retake}`;
+    $('whatifClear').classList.remove('hidden');
+    state.selected = code;
+    renderDetail();
+    drawEdges();
     return;
   }
   state.whatif = { code, mode };
@@ -903,7 +838,7 @@ function simulate(e) {
   const list = pushed.length > 5 ? `${pushed.slice(0, 5).join(', ')} and ${pushed.length - 5} more` : pushed.join(', ');
   const verb = mode === 'fail' ? `Failing ${code}` : `Taking ${code} ${mode === '1' ? 'a term' : 'a year'} later`;
   $('whatifResult').textContent = slip > 0
-    ? `${verb} moves graduation to ${absLabel(v.startAbs + after.gradTermIndex)} (+${termsText(slip)}).${pushed.length ? ` Also pushed later: ${list}.` : ''}`
+    ? `${verb} moves graduation to ${absLabel(v.startAbs + after.gradTermIndex)}, ${termsText(slip)} later.${pushed.length ? ` It also pushes back ${list}.` : ''}`
     : `${verb} does not move graduation.${pushed.length ? ` It shifts ${list}.` : ' Nothing else shifts.'}`;
   $('whatifClear').classList.remove('hidden');
   state.selected = code;
@@ -938,25 +873,28 @@ function initControls() {
     render();
     announce('Plan recomputed from scratch.');
   });
+  const resetDialog = modal($('resetDialog'));
   $('resetPlan').addEventListener('click', () => {
-    if (!confirm('Reset the plan? This clears courses you marked passed or failed, courses you moved, and petitions. Your AMIS grades stay.')) return;
+    $('planMenu').open = false;
+    resetDialog.open();
+  });
+  $('resetConfirm').addEventListener('click', () => {
     Object.assign(state.data, { customCourseStatus: {}, plannerPins: {}, plannerPetitions: {} });
     save(['customCourseStatus', 'plannerPins', 'plannerPetitions']);
     state.whatif = null;
     $('whatifResult').textContent = '';
-    $('planMenu').open = false;
+    resetDialog.close();
     render();
+    announce('Plan reset. Your AMIS grades stay.');
   });
   $('whatifForm').addEventListener('submit', simulate);
   $('whatifClear').addEventListener('click', clearWhatif);
 
   // Legend: one row of chips, built from the same status table as the cards.
-  const chips = ['passed', 'inprogress', 'failed', 'retake', 'ready', 'planned', 'locked']
-    .map(s => `<span class="pl-chip st-${s}">${icon(STATUS[s][0])}${STATUS[s][1]}</span>`).join('') +
-    '<span class="pl-chip crit-chip">Critical</span>' +
-    `<span class="pl-chip">${icon('flag')}Petition</span>`;
-  const chipDoc = new DOMParser().parseFromString(chips, 'text/html');
-  $('legend').prepend(...Array.from(chipDoc.body.childNodes, node => document.importNode(node, true)));
+  $('legend').prepend(
+    ...['passed', 'inprogress', 'failed', 'retake', 'ready', 'planned', 'locked'].map(st => statusPill(st)),
+    badge('Critical', { class: 'crit-chip', title: 'Courses that would delay graduation if you slip' }),
+    badge('Petition', { icon: 'flag' }));
 
   const grid = $('plannerGrid');
   grid.addEventListener('click', e => {

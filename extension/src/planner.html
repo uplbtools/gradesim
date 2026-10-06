@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Course Planner - Elbi GradeSim</title>
+  <title>Course planner, Elbi GradeSim</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="planner.css">
+  <script src="components.js"></script>
 </head>
 <body class="planner-page">
   <header class="pl-top">
@@ -15,16 +16,17 @@
       <h1>Elbi GradeSim <span class="pl-top-sub">Course planner</span></h1>
       <span id="plannerProgram" class="byline"></span>
     </div>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme, system" title="Theme, system"></button>
   </header>
 
   <main class="pl-main">
-    <div id="plannerBanner" class="pl-banner hidden" role="status"></div>
+    <div id="plannerBanner" class="pl-banner" role="status"></div>
 
     <section class="pl-summary" aria-live="polite">
       <p class="pl-grad"><span id="gradTerm">Loading plan</span><span id="gradDelta" class="pl-delta"></span></p>
       <p id="gradSub" class="pl-sub"></p>
       <ul id="failCosts" class="pl-costs"></ul>
+      <p class="disclaimer">Not affiliated with UP. Unofficial estimate. INC/DRP may not reflect correctly. Always verify with the OUR.</p>
     </section>
 
     <section class="pl-controls">
@@ -37,7 +39,7 @@
         </select>
         <select id="whatifCourse" aria-label="Course"></select>
         <button class="btn btn-primary" type="submit">Simulate</button>
-        <button id="whatifClear" class="pl-textbtn hidden" type="button">Clear</button>
+        <button id="whatifClear" class="btn-text hidden" type="button">Clear</button>
       </form>
       <details id="planMenu" class="pl-menu">
         <summary class="btn btn-secondary">Plan options<span data-icon="chevron"></span></summary>
@@ -59,13 +61,16 @@
         <div class="pl-tips-pop">
           <p>Each column is a term. Past terms come from your AMIS grades, future terms are the earliest plan that respects prerequisites, the sems each course is actually offered, and your unit cap.</p>
           <p>Select a course to see its full prerequisite chain, what it unlocks and how many courses a failure would block. Mark a course failed to see the retake and the delay.</p>
-          <p>Thin maroon lines are the critical path: courses where a one-term slip delays graduation.</p>
-          <p>Offerings come from AMIS class listings for 2023 to 2026. Free electives are not included.</p>
+          <p>Courses marked Critical, joined by thin maroon lines, are your critical path. These are the courses that would delay graduation if you slip, even by one term.</p>
+          <p>Offerings come from recent AMIS class listings. FE cards are free elective placeholders. Any course you pass outside your checklist fills one, and they are never critical.</p>
         </div>
       </details>
     </div>
 
-    <p id="whatifResult" class="pl-result" aria-live="polite"></p>
+    <div class="pl-result-row">
+      <p id="whatifResult" class="pl-result" aria-live="polite"></p>
+      <div id="scrollHint" class="pl-scroll-hint"></div>
+    </div>
 
     <div class="pl-scroll" id="plannerScroll">
       <svg id="plannerArrows" class="pl-arrows" aria-hidden="true"></svg>
@@ -76,7 +81,22 @@
     <span id="plannerStatus" class="visually-hidden" aria-live="polite"></span>
   </main>
 
+  <dialog id="resetDialog" class="modal" aria-labelledby="resetTitle">
+    <div class="modal-header">
+      <h2 id="resetTitle">Reset the plan?</h2>
+      <button class="btn-icon modal-close" type="button" data-close aria-label="Close"><span data-icon="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <p>This clears the courses you marked passed or failed, the courses you moved, and your petitions. Your AMIS grades stay.</p>
+    </div>
+    <div class="modal-footer modal-actions">
+      <button class="btn btn-secondary" type="button" data-close>Keep my plan</button>
+      <button id="resetConfirm" class="btn btn-danger" type="button">Reset plan</button>
+    </div>
+  </dialog>
+
   <script src="curriculum.js"></script>
+  <script src="requirements.js"></script>
   <script src="catalog.js"></script>
   <script src="scheduler.js"></script>
   <script src="planner.js"></script>
