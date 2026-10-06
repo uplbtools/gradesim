@@ -445,15 +445,15 @@ async function loadGradesData() {
 
 function displayGradesData(courses) {
   // Calculate GWA with exclusions
-  const { gwa, totalUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount } = calculateGWA(courses, excludedCourses);
+  const { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount } = calculateGWA(courses, excludedCourses);
   
   // Display GWA
   document.getElementById('currentGWA').textContent = gwa.toFixed(4);
-  document.getElementById('totalUnits').textContent = excludedCount > 0 ? `${totalUnits} (${excludedUnits} excl.)` : totalUnits;
+  document.getElementById('totalUnits').textContent = excludedCount > 0 ? `${passedUnits} (${excludedUnits} excl.)` : passedUnits;
   document.getElementById('totalCourses').textContent = excludedCount > 0 ? `${totalCourses} (${excludedCount} excl.)` : totalCourses;
   
   // Display honor status
-  displayHonorStatus(gwa);
+  displayHonorStatus(gwa, totalUnits);
   
   // Display grades list (pass courses for toggle functionality)
   displayGradesList(gradesBySemester, courses);
@@ -477,14 +477,16 @@ function displayGradesData(courses) {
 function calculateGWA(courses, excludedIds = new Set()) {
   let totalWeightedGrade = 0;
   let totalUnits = 0;
+  let passedUnits = 0;
   let totalCourses = 0;
   let excludedUnits = 0;
   let excludedCount = 0;
   const gradesBySemester = {};
   const completedCourses = [];
   
-  // Courses to exclude from GWA calculation (by prefix)
-  const excludedPrefixes = ['NSTP', 'HK', 'PE'];
+  // PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
+  // Education majors) and similar codes in.
+  const excludedPrefix = /^(NSTP|HK|PE)\b/i;
   // Non-numeric grades that should be displayed but not counted in GWA
   const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
   
@@ -494,10 +496,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
     
     // Skip NSTP, HK, PE courses entirely
-    const isPrefixExcluded = excludedPrefixes.some(prefix => 
-      courseCode.toUpperCase().startsWith(prefix)
-    );
-    if (isPrefixExcluded) {
+    if (excludedPrefix.test(courseCode.trim())) {
       return;
     }
     
@@ -551,24 +550,33 @@ function calculateGWA(courses, excludedIds = new Set()) {
     totalWeightedGrade += grade * units;
     totalUnits += units;
     totalCourses++;
-    
-    completedCourses.push({
-      code: course.courseCode,
-      title: course.courseTitle,
-      units: units,
-      grade: grade
-    });
+
+    // 4.00 and 5.00 count in the GWA but do not complete the course.
+    if (grade <= 3.0) {
+      passedUnits += units;
+      completedCourses.push({
+        code: course.courseCode,
+        title: course.courseTitle,
+        units: units,
+        grade: grade
+      });
+    }
   });
   
   const gwa = totalUnits > 0 ? totalWeightedGrade / totalUnits : 0;
   
-  return { gwa, totalUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount };
+  return { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount };
 }
 
-function displayHonorStatus(gwa) {
+function displayHonorStatus(gwa, totalUnits) {
   const honorEl = document.getElementById('honorStatus');
-  
-  if (gwa <= 1.20) {
+
+  if (!totalUnits) {
+    // Nothing graded yet, so there is no track to show.
+    honorEl.textContent = '';
+    honorEl.className = 'honor-status';
+    honorEl.style.display = 'none';
+  } else if (gwa <= 1.20) {
     honorEl.safeHTML = icon('award') + 'Summa Cum Laude track';
     honorEl.className = 'honor-status summa';
     honorEl.style.display = '';
@@ -579,10 +587,6 @@ function displayHonorStatus(gwa) {
   } else if (gwa <= 1.75) {
     honorEl.safeHTML = icon('award') + 'Cum Laude track';
     honorEl.className = 'honor-status cum-laude';
-    honorEl.style.display = '';
-  } else if (gwa <= 2.00) {
-    honorEl.safeHTML = icon('award') + 'Honor Roll track';
-    honorEl.className = 'honor-status honor-roll';
     honorEl.style.display = '';
   } else {
     // Hide the element when not on any honor track
@@ -659,16 +663,14 @@ function displayGradesList(gradesBySemester, allCourses) {
     // Build header with group GWA and scholar status
     let scholarStatus = '';
     let scholarClass = '';
-    if (groupGWA.gwa > 0) {
+    // Scholar lists need a full load (15 units) and no 5.00, 4.00 or INC.
+    if (groupGWA.gwa > 0 && groupGWA.totalUnits >= 15 && !groupGWA.hasFailOrInc) {
       if (groupGWA.gwa <= 1.45) {
         scholarStatus = 'University Scholar';
         scholarClass = 'university-scholar';
       } else if (groupGWA.gwa <= 1.75) {
         scholarStatus = 'College Scholar';
         scholarClass = 'college-scholar';
-      } else if (groupGWA.gwa <= 2.00) {
-        scholarStatus = 'Honor Roll';
-        scholarClass = 'honor-roll';
       }
     }
     
@@ -749,6 +751,7 @@ function displayGradesList(gradesBySemester, allCourses) {
 function calculateGroupGWA(courses) {
   let totalWeightedGrade = 0;
   let totalUnits = 0;
+  let hasFailOrInc = false;
   
   courses.forEach(course => {
     const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
@@ -758,18 +761,20 @@ function calculateGroupGWA(courses) {
       return;
     }
     
+    if ((course.grade || '').toString().toUpperCase().trim() === 'INC') hasFailOrInc = true;
     const grade = parseFloat(course.grade);
     if (isNaN(grade) || grade < 1.0 || grade > 5.0) return;
-    
+    if (grade > 3.0) hasFailOrInc = true;
+
     const units = course.units || 0;
     if (units === 0) return;
-    
+
     totalWeightedGrade += grade * units;
     totalUnits += units;
   });
-  
+
   const gwa = totalUnits > 0 ? totalWeightedGrade / totalUnits : 0;
-  return { gwa, totalUnits };
+  return { gwa, totalUnits, hasFailOrInc };
 }
 
 // allCourses: every AMIS row, including courses being taken now, so the track

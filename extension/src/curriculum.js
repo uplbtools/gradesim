@@ -30,7 +30,8 @@ function normalizeCourseCode(code) {
 
 function isNonGwaCourseCode(courseCode) {
   const code = normalizeCourseCode(courseCode);
-  return NON_GWA_PREFIXES.some(prefix => code.startsWith(prefix));
+  // Word boundary so PEd and similar majors are not caught by PE.
+  return NON_GWA_PREFIXES.some(prefix => new RegExp(`^${prefix}\\b`).test(code));
 }
 
 function isGECourse(courseCode, courseTitle) {
@@ -76,7 +77,7 @@ function genericRequirementCourses(program) {
     });
   }
 
-  const existingHK = countExisting(c => normalizeCourseCode(c.code).startsWith('HK') || normalizeCourseCode(c.code).startsWith('PE'));
+  const existingHK = countExisting(c => /^(HK|PE)\b/.test(normalizeCourseCode(c.code)));
   const hkRequired = program?.hkCoursesRequired == null ? 2 : program.hkCoursesRequired;
   for (let i = existingHK; i < hkRequired; i++) {
     const slot = defaultSlot(i);
@@ -172,7 +173,7 @@ function getCompletedRequirementSlotCodes(completedCourses, program) {
   (program?.majorCourses || []).forEach(course => {
     const code = normalizeCourseCode(course.code);
     if (isGECourse(code, course.title)) existing.ge.add(code);
-    else if (code.startsWith('HK') || code.startsWith('PE')) existing.hk.add(code);
+    else if (/^(HK|PE)\b/.test(code)) existing.hk.add(code);
     else if (code.startsWith('NSTP')) existing.nstp.add(code);
   });
 
@@ -182,7 +183,7 @@ function getCompletedRequirementSlotCodes(completedCourses, program) {
     if (isGECourse(code, title)) {
       counts.ge++;
       if (existing.ge.has(code)) existingDone.ge++;
-    } else if (code.startsWith('HK') || code.startsWith('PE')) {
+    } else if (/^(HK|PE)\b/.test(code)) {
       counts.hk++;
       if (existing.hk.has(code)) existingDone.hk++;
     } else if (code.startsWith('NSTP')) {
