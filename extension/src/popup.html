@@ -6,6 +6,7 @@
   <title>Elbi GradeSim</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
+  <script src="components.js"></script>
 </head>
 <body>
   <div class="container">
@@ -16,369 +17,326 @@
         <span class="byline">by UPLB Tools</span>
       </div>
       <div class="header-actions">
-        <button id="helpBtn" class="header-btn" type="button" title="How to use"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help</button>
-        <button id="openTabBtn" class="header-btn primary" type="button" title="Open in a full tab"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Full tab</button>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+        <button id="helpBtn" class="header-btn" type="button" aria-haspopup="dialog"><span data-icon="help"></span>Help</button>
+        <button id="openTabBtn" class="header-btn primary" type="button" title="Open in a full tab"><span data-icon="external"></span>Full tab</button>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme, system" title="Theme, system"></button>
       </div>
     </header>
 
-    <div id="loading" class="loading">
-      <p>Loading grades data...</p>
-      <p class="hint">Make sure you're logged into AMIS and have visited the Personal Information page.</p>
+    <div id="loading" class="loading" role="status">
+      <p>Loading your grades</p>
+      <p class="hint">Make sure you are logged in to AMIS and have opened the Personal Information page.</p>
     </div>
 
     <div id="noData" class="no-data hidden">
-      <p><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>No grades data found</p>
-      <p class="hint">
-        1. Go to <a href="https://amis.uplb.edu.ph" target="_blank">AMIS</a> and log in<br>
-        2. The extension will automatically capture your grades<br>
-        3. Come back here and click Refresh
-      </p>
-      <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+      <p class="no-data-title"><span data-icon="alert"></span>No grades found yet</p>
+      <ol class="hint steps">
+        <li>Log in to <a href="https://amis.uplb.edu.ph" target="_blank" rel="noopener">AMIS</a>.</li>
+        <li>GradeSim reads your grades from the page by itself.</li>
+        <li>Come back here and select Refresh.</li>
+      </ol>
+      <button id="refreshBtn" class="btn btn-primary" type="button">Refresh</button>
       <p id="refreshStatus" class="hint" role="status"></p>
     </div>
 
     <div id="mainContent" class="hidden">
       <div class="tab-layout-grid">
         <div class="sidebar-column">
-      <!-- Program Selector -->
-      <section class="program-selector">
-        <label for="programSelect">Your program</label>
-        <select id="programSelect">
-          <optgroup label="College of Arts and Sciences">
-            <option value="AASS">AA Sports Studies</option>
-            <option value="BACOMM">BA Communication Arts</option>
-            <option value="BAPHILO">BA Philosophy</option>
-            <option value="BASOCIO">BA Sociology</option>
-            <option value="BSAPMATH">BS Applied Mathematics</option>
-            <option value="BSBIO">BS Biology</option>
-            <option value="BSCHEM">BS Chemistry</option>
-            <option value="BSCS" selected>BS Computer Science</option>
-            <option value="BSMATH">BS Mathematics</option>
-            <option value="BSAPPHY">BS Applied Physics</option>
-            <option value="BSSTAT">BS Statistics</option>
-          </optgroup>
-          <optgroup label="College of Agriculture and Food Science">
-            <option value="BSABIO">BS Agricultural Biotechnology</option>
-            <option value="BSACHEM">BS Agricultural Chemistry</option>
-            <option value="BSAGRI">BS Agriculture</option>
-            <option value="BSFST">BS Food Science and Technology</option>
-          </optgroup>
-          <optgroup label="College of Development Communication">
-            <option value="ASDC">AS Development Communication</option>
-            <option value="BSDC">BS Development Communication</option>
-          </optgroup>
-          <optgroup label="College of Economics and Management">
-            <option value="AAENTREP">AA Entrepreneurship</option>
-            <option value="BSABME">BS Agribusiness Management and Entrepreneurship</option>
-            <option value="BSAAE">BS Agricultural and Applied Economics</option>
-            <option value="BSACCT">BS Accountancy</option>
-            <option value="BSECON">BS Economics</option>
-          </optgroup>
-          <optgroup label="College of Engineering and Agro-Industrial Technology">
-            <option value="BSABE">BS Agricultural and Biosystems Engineering</option>
-            <option value="BSCHE">BS Chemical Engineering</option>
-            <option value="BSCE">BS Civil Engineering</option>
-            <option value="BSEE">BS Electrical Engineering</option>
-            <option value="BSIE">BS Industrial Engineering</option>
-            <option value="BSMATE">BS Materials Engineering</option>
-            <option value="BSME">BS Mechanical Engineering</option>
-          </optgroup>
-          <optgroup label="College of Forestry and Natural Resources">
-            <option value="AAFOR">Associate in Forestry</option>
-            <option value="BSFOR">BS Forestry</option>
-          </optgroup>
-          <optgroup label="College of Human Ecology">
-            <option value="BSHE">BS Human Ecology</option>
-            <option value="BSNUTRI">BS Nutrition</option>
-          </optgroup>
-          <optgroup label="College of Veterinary Medicine">
-            <option value="DVM">Doctor of Veterinary Medicine</option>
-          </optgroup>
-        </select>
-      </section>
+          <section class="card program-selector">
+            <label for="programSelect">Your program</label>
+            <select id="programSelect">
+              <optgroup label="College of Arts and Sciences">
+              <option value="AASS">AA Sports Studies</option>
+              <option value="BACOMM">BA Communication Arts</option>
+              <option value="BAPHILO">BA Philosophy</option>
+              <option value="BASOCIO">BA Sociology</option>
+              <option value="BSAPMATH">BS Applied Mathematics</option>
+              <option value="BSBIO">BS Biology</option>
+              <option value="BSCHEM">BS Chemistry</option>
+              <option value="BSCS" selected>BS Computer Science</option>
+              <option value="BSMATH">BS Mathematics</option>
+              <option value="BSAPPHY">BS Applied Physics</option>
+              <option value="BSSTAT">BS Statistics</option>
+            </optgroup>
+            <optgroup label="College of Agriculture and Food Science">
+              <option value="BSABIO">BS Agricultural Biotechnology</option>
+              <option value="BSACHEM">BS Agricultural Chemistry</option>
+              <option value="BSAGRI">BS Agriculture</option>
+              <option value="BSFST">BS Food Science and Technology</option>
+            </optgroup>
+            <optgroup label="College of Development Communication">
+              <option value="ASDC">AS Development Communication</option>
+              <option value="BSDC">BS Development Communication</option>
+            </optgroup>
+            <optgroup label="College of Economics and Management">
+              <option value="AAENTREP">AA Entrepreneurship</option>
+              <option value="BSABME">BS Agribusiness Management and Entrepreneurship</option>
+              <option value="BSAAE">BS Agricultural and Applied Economics</option>
+              <option value="BSACCT">BS Accountancy</option>
+              <option value="BSECON">BS Economics</option>
+            </optgroup>
+            <optgroup label="College of Engineering and Agro-Industrial Technology">
+              <option value="BSABE">BS Agricultural and Biosystems Engineering</option>
+              <option value="BSCHE">BS Chemical Engineering</option>
+              <option value="BSCE">BS Civil Engineering</option>
+              <option value="BSEE">BS Electrical Engineering</option>
+              <option value="BSIE">BS Industrial Engineering</option>
+              <option value="BSMATE">BS Materials Engineering</option>
+              <option value="BSME">BS Mechanical Engineering</option>
+            </optgroup>
+            <optgroup label="College of Forestry and Natural Resources">
+              <option value="AAFOR">Associate in Forestry</option>
+              <option value="BSFOR">BS Forestry</option>
+            </optgroup>
+            <optgroup label="College of Human Ecology">
+              <option value="BSHE">BS Human Ecology</option>
+              <option value="BSNUTRI">BS Nutrition</option>
+            </optgroup>
+            <optgroup label="College of Veterinary Medicine">
+              <option value="DVM">Doctor of Veterinary Medicine</option>
+            </optgroup>
+            </select>
+          </section>
 
-      <!-- GWA Section -->
-      <section class="gwa-section">
-        <h2>My Elbi GWA</h2>
-        <div class="gwa-display">
-          <span id="currentGWA" class="gwa-value">--.--</span>
-        </div>
-        <div class="gwa-stats">
-          <div class="stat">
-            <span class="stat-label">Total Units Passed</span>
-            <span id="totalUnits" class="stat-value">--</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Courses Completed</span>
-            <span id="totalCourses" class="stat-value">--</span>
-          </div>
-        </div>
-        <div id="honorStatus" class="honor-status"></div>
-      </section>
+          <section class="card gwa-section" aria-labelledby="gwaHeading">
+            <h2 id="gwaHeading">My Elbi GWA</h2>
+            <span id="currentGWA" class="gwa-value">--.--</span>
+            <div id="gwaStats" class="gwa-stats"></div>
+            <div id="honorStatus" class="honor-status"></div>
+          </section>
 
-      <p class="credits"><a href="https://gradesim.uplb.tools" target="_blank" rel="noopener">gradesim.uplb.tools</a> <span aria-hidden="true">|</span> <a href="#" id="viewTermsLink" class="terms-link">Terms and privacy</a></p>
+          <p class="credits"><a href="https://gradesim.uplb.tools" target="_blank" rel="noopener">gradesim.uplb.tools</a> <span aria-hidden="true">|</span> <button type="button" id="viewTermsLink" class="btn-text terms-link" aria-haspopup="dialog">Terms and privacy</button></p>
         </div>
 
         <div class="content-column">
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab active" data-tab="grades">Grades</button>
-        <button class="tab" data-tab="whatif">What if</button>
-        <button class="tab" data-tab="planner">Planner</button>
-        <button class="tab" data-tab="wrapped">Wrapped</button>
-      </div>
-
-      <!-- Grades Tab -->
-      <section id="gradesTab" class="tab-content active">
-        <div class="view-toggle">
-          <button class="view-btn active" data-view="semester">By Semester</button>
-          <button class="view-btn" data-view="year">By Year</button>
-        </div>
-        <div class="grades-list" id="gradesList">
-          <!-- Grades will be populated here -->
-        </div>
-      </section>
-
-      <!-- What If Tab -->
-      <section id="whatifTab" class="tab-content hidden">
-        <div class="whatif-container">
-          <h3>Target Latin Honor</h3>
-          <div class="honor-options">
-            <label class="honor-option">
-              <input type="radio" name="targetHonor" value="1.20">
-              <span class="honor-label">
-                <strong>Summa Cum Laude</strong>
-                <small>GWA ≤ 1.20</small>
-              </span>
-            </label>
-            <label class="honor-option">
-              <input type="radio" name="targetHonor" value="1.45">
-              <span class="honor-label">
-                <strong>Magna Cum Laude</strong>
-                <small>GWA ≤ 1.45</small>
-              </span>
-            </label>
-            <label class="honor-option">
-              <input type="radio" name="targetHonor" value="1.75">
-              <span class="honor-label">
-                <strong>Cum Laude</strong>
-                <small>GWA ≤ 1.75</small>
-              </span>
-            </label>
-            <label class="honor-option">
-              <input type="radio" name="targetHonor" value="custom">
-              <span class="honor-label">
-                <strong>Custom Target</strong>
-                <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="e.g., 1.50">
-              </span>
-            </label>
+          <div class="tabs" aria-label="Sections">
+            <button class="tab active" type="button" data-tab="grades">Grades</button>
+            <button class="tab" type="button" data-tab="whatif">What if</button>
+            <button class="tab" type="button" data-tab="planner">Planner</button>
+            <button class="tab" type="button" data-tab="wrapped">Wrapped</button>
           </div>
 
-          <button id="calculateBtn" class="btn btn-primary">Calculate Required Grades</button>
-
-          <div id="whatifResults" class="whatif-results hidden">
-            <h3>Results</h3>
-            <div id="resultsContent"></div>
-          </div>
-
-          <div class="track-selector" id="trackSelector">
-            <h3>Your Track</h3>
-            <div id="trackInfo" class="track-info"></div>
-            <div class="track-options" id="trackOptions">
-              <!-- Track options will be populated dynamically based on selected program -->
+          <section id="gradesTab" class="tab-content">
+            <div class="view-toggle" role="group" aria-label="Group grades">
+              <button class="view-btn active" type="button" data-view="semester" aria-pressed="true">By semester</button>
+              <button class="view-btn" type="button" data-view="year" aria-pressed="false">By year</button>
             </div>
-          </div>
+            <div class="grades-list" id="gradesList"></div>
+          </section>
 
-          <!-- Course Substitutions -->
-          <div class="substitutions-container" id="substitutionsContainer">
-            <h3>Course Substitutions</h3>
-            <div id="substitutionsList" class="substitutions-list">
-              <!-- Populated by JS -->
-            </div>
-            <div class="add-sub-box">
-              <div class="sub-field">
-                <label for="subRequired">Required course</label>
-                <select id="subRequired">
-                  <option value="">Choose a required course</option>
-                </select>
+          <section id="whatifTab" class="tab-content" hidden>
+            <div class="whatif-container">
+              <fieldset class="honor-fieldset">
+                <legend><h3>Target Latin honor</h3></legend>
+                <div class="honor-options">
+                  <label class="choice">
+                    <input type="radio" name="targetHonor" value="1.20">
+                    <span class="choice-label"><strong>Summa cum laude</strong><small>GWA of 1.20 or better</small></span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="targetHonor" value="1.45">
+                    <span class="choice-label"><strong>Magna cum laude</strong><small>GWA of 1.45 or better</small></span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="targetHonor" value="1.75">
+                    <span class="choice-label"><strong>Cum laude</strong><small>GWA of 1.75 or better</small></span>
+                  </label>
+                  <label class="choice">
+                    <input type="radio" name="targetHonor" value="custom">
+                    <span class="choice-label">
+                      <strong>Custom target</strong>
+                      <input type="number" id="customGWA" step="0.01" min="1.00" max="5.00" placeholder="1.50" aria-label="Custom target GWA">
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <button id="calculateBtn" class="btn btn-primary" type="button">Calculate required grades</button>
+
+              <div id="whatifResults" class="card whatif-results" aria-live="polite">
+                <div id="resultsContent"></div>
               </div>
-              <div class="sub-field">
-                <label for="subTaken">Covered by</label>
-                <select id="subTaken">
-                  <option value="">Choose a completed course</option>
-                </select>
+
+              <div class="card track-selector" id="trackSelector">
+                <h3>Your track</h3>
+                <div id="trackInfo"></div>
+                <div class="track-options" id="trackOptions" role="radiogroup" aria-label="Track"></div>
               </div>
-              <button id="addSubBtn" class="btn btn-secondary btn-sm" type="button">Apply substitution</button>
+
+              <div class="card substitutions-container" id="substitutionsContainer">
+                <h3>Course substitutions</h3>
+                <div id="substitutionsList" class="substitutions-list"></div>
+                <div class="add-sub-box">
+                  <div class="sub-field">
+                    <label for="subRequired">Required course</label>
+                    <select id="subRequired"></select>
+                  </div>
+                  <div class="sub-field">
+                    <label for="subTaken">Covered by</label>
+                    <select id="subTaken"></select>
+                  </div>
+                  <div id="subNotice" aria-live="polite"></div>
+                  <button id="addSubBtn" class="btn btn-secondary btn-sm" type="button">Apply substitution</button>
+                </div>
+              </div>
+
+              <div class="remaining-courses">
+                <h3>Remaining courses</h3>
+                <p class="hint" id="curriculumHint">Based on the selected curriculum</p>
+                <div id="remainingList" class="list-card" role="list"></div>
+                <div id="remainingNotes"></div>
+              </div>
             </div>
-          </div>
+          </section>
 
-          <div class="remaining-courses">
-            <h3>Remaining Courses</h3>
-            <p class="hint" id="curriculumHint">Based on selected curriculum</p>
-            <div id="remainingList"></div>
-          </div>
-        </div>
-      </section>
+          <section id="plannerTab" class="tab-content" hidden>
+            <h3>Course planner</h3>
+            <p class="hint">See your earliest graduation term, what a failed course would cost, and your critical path, the courses that would delay graduation if you slip. Opens in a new tab.</p>
+            <button id="openPlannerBtn" class="btn btn-primary" type="button">Open planner</button>
+          </section>
 
-      <!-- Planner Tab -->
-      <section id="plannerTab" class="tab-content hidden">
-        <h3>Course planner</h3>
-        <p class="hint">See your earliest graduation term, the courses on your critical path, and what a failed course would cost. Opens in a new tab.</p>
-        <button id="openPlannerBtn" class="btn btn-primary">Open planner</button>
-      </section>
-
-      <!-- Wrapped Tab -->
-      <section id="wrappedTab" class="tab-content hidden">
-        <div class="wrapped-container">
-          <div id="wrappedPanel" class="wrapped-panel">
-            <!-- Panels will be populated by JS -->
-          </div>
-          <div class="wrapped-nav">
-            <button id="wrappedPrev" class="wrapped-nav-btn" disabled><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Prev</button>
-            <span id="wrappedProgress" class="wrapped-progress">1 / 5</span>
-            <button id="wrappedNext" class="wrapped-nav-btn">Next<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-          </div>
-          <button id="wrappedExport" class="btn btn-primary wrapped-export">Export for IG story</button>
-        </div>
-      </section>
+          <section id="wrappedTab" class="tab-content" hidden>
+            <div class="wrapped-container">
+              <div id="wrappedPanel" class="card wrapped-panel" aria-live="polite"></div>
+              <div class="wrapped-nav">
+                <button id="wrappedPrev" class="btn btn-secondary btn-sm" type="button" disabled><span data-icon="prev"></span>Previous</button>
+                <span id="wrappedProgress" class="wrapped-progress">1 of 6</span>
+                <button id="wrappedNext" class="btn btn-secondary btn-sm" type="button">Next<span data-icon="next"></span></button>
+              </div>
+              <button id="wrappedExport" class="btn btn-primary wrapped-export" type="button">Save slide as an image</button>
+            </div>
+          </section>
         </div>
       </div>
     </div>
 
     <div class="data-actions-footer">
-      <button id="exportBtn" class="header-btn" type="button" title="Export grades and settings as JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export JSON</button>
-      <button id="importBtn" class="header-btn" type="button" title="Import grades and settings from JSON"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>Import JSON</button>
+      <button id="exportBtn" class="header-btn" type="button" title="Save grades and settings to a JSON file"><span data-icon="download"></span>Export JSON</button>
+      <button id="importBtn" class="header-btn" type="button" title="Restore grades and settings from a JSON file"><span data-icon="upload"></span>Import JSON</button>
       <input type="file" id="importFile" accept=".json" hidden>
     </div>
+    <div id="dataNotice" aria-live="polite"></div>
   </div>
 
-  <!-- Help Modal -->
-  <div id="helpOverlay" class="terms-overlay hidden">
-    <div class="terms-modal help-modal">
-      <div class="terms-header">
-        <h2>How to use Elbi GradeSim</h2>
-        <button id="closeHelpBtn" class="close-terms-btn" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  <dialog id="helpDialog" class="modal help-modal" aria-labelledby="helpTitle">
+    <div class="modal-header">
+      <h2 id="helpTitle">How to use Elbi GradeSim</h2>
+      <button class="btn-icon modal-close" type="button" data-close aria-label="Close"><span data-icon="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="eyeOff"></span></span>
+        <div class="help-text">
+          <strong>Leave a course out of your GWA</strong>
+          <p>Select Leave out of GWA under a course to drop it from the calculation, for example a course from a program you shifted out of. NSTP, HK and PE never count, and grades like INC and DRP are skipped on their own.</p>
+        </div>
       </div>
-      <div class="terms-content help-content">
-        <div class="help-item">
-          <div class="help-badge btn-primary">EXCL.</div>
-          <div class="help-text">
-            <strong>Exclude from GWA</strong>
-            <p>Toggle a subject out of your GWA calculation. This is useful for NSTP, HK, or other non-bearing subjects. Grades like INC and DRP are handled automatically.</p>
-          </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="award"></span></span>
+        <div class="help-text">
+          <strong>Scholar status</strong>
+          <p>A semester shows University Scholar at a GWA of 1.45 or better and College Scholar at 1.75 or better, when you carried at least 15 units with no 4.00, 5.00 or INC.</p>
         </div>
-        <div class="help-item">
-          <div class="help-badge scholar">SCHOLAR</div>
-          <div class="help-text">
-            <strong>Scholar Status</strong>
-            <p>Automatically displayed per semester when your GWA qualifies (&le;1.45 for University Scholar, &le;1.75 for College Scholar) assuming you meet unit requirements.</p>
-          </div>
+      </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="target"></span></span>
+        <div class="help-text">
+          <strong>Target Latin honors</strong>
+          <p>In the What if tab, pick a Latin honor such as cum laude. GradeSim shows the average grade you need in your remaining units to reach it.</p>
         </div>
-        <div class="help-item">
-          <div class="help-badge">WHAT IF</div>
-          <div class="help-text">
-            <strong>Target Latin Honors</strong>
-            <p>In the What if tab, select a target Latin Honor (e.g. Cum Laude). The app will calculate the required average grade you need for your remaining units to achieve it.</p>
-          </div>
+      </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="download"></span></span>
+        <div class="help-text">
+          <strong>Backup and restore</strong>
+          <p>Export JSON saves your grades and settings to a file. Import JSON restores them later or on another device.</p>
         </div>
-        <div class="help-item">
-          <div class="help-badge">JSON</div>
-          <div class="help-text">
-            <strong>Backup & Restore</strong>
-            <p>Use Export JSON to save your grades and settings to a file. Use Import JSON to restore them later or on another device.</p>
-          </div>
+      </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="trash"></span></span>
+        <div class="help-text">
+          <strong>Clear my data</strong>
+          <p>Delete your grades and every setting GradeSim saved in this browser. Export JSON first if you want a copy.</p>
+          <button id="clearDataBtn" class="btn btn-danger btn-sm" type="button">Clear my data</button>
         </div>
-        <div class="help-item">
-          <div class="help-badge">DATA</div>
-          <div class="help-text">
-            <strong>Clear my data</strong>
-            <p>Delete your grades and every setting GradeSim saved in this browser. Export JSON first if you want a copy.</p>
-            <button id="clearDataBtn" class="btn" type="button">Clear my data</button>
-          </div>
+      </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="sparkles"></span></span>
+        <div class="help-text">
+          <strong>Elbi GradeSim Wrapped</strong>
+          <p>A short recap of your grades so far. You can save any slide as an image for an Instagram story.</p>
         </div>
-        <div class="help-item">
-          <div class="help-badge btn-primary">WRAPPED</div>
-          <div class="help-text">
-            <strong>Elbi GradeSim Wrapped</strong>
-            <p>Generate a fun, interactive summary of your academic journey. You can even export the final slide for your Instagram Story!</p>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-badge">GRADES</div>
-          <div class="help-text">
-            <strong>UP grading system</strong>
-            <div class="legend-grid">
-              <div class="legend-item"><span class="legend-grade">1.0</span> <span class="legend-desc">Excellent</span></div>
-              <div class="legend-item"><span class="legend-grade">1.25</span> <span class="legend-desc">Excellent</span></div>
-              <div class="legend-item"><span class="legend-grade">1.5</span> <span class="legend-desc">Very Good</span></div>
-              <div class="legend-item"><span class="legend-grade">1.75</span> <span class="legend-desc">Very Good</span></div>
-              <div class="legend-item"><span class="legend-grade">2.0</span> <span class="legend-desc">Good</span></div>
-              <div class="legend-item"><span class="legend-grade">2.25</span> <span class="legend-desc">Good</span></div>
-              <div class="legend-item"><span class="legend-grade">2.5</span> <span class="legend-desc">Satisfactory</span></div>
-              <div class="legend-item"><span class="legend-grade">2.75</span> <span class="legend-desc">Satisfactory</span></div>
-              <div class="legend-item"><span class="legend-grade">3.0</span> <span class="legend-desc">Passed</span></div>
-              <div class="legend-item"><span class="legend-grade">4.0</span> <span class="legend-desc">Conditional</span></div>
-              <div class="legend-item"><span class="legend-grade">5.0</span> <span class="legend-desc">Failed</span></div>
-              <div class="legend-item"><span class="legend-grade">INC</span> <span class="legend-desc">Incomplete</span></div>
-              <div class="legend-item"><span class="legend-grade">DRP</span> <span class="legend-desc">Dropped</span></div>
-              <div class="legend-item"><span class="legend-grade">S</span> <span class="legend-desc">Satisfactory</span></div>
-              <div class="legend-item"><span class="legend-grade">U</span> <span class="legend-desc">Unsatisfactory</span></div>
-              <div class="legend-item"><span class="legend-grade">P</span> <span class="legend-desc">Passed</span></div>
-              <div class="legend-item"><span class="legend-grade">F</span> <span class="legend-desc">Failed</span></div>
-            </div>
-          </div>
+      </div>
+      <div class="help-item">
+        <span class="help-icon"><span data-icon="list"></span></span>
+        <div class="help-text">
+          <strong>UP grading system</strong>
+          <dl class="legend-grid">
+            <div class="legend-item"><dt>1.0</dt><dd>Excellent</dd></div>
+            <div class="legend-item"><dt>1.25</dt><dd>Excellent</dd></div>
+            <div class="legend-item"><dt>1.5</dt><dd>Very good</dd></div>
+            <div class="legend-item"><dt>1.75</dt><dd>Very good</dd></div>
+            <div class="legend-item"><dt>2.0</dt><dd>Good</dd></div>
+            <div class="legend-item"><dt>2.25</dt><dd>Good</dd></div>
+            <div class="legend-item"><dt>2.5</dt><dd>Satisfactory</dd></div>
+            <div class="legend-item"><dt>2.75</dt><dd>Satisfactory</dd></div>
+            <div class="legend-item"><dt>3.0</dt><dd>Passed</dd></div>
+            <div class="legend-item"><dt>4.0</dt><dd>Conditional</dd></div>
+            <div class="legend-item"><dt>5.0</dt><dd>Failed</dd></div>
+            <div class="legend-item"><dt>INC</dt><dd>Incomplete</dd></div>
+            <div class="legend-item"><dt>DRP</dt><dd>Dropped</dd></div>
+            <div class="legend-item"><dt>S</dt><dd>Satisfactory</dd></div>
+            <div class="legend-item"><dt>U</dt><dd>Unsatisfactory</dd></div>
+            <div class="legend-item"><dt>P</dt><dd>Passed</dd></div>
+            <div class="legend-item"><dt>F</dt><dd>Failed</dd></div>
+          </dl>
         </div>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <!-- Terms of Use & Privacy Notice Modal -->
-  <div id="termsOverlay" class="terms-overlay hidden">
-    <div class="terms-modal">
-      <button id="closeTermsBtn" class="close-terms-btn hidden" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-      <div class="terms-header">
-        <h2>Elbi GradeSim</h2>
-        <p>Terms of Use & Privacy Notice</p>
+  <dialog id="termsDialog" class="modal" aria-labelledby="termsTitle">
+    <div class="modal-header centered">
+      <h2 id="termsTitle">Elbi GradeSim</h2>
+      <p>Terms of Use and Privacy Notice</p>
+      <button id="closeTermsBtn" class="btn-icon modal-close" type="button" data-close aria-label="Close"><span data-icon="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <div class="terms-section">
+        <h3>About this tool</h3>
+        <p>Elbi GradeSim is an independent student-made browser extension for <strong>UP Los Baños</strong> students to track and simulate their GWA. It is not affiliated with, endorsed by, or connected to the University of the Philippines (UP) System, UPLB, or the UPLB AMIS portal.</p>
       </div>
-      <div class="terms-content">
-        <div class="terms-section">
-          <h3>About This Tool</h3>
-          <p>Elbi GradeSim is an independently developed student web extension designed specifically for <strong>UP Los Baños</strong> students for GWA tracking and simulation. It is not affiliated with, endorsed by, or connected to the University of the Philippines (UP) System, UPLB, or the UPLB AMIS portal.</p>
-        </div>
-        <div class="terms-section">
-          <h3>1. Privacy & Data</h3>
-          <p>Your academic data stays on your device. We collect, transmit, and track absolutely nothing. No analytics or external servers are used.</p>
-        </div>
-        <div class="terms-section">
-          <h3>2. Saved On Your Device</h3>
-          <p>All grade data is saved only inside your browser. Uninstalling the extension or clearing your browser's data will permanently remove your stored grades.</p>
-        </div>
-        <div class="terms-section">
-          <h3>3. Accuracy Disclaimer</h3>
-          <p>All GWA calculations and target simulations are unofficial estimates. They may not account for incomplete (INC), dropped (DRP), or deferred grades. Always verify official records with the UPLB Office of the University Registrar (OUR).</p>
-        </div>
-        <div class="terms-section">
-          <h3>4. Responsibility & IP</h3>
-          <p>You assume all responsibility for actions taken using this tool. The developer assumes no liability. UP and UPLB intellectual property marks are owned by the UP System; their appearance is purely incidental.</p>
-        </div>
+      <div class="terms-section">
+        <h3>1. Privacy and data</h3>
+        <p>Your academic data stays on your device. Nothing is collected or sent anywhere, and there are no analytics or external servers.</p>
       </div>
-      <div class="terms-footer">
-        <label class="terms-agreement-label">
-          <input type="checkbox" id="termsCheckbox">
-          <span>I read and agree to the Terms of Use and Privacy Notice.</span>
-        </label>
-        <button id="acceptTermsBtn" class="btn btn-primary" disabled>Accept & Proceed</button>
+      <div class="terms-section">
+        <h3>2. Saved on your device</h3>
+        <p>All grade data is saved only inside your browser. Uninstalling the extension or clearing your browser data permanently removes your stored grades.</p>
+      </div>
+      <div class="terms-section">
+        <h3>3. Accuracy</h3>
+        <p>All GWA calculations and target simulations are unofficial estimates. They may not account for incomplete (INC), dropped (DRP), or deferred grades. Always check your official records with the UPLB Office of the University Registrar (OUR).</p>
+      </div>
+      <div class="terms-section">
+        <h3>4. Responsibility and IP</h3>
+        <p>You are responsible for what you do with this tool, and the developer assumes no liability. UP and UPLB marks belong to the UP System and appear here only to name the university.</p>
       </div>
     </div>
-  </div>
+    <div class="modal-footer">
+      <label class="terms-agreement-label">
+        <input type="checkbox" id="termsCheckbox">
+        <span>I have read and agree to the Terms of Use and Privacy Notice.</span>
+      </label>
+      <button id="acceptTermsBtn" class="btn btn-primary" type="button" disabled>Accept and continue</button>
+    </div>
+  </dialog>
 
   <footer class="footer">
     <p class="legal-links">
-      <a href="https://gradesim.uplb.tools/privacy/" target="_blank">Privacy</a>
+      <a href="https://gradesim.uplb.tools/privacy/" target="_blank" rel="noopener">Privacy</a>
       <span aria-hidden="true">|</span>
-      <a href="https://gradesim.uplb.tools/terms/" target="_blank">Terms</a>
+      <a href="https://gradesim.uplb.tools/terms/" target="_blank" rel="noopener">Terms</a>
     </p>
   </footer>
 

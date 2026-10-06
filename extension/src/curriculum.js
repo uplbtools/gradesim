@@ -13988,72 +13988,9 @@ function getCurrentCurriculum() {
 function setCurrentProgram(programCode) {
   if (UPLB_PROGRAMS[programCode]) {
     currentProgram = UPLB_PROGRAMS[programCode];
-    updateTrackOptionsUI();
-    updateCurriculumHint();
     return true;
   }
   return false;
-}
-
-// Update the track options UI based on current program
-function updateTrackOptionsUI() {
-  const trackSelector = document.getElementById('trackSelector');
-  const trackOptions = document.getElementById('trackOptions');
-  
-  if (!trackSelector || !trackOptions) return;
-  
-  // If program has no tracks, hide the entire track selector
-  if (!currentProgram.tracks) {
-    trackSelector.style.display = 'none';
-    return;
-  }
-  
-  trackSelector.style.display = 'block';
-  
-  // Build track options HTML
-  let html = '';
-  for (const [trackKey, trackInfo] of Object.entries(currentProgram.tracks)) {
-    const isChecked = trackKey === (currentProgram.defaultTrack || 'sp') ? 'checked' : '';
-    let electiveInfo = `${trackInfo.freeElectiveUnits} free elective units`;
-    if (trackInfo.majorElectiveUnits) {
-      electiveInfo += ` • ${trackInfo.majorElectiveUnits} major elective units`;
-    }
-    html += `
-      <label class="track-option">
-        <input type="radio" name="track" value="${trackKey}" ${isChecked}>
-        <span class="track-label">
-          <strong>${trackInfo.name}</strong>
-          <small>${trackInfo.code} • ${electiveInfo}</small>
-        </span>
-      </label>
-    `;
-  }
-  
-  trackOptions.safeHTML = html;
-  
-  // Re-attach event listeners to the new radio buttons
-  document.querySelectorAll('input[name="track"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      if (typeof currentTrack !== 'undefined') {
-        currentTrack = e.target.value;
-      }
-      // Remember the pick per program; the planner reads it too.
-      window.selectedTracks = { ...(window.selectedTracks || {}), [currentProgram.code]: e.target.value };
-      chrome.storage.local.set({ selectedTracks: window.selectedTracks });
-      // Recalculate remaining courses with new track
-      if (window.gradesData && window.gradesData.completedCourses) {
-        displayRemainingCourses(window.gradesData.completedCourses);
-      }
-    });
-  });
-}
-
-// Update the curriculum hint text
-function updateCurriculumHint() {
-  const hintEl = document.getElementById('curriculumHint');
-  if (hintEl && currentProgram) {
-    hintEl.textContent = `Based on ${currentProgram.name} curriculum`;
-  }
 }
 
 // Detect the student's track (SP or thesis) from AMIS rows. Any enrollment

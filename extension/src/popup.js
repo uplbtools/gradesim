@@ -1,55 +1,12 @@
 // extension/src/popup.js
 
 /**
- * Elbi GradeSim - Popup Script
+ * Elbi GradeSim popup.
  * Processes grades data locally. No data is collected, transmitted, or shared.
+ * UI pieces come from components.js (h, icon, courseRow, notice, stat, badge...).
  */
-// Safe HTML setter to avoid AMO innerHTML warnings
-Object.defineProperty(Element.prototype, 'safeHTML', {
-  set: function(html) {
-    if (!html) {
-      this.replaceChildren();
-      return;
-    }
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    this.replaceChildren(...doc.body.childNodes);
-  }
-});
 
-
-// Sanitize text to prevent XSS
-function sanitizeText(text) {
-  if (typeof text !== 'string') return '';
-  return text.replace(/[&<>"']/g, m => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m]));
-}
-
-// Inline Lucide icons (ISC license, https://lucide.dev). Static markup only.
-const ICON_PATHS = {
-  check: '<path d="M20 6 9 17l-5-5"/>',
-  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
-  award: '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>',
-  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
-  moon: '<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>',
-  monitor: '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
-};
-function icon(name) {
-  return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
-}
-
-// Theme: 'system' | 'light' | 'dark', stored in chrome.storage.local and applied as data-theme on <html>.
-const THEMES = ['system', 'light', 'dark'];
-function applyTheme(theme) {
-  if (theme === 'system') delete document.documentElement.dataset.theme;
-  else document.documentElement.dataset.theme = theme;
-  const btn = document.getElementById('themeToggle');
-  if (!btn) return;
-  btn.safeHTML = icon({ system: 'monitor', light: 'sun', dark: 'moon' }[theme]);
-  btn.title = `Theme: ${theme}`;
-  btn.setAttribute('aria-label', btn.title);
-  btn.dataset.theme = theme;
-}
+const $ = id => document.getElementById(id);
 
 // Store current track selection
 let currentTrack = 'sp';
@@ -63,14 +20,21 @@ let currentView = 'semester';
 // Store course substitutions - requiredCode -> takenCode
 let substitutions = {};
 
+const NON_NUMERIC_GRADES = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
+// PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
+// Education majors) and similar codes in.
+const NON_GWA_PREFIX = /^(NSTP|HK|PE)\b/i;
+const courseIdOf = course => String(course.id || `${course.courseCode}-${course.termId}`);
+
+// Replace a container's children with one notice (or clear it).
+function showNotice(el, opts) {
+  el.replaceChildren(opts ? notice(opts) : '');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  hydrateIcons();
   const { theme } = await chrome.storage.local.get(['theme']);
-  applyTheme(THEMES.includes(theme) ? theme : 'system');
-  document.getElementById('themeToggle').addEventListener('click', (e) => {
-    const next = THEMES[(THEMES.indexOf(e.currentTarget.dataset.theme) + 1) % THEMES.length];
-    applyTheme(next);
-    chrome.storage.local.set({ theme: next });
-  });
+  themeToggle($('themeToggle'), theme, next => chrome.storage.local.set({ theme: next }));
 
   // Check if opened in a tab
   const urlParams = new URLSearchParams(window.location.search);
@@ -79,234 +43,194 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.classList.add('tab-mode');
   }
 
-  // Open in Tab button
-  const openTabBtn = document.getElementById('openTabBtn');
-  if (openTabBtn) {
-    openTabBtn.addEventListener('click', () => {
-      chrome.tabs.create({ url: chrome.runtime.getURL('popup.html?mode=tab') });
-    });
-  }
+  $('openTabBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('popup.html?mode=tab') });
+  });
 
-  // Help Modal logic
-  const helpBtn = document.getElementById('helpBtn');
-  const helpOverlay = document.getElementById('helpOverlay');
-  const closeHelpBtn = document.getElementById('closeHelpBtn');
+  const help = modal($('helpDialog'));
+  $('helpBtn').addEventListener('click', () => help.open());
 
-  if (helpBtn && helpOverlay && closeHelpBtn) {
-    helpBtn.addEventListener('click', () => {
-      helpOverlay.classList.remove('hidden');
-    });
-
-    closeHelpBtn.addEventListener('click', () => {
-      helpOverlay.classList.add('hidden');
-    });
-
-    // Close on overlay click
-    helpOverlay.addEventListener('click', (e) => {
-      if (e.target === helpOverlay) {
-        helpOverlay.classList.add('hidden');
-      }
-    });
-  }
-
-  // Check if terms are accepted
+  // Terms: the first run locks the dialog until the user agrees.
   const savedTerms = await chrome.storage.local.get(['termsAccepted']);
   let isTermsAccepted = !!savedTerms.termsAccepted;
-  
-  const termsOverlay = document.getElementById('termsOverlay');
-  const closeTermsBtn = document.getElementById('closeTermsBtn');
-  const termsCheckbox = document.getElementById('termsCheckbox');
-  const acceptTermsBtn = document.getElementById('acceptTermsBtn');
-  
+
+  const termsDialog = $('termsDialog');
+  const terms = modal(termsDialog);
+  const closeTermsBtn = $('closeTermsBtn');
+  const termsCheckbox = $('termsCheckbox');
+  const acceptTermsBtn = $('acceptTermsBtn');
+
   const showTerms = (forceAcceptMode) => {
-    termsOverlay.classList.remove('hidden');
+    closeTermsBtn.hidden = forceAcceptMode;
     if (forceAcceptMode) {
-      closeTermsBtn.classList.add('hidden');
-      acceptTermsBtn.textContent = 'Accept & Proceed';
+      acceptTermsBtn.textContent = 'Accept and continue';
       acceptTermsBtn.disabled = !termsCheckbox.checked;
     } else {
-      closeTermsBtn.classList.remove('hidden');
       acceptTermsBtn.textContent = 'Close';
       acceptTermsBtn.disabled = false;
     }
+    terms.open({ lock: forceAcceptMode });
   };
-  
-  if (!isTermsAccepted) {
-    showTerms(true);
-  } else {
-    termsOverlay.classList.add('hidden');
-  }
-  
+
+  if (!isTermsAccepted) showTerms(true);
+
   termsCheckbox.addEventListener('change', () => {
     if (!isTermsAccepted) {
       acceptTermsBtn.disabled = !termsCheckbox.checked;
     }
   });
-  
+
   acceptTermsBtn.addEventListener('click', async () => {
     if (!isTermsAccepted) {
       await chrome.storage.local.set({ termsAccepted: true });
       isTermsAccepted = true;
     }
-    termsOverlay.classList.add('hidden');
+    terms.close();
   });
-  
-  closeTermsBtn.addEventListener('click', () => {
-    termsOverlay.classList.add('hidden');
-  });
-  
-  const viewTermsLink = document.getElementById('viewTermsLink');
-  if (viewTermsLink) {
-    viewTermsLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      showTerms(!isTermsAccepted);
-    });
-  }
+
+  $('viewTermsLink').addEventListener('click', () => showTerms(!isTermsAccepted));
 
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
   if (savedExclusions.excludedCourses) {
     excludedCourses = new Set(savedExclusions.excludedCourses);
   }
-  
+
   // Load substitutions from storage
   const savedSubstitutions = await chrome.storage.local.get(['substitutions']);
   if (savedSubstitutions.substitutions) {
     substitutions = savedSubstitutions.substitutions;
   }
-  const loadingEl = document.getElementById('loading');
-  const noDataEl = document.getElementById('noData');
-  const mainContentEl = document.getElementById('mainContent');
-  const refreshBtn = document.getElementById('refreshBtn');
-  
-  document.getElementById('openPlannerBtn').addEventListener('click', () => {
+
+  $('openPlannerBtn').addEventListener('click', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('planner.html') });
   });
 
-  // Tab handling
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-        content.classList.add('hidden');
-      });
-      
-      const tabId = tab.dataset.tab + 'Tab';
-      document.getElementById(tabId).classList.remove('hidden');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-  
+  tabBar(document.querySelector('.tabs'));
+
   // Program selection handling
-  const programSelect = document.getElementById('programSelect');
-  if (programSelect) {
-    // Load saved program preference
-    const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks']);
-    window.selectedTracks = savedProgram.selectedTracks || {};
-    if (savedProgram.selectedProgram) {
-      programSelect.value = savedProgram.selectedProgram;
-      setCurrentProgram(savedProgram.selectedProgram);
-    } else {
-      // Initialize with default program (BSCS)
-      setCurrentProgram('BSCS');
-    }
-    
-    programSelect.addEventListener('change', (e) => {
-      const programCode = e.target.value;
-      setCurrentProgram(programCode);
-      chrome.storage.local.set({ selectedProgram: programCode });
-      
-      // Recalculate remaining courses with new program
-      if (window.gradesData && window.gradesData.completedCourses) {
-        displayRemainingCourses(window.gradesData.completedCourses);
-      }
-    });
+  const programSelect = $('programSelect');
+  const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks']);
+  window.selectedTracks = savedProgram.selectedTracks || {};
+  if (savedProgram.selectedProgram) {
+    programSelect.value = savedProgram.selectedProgram;
+    selectProgram(savedProgram.selectedProgram);
+  } else {
+    // Initialize with default program (BSCS)
+    selectProgram('BSCS');
   }
-  
-  // Note: Track selection event listeners are now attached dynamically
-  // in updateTrackOptionsUI() when the program is set/changed
-  
-  // View toggle handling (Semester/Year)
+
+  programSelect.addEventListener('change', (e) => {
+    const programCode = e.target.value;
+    selectProgram(programCode);
+    chrome.storage.local.set({ selectedProgram: programCode });
+
+    // Recalculate remaining courses with new program
+    if (window.gradesData && window.gradesData.completedCourses) {
+      displayRemainingCourses(window.gradesData.completedCourses);
+    }
+  });
+
+  // View toggle handling (semester or year)
   document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll('.view-btn').forEach(b => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
       currentView = btn.dataset.view;
-      // Re-render grades list with new view
       if (window.gradesData && window.gradesData.courses) {
         const { gradesBySemester } = calculateGWA(window.gradesData.courses, excludedCourses);
         displayGradesList(gradesBySemester, window.gradesData.courses);
       }
     });
   });
-  
-  // Load grades data
+
   loadGradesData();
-  
-  refreshBtn.addEventListener('click', refreshGrades);
+  $('refreshBtn').addEventListener('click', refreshGrades);
   wireBackup();
   wireClearData();
-  
-  // Calculate button
-  document.getElementById('calculateBtn').addEventListener('click', calculateWhatIf);
-  
-  // Custom GWA input handling
-  document.getElementById('customGWA').addEventListener('focus', () => {
+
+  $('calculateBtn').addEventListener('click', calculateWhatIf);
+
+  $('customGWA').addEventListener('focus', () => {
     document.querySelector('input[value="custom"]').checked = true;
   });
-  
-  // Apply Substitution button
-  const addSubBtn = document.getElementById('addSubBtn');
-  if (addSubBtn) {
-    addSubBtn.addEventListener('click', async () => {
-      const reqSelect = document.getElementById('subRequired');
-      const takenSelect = document.getElementById('subTaken');
-      const reqCode = reqSelect.value;
-      const takenCode = takenSelect.value;
-      
-      if (!reqCode || !takenCode) {
-        alert('Please select both a required course and a completed course.');
-        return;
-      }
-      
-      // Save substitution
-      substitutions[reqCode] = takenCode;
-      await chrome.storage.local.set({ substitutions });
-      
-      // Reset selectors
-      reqSelect.value = '';
-      takenSelect.value = '';
-      
-      // Re-render
-      if (window.gradesData && window.gradesData.courses) {
-        displayGradesData(window.gradesData.courses);
-      }
-    });
-  }
 
+  $('addSubBtn').addEventListener('click', async () => {
+    const reqSelect = $('subRequired');
+    const takenSelect = $('subTaken');
+    const reqCode = reqSelect.value;
+    const takenCode = takenSelect.value;
+
+    if (!reqCode || !takenCode) {
+      showNotice($('subNotice'), { tone: 'warn', icon: 'alert', body: 'Pick both a required course and the course that covers it.' });
+      return;
+    }
+    showNotice($('subNotice'), null);
+
+    substitutions[reqCode] = takenCode;
+    await chrome.storage.local.set({ substitutions });
+
+    reqSelect.value = '';
+    takenSelect.value = '';
+
+    if (window.gradesData && window.gradesData.courses) {
+      displayGradesData(window.gradesData.courses);
+    }
+  });
+
+  initializeWrapped();
 });
+
+// Set the curriculum and redraw the track picker and hint for it.
+function selectProgram(code) {
+  if (!setCurrentProgram(code)) return;
+  updateTrackOptionsUI();
+  $('curriculumHint').textContent = `Based on the ${getCurrentCurriculum().name} curriculum`;
+}
+
+// Track radios for the current program.
+function updateTrackOptionsUI() {
+  const program = getCurrentCurriculum();
+  const trackSelector = $('trackSelector');
+  trackSelector.hidden = !program.tracks;
+  if (!program.tracks) return;
+
+  $('trackOptions').replaceChildren(...Object.entries(program.tracks).map(([trackKey, trackInfo]) => {
+    const details = [trackInfo.code, `${trackInfo.freeElectiveUnits} free elective units`];
+    if (trackInfo.majorElectiveUnits) details.push(`${trackInfo.majorElectiveUnits} major elective units`);
+    return h('label', { class: 'choice' },
+      h('input', {
+        type: 'radio', name: 'track', value: trackKey,
+        checked: trackKey === (program.defaultTrack || 'sp'),
+        onchange: (e) => {
+          currentTrack = e.target.value;
+          // Remember the pick per program; the planner reads it too.
+          window.selectedTracks = { ...(window.selectedTracks || {}), [program.code]: e.target.value };
+          chrome.storage.local.set({ selectedTracks: window.selectedTracks });
+          if (window.gradesData && window.gradesData.completedCourses) {
+            displayRemainingCourses(window.gradesData.completedCourses);
+          }
+        },
+      }),
+      h('span', { class: 'choice-label' }, h('strong', {}, trackInfo.name), h('small', {}, details.join(', '))));
+  }));
+}
 
 // Parse the AMIS data structure into a flat array of courses
 function parseAMISData(data) {
   const courses = [];
-  
+
   if (!data || !data.student_grades) {
     return courses;
   }
-  
-  const studentGrades = data.student_grades;
-  
-  // Iterate through each term (1231, 1232, etc.)
-  for (const [termId, termData] of Object.entries(studentGrades)) {
+
+  for (const [termId, termData] of Object.entries(data.student_grades)) {
     if (!termData || !termData.values) continue;
-    
+
     const termInfo = termData.term || `Term ${termId}`;
-    
-    // Iterate through each course in the term
+
     for (const courseData of termData.values) {
       courses.push({
         id: courseData.id,
@@ -323,32 +247,30 @@ function parseAMISData(data) {
       });
     }
   }
-  
+
   return courses;
 }
 
 async function loadGradesData() {
-  const loadingEl = document.getElementById('loading');
-  const noDataEl = document.getElementById('noData');
-  const mainContentEl = document.getElementById('mainContent');
-  
+  const loadingEl = $('loading');
+  const noDataEl = $('noData');
+  const mainContentEl = $('mainContent');
+
   loadingEl.classList.remove('hidden');
   noDataEl.classList.add('hidden');
   mainContentEl.classList.add('hidden');
-  
+
   try {
-    // Get data from storage
     let result = await chrome.storage.local.get(['gradesData']);
-    
+
     // If no data, wait a moment and try again (data might still be loading)
     if (!result.gradesData) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       result = await chrome.storage.local.get(['gradesData']);
     }
-    
-    // Parse the AMIS data structure
+
     const courses = parseAMISData(result.gradesData);
-    
+
     if (courses && courses.length > 0) {
       displayGradesData(courses);
       loadingEl.classList.add('hidden');
@@ -364,26 +286,19 @@ async function loadGradesData() {
 }
 
 function displayGradesData(courses) {
-  // Calculate GWA with exclusions
   const { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount } = calculateGWA(courses, excludedCourses);
-  
-  // Display GWA
-  document.getElementById('currentGWA').textContent = gwa.toFixed(4);
-  document.getElementById('totalUnits').textContent = excludedCount > 0 ? `${passedUnits} (${excludedUnits} excl.)` : passedUnits;
-  document.getElementById('totalCourses').textContent = excludedCount > 0 ? `${totalCourses} (${excludedCount} excl.)` : totalCourses;
-  
-  // Display honor status
+
+  // The main GWA keeps four decimals; every other figure uses two.
+  $('currentGWA').textContent = gwa.toFixed(4);
+  $('gwaStats').replaceChildren(
+    stat('Units passed', passedUnits, { note: excludedCount > 0 && `${unitsText(excludedUnits)} left out` }),
+    stat('Courses completed', totalCourses, { note: excludedCount > 0 && `${plural(excludedCount, 'course')} left out` }));
+
   displayHonorStatus(gwa, totalUnits);
-  
-  // Display grades list (pass courses for toggle functionality)
   displayGradesList(gradesBySemester, courses);
-  
-  // Display remaining courses
   displayRemainingCourses(completedCourses, courses);
-  
-  // Display Wrapped feature
   displayWrapped(courses);
-  
+
   // Store calculated data for What If
   window.gradesData = {
     gwa,
@@ -403,38 +318,27 @@ function calculateGWA(courses, excludedIds = new Set()) {
   let excludedCount = 0;
   const gradesBySemester = {};
   const completedCourses = [];
-  
-  // PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
-  // Education majors) and similar codes in.
-  const excludedPrefix = /^(NSTP|HK|PE)\b/i;
-  // Non-numeric grades that should be displayed but not counted in GWA
-  const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
-  
+
   courses.forEach(course => {
     const courseCode = course.courseCode || '';
-    const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
+    const courseId = courseIdOf(course);
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
-    
+
     // Skip NSTP, HK, PE courses entirely
-    if (excludedPrefix.test(courseCode.trim())) {
+    if (NON_GWA_PREFIX.test(courseCode.trim())) {
       return;
     }
-    
+
     const units = course.units || 0;
-    
-    // Check if it's a non-numeric grade (S, U, INC, etc.)
-    const isNonNumericGrade = nonNumericGrades.includes(gradeStr);
-    
+    const isNonNumericGrade = NON_NUMERIC_GRADES.includes(gradeStr);
+
     // Group by semester (for display - includes all courses)
     const semKey = course.term || `${course.academicYear} - ${course.semester}`;
     if (!gradesBySemester[semKey]) {
       gradesBySemester[semKey] = [];
     }
-    
-    // Add course to display with special handling for S/U grades
-    const displayCourse = { ...course, isNonNumeric: isNonNumericGrade };
-    gradesBySemester[semKey].push(displayCourse);
-    
+    gradesBySemester[semKey].push({ ...course, isNonNumeric: isNonNumericGrade });
+
     // For non-numeric grades, add to completed but don't calculate GWA
     if (isNonNumericGrade) {
       // S (Satisfactory) counts as passed, U (Unsatisfactory) does not
@@ -448,25 +352,22 @@ function calculateGWA(courses, excludedIds = new Set()) {
       }
       return;
     }
-    
+
     // Skip courses without valid numeric grades
     const grade = parseFloat(course.grade);
     if (isNaN(grade) || grade < 1.0 || grade > 5.0) {
       return;
     }
-    
+
     if (units === 0) return;
-    
+
     // Check if user-excluded (for shiftees)
-    const isUserExcluded = excludedIds.has(courseId);
-    if (isUserExcluded) {
-      // Track excluded stats but don't add to GWA
+    if (excludedIds.has(courseId)) {
       excludedUnits += units;
       excludedCount++;
       return;
     }
-    
-    // Add to GWA calculation
+
     totalWeightedGrade += grade * units;
     totalUnits += units;
     totalCourses++;
@@ -482,65 +383,50 @@ function calculateGWA(courses, excludedIds = new Set()) {
       });
     }
   });
-  
+
   const gwa = totalUnits > 0 ? totalWeightedGrade / totalUnits : 0;
-  
+
   return { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount };
 }
 
 function displayHonorStatus(gwa, totalUnits) {
-  const honorEl = document.getElementById('honorStatus');
+  // Nothing graded yet, or not on any honor track: show nothing.
+  const kind = !totalUnits ? null : gwa <= 1.20 ? 'summa' : gwa <= 1.45 ? 'magna' : gwa <= 1.75 ? 'cum' : null;
+  $('honorStatus').replaceChildren(honorBadge(kind) || '');
+}
 
-  if (!totalUnits) {
-    // Nothing graded yet, so there is no track to show.
-    honorEl.textContent = '';
-    honorEl.className = 'honor-status';
-    honorEl.style.display = 'none';
-  } else if (gwa <= 1.20) {
-    honorEl.safeHTML = icon('award') + 'Summa Cum Laude track';
-    honorEl.className = 'honor-status summa';
-    honorEl.style.display = '';
-  } else if (gwa <= 1.45) {
-    honorEl.safeHTML = icon('award') + 'Magna Cum Laude track';
-    honorEl.className = 'honor-status magna';
-    honorEl.style.display = '';
-  } else if (gwa <= 1.75) {
-    honorEl.safeHTML = icon('award') + 'Cum Laude track';
-    honorEl.className = 'honor-status cum-laude';
-    honorEl.style.display = '';
-  } else {
-    // Hide the element when not on any honor track
-    honorEl.textContent = '';
-    honorEl.className = 'honor-status';
-    honorEl.style.display = 'none';
+// How a grade reads in a course row: text, tone class, and an icon if any.
+function gradeDisplay(course) {
+  const gradeStr = (course.grade || '').toString().toUpperCase().trim();
+  if (!gradeStr) return { text: 'No grade yet', cls: 'pending' };
+  if (course.isNonNumeric || NON_NUMERIC_GRADES.includes(gradeStr)) {
+    if (gradeStr === 'S') return { text: gradeStr, cls: 'satisfactory' };
+    if (gradeStr === 'U') return { text: gradeStr, cls: 'unsatisfactory', icon: 'x', failed: true };
+    return { text: gradeStr, cls: 'other-grade', icon: 'alert' };
   }
+  const grade = parseFloat(course.grade);
+  if (isNaN(grade)) return { text: gradeStr, cls: 'other-grade', icon: 'alert' };
+  if (grade >= 5.00) return { text: grade.toFixed(2), cls: 'failed', icon: 'x', failed: true };
+  return { text: grade.toFixed(2), cls: grade <= 1.50 ? 'excellent' : grade <= 2.00 ? 'good' : 'passing' };
 }
 
 function displayGradesList(gradesBySemester, allCourses) {
-  const listEl = document.getElementById('gradesList');
-  listEl.safeHTML = '';
-  
+  const listEl = $('gradesList');
+
   // Group courses based on current view mode
   let groupedCourses;
   if (currentView === 'year') {
-    // Group by academic year using course.academicYear directly
     groupedCourses = {};
-    Object.entries(gradesBySemester).forEach(([semester, courses]) => {
+    Object.values(gradesBySemester).forEach(courses => {
       courses.forEach(course => {
-        // Use the academicYear field directly from course data
-        const yearKey = course.academicYear ? `AY ${course.academicYear}` : 'Unknown Year';
-        
-        if (!groupedCourses[yearKey]) {
-          groupedCourses[yearKey] = [];
-        }
-        groupedCourses[yearKey].push(course);
+        const yearKey = course.academicYear ? `AY ${course.academicYear}` : 'Unknown year';
+        (groupedCourses[yearKey] = groupedCourses[yearKey] || []).push(course);
       });
     });
   } else {
-    // Use semester grouping as-is
     groupedCourses = gradesBySemester;
   }
-  
+
   // Sort groups (semesters or years) chronologically
   const getTermWeight = (term) => {
     const t = term.toLowerCase();
@@ -553,118 +439,56 @@ function displayGradesList(gradesBySemester, allCourses) {
   const sortedGroups = Object.keys(groupedCourses).sort((a, b) => {
     const splitA = a.split(',');
     const splitB = b.split(',');
-    
-    const yearA = splitA[0];
-    const yearB = splitB[0];
-    
-    if (yearA !== yearB) {
-      return yearB.localeCompare(yearA);
+    if (splitA[0] !== splitB[0]) {
+      return splitB[0].localeCompare(splitA[0]);
     }
-    
     if (splitA.length > 1 && splitB.length > 1) {
       return getTermWeight(splitB[1]) - getTermWeight(splitA[1]);
     }
-    
     return b.localeCompare(a);
   });
-  
-  sortedGroups.forEach(groupKey => {
+
+  listEl.replaceChildren(...sortedGroups.map(groupKey => {
     const courses = groupedCourses[groupKey];
-    
-    // Calculate GWA for this group (semester or year)
     const groupGWA = calculateGroupGWA(courses);
-    
-    const semesterGroup = document.createElement('div');
-    semesterGroup.className = 'semester-group';
-    
-    const header = document.createElement('div');
-    header.className = 'semester-header';
-    
-    // Build header with group GWA and scholar status
-    let scholarStatus = '';
-    let scholarClass = '';
+
     // Scholar lists need a full load (15 units) and no 5.00, 4.00 or INC.
+    let scholar = null;
     if (groupGWA.gwa > 0 && groupGWA.totalUnits >= 15 && !groupGWA.hasFailOrInc) {
-      if (groupGWA.gwa <= 1.45) {
-        scholarStatus = 'University Scholar';
-        scholarClass = 'university-scholar';
-      } else if (groupGWA.gwa <= 1.75) {
-        scholarStatus = 'College Scholar';
-        scholarClass = 'college-scholar';
-      }
+      if (groupGWA.gwa <= 1.45) scholar = 'university';
+      else if (groupGWA.gwa <= 1.75) scholar = 'college';
     }
-    
-    header.safeHTML = `
-      <span class="group-title">${sanitizeText(groupKey)}</span>
-      <span class="group-gwa-info">
-        <span class="group-gwa">GWA: ${groupGWA.gwa > 0 ? groupGWA.gwa.toFixed(4) : 'N/A'}</span>
-        ${scholarStatus ? `<span class="scholar-badge ${scholarClass}">${scholarStatus}</span>` : ''}
-      </span>
-    `;
-    semesterGroup.appendChild(header);
-    
-    courses.forEach(course => {
-      const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
-      const isExcluded = excludedCourses.has(courseId);
-      const gradeStr = (course.grade || '').toString().toUpperCase().trim();
-      const isNonNumeric = course.isNonNumeric || ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'].includes(gradeStr);
-      
-      const item = document.createElement('div');
-      item.className = 'course-item' + (isExcluded ? ' excluded' : '') + (isNonNumeric ? ' non-numeric' : '');
-      item.dataset.courseId = courseId;
-      
-      let gradeDisplay, gradeClass;
-      if (isNonNumeric) {
-        gradeDisplay = gradeStr;
-        if (gradeStr === 'S') {
-          gradeClass = 'satisfactory';
-        } else if (gradeStr === 'U') {
-          gradeClass = 'unsatisfactory';
-        } else {
-          gradeClass = 'other-grade';
-        }
-      } else {
-        const grade = parseFloat(course.grade);
-        gradeDisplay = grade.toFixed(2);
-        gradeClass = 'passing';
-        if (grade <= 1.50) gradeClass = 'excellent';
-        else if (grade <= 2.00) gradeClass = 'good';
-        else if (grade >= 5.00) gradeClass = 'failed';
-      }
-      
-      // Don't show exclude button for non-numeric grades (they don't affect GWA anyway)
-      const excludeButton = isNonNumeric ? '' : `
-        <button class="exclude-toggle ${isExcluded ? 'excluded' : ''}" data-course-id="${sanitizeText(courseId)}" title="${isExcluded ? 'Include in GWA' : 'Exclude from GWA'}" aria-label="${isExcluded ? 'Include course in GWA calculation' : 'Exclude course from GWA calculation'}">
-          ${isExcluded ? 'Incl.' : 'Excl.'}
-        </button>
-      `;
-      
-      item.safeHTML = `
-        <div class="course-info">
-          <div class="course-code">${sanitizeText(course.courseCode || course.code)}</div>
-          <div class="course-title">${sanitizeText(course.courseTitle || course.title || '')}</div>
-        </div>
-        <div class="course-grade">
-          ${excludeButton}
-          <span class="units-badge" aria-label="${course.units} units">${course.units}u</span>
-          <span class="grade-value ${gradeClass}" aria-label="Grade: ${gradeDisplay}${gradeClass === 'failed' || gradeClass === 'unsatisfactory' ? ', failed' : ''}">${gradeClass === 'failed' || gradeClass === 'unsatisfactory' ? icon('x') : gradeClass === 'other-grade' ? icon('alert') : ''}${gradeDisplay}</span>
-        </div>
-      `;
-      
-      semesterGroup.appendChild(item);
-    });
-    
-    listEl.appendChild(semesterGroup);
-  });
-  
-  // Add event listeners to toggle buttons
-  listEl.querySelectorAll('.exclude-toggle').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const courseId = btn.dataset.courseId;
-      toggleCourseExclusion(courseId, allCourses);
-    });
-  });
+
+    return h('section', { class: 'semester-group list-card' },
+      h('div', { class: 'semester-header' },
+        h('h3', { class: 'group-title' }, groupKey),
+        h('span', { class: 'group-gwa-info' },
+          h('span', { class: 'group-gwa' }, groupGWA.gwa > 0 ? `GWA ${groupGWA.gwa.toFixed(2)}` : 'No GWA yet'),
+          honorBadge(scholar))),
+      courses.map(course => {
+        const courseId = courseIdOf(course);
+        const isExcluded = excludedCourses.has(courseId);
+        const g = gradeDisplay(course);
+        const counts = !course.isNonNumeric && !isNaN(parseFloat(course.grade));
+        const code = course.courseCode || course.code;
+        return courseRow({
+          code,
+          title: course.courseTitle || course.title || '',
+          units: course.units,
+          class: (isExcluded ? 'excluded' : '') + (counts ? '' : ' non-numeric'),
+          dataset: { courseId },
+          // Only numeric grades have a GWA to leave out of.
+          below: counts && button({
+            variant: 'text', class: 'exclude-toggle',
+            text: isExcluded ? 'Count in GWA' : 'Leave out of GWA',
+            'aria-label': `${isExcluded ? 'Count' : 'Leave'} ${code} ${isExcluded ? 'in' : 'out of'} the GWA`,
+            onclick: () => toggleCourseExclusion(courseId, allCourses),
+          }),
+          aside: h('span', { class: `grade-value ${g.cls}`, 'aria-label': `Grade ${g.text}${g.failed ? ', failed' : ''}` },
+            g.icon && icon(g.icon), g.text),
+        });
+      }));
+  }));
 }
 
 // Calculate GWA for a specific group of courses (semester or year)
@@ -672,15 +496,10 @@ function calculateGroupGWA(courses) {
   let totalWeightedGrade = 0;
   let totalUnits = 0;
   let hasFailOrInc = false;
-  
+
   courses.forEach(course => {
-    const courseId = String(course.id || `${course.courseCode}-${course.termId}`);
-    
-    // Skip excluded courses
-    if (excludedCourses.has(courseId)) {
-      return;
-    }
-    
+    if (excludedCourses.has(courseIdOf(course))) return;
+
     if ((course.grade || '').toString().toUpperCase().trim() === 'INC') hasFailOrInc = true;
     const grade = parseFloat(course.grade);
     if (isNaN(grade) || grade < 1.0 || grade > 5.0) return;
@@ -697,211 +516,139 @@ function calculateGroupGWA(courses) {
   return { gwa, totalUnits, hasFailOrInc };
 }
 
+function option(value, text) {
+  return h('option', { value }, text);
+}
+
 // allCourses: every AMIS row, including courses being taken now, so the track
 // is known the moment someone enrolls in the SP or thesis course.
 function displayRemainingCourses(completedCourses, allCourses = window.gradesData?.courses || completedCourses) {
-  const listEl = document.getElementById('remainingList');
-  const trackInfoEl = document.getElementById('trackInfo');
-  listEl.safeHTML = '';
-  
-  // Get current curriculum
+  const listEl = $('remainingList');
+  const notesEl = $('remainingNotes');
+  const trackInfoEl = $('trackInfo');
+
   const curriculum = getCurrentCurriculum();
-  
-  // Check if program has curriculum data
+
   if (!curriculum.available) {
-    listEl.safeHTML = `
-      <div class="free-elective-notice unavailable">
-        <strong>${icon('alert')} Curriculum not available</strong>
-        <br><small>The curriculum for ${curriculum.name} is coming soon. Only GWA calculation is available.</small>
-      </div>
-    `;
-    trackInfoEl.safeHTML = '';
+    listEl.replaceChildren();
+    showNotice(notesEl, {
+      tone: 'warn', icon: 'alert', title: 'Curriculum not available yet',
+      body: `GradeSim does not have the ${curriculum.name} checklist yet, so only the GWA works for now.`,
+    });
+    trackInfoEl.replaceChildren();
     return;
   }
-  
+
   // Detect track from any enrollment in the SP or thesis course
   const detectedTrack = detectTrack(allCourses);
-  
-  // Update track info display and radio buttons
+
   if (curriculum.tracks) {
     if (detectedTrack) {
       currentTrack = detectedTrack;
       const trackInfo = curriculum.tracks[detectedTrack];
       const trackName = trackInfo ? `${trackInfo.name} (${trackInfo.code})` : detectedTrack;
-      trackInfoEl.className = 'track-info detected';
-      trackInfoEl.safeHTML = `${icon('check')}<span>Detected: <strong>${trackName}</strong></span>`;
+      showNotice(trackInfoEl, { tone: 'ok', icon: 'check', body: `Your AMIS record shows the ${trackName} track.` });
     } else {
       currentTrack = resolveTrack(curriculum, window.selectedTracks?.[curriculum.code]);
       const fallback = curriculum.tracks[currentTrack];
-      trackInfoEl.className = 'track-info not-detected';
-      trackInfoEl.safeHTML = `${icon('alert')}<span>Track not detected yet. Using ${sanitizeText(fallback.name)} (${sanitizeText(fallback.code)}). Pick yours below.</span>`;
+      showNotice(trackInfoEl, {
+        tone: 'warn', icon: 'alert',
+        body: `No SP or thesis course on AMIS yet, so GradeSim assumes ${fallback.name} (${fallback.code}). Pick yours below.`,
+      });
     }
-    
-    // Set the radio button to match current track
-    const trackRadio = document.querySelector(`input[name="track"][value="${currentTrack}"]`);
+
+    const trackRadio = document.querySelector(`input[name="track"][value="${CSS.escape(currentTrack)}"]`);
     if (trackRadio) {
       trackRadio.checked = true;
     }
   } else {
-    trackInfoEl.safeHTML = '';
+    trackInfoEl.replaceChildren();
   }
-  
-  // Get free elective units based on current track
+
   const freeElectiveUnitsTotal = getFreeElectiveUnits(currentTrack);
-  
-  // Get completed course codes (normalized)
+
   const completedCodes = new Set();
-  completedCourses.forEach(c => {
-    const code = c.code.toUpperCase().trim();
-    completedCodes.add(code);
-  });
-  
+  completedCourses.forEach(c => completedCodes.add(c.code.toUpperCase().trim()));
+
   // Add required course codes to completedCodes if their taken courses are completed
   for (const [reqCode, takenCode] of Object.entries(substitutions)) {
     if (completedCodes.has(takenCode.toUpperCase().trim())) {
       completedCodes.add(reqCode.toUpperCase().trim());
     }
   }
-  
-  // Filter remaining required courses from curriculum
+
   const remaining = trackCourses(curriculum, currentTrack).filter(course => {
-    const code = course.code.toUpperCase().trim();
-    return !completedCodes.has(code);
+    return !completedCodes.has(course.code.toUpperCase().trim());
   });
-  
-  // Calculate remaining units from required courses
-  let remainingUnits = remaining.reduce((sum, c) => sum + c.units, 0);
-  
+
   // Count completed GE courses (title starts with "(GE)")
-  const completedGECount = completedCourses.filter(c => 
+  const completedGECount = completedCourses.filter(c =>
     c.title && c.title.trim().startsWith("(GE)")
   ).length;
   const geRequired = curriculum.geCoursesRequired || 9;
   const remainingGESlots = Math.max(0, geRequired - completedGECount);
-  
-  // Calculate free elective units used
+
   // Free electives = courses that are NOT required AND NOT GE courses
   const requiredCodesSet = new Set((curriculum.requiredCodes || []).map(c => c.toUpperCase().trim()));
   const freeElectives = completedCourses.filter(c => {
     const code = c.code.toUpperCase().trim();
     // It's required if it's in the requiredCodes list, OR if it's substituted for something in requiredCodes
-    const isSubstitutedForRequired = Object.entries(substitutions).some(([req, taken]) => 
+    const isSubstitutedForRequired = Object.entries(substitutions).some(([req, taken]) =>
       taken.toUpperCase().trim() === code && requiredCodesSet.has(req.toUpperCase().trim())
     );
     const isRequired = requiredCodesSet.has(code) || isSubstitutedForRequired;
     const isGE = c.title && c.title.trim().startsWith("(GE)");
     return !isRequired && !isGE;
   });
-  
+
   const freeElectiveUnitsTaken = freeElectives.reduce((sum, c) => sum + c.units, 0);
   const freeElectiveUnitsRemaining = Math.max(0, freeElectiveUnitsTotal - freeElectiveUnitsTaken);
-  
-  // Populate substitutions dropdowns
-  const subRequiredSelect = document.getElementById('subRequired');
-  if (subRequiredSelect) {
-    subRequiredSelect.safeHTML = '<option value="">Choose a required course</option>';
-    // Sort required courses alphabetically by code
-    const sortedRequired = [...(curriculum.majorCourses || [])].sort((a, b) => a.code.localeCompare(b.code));
-    sortedRequired.forEach(course => {
-      const code = course.code.toUpperCase().trim();
-      const option = document.createElement('option');
-      option.value = code;
-      option.textContent = `${course.code} (${course.units}u)`;
-      subRequiredSelect.appendChild(option);
-    });
-  }
-  
-  const subTakenSelect = document.getElementById('subTaken');
-  if (subTakenSelect) {
-    subTakenSelect.safeHTML = '<option value="">Choose a completed course</option>';
-    // Sort completed courses alphabetically by code
-    const sortedCompleted = [...completedCourses].sort((a, b) => a.code.localeCompare(b.code));
-    sortedCompleted.forEach(c => {
+
+  // Substitution pickers, sorted by code
+  const sortedRequired = [...(curriculum.majorCourses || [])].sort((a, b) => a.code.localeCompare(b.code));
+  $('subRequired').replaceChildren(option('', 'Choose a required course'),
+    ...sortedRequired.map(course => option(course.code.toUpperCase().trim(), `${course.code}, ${unitsText(course.units)}`)));
+
+  const sortedCompleted = [...completedCourses].sort((a, b) => a.code.localeCompare(b.code));
+  $('subTaken').replaceChildren(option('', 'Choose a completed course'),
+    ...sortedCompleted.filter(c => {
       const code = c.code.toUpperCase().trim();
       const isGE = c.title && c.title.trim().startsWith("(GE)");
       const isAlreadyUsed = Object.values(substitutions).some(taken => taken.toUpperCase().trim() === code);
-      
       // Only show if not a required curriculum code, not GE, and not already used in another substitution
-      if (!requiredCodesSet.has(code) && !isGE && !isAlreadyUsed) {
-        const option = document.createElement('option');
-        option.value = code;
-        option.textContent = `${c.code} (${c.units}u) - Grade: ${c.grade}`;
-        subTakenSelect.appendChild(option);
-      }
-    });
-  }
-  
-  // Render active substitutions list
-  const substitutionsList = document.getElementById('substitutionsList');
-  if (substitutionsList) {
-    substitutionsList.safeHTML = '';
-    const subEntries = Object.entries(substitutions);
-    if (subEntries.length === 0) {
-      substitutionsList.safeHTML = '<div class="no-substitutions-notice">No substitutions configured.</div>';
-    } else {
-      subEntries.forEach(([reqCode, takenCode]) => {
-         const item = document.createElement('div');
-         item.className = 'substitution-item';
-         item.safeHTML = `
-           <span class="sub-map"><strong>${sanitizeText(reqCode)}</strong> <span class="sub-via">covered by</span> <strong>${sanitizeText(takenCode)}</strong></span>
-           <button class="btn-remove-sub" type="button" data-req="${sanitizeText(reqCode)}" title="Remove substitution" aria-label="Remove substitution for ${sanitizeText(reqCode)}">${icon('x')}</button>
-         `;
-         substitutionsList.appendChild(item);
-      });
-      
-      // Add remove listeners
-      substitutionsList.querySelectorAll('.btn-remove-sub').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const req = btn.dataset.req;
-          delete substitutions[req];
+      return !requiredCodesSet.has(code) && !isGE && !isAlreadyUsed;
+    }).map(c => option(c.code.toUpperCase().trim(), `${c.code}, ${unitsText(c.units)}, grade ${c.grade}`)));
+
+  // Active substitutions
+  const subEntries = Object.entries(substitutions);
+  $('substitutionsList').replaceChildren(...(subEntries.length === 0
+    ? [emptyState('No substitutions yet.')]
+    : subEntries.map(([reqCode, takenCode]) => h('div', { class: 'substitution-item' },
+      h('span', { class: 'sub-map' }, h('strong', {}, reqCode), ' ', h('span', { class: 'sub-via' }, 'covered by'), ' ', h('strong', {}, takenCode)),
+      button({
+        variant: 'icon', icon: 'x', class: 'btn-remove', title: 'Remove substitution',
+        'aria-label': `Remove substitution for ${reqCode}`,
+        onclick: async () => {
+          delete substitutions[reqCode];
           await chrome.storage.local.set({ substitutions });
           displayGradesData(window.gradesData.courses);
-        });
-      });
-    }
-  }
-  
-  // Display remaining required courses
-  remaining.forEach(course => {
-    const item = document.createElement('div');
-    item.className = 'remaining-item';
-    item.setAttribute('role', 'listitem');
-    item.safeHTML = `
-      <span class="course-code">${sanitizeText(course.code)}</span>
-      <span class="units-badge" aria-label="${course.units} units">${course.units}u</span>
-    `;
-    listEl.appendChild(item);
-  });
-  
-  // Add GE notice if remaining
-  if (remainingGESlots > 0) {
-    const geNotice = document.createElement('div');
-    geNotice.className = 'free-elective-notice';
-    geNotice.safeHTML = `
-      <strong>GE Courses:</strong> ${remainingGESlots} more GE course(s) needed
-      <br><small>Completed ${completedGECount}/${geRequired} required GE courses.</small>
-    `;
-    listEl.appendChild(geNotice);
-  }
-  
-  // Add free elective notice
-  const notice = document.createElement('div');
-  notice.className = 'free-elective-notice';
-  const trackLabel = currentTrack === 'thesis' ? 'Thesis' : 'SP';
-  if (freeElectiveUnitsRemaining > 0) {
-    notice.safeHTML = `
-      <strong>Free Electives:</strong> ${freeElectiveUnitsRemaining} units remaining
-      <br><small>Taken ${freeElectiveUnitsTaken}/${freeElectiveUnitsTotal} free elective units (${trackLabel} track).</small>
-    `;
-  } else {
-    notice.safeHTML = `
-      <strong>Free Electives:</strong> ${icon('check')} Complete
-      <br><small>Taken ${freeElectiveUnitsTaken}/${freeElectiveUnitsTotal} free elective units (${trackLabel} track).</small>
-    `;
-    notice.classList.add('complete');
-  }
-  listEl.appendChild(notice);
-  
+        },
+      })))));
+
+  listEl.replaceChildren(...remaining.map(course => courseRow({ code: course.code, units: course.units, role: 'listitem' })));
+
+  const trackLabel = currentTrack === 'thesis' ? 'thesis' : 'SP';
+  notesEl.replaceChildren(...flat([
+    remainingGESlots > 0 && notice({
+      icon: 'info',
+      title: `${plural(remainingGESlots, 'more GE course')} needed`,
+      body: `${completedGECount} of ${geRequired} required GE courses done.`,
+    }),
+    notice(freeElectiveUnitsRemaining > 0
+      ? { icon: 'info', title: `${unitsText(freeElectiveUnitsRemaining)} of free electives left`, body: `Taken ${freeElectiveUnitsTaken} of ${freeElectiveUnitsTotal} free elective units on the ${trackLabel} track.` }
+      : { tone: 'ok', icon: 'check', title: 'Free electives complete', body: `Taken ${freeElectiveUnitsTaken} of ${freeElectiveUnitsTotal} free elective units on the ${trackLabel} track.` }),
+  ]));
+
   // Store remaining courses for What If calculation
   window.remainingCourses = remaining;
   window.freeElectiveUnitsRemaining = freeElectiveUnitsRemaining;
@@ -911,186 +658,130 @@ function displayRemainingCourses(completedCourses, allCourses = window.gradesDat
 
 // Toggle course exclusion (for shiftees)
 async function toggleCourseExclusion(courseId, allCourses) {
-  // Ensure courseId is a string for consistent comparison
   const id = String(courseId);
-  
+
   if (excludedCourses.has(id)) {
     excludedCourses.delete(id);
   } else {
     excludedCourses.add(id);
   }
-  
-  // Save to storage
+
   await chrome.storage.local.set({ excludedCourses: Array.from(excludedCourses) });
-  
-  // Recalculate and redisplay
+
   displayGradesData(allCourses);
+  // The list was rebuilt; keep keyboard focus on the same course.
+  const row = document.querySelector(`.course-row[data-course-id="${CSS.escape(id)}"] .exclude-toggle`);
+  if (row) row.focus();
 }
 
 function calculateWhatIf() {
   const targetRadio = document.querySelector('input[name="targetHonor"]:checked');
   if (!targetRadio) {
-    showResults('error', 'Please select a target honor.');
+    showResults('error', 'Pick a target honor first.');
     return;
   }
-  
+
   let targetGWA;
   if (targetRadio.value === 'custom') {
-    targetGWA = parseFloat(document.getElementById('customGWA').value);
+    targetGWA = parseFloat($('customGWA').value);
     if (isNaN(targetGWA) || targetGWA < 1.0 || targetGWA > 5.0) {
-      showResults('error', 'Please enter a valid GWA between 1.00 and 5.00');
+      showResults('error', 'Enter a target GWA from 1.00 to 5.00.');
       return;
     }
   } else {
     targetGWA = parseFloat(targetRadio.value);
   }
-  
+
   const data = window.gradesData;
   const remaining = window.remainingCourses || [];
   const freeElectiveUnits = window.freeElectiveUnitsRemaining || 0;
-  
+
   // Calculate remaining units (excluding PE/NSTP)
   let remainingUnits = remaining.reduce((sum, c) => sum + c.units, 0) + freeElectiveUnits;
-  
+
   // Add GE remaining units (assume 3 units each)
   const remainingGEUnits = (window.remainingGESlots || 0) * 3;
   remainingUnits += remainingGEUnits;
-  
-  // Current weighted sum
+
   const currentWeightedSum = data.gwa * data.totalUnits;
-  
-  // Total units after completion
   const totalUnitsAfter = data.totalUnits + remainingUnits;
-  
-  // Check if already achieved
+
   if (data.gwa <= targetGWA) {
     showResults('achieved', targetGWA, data.gwa, data.totalUnits, remainingUnits, data.gwa);
     return;
   }
-  
-  // Required weighted sum for target GWA
+
   const requiredWeightedSum = targetGWA * totalUnitsAfter;
-  
-  // Remaining weighted sum needed
   const remainingWeightedSumNeeded = requiredWeightedSum - currentWeightedSum;
-  
-  // Required average grade for remaining courses
   const requiredAvgGrade = remainingUnits > 0 ? remainingWeightedSumNeeded / remainingUnits : 0;
-  
-  // Determine feasibility
+
   if (requiredAvgGrade < 1.0) {
-    // Impossible - would need grades better than 1.0
     showResults('impossible-low', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
   } else if (requiredAvgGrade > 5.0) {
-    // Impossible - would need grades worse than 5.0
     showResults('impossible-high', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
   } else {
-    // Possible - show required grade
     showResults('possible', targetGWA, data.gwa, data.totalUnits, remainingUnits, requiredAvgGrade);
   }
 }
 
 function showResults(status, targetGWA, currentGWA, unitsCompleted, unitsRemaining, requiredGrade) {
-  const resultsEl = document.getElementById('whatifResults');
-  const contentEl = document.getElementById('resultsContent');
-  resultsEl.classList.remove('hidden');
-  
-  const honorNames = {
-    1.20: 'Summa Cum Laude',
-    1.45: 'Magna Cum Laude',
-    1.75: 'Cum Laude',
-    2.00: 'Honor Roll'
-  };
-  
+  const contentEl = $('resultsContent');
+
   if (status === 'error') {
-    contentEl.safeHTML = `<div class="result-summary impossible">${targetGWA}</div>`;
+    showNotice(contentEl, { tone: 'bad', icon: 'alert', body: targetGWA });
     return;
   }
-  
-  const targetName = honorNames[targetGWA] || `GWA of ${targetGWA.toFixed(2)}`;
-  
-  let statusClass, statusMessage, gradeDisplay;
-  
+
+  const honorNames = {
+    1.20: 'Summa cum laude',
+    1.45: 'Magna cum laude',
+    1.75: 'Cum laude',
+    2.00: 'Honor roll'
+  };
+  const targetName = honorNames[targetGWA] || `A GWA of ${targetGWA.toFixed(2)}`;
+
+  let tone, ic, message, gradeText;
   switch (status) {
     case 'achieved':
-      statusClass = 'achieved';
-      statusMessage = `${icon('check')}<span>You've already achieved ${targetName}.</span>`;
-      gradeDisplay = 'Maintain your current performance!';
+      [tone, ic, message] = ['ok', 'check', `You already have ${targetName.toLowerCase()}.`];
+      gradeText = 'Keep your current grades';
       break;
     case 'impossible-low':
-      statusClass = 'impossible';
-      statusMessage = `${icon('x')}<span>${targetName} is no longer achievable.</span>`;
-      gradeDisplay = `Would require avg grade of ${requiredGrade.toFixed(2)} (below 1.00 - impossible)`;
+      [tone, ic, message] = ['bad', 'x', `${targetName} is no longer reachable.`];
+      gradeText = `${requiredGrade.toFixed(2)}, better than the best grade of 1.00`;
       break;
     case 'impossible-high':
-      statusClass = 'impossible';
-      statusMessage = `${icon('x')}<span>${targetName} is not achievable with remaining courses.</span>`;
-      gradeDisplay = `Would require avg grade of ${requiredGrade.toFixed(2)} (above 5.00)`;
+      [tone, ic, message] = ['bad', 'x', `${targetName} is not reachable with your remaining courses.`];
+      gradeText = `${requiredGrade.toFixed(2)}, above 5.00`;
       break;
     case 'possible':
-      if (requiredGrade <= 1.25) {
-        statusClass = 'excellent';
-        statusMessage = `${icon('check')}<span>${targetName} is achievable with excellent performance.</span>`;
-      } else if (requiredGrade <= 1.75) {
-        statusClass = 'good';
-        statusMessage = `${icon('check')}<span>${targetName} is achievable with very good performance.</span>`;
-      } else if (requiredGrade <= 2.50) {
-        statusClass = 'moderate';
-        statusMessage = `${icon('alert')}<span>${targetName} is achievable with good performance.</span>`;
-      } else {
-        statusClass = 'difficult';
-        statusMessage = `${icon('alert')}<span>${targetName} is challenging but possible.</span>`;
-      }
-      gradeDisplay = requiredGrade.toFixed(4);
+      if (requiredGrade <= 1.25) [tone, ic, message] = ['ok', 'check', `${targetName} is reachable with excellent grades.`];
+      else if (requiredGrade <= 1.75) [tone, ic, message] = ['ok', 'check', `${targetName} is reachable with very good grades.`];
+      else if (requiredGrade <= 2.50) [tone, ic, message] = ['warn', 'alert', `${targetName} is reachable with good grades.`];
+      else [tone, ic, message] = ['warn', 'alert', `${targetName} is hard but possible.`];
+      gradeText = requiredGrade.toFixed(2);
       break;
   }
-  
-  contentEl.safeHTML = `
-    <div class="result-summary ${statusClass}">
-      ${statusMessage}
-    </div>
-    <div class="result-details">
-      <div class="result-row">
-        <span>Current GWA</span>
-        <span class="value">${currentGWA.toFixed(4)}</span>
-      </div>
-      <div class="result-row">
-        <span>Target GWA</span>
-        <span class="value">≤ ${targetGWA.toFixed(2)}</span>
-      </div>
-      <div class="result-row">
-        <span>Units Completed</span>
-        <span class="value">${unitsCompleted}</span>
-      </div>
-      <div class="result-row">
-        <span>Units Remaining</span>
-        <span class="value">${unitsRemaining}</span>
-      </div>
-      <div class="result-row highlight">
-        <span>Required Avg Grade</span>
-        <span class="value">${gradeDisplay}</span>
-      </div>
-    </div>
-  `;
+
+  contentEl.replaceChildren(
+    notice({ tone, icon: ic, body: message }),
+    h('div', { class: 'result-details' },
+      stat('Current GWA', currentGWA.toFixed(4), { variant: 'row' }),
+      stat('Target GWA', `${targetGWA.toFixed(2)} or better`, { variant: 'row' }),
+      stat('Units completed', unitsCompleted, { variant: 'row' }),
+      stat('Units remaining', unitsRemaining, { variant: 'row' }),
+      stat('Required average', gradeText, { variant: 'row', highlight: true })));
 }
-// Wrapped Feature
+
+/* ---------- Wrapped ---------- */
 
 let wrappedCurrentPanel = 0;
 let wrappedPanels = [];
 
 function initializeWrapped() {
-  const prevBtn = document.getElementById('wrappedPrev');
-  const nextBtn = document.getElementById('wrappedNext');
-  const exportBtn = document.getElementById('wrappedExport');
-  
-  if (prevBtn && nextBtn) {
-    prevBtn.addEventListener('click', () => navigateWrapped(-1));
-    nextBtn.addEventListener('click', () => navigateWrapped(1));
-  }
-  
-  if (exportBtn) {
-    exportBtn.addEventListener('click', exportWrappedToPNG);
-  }
+  $('wrappedPrev').addEventListener('click', () => navigateWrapped(-1));
+  $('wrappedNext').addEventListener('click', () => navigateWrapped(1));
+  $('wrappedExport').addEventListener('click', exportWrappedToPNG);
 }
 
 function generateWrappedData(courses) {
@@ -1106,100 +797,82 @@ function generateWrappedData(courses) {
     mostRetakedCourse: null,
     totalCourses: 0,
     specialGrades: [],
-    semesterGWAs: {} // Track GWA per semester
+    semesterGWAs: {}
   };
-  
-  const nonNumericGrades = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
-  const excludedPrefixes = ['NSTP', 'HK', 'PE'];
+
   let totalWeighted = 0;
-  
-  // Temporary storage for semester calculations
   const semesterData = {};
-  
+
   courses.forEach(course => {
     const courseCode = course.courseCode || '';
     const gradeStr = (course.grade || '').toString().toUpperCase().trim();
     const semKey = course.term || `${course.academicYear} - ${course.semester}`;
-    
-    // Skip excluded prefixes
-    if (excludedPrefixes.some(prefix => courseCode.toUpperCase().startsWith(prefix))) {
+
+    // Same rules as the GWA: no PE, HK or NSTP, and nothing the user left out.
+    if (NON_GWA_PREFIX.test(courseCode.trim()) || excludedCourses.has(courseIdOf(course))) {
       return;
     }
-    
-    // Track all distinct grades (including special ones)
+
     data.distinctGrades.add(gradeStr);
-    
-    // Track special grades
-    if (nonNumericGrades.includes(gradeStr)) {
+
+    if (NON_NUMERIC_GRADES.includes(gradeStr)) {
       if (!data.specialGrades.includes(gradeStr)) {
         data.specialGrades.push(gradeStr);
       }
       return;
     }
-    
+
     const grade = parseFloat(course.grade);
     const units = course.units || 0;
-    
+
     if (isNaN(grade) || grade < 1.0 || grade > 5.0 || units === 0) return;
-    
+
     data.totalCourses++;
-    
-    // Track semester GWA data
+
     if (!semesterData[semKey]) {
       semesterData[semKey] = { totalWeighted: 0, totalUnits: 0 };
     }
     semesterData[semKey].totalWeighted += grade * units;
     semesterData[semKey].totalUnits += units;
-    
-    // Track grade distribution
+
     const gradeKey = grade.toFixed(2);
     data.gradeDistribution[gradeKey] = (data.gradeDistribution[gradeKey] || 0) + 1;
-    
-    // Track retakes (same course code appearing multiple times)
+
     const codeNorm = courseCode.toUpperCase().trim();
     data.retakes[codeNorm] = (data.retakes[codeNorm] || 0) + 1;
-    
-    // Track fails
+
     if (grade === 5.0) {
       data.fails++;
     }
-    
-    // Track highest grade course
+
     if (!data.highestGradeCourse || grade < data.highestGradeCourse.grade) {
       data.highestGradeCourse = { code: courseCode, title: course.courseTitle, grade };
     }
-    
+
     // Track lowest grade course (excluding 5.0)
     if (grade < 5.0) {
       if (!data.lowestGradeCourse || grade > data.lowestGradeCourse.grade) {
         data.lowestGradeCourse = { code: courseCode, title: course.courseTitle, grade };
       }
     }
-    
+
     totalWeighted += grade * units;
     data.totalUnits += units;
   });
-  
-  // Find most retaked course
+
   let maxRetakes = 0;
   Object.entries(data.retakes).forEach(([code, count]) => {
     if (count > maxRetakes) {
       maxRetakes = count;
       const courseInfo = courses.find(c => c.courseCode.toUpperCase() === code);
-      data.mostRetakedCourse = { 
-        code, 
-        title: courseInfo?.courseTitle || code, 
-        count 
-      };
+      data.mostRetakedCourse = { code, title: courseInfo?.courseTitle || code, count };
     }
   });
-  
-  // Only set if actually retaken
+
   if (maxRetakes <= 1) data.mostRetakedCourse = null;
-  
+
   data.gwa = data.totalUnits > 0 ? totalWeighted / data.totalUnits : 0;
-  
-  // Calculate semester GWAs
+
   Object.entries(semesterData).forEach(([sem, semData]) => {
     if (semData.totalUnits > 0) {
       data.semesterGWAs[sem] = {
@@ -1208,8 +881,7 @@ function generateWrappedData(courses) {
       };
     }
   });
-  
-  // Find best and "needs improvement" semesters
+
   let bestSem = null, worstSem = null;
   Object.entries(data.semesterGWAs).forEach(([sem, semInfo]) => {
     if (!bestSem || semInfo.gwa < bestSem.gwa) {
@@ -1221,274 +893,139 @@ function generateWrappedData(courses) {
   });
   data.bestSemester = bestSem;
   data.needsWorkSemester = worstSem;
-  
+
   return data;
 }
 
+// Each panel is plain data: { emoji, title, value, subtitle, badges, highlights,
+// message, caption }. wrappedPanel() draws it on screen and the export draws
+// the same object on a canvas.
 function generateWrappedPanels(data) {
-  const panels = [];
-  
-  // Panel 1: GWA Overview
-  panels.push(generateGWAPanel(data));
-  
-  // Panel 2: Best/Toughest Semester
-  panels.push(generateSemesterPanel(data));
-  
-  // Panel 3: Grade Collector
-  panels.push(generateCollectorPanel(data));
-  
-  // Panel 4: Perseverance (Fails)
-  panels.push(generatePerseverancePanel(data));
-  
-  // Panel 5: Course Highlights
-  panels.push(generateHighlightsPanel(data));
-  
-  // Panel 6: Graduation Progress
-  panels.push(generateProgressPanel(data));
-  
-  return panels;
+  return [
+    generateGWAPanel(data),
+    generateSemesterPanel(data),
+    generateCollectorPanel(data),
+    generatePerseverancePanel(data),
+    generateHighlightsPanel(data),
+    generateProgressPanel(data),
+  ];
 }
 
 function generateGWAPanel(data) {
   const gwa = data.gwa;
-  let emoji, title, message;
-  
-  if (gwa === 0) {
-    emoji = "📚";
-    title = "LOADING...";
-    message = "Freshie ka ba? Or di pa nag-uupload ng grades si registrar. Either way, good luck sa journey mo!";
-  } else if (gwa <= 1.20) {
-    emoji = "🏆";
-    title = "SUMMA MATERIAL";
-    message = "Grabe naman 'to?? Penge tips naman. Seryoso, pano mo nagagawa 'yan habang may social life??";
-  } else if (gwa <= 1.45) {
-    emoji = "⭐";
-    title = "MAGNA TINGZ";
-    message = "Consistent high grades! Ikaw yung type na maayos notes tapos hinahanap ka ng groupmates pag may exam.";
-  } else if (gwa <= 1.75) {
-    emoji = "🎯";
-    title = "CUM LAUDE SZN";
-    message = "Solid GWA! Di ka nag-slack off pero di rin naman nagpaka-robot. Balance talaga.";
-  } else if (gwa <= 2.00) {
-    emoji = "🌟";
-    title = "HONOR ROLL";
-    message = "Pasok sa honors! May hirap-hirap pero kinaya mo naman. Proud of u!";
-  } else if (gwa <= 2.50) {
-    emoji = "💪";
-    title = "PASANG-ALAM";
-    message = "Passing is passing! May mga sem na mabigat talaga, wag ka maguilty. Nasa UP ka pa rin.";
-  } else if (gwa <= 3.00) {
-    emoji = "🎮";
-    title = "SURVIVAL MODE";
-    message = "Nandito ka pa, that counts. Minsan ganyan talaga UP. Basta graduate, panalo.";
-  } else {
-    emoji = "🌱";
-    title = "COMEBACK ARC";
-    message = "Mababa man ngayon, pwede pa 'yan i-improve. Marami nang naka-recover from this. Kaya mo 'yan.";
-  }
-  
-  return `
-    <div class="panel-emoji">${emoji}</div>
-    <div class="panel-title">${title}</div>
-    <div class="panel-value">${gwa > 0 ? gwa.toFixed(4) : '--'}</div>
-    <div class="panel-subtitle">My Elbi GWA</div>
-    <div class="panel-message">${message}</div>
-  `;
+  const tiers = [
+    [0, '📚', 'Loading', "Freshie ka ba? Or di pa nag-uupload ng grades si registrar. Either way, good luck this sem."],
+    [1.20, '🏆', 'Summa material', "Grabe naman 'to. Penge tips naman. Seryoso, pano mo nagagawa 'yan habang may social life?"],
+    [1.45, '⭐', 'Magna tingz', 'Consistent high grades. Ikaw yung type na maayos notes tapos hinahanap ka ng groupmates pag may exam.'],
+    [1.75, '🎯', 'Cum laude szn', 'Solid GWA. Di ka nag-slack off pero di rin naman nagpaka-robot. Balance talaga.'],
+    [2.00, '🌟', 'Honor roll', 'Pasok sa honors. May hirap-hirap pero kinaya mo naman. Proud of u.'],
+    [2.50, '💪', 'Pasang-alam', 'Passing is passing. May mga sem na mabigat talaga, wag ka maguilty. Nasa UP ka pa rin.'],
+    [3.00, '🎮', 'Survival mode', 'Nandito ka pa, that counts. Minsan ganyan talaga UP. Basta graduate, panalo.'],
+    [Infinity, '🌱', 'Comeback arc', "Mababa man ngayon, pwede pa 'yan i-improve. Marami nang naka-recover from this. Kaya mo 'yan."],
+  ];
+  const [, emoji, title, message] = gwa === 0 ? tiers[0] : tiers.slice(1).find(t => gwa <= t[0]);
+  return { emoji, title, value: gwa > 0 ? gwa.toFixed(4) : '--', subtitle: 'My Elbi GWA', message };
 }
 
 function generateSemesterPanel(data) {
-  const numSemesters = Object.keys(data.semesterGWAs).length;
-  
-  if (numSemesters === 0) {
-    return `
-      <div class="panel-emoji">📅</div>
-      <div class="panel-title">SEMESTER STATS</div>
-      <div class="panel-value">--</div>
-      <div class="panel-subtitle">No semester data yet</div>
-      <div class="panel-message">Check back once grades are in!</div>
-    `;
+  const semCount = Object.keys(data.semesterGWAs).length;
+  const panel = { emoji: '📅', title: 'Semester stats', highlights: [], caption: 'My best and toughest semester' };
+
+  if (semCount === 0) {
+    return { ...panel, value: '--', subtitle: 'No semester grades yet', message: 'Check back once grades are in.', caption: null };
   }
-  
-  let content = `<div class="panel-emoji">📅</div>
-    <div class="panel-title">SEMESTER STATS</div>`;
-  
-  // Best semester
+
   if (data.bestSemester) {
     const best = data.bestSemester;
-    let reaction = '';
-    if (best.gwa <= 1.25) reaction = 'Your peak';
-    else if (best.gwa <= 1.50) reaction = 'Nice run!';
-    else if (best.gwa <= 1.75) reaction = 'Solid sem';
-    else if (best.gwa <= 2.00) reaction = 'Good one';
-    else reaction = 'Best so far';
-    
-    content += `
-      <div class="highlight-course" style="margin-top: 15px;">
-        <div class="course-label">🏆 Best Semester</div>
-        <div class="course-name">${sanitizeText(best.name)}</div>
-        <div class="course-grade">GWA: ${best.gwa.toFixed(4)}. ${reaction}</div>
-      </div>
-    `;
+    let reaction;
+    if (best.gwa <= 1.25) reaction = 'your peak';
+    else if (best.gwa <= 1.50) reaction = 'a strong run';
+    else if (best.gwa <= 1.75) reaction = 'a solid sem';
+    else if (best.gwa <= 2.00) reaction = 'a good one';
+    else reaction = 'your best so far';
+    panel.highlights.push({ label: '🏆 Best semester', name: best.name, detail: `GWA ${best.gwa.toFixed(2)}, ${reaction}` });
   }
-  
+
   // "Needs work" semester (only if different from best)
-  if (data.needsWorkSemester && data.bestSemester && 
+  if (data.needsWorkSemester && data.bestSemester &&
       data.needsWorkSemester.name !== data.bestSemester.name) {
     const tough = data.needsWorkSemester;
-    let reaction = '';
-    if (tough.gwa >= 3.0) reaction = 'Rough one';
-    else if (tough.gwa >= 2.5) reaction = 'Challenging';
-    else if (tough.gwa >= 2.0) reaction = 'Tough load';
-    else reaction = 'Room to grow';
-    
-    content += `
-      <div class="highlight-course">
-        <div class="course-label">📈 Toughest Semester</div>
-        <div class="course-name">${sanitizeText(tough.name)}</div>
-        <div class="course-grade">GWA: ${tough.gwa.toFixed(4)}. ${reaction}</div>
-      </div>
-    `;
+    let reaction;
+    if (tough.gwa >= 3.0) reaction = 'a rough one';
+    else if (tough.gwa >= 2.5) reaction = 'a challenging one';
+    else if (tough.gwa >= 2.0) reaction = 'a tough load';
+    else reaction = 'room to grow';
+    panel.highlights.push({ label: '📈 Toughest semester', name: tough.name, detail: `GWA ${tough.gwa.toFixed(2)}, ${reaction}` });
   }
-  
-  // Overall message
-  const semCount = Object.keys(data.semesterGWAs).length;
-  let overallMsg = '';
-  if (semCount >= 8) overallMsg = `${semCount} semesters completed. Almost there!`;
-  else if (semCount >= 6) overallMsg = `${semCount} sems done. The end is in sight.`;
-  else if (semCount >= 4) overallMsg = `${semCount} sems in. You're halfway through!`;
-  else if (semCount >= 2) overallMsg = `${semCount} semesters down, many more to go.`;
-  else overallMsg = `Just getting started. Enjoy the ride!`;
-  
-  content += `<div class="panel-message">${overallMsg}</div>`;
-  
-  return content;
+
+  if (semCount >= 8) panel.message = `${semCount} semesters done. Almost there.`;
+  else if (semCount >= 6) panel.message = `${semCount} sems done. The end is in sight.`;
+  else if (semCount >= 4) panel.message = `${semCount} sems in. You're about halfway.`;
+  else if (semCount >= 2) panel.message = `${semCount} semesters down, more to go.`;
+  else panel.message = 'Just getting started.';
+
+  return panel;
 }
 
 function generateCollectorPanel(data) {
   const numericGrades = Object.keys(data.gradeDistribution).length;
-  const specialCount = data.specialGrades.length;
   const totalDistinct = data.distinctGrades.size;
-  
+
   let emoji, title, message;
-  
-  // Check for "mega collector" status (many distinct grades including special ones)
   if (totalDistinct >= 10) {
-    emoji = "🎰";
-    title = "FULL COLLECTION";
-    message = "You've seen it all: from 1.0 to 5.0, plus S, U, INC, DRP... your transcript tells a story.";
+    [emoji, title, message] = ['🎰', 'Full collection', "You've seen it all, from 1.0 to 5.0 plus S, U, INC and DRP. Your transcript tells a story."];
   } else if (totalDistinct >= 7) {
-    emoji = "🃏";
-    title = "VARIETY PACK";
-    message = "A bit of everything! Shows you've taken different kinds of subjects with different outcomes.";
+    [emoji, title, message] = ['🃏', 'Variety pack', "A bit of everything. You've taken very different kinds of subjects with different outcomes."];
   } else if (totalDistinct >= 4) {
-    emoji = "🎲";
-    title = "MIXED BAG";
-    message = "Some ups, some downs. Pretty normal for most students tbh.";
+    [emoji, title, message] = ['🎲', 'Mixed bag', 'Some ups, some downs. Pretty normal for most students tbh.'];
   } else if (numericGrades === 1 && data.gwa <= 1.5) {
-    emoji = "🎯";
-    title = "ONE-TRACK MIND";
-    message = "Same high grade over and over? That's rare consistency. How.";
+    [emoji, title, message] = ['🎯', 'One-track mind', "Same high grade over and over? That's rare consistency. How."];
   } else {
-    emoji = "📊";
-    title = "STEADY GRADES";
-    message = "You stick to a range. Predictable in a good way. You know what you're doing.";
+    [emoji, title, message] = ['📊', 'Steady grades', "You stick to a range. Predictable in a good way. You know what you're doing."];
   }
-  
-  // Build grade badges
-  let badgesHtml = '<div class="grade-badges">';
-  const sortedGrades = Array.from(data.distinctGrades).sort();
-  sortedGrades.forEach(grade => {
-    const isSpecial = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'].includes(grade);
-    badgesHtml += `<span class="grade-badge ${isSpecial ? 'special' : ''}">${sanitizeText(grade)}</span>`;
-  });
-  badgesHtml += '</div>';
-  
-  return `
-    <div class="panel-emoji">${emoji}</div>
-    <div class="panel-title">${title}</div>
-    <div class="panel-value">${totalDistinct}</div>
-    <div class="panel-subtitle">distinct grades collected</div>
-    ${badgesHtml}
-    <div class="panel-message">${message}</div>
-  `;
+
+  const badges = Array.from(data.distinctGrades).sort()
+    .map(grade => ({ text: grade || 'None', special: NON_NUMERIC_GRADES.includes(grade) }));
+
+  return { emoji, title, value: String(totalDistinct), subtitle: 'distinct grades collected', badges, message };
 }
 
 function generatePerseverancePanel(data) {
   const fails = data.fails;
   let emoji, title, message;
-  
+
   if (fails === 0) {
-    emoji = "🏅";
-    title = "CLEAN RECORD";
-    message = "Zero 5.0s? That's actually impressive. Not everyone can say that.";
+    [emoji, title, message] = ['🏅', 'Clean record', "Zero 5.0s. That's actually impressive. Not everyone can say that."];
   } else if (fails === 1) {
-    emoji = "💫";
-    title = "ONE SETBACK";
-    message = "One 5.0 isn't the end of the world. It happens to plenty of us. Bounce back season.";
+    [emoji, title, message] = ['💫', 'One setback', "One 5.0 isn't the end of the world. It happens to plenty of us. Bounce back season."];
   } else if (fails <= 3) {
-    emoji = "🔥";
-    title = "STILL STANDING";
-    message = `${fails} failed subjects but you're still here. Every retake is a chance to do better.`;
+    [emoji, title, message] = ['🔥', 'Still standing', `${fails} failed subjects but you're still here. Every retake is a chance to do better.`];
   } else if (fails <= 5) {
-    emoji = "🦅";
-    title = "FIGHTING SPIRIT";
-    message = `${fails} times down but not out. The fact that you're still going says a lot.`;
+    [emoji, title, message] = ['🦅', 'Fighting spirit', `${fails} times down but not out. The fact that you're still going says a lot.`];
   } else {
-    emoji = "💎";
-    title = "SURVIVOR";
-    message = `${fails} 5.0s and still pushing through? That takes real grit. Respect.`;
+    [emoji, title, message] = ['💎', 'Survivor', `${fails} 5.0s and still pushing through? That takes real grit. Respect.`];
   }
-  
-  return `
-    <div class="panel-emoji">${emoji}</div>
-    <div class="panel-title">${title}</div>
-    <div class="panel-value">${fails}</div>
-    <div class="panel-subtitle">${fails === 1 ? 'subject to retake' : 'subjects to retake'}</div>
-    <div class="panel-message">${message}</div>
-  `;
+
+  return { emoji, title, value: String(fails), subtitle: fails === 1 ? 'subject to retake' : 'subjects to retake', message };
 }
 
 function generateHighlightsPanel(data) {
-  let content = `<div class="panel-emoji">🫴🫴</div>
-    <div class="panel-title">YOUR HIGHLIGHTS</div>`;
-  
+  const panel = { emoji: '✨', title: 'Your highlights', highlights: [], caption: 'My highest and lowest grade', message: 'Every subject counts toward the degree.' };
+
   if (data.highestGradeCourse) {
-    content += `
-      <div class="highlight-course">
-        <div class="course-label">🏆 Best Performance</div>
-        <div class="course-name">${sanitizeText(data.highestGradeCourse.code)}</div>
-        <div class="course-grade">Grade: ${data.highestGradeCourse.grade.toFixed(2)}</div>
-      </div>
-    `;
+    panel.highlights.push({ label: '🏆 Best performance', name: data.highestGradeCourse.code, detail: `Grade ${data.highestGradeCourse.grade.toFixed(2)}` });
   }
-  
   if (data.lowestGradeCourse && data.lowestGradeCourse.grade < 5.0) {
-    content += `
-      <div class="highlight-course">
-        <div class="course-label">📈 Room to Grow</div>
-        <div class="course-name">${sanitizeText(data.lowestGradeCourse.code)}</div>
-        <div class="course-grade">Grade: ${data.lowestGradeCourse.grade.toFixed(2)}</div>
-      </div>
-    `;
+    panel.highlights.push({ label: '📈 Room to grow', name: data.lowestGradeCourse.code, detail: `Grade ${data.lowestGradeCourse.grade.toFixed(2)}` });
   }
-  
   if (data.mostRetakedCourse && data.mostRetakedCourse.count > 1) {
-    content += `
-      <div class="highlight-course">
-        <div class="course-label">🔄 Persistence Award</div>
-        <div class="course-name">${sanitizeText(data.mostRetakedCourse.code)}</div>
-        <div class="course-grade">Taken ${data.mostRetakedCourse.count}x. You didn't give up</div>
-      </div>
-    `;
+    panel.highlights.push({ label: '🔄 Persistence award', name: data.mostRetakedCourse.code, detail: `Taken ${data.mostRetakedCourse.count} times. You didn't give up.` });
   }
-  
   if (!data.highestGradeCourse && !data.lowestGradeCourse) {
-    content += `<div class="panel-subtitle">Complete some subjects to see your highlights!</div>`;
+    panel.subtitle = 'Finish a few subjects to see your highlights.';
+    panel.caption = null;
   }
-  
-  content += `<div class="panel-message">Every subject is part of your journey</div>`;
-  
-  return content;
+  return panel;
 }
 
 function generateProgressPanel(data) {
@@ -1497,64 +1034,53 @@ function generateProgressPanel(data) {
   const completed = data.totalUnits;
   const remaining = Math.max(0, totalRequired - completed);
   const percentage = Math.min(100, Math.round((completed / totalRequired) * 100));
-  
+
   let emoji, title, message;
-  
   if (percentage >= 100) {
-    emoji = "🎓";
-    title = "GRADUATION READY";
-    message = "All units done! Time to march. Congratulations. You made it.";
+    [emoji, title, message] = ['🎓', 'Graduation ready', 'All units done. Time to march. Congratulations, you made it.'];
   } else if (percentage >= 80) {
-    emoji = "🚀";
-    title = "ALMOST THERE";
-    message = `${remaining} units left. The finish line is in sight. Last push na 'to.`;
+    [emoji, title, message] = ['🚀', 'Almost there', `${remaining} units left. The finish line is in sight. Last push na 'to.`];
   } else if (percentage >= 60) {
-    emoji = "⚡";
-    title = "PAST HALFWAY";
-    message = `${remaining} units to go. More than half done. You've got momentum.`;
+    [emoji, title, message] = ['⚡', 'Past halfway', `${remaining} units to go. More than half done, and you've got momentum.`];
   } else if (percentage >= 40) {
-    emoji = "🌤️";
-    title = "MAKING PROGRESS";
-    message = `${remaining} units remaining. Take it one sem at a time.`;
+    [emoji, title, message] = ['🌤️', 'Making progress', `${remaining} units remaining. Take it one sem at a time.`];
   } else if (percentage >= 20) {
-    emoji = "🌅";
-    title = "EARLY DAYS";
-    message = `${remaining} units ahead of you. Plenty of time to figure things out.`;
+    [emoji, title, message] = ['🌅', 'Early days', `${remaining} units ahead of you. Plenty of time to figure things out.`];
   } else {
-    emoji = "🌱";
-    title = "JUST STARTING";
-    message = `${remaining} units to complete. Welcome to the journey. It's a marathon, not a sprint.`;
+    [emoji, title, message] = ['🌱', 'Just starting', `${remaining} units to complete. It's a marathon, not a sprint.`];
   }
-  
-  return `
-    <div class="panel-emoji">${emoji}</div>
-    <div class="panel-title">${title}</div>
-    <div class="panel-value">${percentage}%</div>
-    <div class="panel-subtitle">${completed} / ${totalRequired} units passed</div>
-    <div class="panel-message">${message}</div>
-  `;
+
+  return { emoji, title, value: `${percentage}%`, subtitle: `${completed} of ${totalRequired} units passed`, message };
+}
+
+// On-screen Wrapped slide.
+function wrappedPanel(p) {
+  return [
+    h('div', { class: 'panel-emoji', 'aria-hidden': 'true' }, p.emoji),
+    h('h3', { class: 'panel-title' }, p.title),
+    p.value && h('div', { class: 'panel-value' }, p.value),
+    p.subtitle && h('div', { class: 'panel-subtitle' }, p.subtitle),
+    p.badges && h('div', { class: 'grade-badges' }, p.badges.map(b => badge(b.text, { tone: b.special ? 'warn' : 'neutral' }))),
+    (p.highlights || []).map(x => h('div', { class: 'highlight-course' },
+      h('div', { class: 'highlight-label' }, x.label),
+      h('div', { class: 'highlight-name' }, x.name),
+      h('div', { class: 'highlight-detail' }, x.detail))),
+    p.message && h('p', { class: 'panel-message' }, p.message),
+  ];
 }
 
 function displayWrapped(courses) {
-  const data = generateWrappedData(courses);
-  wrappedPanels = generateWrappedPanels(data);
+  wrappedPanels = generateWrappedPanels(generateWrappedData(courses));
   wrappedCurrentPanel = 0;
   updateWrappedDisplay();
 }
 
 function updateWrappedDisplay() {
-  const panelEl = document.getElementById('wrappedPanel');
-  const progressEl = document.getElementById('wrappedProgress');
-  const prevBtn = document.getElementById('wrappedPrev');
-  const nextBtn = document.getElementById('wrappedNext');
-  
-  if (!panelEl || !wrappedPanels.length) return;
-  
-  panelEl.safeHTML = wrappedPanels[wrappedCurrentPanel];
-  progressEl.textContent = `${wrappedCurrentPanel + 1} / ${wrappedPanels.length}`;
-  
-  prevBtn.disabled = wrappedCurrentPanel === 0;
-  nextBtn.disabled = wrappedCurrentPanel === wrappedPanels.length - 1;
+  if (!wrappedPanels.length) return;
+  $('wrappedPanel').replaceChildren(...flat(wrappedPanel(wrappedPanels[wrappedCurrentPanel])));
+  $('wrappedProgress').textContent = `${wrappedCurrentPanel + 1} of ${wrappedPanels.length}`;
+  $('wrappedPrev').disabled = wrappedCurrentPanel === 0;
+  $('wrappedNext').disabled = wrappedCurrentPanel === wrappedPanels.length - 1;
 }
 
 function navigateWrapped(direction) {
@@ -1565,220 +1091,156 @@ function navigateWrapped(direction) {
   }
 }
 
-// Export wrapped panel to PNG
+// Export the current Wrapped slide as a transparent story-sized PNG, drawn
+// with the bundled Inter and Raleway faces.
 async function exportWrappedToPNG() {
-  const panel = document.getElementById('wrappedPanel');
-  if (!panel) return;
-  
-  // Create a canvas - Instagram story dimensions (1080x1920) but scaled down
+  const p = wrappedPanels[wrappedCurrentPanel];
+  if (!p) return;
+
+  const DISPLAY = '"Raleway", "Inter", sans-serif';
+  const TEXT = '"Inter", system-ui, sans-serif';
+  await Promise.all([
+    document.fonts.load(`800 28px ${DISPLAY}`),
+    document.fonts.load(`600 16px ${TEXT}`),
+  ]).catch(() => {});
+  await document.fonts.ready;
+
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  
-  // Compact story dimensions
   const scale = 2;
   const width = 360;
   const height = 640;
   canvas.width = width * scale;
   canvas.height = height * scale;
   ctx.scale(scale, scale);
-  
-  // Transparent background - don't fill anything
   ctx.clearRect(0, 0, width, height);
-  
-  // Get panel content
-  const emoji = panel.querySelector('.panel-emoji')?.textContent || '';
-  const title = panel.querySelector('.panel-title')?.textContent || '';
-  const value = panel.querySelector('.panel-value')?.textContent || '';
-  const subtitle = panel.querySelector('.panel-subtitle')?.textContent || '';
-  const highlightCourses = panel.querySelectorAll('.highlight-course');
-  const badges = panel.querySelectorAll('.grade-badge');
-  
-  // Calculate content height for centering
-  let contentHeight = 120; // Base height for emoji + title + value
-  if (subtitle) contentHeight += 30;
-  if (badges.length > 0) contentHeight += 50;
-  if (highlightCourses.length > 0) contentHeight += highlightCourses.length * 55;
-  
-  // Start Y position to center content
+
+  const badges = p.badges || [];
+  const highlights = p.highlights || [];
+  let contentHeight = 120;
+  if (p.subtitle) contentHeight += 30;
+  if (badges.length) contentHeight += 50;
+  contentHeight += highlights.length * 55;
   let currentY = Math.max(80, (height - contentHeight) / 2 - 40);
-  
-  // Draw content
+
   ctx.textAlign = 'center';
-  
-  // Strava-like orange colors for export
-  const stravaOrange = '#fc5200';
-  const stravaOrangeLight = '#ff7a33';
-  const stravaOrangeDark = '#e04800';
-  
-  // Helper for text with dark outline for contrast on any background
-  function drawTextWithOutline(text, x, y, fillColor, outlineColor = '#000000') {
+
+  // Story colors stay bright orange so they read on any photo.
+  const orange = '#fc5200';
+  const orangeLight = '#ff7a33';
+
+  // Text with a dark outline for contrast on any background
+  function drawText(text, x, y, fillColor) {
     ctx.lineWidth = 4;
-    ctx.strokeStyle = outlineColor;
+    ctx.strokeStyle = '#000000';
     ctx.lineJoin = 'round';
     ctx.miterLimit = 2;
     ctx.strokeText(text, x, y);
     ctx.fillStyle = fillColor;
     ctx.fillText(text, x, y);
   }
-  
-  // Helper for word wrapping
+
   function wrapText(text, maxWidth) {
-    const words = text.split(' ');
     const lines = [];
-    let currentLine = '';
-    
-    words.forEach(word => {
-      const testLine = currentLine + word + ' ';
-      if (ctx.measureText(testLine).width > maxWidth && currentLine !== '') {
-        lines.push(currentLine.trim());
-        currentLine = word + ' ';
+    let line = '';
+    text.split(' ').forEach(word => {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
       } else {
-        currentLine = testLine;
+        line = test;
       }
     });
-    if (currentLine.trim()) lines.push(currentLine.trim());
+    if (line) lines.push(line);
     return lines;
   }
-  
-  // Header with branding at top
-  ctx.font = '8px "Press Start 2P", monospace';
-  drawTextWithOutline('Elbi GradeSim', width / 2, 64, stravaOrangeLight);
-  ctx.font = '10px "Press Start 2P", monospace';
-  drawTextWithOutline('gradesim.uplb.tools', width / 2, 80, stravaOrange);
-  
-  // Emoji
-  ctx.font = '56px Arial';
-  drawTextWithOutline(emoji, width / 2, currentY, '#ffffff');
+
+  ctx.font = `800 13px ${DISPLAY}`;
+  drawText('Elbi GradeSim', width / 2, 64, orangeLight);
+  ctx.font = `600 12px ${TEXT}`;
+  drawText('gradesim.uplb.tools', width / 2, 82, orange);
+
+  ctx.font = '56px sans-serif';
+  drawText(p.emoji, width / 2, currentY, '#ffffff');
   currentY += 50;
-  
-  // Title (removed - just showing data, not descriptors)
-  // Skip title, go straight to value
-  
-  // Value (the main data point)
-  if (value && value !== '--') {
-    ctx.font = 'bold 28px "Press Start 2P", monospace';
-    drawTextWithOutline(value, width / 2, currentY + 20, stravaOrange);
+
+  if (p.value && p.value !== '--') {
+    ctx.font = `800 40px ${DISPLAY}`;
+    drawText(p.value, width / 2, currentY + 20, orange);
     currentY += 60;
   }
-  
-  // Subtitle (brief context)
-  if (subtitle) {
-    ctx.font = '16px "VT323", monospace';
-    const subtitleLines = wrapText(subtitle, width - 60);
-    subtitleLines.forEach(line => {
-      drawTextWithOutline(line, width / 2, currentY + 10, stravaOrangeLight);
-      currentY += 18;
+
+  if (p.subtitle) {
+    ctx.font = `600 16px ${TEXT}`;
+    wrapText(p.subtitle, width - 60).forEach(line => {
+      drawText(line, width / 2, currentY + 10, orangeLight);
+      currentY += 20;
     });
     currentY += 10;
   }
-  
-  // Grade badges if present (for collector panel)
-  if (badges.length > 0) {
+
+  if (badges.length) {
     currentY += 15;
     const badgeWidth = 44;
     const maxPerRow = Math.floor((width - 60) / badgeWidth);
-    const rows = Math.ceil(badges.length / maxPerRow);
-    
-    let badgeIndex = 0;
-    for (let row = 0; row < rows; row++) {
-      const badgesInRow = Math.min(maxPerRow, badges.length - badgeIndex);
-      const totalRowWidth = badgesInRow * badgeWidth;
-      let badgeX = (width - totalRowWidth) / 2;
-      
-      for (let i = 0; i < badgesInRow && badgeIndex < badges.length; i++) {
+    for (let i = 0; i < badges.length; i += maxPerRow) {
+      const row = badges.slice(i, i + maxPerRow);
+      let badgeX = (width - row.length * badgeWidth) / 2;
+      row.forEach(b => {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        ctx.strokeStyle = stravaOrange;
+        ctx.strokeStyle = orange;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.roundRect(badgeX, currentY, 40, 24, 4);
         ctx.fill();
         ctx.stroke();
-        ctx.font = '16px "VT323", monospace';
-        drawTextWithOutline(badges[badgeIndex].textContent, badgeX + 20, currentY + 17, stravaOrange);
+        ctx.font = `600 13px ${TEXT}`;
+        drawText(b.text, badgeX + 20, currentY + 17, orange);
         badgeX += badgeWidth;
-        badgeIndex++;
-      }
+      });
       currentY += 30;
     }
     currentY += 10;
   }
-  
-  // Highlight courses (for semester stats and highlights panels)
-  if (highlightCourses.length > 0) {
+
+  if (highlights.length) {
     currentY += 10;
-    highlightCourses.forEach(course => {
-      const name = course.querySelector('.course-name')?.textContent || '';
-      const grade = course.querySelector('.course-grade')?.textContent || '';
-      
-      // Compact highlight box with dark background for contrast
+    highlights.forEach(x => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-      ctx.strokeStyle = stravaOrange;
+      ctx.strokeStyle = orange;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.roundRect(50, currentY, width - 100, 45, 6);
+      ctx.roundRect(40, currentY, width - 80, 45, 6);
       ctx.fill();
       ctx.stroke();
-      
-      // Course name
-      ctx.font = '16px "VT323", monospace';
-      ctx.textAlign = 'center';
-      drawTextWithOutline(name, width / 2, currentY + 18, stravaOrange);
-      
-      // Grade info
-      ctx.font = '14px "VT323", monospace';
-      drawTextWithOutline(grade, width / 2, currentY + 35, stravaOrangeLight);
-      
+      ctx.font = `700 15px ${TEXT}`;
+      drawText(x.name, width / 2, currentY + 19, orange);
+      ctx.font = `500 13px ${TEXT}`;
+      drawText(x.detail, width / 2, currentY + 36, orangeLight);
       currentY += 55;
     });
-    
-    // Check if this is the highlights panel (has Best Performance or Room to Grow)
-    const isHighlightsPanel = title.includes('HIGHLIGHTS') || 
-      Array.from(highlightCourses).some(c => 
-        c.querySelector('.course-label')?.textContent?.includes('Best Performance') ||
-        c.querySelector('.course-label')?.textContent?.includes('Room to Grow')
-      );
-    
-    // Check if this is the semester panel (has Best Semester or Toughest Semester)
-    const isSemesterPanel = title.includes('SEMESTER') || 
-      Array.from(highlightCourses).some(c => 
-        c.querySelector('.course-label')?.textContent?.includes('Best Semester') ||
-        c.querySelector('.course-label')?.textContent?.includes('Toughest Semester')
-      );
-    
-    if (isHighlightsPanel) {
-      ctx.font = '18px "VT323", monospace';
-      drawTextWithOutline('My lowest and highest grade', width / 2, currentY + 10, stravaOrangeLight);
-    } else if (isSemesterPanel) {
-      ctx.font = '18px "VT323", monospace';
-      drawTextWithOutline('My lowest and highest semester', width / 2, currentY + 10, stravaOrangeLight);
+    if (p.caption) {
+      ctx.font = `600 16px ${TEXT}`;
+      drawText(p.caption, width / 2, currentY + 10, orangeLight);
     }
   }
-  
-  // Download
-  const link = document.createElement('a');
-  link.download = `elbi-wrapped-${wrappedCurrentPanel + 1}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
 
-// Initialize wrapped navigation on page load
-document.addEventListener('DOMContentLoaded', () => {
-  initializeWrapped();
-});
+  h('a', { download: `elbi-wrapped-${wrappedCurrentPanel + 1}.png`, href: canvas.toDataURL('image/png') }).click();
+}
 
 /* ---------- Grade refresh, backup and clear data (platform) ---------- */
 
 // Asks the open AMIS tab to fetch grades now. content.js answers with
 // { ok, lastError, fetchedAt } and writes them to storage.
 async function refreshGrades() {
-  const status = document.getElementById('refreshStatus');
-  const say = text => { if (status) status.textContent = text; };
+  const say = text => { $('refreshStatus').textContent = text; };
   const [tab] = await chrome.tabs.query({ url: 'https://amis.uplb.edu.ph/*' });
   if (!tab) {
     say('Open AMIS in a tab and log in, then press Refresh.');
     return;
   }
-  say('Getting your grades from AMIS...');
+  say('Getting your grades from AMIS');
   let res;
   try {
     res = await chrome.tabs.sendMessage(tab.id, { type: 'FETCH_GRADES', force: true });
@@ -1799,36 +1261,29 @@ const BACKUP_KEYS = ['gradesData', 'fetchedAt', 'selectedProgram', 'selectedTrac
   'substitutions', 'customCourseStatus', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme'];
 
 function wireBackup() {
-  const exportBtn = document.getElementById('exportBtn');
-  const importBtn = document.getElementById('importBtn');
-  const importFile = document.getElementById('importFile');
-  if (exportBtn) exportBtn.addEventListener('click', async () => {
+  const importFile = $('importFile');
+  $('exportBtn').addEventListener('click', async () => {
     const data = await chrome.storage.local.get(null);
     // Top-level gradesData, selectedProgram, excludedCourses and substitutions
     // keep the file loadable by the web app importer.
     const backup = { source: 'elbi-gradesim', schemaVersion: BACKUP_SCHEMA_VERSION, timestamp: new Date().toISOString(), ...data };
     const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `elbi-gradesim-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
+    h('a', { href: url, download: `elbi-gradesim-backup-${new Date().toISOString().slice(0, 10)}.json` }).click();
     URL.revokeObjectURL(url);
   });
-  if (importBtn && importFile) {
-    importBtn.addEventListener('click', () => importFile.click());
-    importFile.addEventListener('change', async e => {
-      const file = e.target.files[0];
-      e.target.value = '';
-      if (!file) return;
-      try {
-        const toSave = parseBackup(await file.text());
-        await chrome.storage.local.set(toSave);
-        window.location.reload();
-      } catch (err) {
-        alert(err.message);
-      }
-    });
-  }
+  $('importBtn').addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', async e => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    try {
+      const toSave = parseBackup(await file.text());
+      await chrome.storage.local.set(toSave);
+      window.location.reload();
+    } catch (err) {
+      showNotice($('dataNotice'), { tone: 'bad', icon: 'x', title: 'Nothing was imported.', body: err.message });
+    }
+  });
 }
 
 // Throws with a message the student can read. Files without schemaVersion come
@@ -1848,7 +1303,7 @@ function parseBackup(text) {
 
 // Two clicks: the first arms the button, the second deletes everything.
 function wireClearData() {
-  const btn = document.getElementById('clearDataBtn');
+  const btn = $('clearDataBtn');
   if (!btn) return;
   const label = btn.textContent;
   let armed = false;

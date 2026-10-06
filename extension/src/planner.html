@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Course Planner - Elbi GradeSim</title>
+  <title>Course planner, Elbi GradeSim</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="planner.css">
+  <script src="components.js"></script>
 </head>
 <body class="planner-page">
   <header class="pl-top">
@@ -15,11 +16,11 @@
       <h1>Elbi GradeSim <span class="pl-top-sub">Course planner</span></h1>
       <span id="plannerProgram" class="byline"></span>
     </div>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system"></button>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Theme, system" title="Theme, system"></button>
   </header>
 
   <main class="pl-main">
-    <div id="plannerBanner" class="pl-banner hidden" role="status"></div>
+    <div id="plannerBanner" class="pl-banner" role="status"></div>
 
     <section class="pl-summary" aria-live="polite">
       <p class="pl-grad"><span id="gradTerm">Loading plan</span><span id="gradDelta" class="pl-delta"></span></p>
@@ -37,7 +38,7 @@
         </select>
         <select id="whatifCourse" aria-label="Course"></select>
         <button class="btn btn-primary" type="submit">Simulate</button>
-        <button id="whatifClear" class="pl-textbtn hidden" type="button">Clear</button>
+        <button id="whatifClear" class="btn-text hidden" type="button">Clear</button>
       </form>
       <details id="planMenu" class="pl-menu">
         <summary class="btn btn-secondary">Plan options<span data-icon="chevron"></span></summary>
@@ -59,7 +60,7 @@
         <div class="pl-tips-pop">
           <p>Each column is a term. Past terms come from your AMIS grades, future terms are the earliest plan that respects prerequisites, the sems each course is actually offered, and your unit cap.</p>
           <p>Select a course to see its full prerequisite chain, what it unlocks and how many courses a failure would block. Mark a course failed to see the retake and the delay.</p>
-          <p>Thin maroon lines are the critical path: courses where a one-term slip delays graduation.</p>
+          <p>Courses marked Critical, joined by thin maroon lines, are your critical path. These are the courses that would delay graduation if you slip, even by one term.</p>
           <p>Offerings come from AMIS class listings for 2023 to 2026. Free electives are not included.</p>
         </div>
       </details>
