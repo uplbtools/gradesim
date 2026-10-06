@@ -160,12 +160,17 @@ function freeElectiveCourses(program, track) {
 // Marketing and Prices) fills the program's MAJ slots from its pools. A pool
 // with one course per slot puts those courses in the slots. A pool with more
 // courses than slots keeps the slots and lists the courses as `options`.
+// `courses` are full checklist rows the specialization adds (BS MST's
+// specialization subjects); a row with `slot` replaces that slot instead.
 function applySpecialization(rows, program, specKey) {
   const spec = program?.specializations?.[specKey];
   if (!spec) return rows;
   const bySlot = new Map();
-  spec.pools.forEach(pool => pool.slots.forEach((slot, i) => bySlot.set(slot, { pool, i })));
+  (spec.pools || []).forEach(pool => pool.slots.forEach((slot, i) => bySlot.set(slot, { pool, i })));
+  const toRow = ({ slot, ...course }) => ({ prereqs: [], ...course });
+  const fixed = new Map((spec.courses || []).filter(c => c.slot).map(c => [c.slot, toRow(c)]));
   return rows.map(row => {
+    if (fixed.has(row.code)) return fixed.get(row.code);
     const hit = bySlot.get(row.code);
     if (!hit) return row;
     const { pool, i } = hit;
@@ -174,7 +179,7 @@ function applySpecialization(rows, program, specKey) {
       return { code: pool.courses[i], title: '', units: row.units, year: row.year, sem: row.sem, prereqs: [] };
     }
     return { ...row, title: `${pool.name}, ${spec.name}`, options: pool.courses };
-  });
+  }).concat((spec.courses || []).filter(c => !c.slot).map(toRow));
 }
 
 function getPlannerCourses(program, track, specKey) {
@@ -1753,162 +1758,549 @@ const UPLB_PROGRAMS = {
     "name": "BS Mathematics and Science Teaching",
     "college": "CAS",
     "collegeName": "College of Arts and Sciences",
-    "available": false,
-    "totalUnitsRequired": 150,
+    "available": true,
+    "totalUnitsRequired": 140,
     "geCoursesRequired": 9,
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "MATH 27",
-        "title": "Analytic Geometry and Calculus I",
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "MATH 28",
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 11.1",
+        "title": "Investigative Biology Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 25",
+        "title": "Fundamental Calculus",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 50",
+        "title": "Foundations of Physics",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 101A",
+        "title": "Field Study I",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 14",
+        "title": "Biodiversity",
+        "units": 5,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
         "title": "Analytic Geometry and Calculus II",
         "units": 3,
         "year": 1,
         "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
+        "prereqs": []
       },
       {
-        "code": "MATH 36",
-        "title": "Mathematical Analysis I",
+        "code": "AMAT 19",
+        "title": "Finite Mathematics",
         "units": 3,
         "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "MATH 37",
-        "title": "Mathematical Analysis II",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "MATH 114",
-        "title": "Differential Equations",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "STAT 101",
-        "title": "Statistical Methods",
-        "units": 3,
-        "year": 2,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "EDUC 100",
-        "title": "The Teaching Profession",
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MST 101B",
+        "title": "Field Study II",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": []
-      },
-      {
-        "code": "EDUC 101",
-        "title": "The Child and Adolescent Learner",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "EDUC 100"
-        ]
       },
       {
         "code": "EDUC 102",
-        "title": "Facilitating Learning",
+        "title": "Theories and Principles of Education",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "BIO 30",
+        "title": "Genetics",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 166",
+        "title": "Statistics for the Social Sciences",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SPCM 156",
+        "title": "Speech Communication Strategies for Classroom Instruction",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EDUC 111",
+        "title": "Educational Psychology",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 101C",
+        "title": "Field Study III",
+        "units": 1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "EDUC 122",
+        "title": "Principles and Strategies of Teaching",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 1,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 40",
+        "title": "Fundamentals of Educational Communication and Technology",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 160",
+        "title": "Introductory Biochemistry",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MST 101D",
+        "title": "Field Study IV",
+        "units": 1,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "COMA 150",
+        "title": "Workplace Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 162",
+        "title": "Experimental Designs",
         "units": 3,
         "year": 3,
         "sem": "1",
-        "prereqs": [
-          "EDUC 100"
-        ]
+        "prereqs": []
       },
       {
-        "code": "EDUC 103",
-        "title": "Curriculum Development",
+        "code": "EDUC 144",
+        "title": "Evaluation of Learning Outcomes",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 123",
+        "title": "The Teaching of Mathematics and Science",
+        "units": 5,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 3,
         "sem": "2",
-        "prereqs": [
-          "EDUC 100"
-        ]
+        "prereqs": []
       },
       {
-        "code": "EDUC 110",
-        "title": "Principles of Teaching",
+        "code": "MATH 18",
+        "title": "College Geometry",
         "units": 3,
         "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "EDUC 100"
-        ]
+        "sem": "2",
+        "prereqs": []
       },
       {
-        "code": "EDUC 160",
-        "title": "Educational Assessment",
+        "code": "MST 195",
+        "title": "Research Methodologies in Education",
         "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MST 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MST 200A",
+        "title": "Student Teaching I (on-campus)",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 190",
+        "title": "Special Problems",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 191",
+        "title": "Special Topics",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MST 200B",
+        "title": "Student Teaching II (off-campus)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 72",
+        "title": "University Physics II",
+        "units": 4,
         "year": 4,
         "sem": "2",
-        "prereqs": [
-          "EDUC 100"
-        ]
+        "prereqs": []
       },
       {
-        "code": "EDUC 190",
-        "title": "Practice Teaching",
-        "units": 6,
-        "gradeType": "S/U",
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "EDUC 100"
-        ]
-      },
-      {
-        "code": "ENG 10",
-        "title": "Writing of Scientific Papers",
-        "units": 3,
+        "code": "PHYS 72.1",
+        "title": "University Physics II Laboratory",
+        "units": 1,
         "year": 4,
         "sem": "2",
         "prereqs": []
       }
     ],
-    "requiredCodes": [
-      "MATH 27",
-      "MATH 28",
-      "MATH 36",
-      "MATH 37",
-      "MATH 114",
-      "STAT 101",
-      "EDUC 100",
-      "EDUC 101",
-      "EDUC 102",
-      "EDUC 103",
-      "EDUC 110",
-      "EDUC 160",
-      "EDUC 190",
-      "ENG 10"
-    ]
+    "specializations": {
+      "biology": {
+        "name": "Biology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 58",
+        "note": "143 units in all with this specialization.",
+        "courses": [
+          {
+            "code": "BOT 14",
+            "title": "University Botany",
+            "units": 3,
+            "year": 2,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "BIO 150",
+            "title": "Ecology",
+            "units": 4,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "MCB 11",
+            "title": "Biology and Applications of Microorganisms",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "ZOO 14",
+            "title": "University Zoology",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "HFDS 130",
+            "title": "Human Physiology",
+            "units": 3,
+            "year": 4,
+            "sem": "2",
+            "prereqs": []
+          }
+        ]
+      },
+      "chemistry": {
+        "name": "Chemistry",
+        "source": "UPLB catalog, College of Arts and Sciences, page 59",
+        "note": "140 units in all with this specialization.",
+        "courses": [
+          {
+            "code": "CHEM 32",
+            "title": "Quantitative Inorganic Analysis",
+            "units": 3,
+            "year": 2,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "CHEM 32.1",
+            "title": "Quantitative Inorganic Analysis Laboratory",
+            "units": 2,
+            "year": 2,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "CHEM 160.1",
+            "title": "Introductory Biochemistry Laboratory",
+            "units": 2,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "CHEM 102",
+            "title": "Elementary Physical Chemistry",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "CHEM 180",
+            "title": "General Environmental Chemistry",
+            "units": 3,
+            "year": 4,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      },
+      "mathematics": {
+        "name": "Mathematics",
+        "source": "UPLB catalog, College of Arts and Sciences, page 60",
+        "note": "142 units in all with this specialization.",
+        "courses": [
+          {
+            "code": "MATH 20",
+            "title": "The Landscape of Mathematics",
+            "units": 3,
+            "year": 2,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "MATH 28",
+            "title": "Analytic Geometry and Calculus III",
+            "units": 3,
+            "year": 2,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "MATH 101",
+            "title": "Logic and Set Theory",
+            "units": 3,
+            "year": 2,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "MATH 103",
+            "title": "Elementary Theory of Numbers",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "AMAT 105",
+            "title": "Matrices and Applications",
+            "units": 3,
+            "year": 4,
+            "sem": "2",
+            "prereqs": []
+          }
+        ]
+      },
+      "physics": {
+        "name": "Physics",
+        "source": "UPLB catalog, College of Arts and Sciences, page 61",
+        "note": "140 units in all with this specialization.",
+        "courses": [
+          {
+            "code": "APHY 101",
+            "title": "Physics in Scientific Instruments",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "code": "CMSC 12",
+            "title": "Foundations of Computer Science",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "PHYS 192.1",
+            "title": "Experimental Physics I",
+            "units": 2,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "APHY 102",
+            "title": "Physics of Electronic Devices",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          },
+          {
+            "code": "PHYS 193.1",
+            "title": "Experimental Physics II",
+            "units": 2,
+            "year": 4,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      }
+    }
   },
   "BSBIO": {
     "code": "BSBIO",
@@ -2328,7 +2720,163 @@ const UPLB_PROGRAMS = {
       "COMA 150",
       "BIO 199",
       "BIO 200"
-    ]
+    ],
+    "specializations": {
+      "cmb": {
+        "name": "Cell and Molecular Biology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "BIO 101, already in the core, is the course this major needs before BIO 198 Practicum. Your Major slots are courses your adviser approves.",
+        "courses": []
+      },
+      "ecology": {
+        "name": "Ecology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "BIO 151",
+            "title": "Environmental Management",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      },
+      "genetics": {
+        "name": "Genetics",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "BIO 130A",
+            "title": "Intermediate Genetics I",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "slot": "MAJ 3",
+            "code": "BIO 130B",
+            "title": "Intermediate Genetics II",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          }
+        ]
+      },
+      "microbiology": {
+        "name": "Microbiology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "MCB 101",
+            "title": "Microbial Identification Techniques",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "slot": "MAJ 3",
+            "code": "MCB 180",
+            "title": "Introductory Food Microbiology",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "prereqs": []
+          }
+        ]
+      },
+      "plant": {
+        "name": "Plant Biology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "BOT 20",
+            "title": "Fundamentals of Plant Physiology",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "slot": "MAJ 2",
+            "code": "BOT 110",
+            "title": "Morphology and Anatomy of Plants",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      },
+      "systematics": {
+        "name": "Systematics",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "BOT 140",
+            "title": "Systematics of the Spermatophytes",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          },
+          {
+            "slot": "MAJ 2",
+            "code": "ZOO 140",
+            "title": "Animal Taxonomy",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      },
+      "wildlife": {
+        "name": "Wildlife Biology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "WLDL 101",
+            "title": "Introduction to Philippine Wildlife",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      },
+      "zoology": {
+        "name": "Zoology",
+        "source": "UPLB catalog, College of Arts and Sciences, page 54 and page 66",
+        "note": "The catalog names only the courses this major needs before BIO 198 Practicum. Your other Major slots are courses your adviser approves.",
+        "courses": [
+          {
+            "slot": "MAJ 1",
+            "code": "ZOO 113",
+            "title": "Comparative Vertebrate Anatomy",
+            "units": 5,
+            "year": 3,
+            "sem": "1",
+            "prereqs": []
+          }
+        ]
+      }
+    }
   },
   "BSCHEM": {
     "code": "BSCHEM",

@@ -21,6 +21,27 @@ function amisTermToAbs(id) {
   return m ? (2000 + Number(m[1])) * 3 + Number(m[2]) - 1 : null;
 }
 
+// A 4.00 is cleared by one removal exam: a pass makes it 3.00 and a fail
+// makes it 5.00 (UP BOR, 886th meeting, 1977). removals maps
+// removalKey(termId, code) to 'pass' or 'fail'. Returns a copy of the AMIS
+// data with those grades replaced; other grades are left alone.
+function removalKey(termId, code) {
+  return `${termId}:${normalizeCourseCode(code)}`;
+}
+
+function applyRemovals(gradesData, removals) {
+  if (!gradesData || !gradesData.student_grades || !removals || !Object.keys(removals).length) return gradesData;
+  const student_grades = Object.fromEntries(Object.entries(gradesData.student_grades).map(([termId, t]) => {
+    if (!t || !t.values) return [termId, t];
+    return [termId, { ...t, values: t.values.map(v => {
+      const result = removals[removalKey(termId, v.course && v.course.course_code)];
+      if (parseFloat(v.grade) !== 4 || (result !== 'pass' && result !== 'fail')) return v;
+      return { ...v, grade: result === 'pass' ? '3.00' : '5.00', removalFrom: v.grade };
+    }) }];
+  }));
+  return { ...gradesData, student_grades };
+}
+
 // Every AMIS row as { code, title, units, grade, result, termId }.
 function amisCourses(gradesData) {
   return Object.entries((gradesData && gradesData.student_grades) || {})
@@ -148,5 +169,5 @@ function gwaOutlook(gwa, units, left, target) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { gradeResult, amisTermToAbs, amisCourses, plannerCourseList, fillRequirementSlots, remainingRequirements, gwaOutlook, LATIN_HONORS };
+  module.exports = { gradeResult, amisTermToAbs, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, remainingRequirements, gwaOutlook, LATIN_HONORS };
 }
