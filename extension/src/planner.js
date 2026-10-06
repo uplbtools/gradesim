@@ -1,8 +1,8 @@
 // planner.js - curriculum map and course planner.
 // Framework free. Talks to the browser only through `store` below, so the same
 // file can run on a plain web page (gradesim.uplb.tools) with localStorage.
-// Depends on globals from components.js, curriculum.js, catalog.js and
-// scheduler.js. Every piece of UI is built with the components.js helpers.
+// Depends on globals from components.js, curriculum.js, catalog.js,
+// scheduler.js and route-edges.js. Every piece of UI is built with the components.js helpers.
 
 /* ---------- Storage adapter ---------- */
 
@@ -579,53 +579,15 @@ function drawEdges() {
   const crit = code => v.slips[code] > 0 && state.byCode.get(code).genericRequirement !== 'elective';
   const paths = [];
 
-  // Arrows travel the lattice lanes (see .pl-grid in planner.css): out of the
-  // prerequisite into the column gap beside it, along the row gap next to the
-  // target's row across any semesters in between, down the column gap before
-  // the target, then in. Cards share one height, so row gaps line up across
-  // columns and an arrow never passes under a card. Arrows sharing a gap get
-  // their own lane, four per gap, so they do not merge into one line.
+  // Arrows travel the lattice gaps like routed cables (route-edges.js).
   const css = getComputedStyle(grid);
-  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 32;
-  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 16;
-  const used = new Map();
-  const lane = (key, center, gap) => {
-    const n = used.get(key) || 0;
-    used.set(key, n + 1);
-    return center + ((n % 4) - 1.5) * (gap / 5);
+  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 36;
+  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 20;
+  const rect = el => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left - gridRect.left, y: r.top - gridRect.top, w: r.width, h: r.height };
   };
-  // Orthogonal polyline with rounded corners.
-  function polyline(pts) {
-    let d = `M ${pts[0][0]} ${pts[0][1]}`;
-    for (let i = 1; i < pts.length - 1; i++) {
-      const [px, py] = pts[i - 1];
-      const [cx, cy] = pts[i];
-      const [nx, ny] = pts[i + 1];
-      const r = Math.min(6, Math.hypot(cx - px, cy - py) / 2, Math.hypot(nx - cx, ny - cy) / 2);
-      const ix = cx - Math.sign(cx - px) * r;
-      const iy = cy - Math.sign(cy - py) * r;
-      const ox = cx + Math.sign(nx - cx) * r;
-      const oy = cy + Math.sign(ny - cy) * r;
-      d += ` L ${ix} ${iy} Q ${cx} ${cy} ${ox} ${oy}`;
-    }
-    const [lx, ly] = pts[pts.length - 1];
-    return `${d} L ${lx} ${ly}`;
-  }
-  function routeEdge(x1, y1, x2, y2, ra, rb) {
-    const end = x2 - 4;
-    const gxS = ra.right - gridRect.left + colGap / 2;
-    const gxT = rb.left - gridRect.left - colGap / 2;
-    if (gxT - gxS < colGap) { // neighbouring semesters: one column gap
-      const gx = lane(`c${Math.round(gxS)}`, gxS, colGap);
-      return Math.abs(y2 - y1) < 1 ? `M ${x1} ${y1} L ${end} ${y2}`
-        : polyline([[x1, y1], [gx, y1], [gx, y2], [end, y2]]);
-    }
-    const rowY = y1 <= y2 ? rb.top - rowGap / 2 : rb.bottom + rowGap / 2;
-    const ly = lane(`r${Math.round(rowY)}`, rowY - gridRect.top, rowGap);
-    const a = lane(`c${Math.round(gxS)}`, gxS, colGap);
-    const b = lane(`c${Math.round(gxT)}`, gxT, colGap);
-    return polyline([[x1, y1], [a, y1], [a, ly], [b, ly], [b, y2], [end, y2]]);
-  }
+  const drawn = [];
   state.graph.edges.forEach(({ from, to }) => {
     let kind = null;
     if (chain) {
@@ -638,15 +600,15 @@ function drawEdges() {
     const a = nodeOf(from);
     const b = nodeOf(to);
     if (!a || !b || a.closest('details:not([open])') || b.closest('details:not([open])')) return;
-    const ra = a.getBoundingClientRect();
-    const rb = b.getBoundingClientRect();
-    if (ra.right > rb.left) return; // same column or backwards: coreq-like, skip
-    const x1 = ra.right - gridRect.left;
-    const y1 = ra.top + ra.height / 2 - gridRect.top;
-    const x2 = rb.left - gridRect.left;
-    const y2 = rb.top + rb.height / 2 - gridRect.top;
-    const d = routeEdge(x1, y1, x2, y2, ra, rb);
-    if (kind === 'chain') paths.push(svgEl('path', { class: 'pl-edge-halo', d }));
+    const ra = rect(a);
+    const rb = rect(b);
+    if (ra.x + ra.w > rb.x) return; // same column or backwards: coreq-like, skip
+    drawn.push({ kind, from: ra, to: rb });
+  });
+  const halos = [];
+  routeEdges(drawn, { colGap, rowGap }).forEach(({ d }, i) => {
+    const { kind } = drawn[i];
+    if (kind === 'chain') halos.push(svgEl('path', { class: 'pl-edge-halo', d }));
     paths.push(svgEl('path', { class: `pl-edge ${kind}`, d, 'marker-start': 'url(#pl-tail)', 'marker-end': `url(#pl-arrow-${kind})` }));
   });
   svg.classList.toggle('over', !!chain);
@@ -660,7 +622,7 @@ function drawEdges() {
     marker('pl-arrow-chain', 8, [6, 4], 'path', { d: 'M0 0 L8 4 L0 8 z', class: 'pl-arrowhead chain' }, { orient: 'auto' }),
     marker('pl-arrow-crit', 6, [5, 3], 'path', { d: 'M0 0 L6 3 L0 6 z', class: 'pl-arrowhead crit' }, { orient: 'auto' }),
     marker('pl-tail', 8, [4, 4], 'circle', { cx: 4, cy: 4, r: 3, class: 'pl-arrowtail' }, { markerUnits: 'userSpaceOnUse' }));
-  svg.replaceChildren(defs, ...paths);
+  svg.replaceChildren(defs, ...halos, ...paths);
 }
 
 /* ---------- Detail panel ---------- */
