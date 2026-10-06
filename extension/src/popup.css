@@ -15,6 +15,15 @@ body {
   min-height: 500px;
 }
 
+/* Firefox for Android opens the popup as a full page, so fill the screen
+   instead of a fixed desktop popup width. */
+@media (pointer: coarse) {
+  body {
+    width: auto;
+    min-height: 100vh;
+  }
+}
+
 .container {
   padding: 16px;
 }
