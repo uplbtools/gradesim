@@ -205,7 +205,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const programSelect = document.getElementById('programSelect');
   if (programSelect) {
     // Load saved program preference
-    const savedProgram = await chrome.storage.local.get(['selectedProgram']);
+    const savedProgram = await chrome.storage.local.get(['selectedProgram', 'selectedTracks']);
+    window.selectedTracks = savedProgram.selectedTracks || {};
     if (savedProgram.selectedProgram) {
       programSelect.value = savedProgram.selectedProgram;
       setCurrentProgram(savedProgram.selectedProgram);
@@ -458,7 +459,7 @@ function displayGradesData(courses) {
   displayGradesList(gradesBySemester, courses);
   
   // Display remaining courses
-  displayRemainingCourses(completedCourses);
+  displayRemainingCourses(completedCourses, courses);
   
   // Display Wrapped feature
   displayWrapped(courses);
@@ -771,7 +772,9 @@ function calculateGroupGWA(courses) {
   return { gwa, totalUnits };
 }
 
-function displayRemainingCourses(completedCourses) {
+// allCourses: every AMIS row, including courses being taken now, so the track
+// is known the moment someone enrolls in the SP or thesis course.
+function displayRemainingCourses(completedCourses, allCourses = window.gradesData?.courses || completedCourses) {
   const listEl = document.getElementById('remainingList');
   const trackInfoEl = document.getElementById('trackInfo');
   listEl.safeHTML = '';
@@ -791,8 +794,8 @@ function displayRemainingCourses(completedCourses) {
     return;
   }
   
-  // Detect track based on completed courses
-  const detectedTrack = detectTrack(completedCourses);
+  // Detect track from any enrollment in the SP or thesis course
+  const detectedTrack = detectTrack(allCourses);
   
   // Update track info display and radio buttons
   if (curriculum.tracks) {
@@ -803,8 +806,10 @@ function displayRemainingCourses(completedCourses) {
       trackInfoEl.className = 'track-info detected';
       trackInfoEl.safeHTML = `${icon('check')}<span>Detected: <strong>${trackName}</strong></span>`;
     } else {
+      currentTrack = resolveTrack(curriculum, window.selectedTracks?.[curriculum.code]);
+      const fallback = curriculum.tracks[currentTrack];
       trackInfoEl.className = 'track-info not-detected';
-      trackInfoEl.safeHTML = `${icon('alert')}<span>Track not yet detected. Defaulting to SP Track. Select your track below.</span>`;
+      trackInfoEl.safeHTML = `${icon('alert')}<span>Track not detected yet. Using ${sanitizeText(fallback.name)} (${sanitizeText(fallback.code)}). Pick yours below.</span>`;
     }
     
     // Set the radio button to match current track
@@ -834,7 +839,7 @@ function displayRemainingCourses(completedCourses) {
   }
   
   // Filter remaining required courses from curriculum
-  const remaining = (curriculum.majorCourses || []).filter(course => {
+  const remaining = trackCourses(curriculum, currentTrack).filter(course => {
     const code = course.code.toUpperCase().trim();
     return !completedCodes.has(code);
   });

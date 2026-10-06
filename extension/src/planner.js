@@ -123,7 +123,7 @@ async function init() {
     el.replaceWith(document.importNode(doc.body.firstElementChild, true));
   });
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
-    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme']);
+    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks']);
   const d = state.data;
   d.customCourseStatus = d.customCourseStatus || {};
   d.substitutions = d.substitutions || {};
@@ -139,7 +139,19 @@ async function init() {
   }
   $('plannerProgram').textContent = state.program.name || programCode;
   const catalog = typeof UPLB_CATALOG !== 'undefined' ? UPLB_CATALOG : {};
-  state.courses = enrichCourses(getPlannerCourses(state.program), catalog);
+  // An SP or thesis course on AMIS (passed, failed, or being taken now) wins;
+  // otherwise the track picked in the popup, otherwise the program default.
+  const amisRows = Object.values((d.gradesData && d.gradesData.student_grades) || {})
+    .flatMap(t => (t && t.values) || [])
+    .map(v => ({ code: v.course && v.course.course_code, grade: v.grade }))
+    .filter(r => r.code);
+  state.track = detectTrack(amisRows, state.program) ||
+    resolveTrack(state.program, (d.selectedTracks || {})[programCode]);
+  const trackInfo = state.track && state.program.tracks[state.track];
+  if (trackInfo) {
+    $('plannerProgram').textContent += `, ${trackInfo.name} (${trackInfo.code})`;
+  }
+  state.courses = enrichCourses(getPlannerCourses(state.program, state.track), catalog);
   state.courses.forEach(c => state.byCode.set(c.code, c));
   state.graph = analyzeGraph(state.courses);
   d.plannerOptions = { cap: defaultCap(), midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
@@ -259,6 +271,16 @@ function readHistory() {
       const a = taken[i];
       if (a) push(slot.code, { ...a, via: a.code });
     });
+  });
+  // Free electives: any other course with units that the curriculum does not
+  // name and that is not standing in for a required one.
+  // ponytail: one course per 3-unit slot; a 6-unit elective fills only one.
+  const subbed = new Set(Object.values(state.data.substitutions).map(normCode));
+  const electives = doneOrNow.filter(a => a.units > 0 && !state.byCode.has(a.code) &&
+    !subbed.has(a.code) && !kinds.some(([, match]) => match(a)));
+  state.courses.filter(c => c.genericRequirement === 'elective').forEach((slot, i) => {
+    const a = electives[i];
+    if (a) push(slot.code, { ...a, via: a.code });
   });
   Object.entries(state.data.substitutions).forEach(([req, taken]) => {
     const r = normCode(req);
@@ -557,8 +579,8 @@ function cardHTML(card, v) {
     <span class="pl-card-top"><span class="pl-status">${icon(ic)}${statusLabel}</span><span class="pl-units">${esc(c.units)}u</span></span>
     <span class="pl-code">${esc(c.code)}${card.pinned ? '<span class="pl-pin" title="Moved later by you"> *</span>' : ''}</span>
     <span class="pl-title">${esc(c.title)}</span>
-    <span class="pl-card-foot"><span class="pl-offer">${esc(offeringLabel(c))}</span>${crit ? '<span class="pl-crit">Critical</span>' : ''}</span>
     ${extra}
+    <span class="pl-card-foot"><span class="pl-offer">${esc(offeringLabel(c))}</span>${crit ? '<span class="pl-crit">Critical</span>' : ''}</span>
   </div>`;
 }
 
@@ -645,6 +667,54 @@ function drawEdges() {
   const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
   const crit = code => v.slips[code] > 0;
   const paths = [];
+
+  // Arrows travel the lattice lanes (see .pl-grid in planner.css): out of the
+  // prerequisite into the column gap beside it, along the row gap next to the
+  // target's row across any semesters in between, down the column gap before
+  // the target, then in. Cards share one height, so row gaps line up across
+  // columns and an arrow never passes under a card. Arrows sharing a gap get
+  // their own lane, four per gap, so they do not merge into one line.
+  const css = getComputedStyle(grid);
+  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 32;
+  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 16;
+  const used = new Map();
+  const lane = (key, center, gap) => {
+    const n = used.get(key) || 0;
+    used.set(key, n + 1);
+    return center + ((n % 4) - 1.5) * (gap / 5);
+  };
+  // Orthogonal polyline with rounded corners.
+  function polyline(pts) {
+    let d = `M ${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [px, py] = pts[i - 1];
+      const [cx, cy] = pts[i];
+      const [nx, ny] = pts[i + 1];
+      const r = Math.min(6, Math.hypot(cx - px, cy - py) / 2, Math.hypot(nx - cx, ny - cy) / 2);
+      const ix = cx - Math.sign(cx - px) * r;
+      const iy = cy - Math.sign(cy - py) * r;
+      const ox = cx + Math.sign(nx - cx) * r;
+      const oy = cy + Math.sign(ny - cy) * r;
+      d += ` L ${ix} ${iy} Q ${cx} ${cy} ${ox} ${oy}`;
+    }
+    const [lx, ly] = pts[pts.length - 1];
+    return `${d} L ${lx} ${ly}`;
+  }
+  function routeEdge(x1, y1, x2, y2, ra, rb) {
+    const end = x2 - 4;
+    const gxS = ra.right - gridRect.left + colGap / 2;
+    const gxT = rb.left - gridRect.left - colGap / 2;
+    if (gxT - gxS < colGap) { // neighbouring semesters: one column gap
+      const gx = lane(`c${Math.round(gxS)}`, gxS, colGap);
+      return Math.abs(y2 - y1) < 1 ? `M ${x1} ${y1} L ${end} ${y2}`
+        : polyline([[x1, y1], [gx, y1], [gx, y2], [end, y2]]);
+    }
+    const rowY = y1 <= y2 ? rb.top - rowGap / 2 : rb.bottom + rowGap / 2;
+    const ly = lane(`r${Math.round(rowY)}`, rowY - gridRect.top, rowGap);
+    const a = lane(`c${Math.round(gxS)}`, gxS, colGap);
+    const b = lane(`c${Math.round(gxT)}`, gxT, colGap);
+    return polyline([[x1, y1], [a, y1], [a, ly], [b, ly], [b, y2], [end, y2]]);
+  }
   state.graph.edges.forEach(({ from, to }) => {
     let kind = null;
     if (chain) {
@@ -664,12 +734,15 @@ function drawEdges() {
     const y1 = ra.top + ra.height / 2 - gridRect.top;
     const x2 = rb.left - gridRect.left;
     const y2 = rb.top + rb.height / 2 - gridRect.top;
-    const dx = Math.max(24, (x2 - x1) / 2);
-    paths.push(`<path class="pl-edge ${kind}" d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2 - 4} ${y2}" marker-end="url(#pl-arrow-${kind})"/>`);
+    const d = routeEdge(x1, y1, x2, y2, ra, rb);
+    if (kind === 'chain') paths.push(`<path class="pl-edge-halo" d="${d}"/>`);
+    paths.push(`<path class="pl-edge ${kind}" d="${d}" marker-start="url(#pl-tail)" marker-end="url(#pl-arrow-${kind})"/>`);
   });
+  svg.classList.toggle('over', !!chain);
   setHTML(svg, `<defs>
     <marker id="pl-arrow-chain" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="pl-arrowhead chain"/></marker>
     <marker id="pl-arrow-crit" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" class="pl-arrowhead crit"/></marker>
+    <marker id="pl-tail" markerWidth="8" markerHeight="8" refX="4" refY="4" markerUnits="userSpaceOnUse"><circle cx="4" cy="4" r="3" class="pl-arrowtail"/></marker>
   </defs>${paths.join('')}`);
 }
 

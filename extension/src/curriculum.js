@@ -109,8 +109,57 @@ function genericRequirementCourses(program) {
   return courses;
 }
 
-function getPlannerCourses(program) {
-  return [...(program?.majorCourses || []), ...genericRequirementCourses(program)];
+// A known track key, else the program's default, else its first track.
+function resolveTrack(program, track) {
+  const tracks = program?.tracks;
+  if (!tracks) return null;
+  if (track && tracks[track]) return track;
+  return program.defaultTrack || Object.keys(tracks)[0];
+}
+
+// Required courses for one track. Students take the SP course (e.g. CMSC 190)
+// or the thesis course (CMSC 200), never both, so the other track's course is
+// dropped whether or not the checklist row carries a `track` tag.
+function trackCourses(program, track) {
+  const chosen = resolveTrack(program, track);
+  const otherCodes = new Set(
+    Object.entries(program?.tracks || {})
+      .filter(([key]) => key !== chosen)
+      .map(([, t]) => normalizeCourseCode(t.code))
+  );
+  return (program?.majorCourses || []).filter(c =>
+    !(c.track && chosen && c.track !== chosen) &&
+    !otherCodes.has(normalizeCourseCode(c.code))
+  );
+}
+
+// Free elective slots for the track (CMSC 190: 18 units, CMSC 200: 15),
+// 3 units each, hinted into 3rd and 4th year.
+function freeElectiveCourses(program, track) {
+  if (!program?.tracks) return [];
+  const units = getFreeElectiveUnits(track, program);
+  const courses = [];
+  for (let left = units, i = 0; left > 0; left -= 3, i++) {
+    const slot = defaultSlot(4 + (i % 4));
+    courses.push({
+      code: `FE ${i + 1}`,
+      title: 'Free Elective',
+      units: Math.min(3, left),
+      year: slot.year,
+      sem: slot.sem,
+      prereqs: [],
+      genericRequirement: 'elective'
+    });
+  }
+  return courses;
+}
+
+function getPlannerCourses(program, track) {
+  return [
+    ...trackCourses(program, track),
+    ...genericRequirementCourses(program),
+    ...freeElectiveCourses(program, track)
+  ];
 }
 
 function getCompletedRequirementSlotCodes(completedCourses, program) {
@@ -11693,6 +11742,9 @@ function updateTrackOptionsUI() {
       if (typeof currentTrack !== 'undefined') {
         currentTrack = e.target.value;
       }
+      // Remember the pick per program; the planner reads it too.
+      window.selectedTracks = { ...(window.selectedTracks || {}), [currentProgram.code]: e.target.value };
+      chrome.storage.local.set({ selectedTracks: window.selectedTracks });
       // Recalculate remaining courses with new track
       if (window.gradesData && window.gradesData.completedCourses) {
         displayRemainingCourses(window.gradesData.completedCourses);
@@ -11709,32 +11761,34 @@ function updateCurriculumHint() {
   }
 }
 
-// Detect which track the student is on based on completed courses
-function detectTrack(completedCourses) {
-  if (!currentProgram.tracks) return null;
-  
-  const codes = completedCourses.map(c => c.code.toUpperCase().trim());
-  
-  for (const [trackKey, track] of Object.entries(currentProgram.tracks)) {
-    if (codes.some(code => code.startsWith(track.code.toUpperCase()))) {
+// Detect the student's track (SP or thesis) from AMIS rows. Any enrollment
+// counts, including the course being taken right now (no grade yet) and a
+// failed attempt; only a drop or withdrawal does not. Rows can be popup shape
+// ({ courseCode, grade }) or curriculum shape ({ code }).
+function detectTrack(courses, program = currentProgram) {
+  if (!program?.tracks) return null;
+
+  const codes = (courses || [])
+    .filter(c => !['DRP', 'W'].includes(String(c.grade ?? '').toUpperCase().trim()))
+    .map(c => normalizeCourseCode(c.code || c.courseCode));
+
+  // Longest code first, so "AAE 200A" is not mistaken for "AAE 200".
+  const tracks = Object.entries(program.tracks)
+    .sort(([, a], [, b]) => b.code.length - a.code.length);
+  for (const [trackKey, track] of tracks) {
+    const trackCode = normalizeCourseCode(track.code);
+    if (codes.some(code => code.startsWith(trackCode))) {
       return trackKey;
     }
   }
-  
+
   return null;
 }
 
 // Get free elective units based on track
-function getFreeElectiveUnits(track) {
-  if (!currentProgram.tracks) return 15; // Default
-  
-  if (track && currentProgram.tracks[track]) {
-    return currentProgram.tracks[track].freeElectiveUnits;
-  }
-  
-  // Return default track's units
-  const defaultTrack = currentProgram.defaultTrack || Object.keys(currentProgram.tracks)[0];
-  return currentProgram.tracks[defaultTrack]?.freeElectiveUnits || 15;
+function getFreeElectiveUnits(track, program = currentProgram) {
+  if (!program?.tracks) return 15; // Default
+  return program.tracks[resolveTrack(program, track)]?.freeElectiveUnits || 15;
 }
 
 // Check if a course is a required major course
@@ -11785,6 +11839,9 @@ if (typeof module !== 'undefined' && module.exports) {
     setCurrentProgram,
     detectTrack,
     getFreeElectiveUnits,
+    resolveTrack,
+    trackCourses,
+    freeElectiveCourses,
     isGECourse,
     genericRequirementCourses,
     getPlannerCourses,

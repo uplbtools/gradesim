@@ -237,7 +237,8 @@ function termLabel(termIndex, startYear, startSem) {
 }
 
 // Courses the planner can schedule: real course codes plus generic requirement
-// slots. Free elective placeholders stay out until the planner has track input.
+// slots. Bare "Elective" checklist rows stay out; getPlannerCourses adds
+// track-sized free elective slots (FE 1, FE 2, ...) instead.
 function plannableCourses(courses) {
   return (courses || []).filter(c =>
     c.code && c.code !== 'Elective'
