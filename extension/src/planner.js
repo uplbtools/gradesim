@@ -139,7 +139,19 @@ async function init() {
   }
   $('plannerProgram').textContent = state.program.name || programCode;
   const catalog = typeof UPLB_CATALOG !== 'undefined' ? UPLB_CATALOG : {};
-  state.courses = enrichCourses(getPlannerCourses(state.program), catalog);
+  // An SP or thesis course on AMIS (passed, failed, or being taken now) wins;
+  // otherwise the track picked in the popup, otherwise the program default.
+  const amisRows = Object.values((d.gradesData && d.gradesData.student_grades) || {})
+    .flatMap(t => (t && t.values) || [])
+    .map(v => ({ code: v.course && v.course.course_code, grade: v.grade }))
+    .filter(r => r.code);
+  state.track = detectTrack(amisRows, state.program) ||
+    resolveTrack(state.program, (d.selectedTracks || {})[programCode]);
+  const trackInfo = state.track && state.program.tracks[state.track];
+  if (trackInfo) {
+    $('plannerProgram').textContent += `, ${trackInfo.name} (${trackInfo.code})`;
+  }
+  state.courses = enrichCourses(getPlannerCourses(state.program, state.track), catalog);
   state.courses.forEach(c => state.byCode.set(c.code, c));
   state.graph = analyzeGraph(state.courses);
   d.plannerOptions = { cap: defaultCap(), midyear: false, midyear9: false, ...(d.plannerOptions || {}) };
@@ -259,6 +271,16 @@ function readHistory() {
       const a = taken[i];
       if (a) push(slot.code, { ...a, via: a.code });
     });
+  });
+  // Free electives: any other course with units that the curriculum does not
+  // name and that is not standing in for a required one.
+  // ponytail: one course per 3-unit slot; a 6-unit elective fills only one.
+  const subbed = new Set(Object.values(state.data.substitutions).map(normCode));
+  const electives = doneOrNow.filter(a => a.units > 0 && !state.byCode.has(a.code) &&
+    !subbed.has(a.code) && !kinds.some(([, match]) => match(a)));
+  state.courses.filter(c => c.genericRequirement === 'elective').forEach((slot, i) => {
+    const a = electives[i];
+    if (a) push(slot.code, { ...a, via: a.code });
   });
   Object.entries(state.data.substitutions).forEach(([req, taken]) => {
     const r = normCode(req);
