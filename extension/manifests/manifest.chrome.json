@@ -7,7 +7,8 @@
     "storage"
   ],
   "host_permissions": [
-    "https://amis.uplb.edu.ph/*"
+    "https://amis.uplb.edu.ph/*",
+    "https://api-amis.uplb.edu.ph/*"
   ],
   "action": {
     "default_popup": "popup.html",
