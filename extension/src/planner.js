@@ -196,13 +196,18 @@ function readHistory() {
   // Curriculum code -> attempts, including GE/HK/NSTP slots and substitutions.
   const byCurr = {};
   const push = (code, a) => { (byCurr[code] = byCurr[code] || []).push(a); };
-  attempts.forEach(a => { if (state.byCode.has(a.code)) push(a.code, a); });
+  // Once a course is passed, later attempts go to its "CODE (n)" row.
+  attempts.forEach(a => {
+    let code = a.code;
+    for (let n = 2; (byCurr[code] || []).some(x => x.result === 'passed') && state.byCode.has(`${a.code} (${n})`); n++) code = `${a.code} (${n})`;
+    if (state.byCode.has(code)) push(code, a);
+  });
 
   // GE, HK, NSTP and free elective slots, and substitutions, filled the same
   // way the popup What if tab counts them.
   const doneOrNow = attempts.filter(a => a.result === 'passed' || a.result === 'inprogress');
   fillRequirementSlots(state.courses, doneOrNow, state.data.substitutions).forEach((a, slot) => {
-    if (a.code !== slot && state.byCode.has(slot)) push(slot, { ...a, via: a.code });
+    if (a.code !== slot && state.byCode.has(slot) && !(byCurr[slot] || []).includes(a)) push(slot, { ...a, via: a.code });
   });
 
   return { attempts, byCurr, latestAbs, passedOutside: new Set(doneOrNow.map(a => a.code)) };
@@ -304,7 +309,9 @@ function compute() {
   const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
     { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left };
+  const conflicts = prereqConflicts(state.courses, code => (info[code] ? info[code].status : passed.has(code) && 'passed'));
+
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left, conflicts };
 }
 
 /* ---------- Summary ---------- */
@@ -358,7 +365,9 @@ function renderSummary(v) {
   list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
     icon(c.cost > 0 ? 'x' : 'check'),
     h('strong', {}, c.code),
-    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []));
+    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []),
+  ...v.conflicts.map(c => h('li', { class: 'bad' }, icon('alert'),
+    h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`)));
 }
 
 /* ---------- Cards and columns ---------- */
