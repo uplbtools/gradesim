@@ -560,9 +560,23 @@ function computeSlips(opts, base) {
   return slip;
 }
 
+// Passed courses with a failed prerequisite and no passed alternative.
+// status(code) returns 'passed', 'failed' or anything else.
+function prereqConflicts(courses, status) {
+  const out = [];
+  courses.forEach(c => {
+    if (status(c.code) !== 'passed') return;
+    preGroups(c).forEach(g => {
+      const failed = g.find(p => status(p) === 'failed');
+      if (failed && !g.some(p => status(p) === 'passed')) out.push({ code: c.code, pre: failed });
+    });
+  });
+  return out;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
-    scheduleEarliest, semAt, offeredIn, termLabel, plannableCourses, normCode, extractCode,
+    prereqConflicts, scheduleEarliest, semAt, offeredIn, termLabel, plannableCourses, normCode, extractCode,
     parseRequisite, combineRequisites, parseSemOffered, analyzeGraph, computeSlips, preGroups, enrichCourses,
     DEFAULT_UNIT_CAPS, STANDING_FRACTION,
   };

@@ -309,7 +309,9 @@ function compute() {
   const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
     { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left };
+  const conflicts = prereqConflicts(state.courses, code => (info[code] ? info[code].status : passed.has(code) && 'passed'));
+
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left, conflicts };
 }
 
 /* ---------- Summary ---------- */
@@ -363,7 +365,9 @@ function renderSummary(v) {
   list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
     icon(c.cost > 0 ? 'x' : 'check'),
     h('strong', {}, c.code),
-    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []));
+    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []),
+  ...v.conflicts.map(c => h('li', { class: 'bad' }, icon('alert'),
+    h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`)));
 }
 
 /* ---------- Cards and columns ---------- */
