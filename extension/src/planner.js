@@ -780,6 +780,12 @@ function initControls() {
     render();
     announce('Plan recomputed from scratch.');
   });
+  $('printPlan').addEventListener('click', () => {
+    $('planMenu').open = false;
+    if (state.selected) select(state.selected);
+    $('plannerSheet').querySelectorAll('details').forEach(d => { d.open = true; });
+    print();
+  });
   const resetDialog = modal($('resetDialog'));
   $('resetPlan').addEventListener('click', () => {
     $('planMenu').open = false;
