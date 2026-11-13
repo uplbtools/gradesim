@@ -62,7 +62,7 @@ function amisCourses(gradesData) {
 // pool lists fills that pool's slot, and any other course with units fills a
 // free elective slot, one course per slot.
 // Returns Map(slot code -> row).
-// ponytail: one course per 3-unit elective slot, so a 6-unit elective fills one.
+// One course per 3-unit elective slot, so a 6-unit elective fills one.
 // UPLB accepts these in place of the checklist course without a petition.
 // The student's own substitutions are applied first and win.
 const BUILT_IN_EQUIVALENTS = [['KAS 1', 'HIST 1']];

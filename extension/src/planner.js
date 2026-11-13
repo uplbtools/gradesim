@@ -47,7 +47,7 @@ const ayLabel = abs => {
 
 // amisTermToAbs, gradeResult and the requirement slots come from requirements.js.
 
-// ponytail: month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
+// Month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
 // Jun-Jul midyear). Only used when AMIS grades are older than the calendar.
 function calendarAbs(now = new Date()) {
   const y = now.getFullYear();
@@ -448,9 +448,6 @@ function buildColumns(v) {
   return { list, primary };
 }
 
-// Barycenter sweeps: order each column by the mean row of a card's
-// prerequisites (left to right), then of its dependents (right to left).
-// ponytail: plain barycenter, no crossing count; d3-dag if this looks bad.
 function planRow(card, v) {
   const c = state.byCode.get(card.code);
   const slip = v.slips[card.code];
@@ -580,7 +577,7 @@ function renderDetail() {
   const i = v.info[code];
   const card = v.primary[code];
   const t = v.now.result.assignedTerm[code];
-  const slip = v.slips[code];
+  const slip = c.genericRequirement === 'elective' && v.slips[code] > 0 ? undefined : v.slips[code];
   const blocking = state.graph.blocking[code] || 0;
   const delay = state.graph.delay[code] || 1;
   const deps = state.graph.edges.filter(e => e.from === code).map(e => e.to);
