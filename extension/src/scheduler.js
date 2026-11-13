@@ -254,14 +254,15 @@ function preGroups(course) {
 
 /* ---------- Curriculum + catalog merge ---------- */
 
-const CLEAN_CODE_RE = /^[A-Z]{2,6} \d{1,3}(\.\d{1,2})?[A-Z]?$/;
+// A second enrollment of one course is written "CMSC 190 (2)".
+const CLEAN_CODE_RE = /^[A-Z]{2,6} \d{1,3}(\.\d{1,2})?[A-Z]?( \(\d\))?$/;
 
 // Turn checklist rows (some garbled by PDF parsing, e.g. code "3 CHEM 18.
 // University Chemistry" with several courses run together in the title) into
 // clean planner courses, then attach catalog data: units, offerings and
 // requisites. Catalog requisites and units win over the checklist when present,
 // since PDF parsing garbled some checklist units (CHEM 18 at 51).
-// ponytail: SP and thesis courses (190, 200, 200A) keep checklist units; AMIS
+// SP and thesis courses (190, 200, 200A) keep checklist units; AMIS
 // lists them as variable 1-unit enrollments, so the catalog number undercounts.
 const VARIABLE_UNIT_RE = / (190|200)[A-Z]?$/;
 function unitsFor(course, c) {
@@ -292,7 +293,7 @@ function enrichCourses(list, catalog) {
       units: unitsFor(course, c),
       pre: hasReq ? (c.pre || []) : (course.prereqs || []).map(p => [extractCode(p) || normCode(p)]),
       co: hasReq ? (c.co || []) : [],
-      standing: hasReq ? c.standing || null : null,
+      standing: hasReq ? c.standing || null : course.standing || null,
       coi: !!(c && c.coi),
       note: (c && c.note) || null,
       offered: c ? c.offered : null,
@@ -559,9 +560,23 @@ function computeSlips(opts, base) {
   return slip;
 }
 
+// Passed courses with a failed prerequisite and no passed alternative.
+// status(code) returns 'passed', 'failed' or anything else.
+function prereqConflicts(courses, status) {
+  const out = [];
+  courses.forEach(c => {
+    if (status(c.code) !== 'passed') return;
+    preGroups(c).forEach(g => {
+      const failed = g.find(p => status(p) === 'failed');
+      if (failed && !g.some(p => status(p) === 'passed')) out.push({ code: c.code, pre: failed });
+    });
+  });
+  return out;
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
-    scheduleEarliest, semAt, offeredIn, termLabel, plannableCourses, normCode, extractCode,
+    prereqConflicts, scheduleEarliest, semAt, offeredIn, termLabel, plannableCourses, normCode, extractCode,
     parseRequisite, combineRequisites, parseSemOffered, analyzeGraph, computeSlips, preGroups, enrichCourses,
     DEFAULT_UNIT_CAPS, STANDING_FRACTION,
   };
