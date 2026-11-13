@@ -531,12 +531,24 @@ const UPLB_PROGRAMS = {
       {
         "code": "CMSC 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "CMSC 12"
+        ]
+      },
+      {
+        "code": "CMSC 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
         "track": "thesis",
         "year": 4,
         "sem": "2",
+        "catalogSem": "1s,2s",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 200"
         ]
       },
       {

@@ -174,5 +174,8 @@ console.log('requirements.test.js: surplus electives passed');
   const firstFE = Math.min(...sp.filter(c => /^FE/.test(c.code)).map(c => fresh.assignedTerm[c.code]));
   assert.ok(firstFE >= 9, `free electives start in senior year, got term ${firstFE}`);
   assert.ok(fresh.assignedTerm['CMSC 190 (2)'] > fresh.assignedTerm['CMSC 190']);
+  const thesis = plannerCourseList(UPLB_PROGRAMS.BSCS, 'thesis', UPLB_CATALOG);
+  assert.strictEqual(thesis.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + c.units, 0), 130);
+  assert.ok(fillRequirementSlots(thesis, [row('CMSC 200', 3), row('CMSC 200', 3)]).has('CMSC 200 (2)'));
 }
 console.log('requirements.test.js: BSCS special problem and practicum passed');
