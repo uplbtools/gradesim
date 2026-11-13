@@ -354,7 +354,6 @@ function renderSummary(v) {
   const sentences = [];
   if (gradAbs != null) sentences.push(`That is ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
   sentences.push(`You have ${unitsText(v.left.units)} left to pass${nowTaking ? ', counting this term' : ''}.`);
-  sentences.push(`The plan takes up to ${v.unitCaps['1']} units a sem and ${state.data.plannerOptions.midyear ? `up to ${v.unitCaps.midyear} in midyear` : 'midyear only where the checklist puts it'}.`);
   $('gradSub').textContent = sentences.join(' ');
 
   const list = $('failCosts');
