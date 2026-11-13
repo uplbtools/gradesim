@@ -280,11 +280,14 @@ body.planner-page {
 }
 
 .pl-result {
-  flex: 1;
   max-width: 70ch;
-  min-height: 1.2em;
+  margin: 12px 0 20px;
   color: var(--ink);
   font-weight: 500;
+}
+
+.pl-result:empty {
+  margin-top: 0;
 }
 
 /* Detail panel: floating on desktop, inline under the card on phones. */
