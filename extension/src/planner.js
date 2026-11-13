@@ -343,7 +343,7 @@ function renderSummary(v) {
       : `because of ${v.failures.length} failed courses`;
     deltaEl.replaceChildren(icon('alert'), `${termsText(delta)} later ${why}`);
   } else if (v.failures.length) {
-    deltaEl.replaceChildren(icon('check'), `No delay from ${v.failures.length === 1 ? v.failures[0].code : 'your failed courses'}`);
+    deltaEl.replaceChildren(icon('check'), `No delay from ${v.failures.length === 1 ? v.failures[0].code : v.failures.some(f => f.source === 'whatif') ? 'your failed courses or the what-if' : 'your failed courses'}`);
     deltaEl.classList.add('ok');
   } else {
     deltaEl.textContent = '';
