@@ -166,6 +166,7 @@ body.planner-page {
 
 .pl-menu {
   position: relative;
+  margin-left: auto;
 }
 
 .pl-menu > summary {
@@ -711,7 +712,6 @@ button.pl-link:hover {
 
   .pl-menu {
     position: static;
-    margin-left: auto;
   }
 
   .pl-menu-pop {
