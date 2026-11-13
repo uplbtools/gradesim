@@ -150,6 +150,7 @@ function freeElectiveCourses(program, track) {
       year: slot.year,
       sem: slot.sem,
       prereqs: [],
+      standing: program.freeElectiveStanding,
       genericRequirement: 'elective'
     });
   }
@@ -251,6 +252,7 @@ const UPLB_PROGRAMS = {
       }
     },
     "defaultTrack": "sp",
+    "freeElectiveStanding": "senior",
     "majorCourses": [
       {
         "code": "MATH 27",
@@ -491,13 +493,40 @@ const UPLB_PROGRAMS = {
       {
         "code": "CMSC 190",
         "title": "Special Problem",
-        "units": 3,
+        "units": 1,
         "track": "sp",
         "year": 4,
         "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CMSC 190 (2)",
+        "title": "Special Problem",
+        "units": 2,
+        "track": "sp",
+        "year": 4,
+        "sem": "2",
+        "catalogSem": "1s,2s",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 190"
         ]
+      },
+      {
+        "code": "CMSC 198",
+        "title": "Practicum",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
+        "code": "CMSC 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "1",
+        "catalogSem": "1s,2s",
+        "prereqs": []
       },
       {
         "code": "CMSC 200",

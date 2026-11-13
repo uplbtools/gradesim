@@ -196,13 +196,18 @@ function readHistory() {
   // Curriculum code -> attempts, including GE/HK/NSTP slots and substitutions.
   const byCurr = {};
   const push = (code, a) => { (byCurr[code] = byCurr[code] || []).push(a); };
-  attempts.forEach(a => { if (state.byCode.has(a.code)) push(a.code, a); });
+  // Once a course is passed, later attempts go to its "CODE (n)" row.
+  attempts.forEach(a => {
+    let code = a.code;
+    for (let n = 2; (byCurr[code] || []).some(x => x.result === 'passed') && state.byCode.has(`${a.code} (${n})`); n++) code = `${a.code} (${n})`;
+    if (state.byCode.has(code)) push(code, a);
+  });
 
   // GE, HK, NSTP and free elective slots, and substitutions, filled the same
   // way the popup What if tab counts them.
   const doneOrNow = attempts.filter(a => a.result === 'passed' || a.result === 'inprogress');
   fillRequirementSlots(state.courses, doneOrNow, state.data.substitutions).forEach((a, slot) => {
-    if (a.code !== slot && state.byCode.has(slot)) push(slot, { ...a, via: a.code });
+    if (a.code !== slot && state.byCode.has(slot) && !(byCurr[slot] || []).includes(a)) push(slot, { ...a, via: a.code });
   });
 
   return { attempts, byCurr, latestAbs, passedOutside: new Set(doneOrNow.map(a => a.code)) };

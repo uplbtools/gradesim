@@ -254,7 +254,8 @@ function preGroups(course) {
 
 /* ---------- Curriculum + catalog merge ---------- */
 
-const CLEAN_CODE_RE = /^[A-Z]{2,6} \d{1,3}(\.\d{1,2})?[A-Z]?$/;
+// A second enrollment of one course is written "CMSC 190 (2)".
+const CLEAN_CODE_RE = /^[A-Z]{2,6} \d{1,3}(\.\d{1,2})?[A-Z]?( \(\d\))?$/;
 
 // Turn checklist rows (some garbled by PDF parsing, e.g. code "3 CHEM 18.
 // University Chemistry" with several courses run together in the title) into
@@ -292,7 +293,7 @@ function enrichCourses(list, catalog) {
       units: unitsFor(course, c),
       pre: hasReq ? (c.pre || []) : (course.prereqs || []).map(p => [extractCode(p) || normCode(p)]),
       co: hasReq ? (c.co || []) : [],
-      standing: hasReq ? c.standing || null : null,
+      standing: hasReq ? c.standing || null : course.standing || null,
       coi: !!(c && c.coi),
       note: (c && c.note) || null,
       offered: c ? c.offered : null,
