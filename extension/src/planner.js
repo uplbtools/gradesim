@@ -67,6 +67,7 @@ const state = {
   graph: null,
   whatif: null,      // { code, mode }
   selected: null,
+  acted: null,
   view: null,        // last compute() result
 };
 
@@ -629,6 +630,7 @@ function renderDetail() {
     reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
     deps.length > 0 && [h('h4', {}, 'Unlocks'), h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v)))],
     h('div', { class: 'pl-actions' }, actions),
+    state.acted === code && h('p', {}, h('strong', {}, `${$('gradTerm').textContent}.${$('gradDelta').textContent ? ` ${$('gradDelta').textContent}.` : ''}`)),
     petition,
   ]));
   panel.classList.remove('hidden');
@@ -679,6 +681,7 @@ function act(name, input) {
     else delete d.plannerPetitions[code];
     save(['plannerPetitions']);
   }
+  state.acted = code;
   render();
   const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(code)}"]`);
   if (el) el.focus({ preventScroll: true });
