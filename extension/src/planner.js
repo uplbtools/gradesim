@@ -76,8 +76,9 @@ document.addEventListener('DOMContentLoaded', init);
 async function init() {
   hydrateIcons();
   state.data = await store.get(['gradesData', 'selectedProgram', 'substitutions', 'customCourseStatus',
-    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks', 'selectedSpecializations']);
+    'plannerPins', 'plannerPetitions', 'plannerOptions', 'theme', 'selectedTracks', 'selectedSpecializations', 'removals']);
   const d = state.data;
+  d.gradesData = applyRemovals(d.gradesData, d.removals);
   d.customCourseStatus = d.customCourseStatus || {};
   d.substitutions = d.substitutions || {};
   d.plannerPins = d.plannerPins || {};

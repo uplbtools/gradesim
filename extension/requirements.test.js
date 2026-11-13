@@ -4,7 +4,7 @@
 const assert = require('assert');
 Object.assign(globalThis, require('./src/curriculum.js'), require('./src/scheduler.js'));
 const { UPLB_CATALOG } = require('./src/catalog.js');
-const { amisTermToAbs, gradeResult, amisCourses, plannerCourseList, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
+const { amisTermToAbs, gradeResult, removalKey, applyRemovals, surplusElectives, amisCourses, plannerCourseList, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
 
 assert.strictEqual(amisTermToAbs(1251), 2025 * 3);
 assert.strictEqual(amisTermToAbs('1232'), 2023 * 3 + 1);
@@ -13,6 +13,18 @@ assert.strictEqual(amisTermToAbs(1301), 2030 * 3);
 assert.strictEqual(amisTermToAbs(1312), 2031 * 3 + 1);
 assert.strictEqual(amisTermToAbs(1254), null);
 assert.strictEqual(amisTermToAbs('abc'), null);
+
+// A 4.00 removal exam: pass gives 3.00, fail gives 5.00, other grades stay.
+const fours = { student_grades: { 1251: { values: [
+  { course: { course_code: 'MATH 27' }, grade: '4.00', unit_taken: '3' },
+  { course: { course_code: 'CHEM 18' }, grade: '4.00', unit_taken: '3' },
+  { course: { course_code: 'STS 1' }, grade: '2.00', unit_taken: '3' },
+] } } };
+const removed = applyRemovals(fours, { [removalKey(1251, 'math 27')]: 'pass', [removalKey(1251, 'CHEM 18')]: 'fail', [removalKey(1251, 'STS 1')]: 'fail' });
+assert.deepStrictEqual(amisCourses(removed).map(r => [r.code, r.grade, r.result]),
+  [['MATH 27', '3.00', 'passed'], ['CHEM 18', '5.00', 'failed'], ['STS 1', '2.00', 'passed']]);
+assert.strictEqual(fours.student_grades[1251].values[0].grade, '4.00', 'stored AMIS data is not changed');
+assert.strictEqual(applyRemovals(fours, {}), fours);
 
 assert.strictEqual(gradeResult('1.00'), 'passed');
 assert.strictEqual(gradeResult('P'), 'passed');
@@ -132,3 +144,17 @@ console.log('requirements.test.js: all assertions passed');
   assert.strictEqual(remainingRequirements(econ, []).electives.doneUnits, 0, 'no electives done with nothing taken');
   console.log('requirements.test.js: HIST 1 for KAS 1 passed');
 }
+
+// Honors count only the required electives, the earliest first.
+{
+  const prog = UPLB_PROGRAMS.BSCS;
+  const list = plannerCourseList(prog, 'sp', UPLB_CATALOG);
+  const feSlots = list.filter(c => /^FE\b/.test(c.code)).length;
+  const extra = Array.from({ length: feSlots + 2 }, (_, i) => ({ code: `SOC ${100 + i}`, title: 'Elective', units: 3, grade: '1.00', result: 'passed', termId: String(1231 + i) }));
+  const named = { code: 'CMSC 12', title: 'Foundations of Computer Science', units: 3, grade: '1.00', result: 'passed', termId: '1231' };
+  const surplus = surplusElectives(list, [named, ...extra]);
+  assert.deepStrictEqual(surplus.map(r => r.code), extra.slice(-2).map(r => r.code), 'the two latest electives are the extra ones');
+  assert.deepStrictEqual(surplusElectives(list, [named, ...extra.slice(0, feSlots)]), [], 'no surplus when electives fit');
+  assert.deepStrictEqual(surplusElectives(list.filter(c => c.genericRequirement !== 'elective'), extra), [], 'no elective slots, no guess');
+}
+console.log('requirements.test.js: surplus electives passed');

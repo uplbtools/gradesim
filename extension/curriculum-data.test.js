@@ -8,7 +8,7 @@ const { UPLB_CATALOG } = require('./src/catalog.js');
 // (GE, HK, NSTP, FE) or the data uses (MAJ for major elective slots), and
 // real departments with no class in the listings we have.
 const DEPTS = new Set(Object.keys(UPLB_CATALOG).map(c => c.split(' ')[0]));
-['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL'].forEach(d => DEPTS.add(d));
+['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL', 'MST', 'WLDL'].forEach(d => DEPTS.add(d));
 const CODE_RE = /^([A-Z]{2,6}|PEd) \d{1,3}(\.\d{1,2})?[A-Z]?$/;
 
 function codeProblem(code) {
@@ -91,31 +91,44 @@ Object.values(UPLB_PROGRAMS).filter(p => p.tracks).forEach(p => {
 // Specializations come from the official catalog. Every pool course must be
 // a real course (in the AMIS catalog or some checklist), not already required
 // by the program, and every pool must fill MAJ slots the checklist has.
-// FRM 110 is on CEM catalog page 97 but had no AMIS class in the terms we have.
-const NOT_IN_AMIS = new Set(['FRM 110']);
+// A specialization's `courses` rows are checked the same way; a row with a
+// `slot` replaces that MAJ slot, any other row adds its units to the total.
+// These are in the catalog PDFs but had no AMIS class in the terms we have.
+const NOT_IN_AMIS = new Set(['FRM 110', 'BIO 151', 'BIO 130A', 'BIO 130B', 'MCB 101', 'BOT 110', 'BOT 140', 'ZOO 140', 'ZOO 113', 'CHEM 102', 'PHYS 193.1', 'WLDL 101']);
 const checklistCodes = new Set(Object.values(UPLB_PROGRAMS).flatMap(p => (p.majorCourses || []).map(c => normalizeCourseCode(c.code))));
 Object.values(UPLB_PROGRAMS).filter(p => p.specializations).forEach(p => {
   const rows = new Map((p.majorCourses || []).map(c => [normalizeCourseCode(c.code), c]));
   const baseUnits = getPlannerCourses(p, p.defaultTrack).reduce((s, c) => s + c.units, 0);
   Object.entries(p.specializations).forEach(([key, spec]) => {
     if (!spec.name || !/page \d+/.test(spec.source || '')) fail(p.code, `specialization ${key} needs a name and a catalog page`);
-    spec.pools.forEach(pool => {
+    const courseRows = spec.courses || [];
+    courseRows.forEach(c => {
+      if (c.slot && !(rows.get(c.slot) && rows.get(c.slot).genericRequirement === 'elective')) fail(p.code, `${key} slot ${c.slot} is not a MAJ elective row`);
+      if (!c.title || !(c.units > 0) || !(c.year >= 1) || !['1', '2', 'midyear'].includes(c.sem)) fail(p.code, `${key}: ${c.code} row is incomplete`);
+    });
+    const checkCourse = code => {
+      const why = codeProblem(code);
+      if (why) fail(p.code, `${key}: ${why}: "${code}"`);
+      if (!UPLB_CATALOG[code] && !checklistCodes.has(code) && !NOT_IN_AMIS.has(code)) fail(p.code, `${key}: ${code} is in no catalog or checklist`);
+      if (rows.has(code)) fail(p.code, `${key}: ${code} is already required`);
+    };
+    courseRows.forEach(c => checkCourse(c.code));
+    (spec.pools || []).forEach(pool => {
       if (pool.courses.length < pool.slots.length) fail(p.code, `${key} ${pool.name} has fewer courses than slots`);
       pool.slots.forEach(slot => {
         const row = rows.get(slot);
         if (!row || row.genericRequirement !== 'elective') fail(p.code, `${key} slot ${slot} is not a MAJ elective row`);
       });
-      pool.courses.forEach(code => {
-        const why = codeProblem(code);
-        if (why) fail(p.code, `${key}: ${why}: "${code}"`);
-        if (!UPLB_CATALOG[code] && !checklistCodes.has(code) && !NOT_IN_AMIS.has(code)) fail(p.code, `${key}: ${code} is in no catalog or checklist`);
-        if (rows.has(code)) fail(p.code, `${key}: ${code} is already required`);
-      });
+      pool.courses.forEach(checkCourse);
     });
     const plan = getPlannerCourses(p, p.defaultTrack, key);
     const codes = plan.map(c => normalizeCourseCode(c.code));
     if (new Set(codes).size !== codes.length) fail(p.code, `${key} plans a course twice`);
-    if (plan.reduce((s, c) => s + c.units, 0) !== baseUnits) fail(p.code, `${key} changes the unit total`);
+    const added = courseRows.reduce((s, c) => s + c.units - (c.slot ? rows.get(c.slot).units : 0), 0);
+    if (plan.reduce((s, c) => s + c.units, 0) !== baseUnits + added) fail(p.code, `${key} changes the unit total`);
+    const stated = Number((spec.note || '').match(/^(\d+) units in all/)?.[1]);
+    const nonGwa = plan.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + c.units, 0);
+    if (stated && nonGwa !== stated) fail(p.code, `${key} plans ${nonGwa} units, the catalog says ${stated}`);
   });
 });
 
