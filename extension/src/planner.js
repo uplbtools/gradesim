@@ -361,10 +361,10 @@ function renderSummary(v) {
   const showCosts = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif');
   list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
     icon(c.cost > 0 ? 'x' : 'check'),
-    h('strong', {}, c.code),
-    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []),
+    h('span', {}, h('strong', {}, c.code),
+      ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`))) : []),
   ...v.conflicts.map(c => h('li', { class: 'bad' }, icon('alert'),
-    h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`)));
+    h('span', {}, h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`))));
 }
 
 /* ---------- Cards and columns ---------- */
@@ -408,7 +408,7 @@ function buildColumns(v) {
       if (!st) return;
       if (isLast && i.override) st = i.override === 'planned' ? null : i.override;
       if (!st) return;
-      const card = { code: c.code, status: st, via: a.via, grade: a.grade, history: !isLast };
+      const card = { code: c.code, status: st, via: a.via, grade: a.grade, units: a.units, history: !isLast };
       col(a.abs).cards.push(card);
       if (isLast && st !== 'failed') primary[c.code] = card;
     });
@@ -496,6 +496,9 @@ function termBlock(column, v) {
   const nowTerm = column.cards.some(c => c.status === 'inprogress');
   const tag = column.abs === v.startAbs ? 'next' : nowTerm ? 'now' : '';
   const failed = column.cards.filter(c => c.status === 'failed' && !c.hypothetical).length;
+  const graded = column.cards.filter(c => c.units && Number(c.grade) && !isNonGwaCourseCode(c.via || c.code));
+  const gwaUnits = graded.reduce((s, c) => s + c.units, 0);
+  const gwa = gwaUnits && graded.reduce((s, c) => s + c.units * Number(c.grade), 0) / gwaUnits;
   // Named courses first, then the GE, HK, NSTP and elective slots.
   const slot = card => (state.byCode.get(card.code).genericRequirement ? 1 : 0);
   const cards = column.cards.slice().sort((a, b) => slot(a) - slot(b) || a.code.localeCompare(b.code, undefined, { numeric: true }));
@@ -506,9 +509,10 @@ function termBlock(column, v) {
       tag && h('span', { class: 'pl-term-tag' }, tag),
       h('span', { class: 'pl-term-facts' },
         failed > 0 && h('span', { class: 'bad' }, `${failed} failed`),
+        gwa > 0 && h('span', {}, `GWA ${gwa.toFixed(4)}`),
         h('span', { class: loud ? 'warn' : '', title: warn || null }, loud && icon('alert'), unitsText(units))),
       warn && h('span', { class: 'visually-hidden' }, warn)),
-    h('ul', { class: 'pl-rows' },
+    h('ul', { class: `pl-rows${column.cards.some(c => c.grade) ? '' : ' nograde'}` },
       cards.length ? cards.map(card => planRow(card, v)) : h('li', { class: 'pl-empty' }, 'Nothing offered that fits')));
 }
 

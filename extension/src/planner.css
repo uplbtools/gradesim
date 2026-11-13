@@ -113,7 +113,7 @@ body.planner-page {
 
 .pl-costs li {
   display: inline-flex;
-  align-items: center;
+  align-items: start;
   gap: 5px;
 }
 
@@ -122,6 +122,8 @@ body.planner-page {
 }
 
 .pl-costs li .icon {
+  flex: none;
+  margin-top: 2px;
   color: var(--ok);
 }
 
@@ -341,6 +343,7 @@ body.planner-page {
 }
 
 .pl-term-name {
+  white-space: nowrap;
   font-weight: 600;
   color: var(--ink);
 }
@@ -363,6 +366,7 @@ body.planner-page {
   display: flex;
   gap: 12px;
   margin-left: auto;
+  white-space: nowrap;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
@@ -392,6 +396,14 @@ body.planner-page {
 
 .pl-rows > li {
   display: contents;
+}
+
+.pl-rows.nograde {
+  grid-template-columns: 18px max-content minmax(0, 1fr) auto 2ch;
+}
+
+.nograde .pl-row-grade {
+  display: none;
 }
 
 .pl-row {
@@ -742,6 +754,10 @@ button.pl-link:hover {
   .pl-rows {
     grid-template-columns: 18px minmax(0, 1fr) 2ch 4ch;
     column-gap: 10px;
+  }
+
+  .pl-rows.nograde {
+    grid-template-columns: 18px minmax(0, 1fr) 2ch;
   }
 
   .pl-row {
