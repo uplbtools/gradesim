@@ -39,9 +39,8 @@ body.planner-page {
 
 /* No program picked yet: only the heading and the disclaimer. */
 .pl-no-program .pl-controls,
-.pl-no-program .pl-legend,
-.pl-no-program .pl-result-row,
-.pl-no-program .pl-scroll {
+.pl-no-program .pl-result,
+.pl-no-program .pl-sheet {
   display: none;
 }
 
@@ -231,21 +230,6 @@ body.planner-page {
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 }
 
-/* Legend */
-.pl-legend {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  margin: 12px 0 6px;
-}
-
-.pl-legend .crit-chip {
-  border: 2px solid var(--brand);
-  color: var(--brand);
-  font-weight: 600;
-}
-
 .pl-tips {
   position: relative;
   margin-left: auto;
@@ -287,13 +271,6 @@ body.planner-page {
   margin-top: 8px;
 }
 
-.pl-result-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin: 4px 0 8px;
-}
-
 .pl-result {
   flex: 1;
   max-width: 70ch;
@@ -302,169 +279,157 @@ body.planner-page {
   font-weight: 500;
 }
 
-.pl-scroll-hint {
-  margin-left: auto;
+/* Detail panel: floating on desktop, inline under the card on phones. */
+.pl-detail {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  width: 360px;
+  max-height: min(70vh, 640px);
+  overflow-y: auto;
+  padding: 14px 16px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--body);
+  font-size: 0.86rem;
 }
 
-/* Grid */
-.pl-scroll {
-  position: relative;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  border-radius: var(--radius-md);
-  /* scroll affordance: shadows appear only where there is more to scroll */
-  background:
-    linear-gradient(to right, var(--bg-page) 30%, transparent) left / 40px 100% no-repeat local,
-    linear-gradient(to left, var(--bg-page) 30%, transparent) right / 40px 100% no-repeat local,
-    radial-gradient(farthest-side at 0 50%, hsl(0 0% 0% / 0.14), transparent) left / 12px 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, hsl(0 0% 0% / 0.14), transparent) right / 12px 100% no-repeat scroll;
-}
-
-.pl-arrows {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-}
-
-/* The map is a lattice: every card is the same height, so card rows line up
-   across semesters, and the gaps between columns and between rows are the
-   lanes the prerequisite arrows travel in (route-edges.js). Arrows sharing a
-   gap spread evenly across it, so keep the gaps wide enough for a few lanes. */
-.pl-grid {
-  --pl-col-gap: 36px;
-  --pl-row-gap: 20px;
-  --pl-card-h: 110px;
+/* Sheet: academic years, each term a table of one-line rows. Status is an icon plus a word, never color alone. */
+.pl-sheet {
   display: flex;
-  align-items: flex-start;
-  gap: var(--pl-col-gap);
-  width: max-content;
-  padding: 4px 2px;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 880px;
 }
 
-.pl-col {
-  width: 150px;
-  flex: 0 0 150px;
+.pl-year h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: var(--ink);
 }
 
-.pl-col > details > summary {
+.pl-term {
+  border-top: 1px solid var(--border);
+}
+
+.pl-term > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
   list-style: none;
-  cursor: default;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
-.pl-col > details > summary::-webkit-details-marker {
+.pl-term > summary::-webkit-details-marker {
   display: none;
 }
 
-.pl-col-head {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 2px 8px;
-  /* The first row lane sits between the header and the first card. */
-  margin-bottom: var(--pl-row-gap);
-  border-bottom: 2px solid var(--border);
+.pl-term > summary > .icon:first-child {
+  color: var(--muted);
+  transform: rotate(-90deg);
+  transition: transform var(--transition-fast);
 }
 
-.pl-col:not(.past) .pl-col-head {
-  border-bottom-color: var(--brand-line);
+.pl-term[open] > summary > .icon:first-child {
+  transform: none;
 }
 
-.pl-col-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
+.pl-term-name {
+  font-weight: 600;
   color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-.pl-col-sub {
+.pl-term.past .pl-term-name {
+  font-weight: 500;
+  color: var(--body);
+}
+
+.pl-term-tag {
+  padding: 1px 8px;
+  border: 1px solid var(--brand-line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.pl-term-facts {
   display: flex;
-  justify-content: space-between;
-  gap: 4px;
-  font-size: 0.75rem;
+  gap: 12px;
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
 }
 
-.pl-col-units {
+.pl-term-facts .bad,
+.pl-term-facts .warn {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-weight: 600;
-  color: var(--body);
+  color: var(--bad);
 }
 
-.pl-col-units.warn {
+.pl-term-facts .warn {
   color: var(--warn);
 }
 
-.pl-cards {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pl-row-gap);
+.pl-rows {
+  display: grid;
+  grid-template-columns: 18px max-content minmax(0, 1fr) auto 2ch 4ch;
+  column-gap: 12px;
+  margin: 0;
+  padding: 0 0 10px;
+  list-style: none;
 }
 
-.pl-cards .empty-state {
-  font-size: 0.78rem;
-  padding: 8px 2px;
+.pl-rows > li {
+  display: contents;
 }
 
-/* Course card: status = icon + word + border, never color alone. */
-.pl-card {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  height: var(--pl-card-h);
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 7px 9px 8px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: opacity var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.pl-card:hover {
-  box-shadow: var(--shadow-sm);
-}
-
-.pl-card:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.pl-card-top,
-.pl-card-foot {
-  display: flex;
+.pl-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
   align-items: center;
-  justify-content: space-between;
-  gap: 4px;
-}
-
-.pl-card .status {
-  font-size: 0.74rem;
-}
-
-.pl-card .units-badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0 6px;
-  border-radius: var(--radius-pill);
-  background: var(--brand-tint);
+  min-height: 40px;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 0.86rem;
   color: var(--body);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+.pl-row:hover {
+  background: var(--bg-card);
+}
+
+.pl-row:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.pl-mark {
+  display: inline-flex;
+  color: var(--muted);
 }
 
 .pl-code {
   font-weight: 700;
-  font-size: 0.9rem;
   color: var(--ink);
+  white-space: nowrap;
 }
 
 .pl-pin {
@@ -472,36 +437,38 @@ body.planner-page {
 }
 
 .pl-title {
-  font-size: 0.76rem;
-  line-height: 1.3;
-  color: var(--body);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-/* A note (waiting, petition, via) takes the title's second line. */
-.pl-card:has(.pl-note) .pl-title {
-  -webkit-line-clamp: 1;
-}
-
-.pl-card-foot {
-  margin-top: auto; /* foot sits on the card's bottom edge at fixed height */
-}
-
-.pl-offer {
-  font-size: 0.68rem;
-  color: var(--muted);
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.pl-crit {
-  font-size: 0.66rem;
-  font-weight: 700;
-  color: var(--brand);
+.pl-row-note {
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.pl-row-note.warn {
+  color: var(--warn);
+}
+
+.pl-row-units,
+.pl-row-grade {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pl-row-grade {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pl-empty {
+  grid-column: 1 / -1;
+  padding: 8px 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
 .pl-note {
@@ -521,105 +488,45 @@ body.planner-page {
   color: var(--warn);
 }
 
-.pl-card.st-failed {
-  border-color: var(--bad);
+.pl-row.st-passed .pl-mark { color: var(--ok); }
+
+.pl-row.st-inprogress .pl-mark { color: var(--info); }
+
+.pl-row.st-failed .pl-mark,
+.pl-row.st-retake .pl-mark,
+.pl-row.st-failed .pl-row-note,
+.pl-row.st-retake .pl-row-note,
+.pl-row.st-failed .pl-row-grade { color: var(--bad); }
+
+.pl-row.st-ready .pl-mark { color: var(--brand); }
+
+.pl-row.st-locked .pl-code,
+.pl-row.st-locked .pl-title,
+.pl-row.history .pl-code,
+.pl-row.history .pl-title { color: var(--muted); }
+
+/* Selection: the selected row, then its prerequisites and what it unlocks. */
+.pl-row.dim {
+  opacity: 0.5;
 }
 
-.pl-card.st-retake {
-  border: 1.5px dashed var(--bad);
-  background: var(--bg-card);
+.pl-row.chain {
+  background: var(--brand-tint);
 }
 
-.pl-card.st-ready { border-color: var(--brand-line); }
-
-.pl-card.st-locked {
-  border-style: dashed;
-  background: var(--bg-card);
-  opacity: 0.72;
-}
-.pl-card.st-locked .pl-code,
-.pl-card.st-locked .pl-title { color: var(--muted); }
-
-/* Earlier attempts and what-if failures: a quieter surface, full text contrast. */
-.pl-card.history {
-  background: var(--bg-card);
-  box-shadow: none;
+.pl-row[aria-pressed='true'] {
+  background: var(--brand-tint);
+  box-shadow: inset 0 0 0 1px var(--brand-line);
 }
 
-.pl-card.crit {
-  border-color: var(--brand);
-  box-shadow: 0 0 0 1px var(--brand);
-}
-
-/* Focus + context */
-.pl-card.dim {
-  opacity: 0.28;
-}
-
-.pl-card.chain {
-  opacity: 1;
-  box-shadow: 0 0 0 2px var(--brand-line);
-}
-
-.pl-card.focus {
-  opacity: 1;
-  box-shadow: 0 0 0 3px var(--brand);
-}
-
-.pl-edge {
-  fill: none;
-}
-
-.pl-edge.crit {
-  stroke: var(--brand);
-  stroke-width: 1.25;
-  opacity: 0.55;
-}
-
-.pl-edge.chain {
-  stroke: var(--brand);
-  stroke-width: 2;
-}
-
-/* While a course is focused its arrows draw over the cards, so a long arrow
-   visibly crosses a card in between instead of vanishing under it and seeming
-   to start from it. The halo keeps crossings readable. */
-.pl-arrows.over {
-  z-index: 3;
-}
-
-.pl-edge-halo {
-  fill: none;
-  stroke: var(--bg-elevated);
-  stroke-width: 6;
-}
-
-.pl-arrowhead.crit,
-.pl-arrowhead.chain {
-  fill: var(--brand);
-}
-
-/* Dot on the prerequisite's edge marks where each arrow starts. */
-.pl-arrowtail {
-  fill: var(--bg-elevated);
-  stroke: var(--brand);
-  stroke-width: 1.5;
-}
-
-/* Detail panel: floating on desktop, inline under the card on phones. */
+/* Detail panel, under the selected row. */
 .pl-detail {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 30;
-  width: 360px;
-  max-height: min(70vh, 640px);
-  overflow-y: auto;
+  grid-column: 1 / -1;
+  margin: 4px 0 12px 30px;
   padding: 14px 16px 16px;
   background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--brand-line);
+  border-radius: var(--radius-md);
   color: var(--body);
   font-size: 0.86rem;
 }
@@ -754,6 +661,32 @@ button.pl-link:hover {
   margin-top: 3px;
 }
 
+/* Wide: first and second sem sit side by side, like the printed checklist. */
+@media (min-width: 1100px) {
+  .pl-sheet {
+    max-width: none;
+  }
+
+  .pl-year {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+    align-items: start;
+  }
+
+  .pl-year h3 {
+    grid-column: 1 / -1;
+  }
+
+  .pl-term[data-sem='1'] {
+    grid-column: 2;
+  }
+
+  .pl-term[data-sem='2'] {
+    grid-column: 1;
+  }
+}
+
 /* Phone: terms stack vertically, collapsible, no arrows. */
 @media (max-width: 719px) {
   .pl-top,
@@ -798,64 +731,6 @@ button.pl-link:hover {
     margin-left: 0;
   }
 
-  .pl-scroll {
-    overflow: visible;
-    background: none;
-  }
-
-  .pl-arrows {
-    display: none;
-  }
-
-  .pl-grid {
-    flex-direction: column;
-    align-items: stretch;
-    width: auto;
-    gap: 10px;
-  }
-
-  .pl-col {
-    width: auto;
-    flex: none;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--bg-card);
-    padding: 10px 12px;
-  }
-
-  .pl-col > details > summary {
-    cursor: pointer;
-  }
-
-  .pl-col-head {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 0;
-    padding: 2px 0;
-    margin: 0;
-  }
-
-  .pl-col-sub {
-    gap: 10px;
-  }
-
-  .pl-col details[open] > summary {
-    margin-bottom: 8px;
-  }
-
-  .pl-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 8px;
-  }
-
-  /* No arrows on phones, so cards size to their content. */
-  .pl-card {
-    height: auto;
-  }
-
   .pl-detail {
     position: static;
     grid-column: 1 / -1;
@@ -864,22 +739,41 @@ button.pl-link:hover {
     box-shadow: var(--shadow-sm);
     border-color: var(--brand-line);
   }
-}
+  .pl-rows {
+    grid-template-columns: 18px minmax(0, 1fr) 2ch 4ch;
+    column-gap: 10px;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .pl-card {
-    transition: none;
+  .pl-row {
+    align-items: start;
+  }
+
+  .pl-code,
+  .pl-title,
+  .pl-row-note {
+    grid-column: 2;
+  }
+
+  .pl-title {
+    white-space: normal;
+  }
+
+  .pl-row-units {
+    grid-area: 1 / 3;
+  }
+
+  .pl-row-grade {
+    grid-area: 1 / 4;
+  }
+
+  .pl-detail {
+    margin-left: 0;
   }
 }
 
-.pl-col-name .badge {
-  padding: 1px 7px;
-  font-size: 0.68rem;
-}
-
-.pl-legend .badge {
-  padding: 2px 9px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--body);
+@media (prefers-reduced-motion: reduce) {
+  .pl-row,
+  .pl-term > summary > .icon:first-child {
+    transition: none;
+  }
 }

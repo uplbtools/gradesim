@@ -2,7 +2,7 @@
 // Framework free. Talks to the browser only through `store` below, so the same
 // file can run on a plain web page (gradesim.uplb.tools) with localStorage.
 // Depends on globals from components.js, curriculum.js, catalog.js,
-// scheduler.js and route-edges.js. Every piece of UI is built with the components.js helpers.
+// scheduler.js. Every piece of UI is built with the components.js helpers.
 
 /* ---------- Storage adapter ---------- */
 
@@ -67,7 +67,6 @@ const state = {
   graph: null,
   whatif: null,      // { code, mode }
   selected: null,
-  hover: null,
   view: null,        // last compute() result
 };
 
@@ -85,7 +84,6 @@ async function init() {
   d.plannerPetitions = d.plannerPetitions || {};
   themeToggle($('themeToggle'), d.theme, next => {
     store.set({ theme: next });
-    requestAnimationFrame(() => drawEdges());
   });
 
   const programCode = d.selectedProgram;
@@ -120,8 +118,6 @@ async function init() {
 
   initControls();
   render();
-  window.addEventListener('resize', () => { drawEdges(); updateScrollHint(); });
-  $('plannerScroll').addEventListener('scroll', updateScrollHint, { passive: true });
 
   // The popup's "See what this costs" link opens planner.html?whatif=CODE.
   const prefill = normCode(new URLSearchParams(location.search).get('whatif') || '');
@@ -173,7 +169,8 @@ function readHistory() {
       const code = normCode(v.course && v.course.course_code);
       if (!code) return;
       attempts.push({ code, title: (v.course && v.course.title) || '', units: parseFloat(v.unit_taken) || 0,
-        result: gradeResult(v.grade), abs: abs != null ? abs : null, order: i });
+        result: gradeResult(v.grade), grade: String(v.grade == null ? '' : v.grade).toUpperCase().trim(),
+        abs: abs != null ? abs : null, order: i });
     });
   });
   // Unknown ids: lay them out as consecutive regular sems ending last term.
@@ -411,7 +408,7 @@ function buildColumns(v) {
       if (!st) return;
       if (isLast && i.override) st = i.override === 'planned' ? null : i.override;
       if (!st) return;
-      const card = { code: c.code, status: st, via: a.via, history: !isLast };
+      const card = { code: c.code, status: st, via: a.via, grade: a.grade, history: !isLast };
       col(a.abs).cards.push(card);
       if (isLast && st !== 'failed') primary[c.code] = card;
     });
@@ -448,98 +445,72 @@ function buildColumns(v) {
   for (let abs = v.startAbs; abs <= gradAbs; abs++) if (abs % 3 !== 2) col(abs);
 
   const list = Array.from(cols.values()).sort((a, b) => a.abs - b.abs);
-  orderColumns(list, primary);
   return { list, primary };
 }
 
 // Barycenter sweeps: order each column by the mean row of a card's
 // prerequisites (left to right), then of its dependents (right to left).
 // ponytail: plain barycenter, no crossing count; d3-dag if this looks bad.
-function orderColumns(list, primary) {
-  const delay = state.graph.delay;
-  list.forEach(c => c.cards.sort((a, b) => (delay[b.code] || 0) - (delay[a.code] || 0) || a.code.localeCompare(b.code)));
-  const rowOf = () => {
-    const pos = {};
-    list.forEach(c => c.cards.forEach((card, i) => { if (primary[card.code] === card) pos[card.code] = i; }));
-    return pos;
-  };
-  const preds = code => preGroups(state.byCode.get(code)).flat();
-  const succs = code => state.graph.edges.filter(e => e.from === code).map(e => e.to);
-  for (let pass = 0; pass < 4; pass++) {
-    const forward = pass % 2 === 0;
-    const order = forward ? list : [...list].reverse();
-    order.forEach(column => {
-      const pos = rowOf();
-      const key = new Map();
-      column.cards.forEach((card, i) => {
-        const nb = (forward ? preds(card.code) : succs(card.code)).filter(x => pos[x] !== undefined);
-        key.set(card, nb.length ? nb.reduce((s, x) => s + pos[x], 0) / nb.length : i);
-      });
-      column.cards.sort((a, b) => key.get(a) - key.get(b));
-    });
-  }
-}
-
-function courseCard(card, v) {
+function planRow(card, v) {
   const c = state.byCode.get(card.code);
   const slip = v.slips[card.code];
-  // Free elective cards are placeholders for any course, so never critical.
+  // Free elective rows are placeholders for any course, so never critical.
   const crit = !card.history && slip > 0 && c.genericRequirement !== 'elective' && !['passed', 'inprogress', 'failed'].includes(card.status);
-  const classes = ['pl-card', `st-${card.status}`];
-  if (crit) classes.push('crit');
-  if (card.history || card.hypothetical) classes.push('history');
-  let extra = null;
-  if (card.waitingOn) extra = h('span', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`);
-  else if (card.conditional) extra = h('span', { class: 'pl-note warn' }, icon('flag'), 'Petition needed');
-  else if (card.unplaceable) extra = h('span', { class: 'pl-note warn' }, icon('alert'), "Can't place");
-  else if (card.via && card.via !== card.code) extra = h('span', { class: 'pl-note' }, `via ${card.via}`);
-  else if (card.hypothetical) extra = h('span', { class: 'pl-note' }, 'If failed here');
-  const statusLabel = COURSE_STATUS[card.status][1];
-  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}, ${offeringLabel(c)}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
-  return h('div', {
-    class: classes.join(' '), role: 'button', tabindex: '0', 'aria-label': aria,
-    dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
-  },
-  h('span', { class: 'pl-card-top' }, statusPill(card.status, { variant: 'plain' }), unitsBadge(c.units)),
-  h('span', { class: 'pl-code' }, c.code, card.pinned && h('span', { class: 'pl-pin', title: 'Moved later by you' }, ' *')),
-  h('span', { class: 'pl-title' }, c.title),
-  extra,
-  h('span', { class: 'pl-card-foot' }, h('span', { class: 'pl-offer' }, offeringLabel(c)), crit && h('span', { class: 'pl-crit' }, 'Critical')));
+  const [statusIcon, statusLabel] = COURSE_STATUS[card.status];
+  let note = ['passed', 'planned', 'ready'].includes(card.status) ? '' : statusLabel;
+  let warn = false;
+  if (card.waitingOn) note = `Waiting on ${card.waitingOn}`;
+  else if (card.conditional) { note = 'Petition needed'; warn = true; }
+  else if (card.unplaceable) { note = "Can't place"; warn = true; }
+  else if (card.via && card.via !== card.code) note = `via ${card.via}`;
+  else if (card.hypothetical) note = 'If failed here';
+  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}${card.grade ? `, grade ${card.grade}` : ''}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
+  return h('li', {},
+    h('button', {
+      type: 'button', class: `pl-row st-${card.status}${card.history || card.hypothetical ? ' history' : ''}`, 'aria-label': aria,
+      dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
+    },
+    h('span', { class: 'pl-mark' }, icon(statusIcon)),
+    h('span', { class: 'pl-code' }, c.code, card.pinned && h('span', { class: 'pl-pin', title: 'Moved later by you' }, ' *')),
+    h('span', { class: 'pl-title' }, c.title),
+    h('span', { class: `pl-row-note${warn ? ' warn' : ''}` }, [note, crit && 'Critical'].filter(Boolean).join(', ')),
+    h('span', { class: 'pl-row-units' }, String(c.units)),
+    h('span', { class: 'pl-row-grade' }, card.grade || '')));
 }
 
-function semesterColumn(column, v, phone) {
-  const isPast = column.abs < v.startAbs;
-  let name;
-  let sub;
-  if (column.abs === -1) { name = 'Credited'; sub = 'No AMIS term'; }
-  else if (column.abs === Infinity) { name = "Can't place"; sub = 'Check prerequisites'; }
-  else { name = absLabel(column.abs).replace(/ \d+$/, ''); sub = ayLabel(column.abs); }
+const isDated = abs => Number.isFinite(abs) && abs >= 0;
 
+function termBlock(column, v) {
+  const isPast = column.abs < v.startAbs;
+  const dated = isDated(column.abs);
+  const name = column.abs === -1 ? 'No AMIS term' : column.abs === Infinity ? 'Check prerequisites' : absLabel(column.abs).replace(/ \d+$/, '');
   const units = column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
   const isMid = column.abs % 3 === 2;
   let warn = '';
-  if (!isPast && Number.isFinite(column.abs) && column.abs >= 0) {
+  if (!isPast && dated) {
     if (isMid && units > 6) warn = "Over 6 units in midyear needs the Dean's approval (max 9).";
     else if (!isMid && units > v.unitCaps['1']) warn = `Over your ${v.unitCaps['1']}-unit cap, so it needs an overload approval.`;
     else if (!isMid && units > 18) warn = 'Over 18 units, which is allowed up to 21 when the term has lab courses.';
   }
   const loud = warn && (isMid || units > v.unitCaps['1']);
   const nowTerm = column.cards.some(c => c.status === 'inprogress');
-  const tag = column.abs === v.startAbs ? badge('Next', { tone: 'strong' })
-    : nowTerm ? badge('Now', { tone: 'info' })
-    : isPast && column.abs >= 0 ? badge('Taken') : null;
-  return h('section', { class: `pl-col${isPast ? ' past' : ''}`, dataset: { abs: column.abs } },
-    h('details', { open: !(phone && isPast) },
-      h('summary', { class: 'pl-col-head' },
-        h('span', { class: 'pl-col-name' }, name, tag),
-        h('span', { class: 'pl-col-sub' }, sub,
-          h('span', { class: `pl-col-units${loud ? ' warn' : ''}`, title: warn || null }, loud && icon('alert'), unitsText(units))),
-        warn && h('span', { class: 'visually-hidden' }, warn)),
-      h('div', { class: 'pl-cards' },
-        column.cards.length ? column.cards.map(card => courseCard(card, v)) : emptyState('Nothing offered that fits'))));
+  const tag = column.abs === v.startAbs ? 'next' : nowTerm ? 'now' : '';
+  const failed = column.cards.filter(c => c.status === 'failed' && !c.hypothetical).length;
+  // Named courses first, then the GE, HK, NSTP and elective slots.
+  const slot = card => (state.byCode.get(card.code).genericRequirement ? 1 : 0);
+  const cards = column.cards.slice().sort((a, b) => slot(a) - slot(b) || a.code.localeCompare(b.code, undefined, { numeric: true }));
+  return h('details', { class: `pl-term${isPast ? ' past' : ''}`, open: !isPast || nowTerm || failed > 0, dataset: dated ? { sem: column.abs % 3 } : {} },
+    h('summary', {},
+      icon('chevron'),
+      h('span', { class: 'pl-term-name' }, name),
+      tag && h('span', { class: 'pl-term-tag' }, tag),
+      h('span', { class: 'pl-term-facts' },
+        failed > 0 && h('span', { class: 'bad' }, `${failed} failed`),
+        h('span', { class: loud ? 'warn' : '', title: warn || null }, loud && icon('alert'), unitsText(units))),
+      warn && h('span', { class: 'visually-hidden' }, warn)),
+    h('ul', { class: 'pl-rows' },
+      cards.length ? cards.map(card => planRow(card, v)) : h('li', { class: 'pl-empty' }, 'Nothing offered that fits')));
 }
-
-const isPhone = () => window.matchMedia('(max-width: 719px)').matches;
 
 function render() {
   const v = compute();
@@ -549,103 +520,33 @@ function render() {
   const { list, primary } = buildColumns(v);
   v.primary = primary;
   v.columns = list;
-  const phone = isPhone();
-  document.querySelector('.pl-main').appendChild($('detail')); // may sit inside the grid on phones
-  $('plannerGrid').replaceChildren(...list.map(c => semesterColumn(c, v, phone)));
+  document.querySelector('.pl-main').appendChild($('detail')); // it sits inside the sheet while a course is selected
+  // Academic years, each with its terms.
+  const years = [];
+  list.forEach(column => {
+    const label = isDated(column.abs) ? ayLabel(column.abs) : column.abs === -1 ? 'Credited' : "Can't place";
+    if (!years.length || years[years.length - 1].label !== label) years.push({ label, terms: [] });
+    years[years.length - 1].terms.push(termBlock(column, v));
+  });
+  $('plannerSheet').replaceChildren(...years.map(y => h('section', { class: 'pl-year', 'aria-label': y.label }, h('h3', {}, y.label), y.terms)));
   if (state.selected && !state.byCode.has(state.selected)) state.selected = null;
   renderDetail();
-  requestAnimationFrame(() => { drawEdges(); updateScrollHint(); });
+  markChain();
 }
 
-// When terms run past the right edge, say how many and offer a jump there.
-function updateScrollHint() {
-  const sc = $('plannerScroll');
-  const right = sc.getBoundingClientRect().right;
-  const hiddenCols = isPhone() ? 0 : Array.from(sc.querySelectorAll('.pl-col'))
-    .filter(col => col.getBoundingClientRect().right > right + 1).length;
-  $('scrollHint').replaceChildren(hiddenCols ? button({
-    variant: 'chip', icon: 'next', text: `${plural(hiddenCols, 'more term')} to the right`,
-    onclick: () => { sc.scrollLeft = sc.scrollWidth; },
-  }) : '');
-}
+/* ---------- Focus ---------- */
 
-/* ---------- Edges and focus ---------- */
-
-function chainOf(code) {
-  const anc = state.graph.ancestors(code);
-  const desc = state.graph.descendants(code);
-  return { anc, desc, all: new Set([code, ...anc, ...desc]) };
-}
-
-function drawEdges() {
-  const svg = $('plannerArrows');
-  const grid = $('plannerGrid');
-  const v = state.view;
-  svg.replaceChildren();
-  document.querySelectorAll('.pl-card.dim, .pl-card.chain, .pl-card.focus').forEach(el => el.classList.remove('dim', 'chain', 'focus'));
-  if (!v) return;
-
-  const focus = state.hover || state.selected;
-  const chain = focus ? chainOf(focus) : null;
-  if (chain) {
-    grid.querySelectorAll('.pl-card').forEach(el => {
-      const code = el.dataset.code;
-      el.classList.add(code === focus && el.dataset.primary ? 'focus' : chain.all.has(code) ? 'chain' : 'dim');
-    });
-  }
-  if (isPhone()) return;
-
-  const gridRect = grid.getBoundingClientRect();
-  svg.setAttribute('width', grid.scrollWidth);
-  svg.setAttribute('height', grid.scrollHeight);
-  const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
-  const crit = code => v.slips[code] > 0 && state.byCode.get(code).genericRequirement !== 'elective';
-  const paths = [];
-
-  // Arrows travel the lattice gaps like routed cables (route-edges.js).
-  const css = getComputedStyle(grid);
-  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 36;
-  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 20;
-  const rect = el => {
-    const r = el.getBoundingClientRect();
-    return { x: r.left - gridRect.left, y: r.top - gridRect.top, w: r.width, h: r.height };
-  };
-  const drawn = [];
-  state.graph.edges.forEach(({ from, to }) => {
-    let kind = null;
-    if (chain) {
-      const up = (to === focus || chain.anc.has(to)) && chain.anc.has(from);
-      const down = (from === focus || chain.desc.has(from)) && chain.desc.has(to);
-      if (up || down) kind = 'chain';
-    }
-    if (!kind && crit(from) && crit(to)) kind = 'crit';
-    if (!kind) return;
-    const a = nodeOf(from);
-    const b = nodeOf(to);
-    if (!a || !b || a.closest('details:not([open])') || b.closest('details:not([open])')) return;
-    const ra = rect(a);
-    const rb = rect(b);
-    if (ra.x + ra.w > rb.x) return; // same column or backwards: coreq-like, skip
-    drawn.push({ kind, from: ra, to: rb });
+// Tints the selected course's prerequisites and what it unlocks, and dims the rest.
+function markChain() {
+  const focus = state.selected;
+  const chain = focus ? new Set([focus, ...state.graph.ancestors(focus), ...state.graph.descendants(focus)]) : null;
+  $('plannerSheet').querySelectorAll('.pl-row').forEach(el => {
+    const code = el.dataset.code;
+    const on = code === focus && !!el.dataset.primary;
+    el.setAttribute('aria-pressed', String(on));
+    el.classList.toggle('chain', !!chain && !on && chain.has(code));
+    el.classList.toggle('dim', !!chain && !chain.has(code));
   });
-  const halos = [];
-  routeEdges(drawn, { colGap, rowGap }).forEach(({ d }, i) => {
-    const { kind } = drawn[i];
-    if (kind === 'chain') halos.push(svgEl('path', { class: 'pl-edge-halo', d }));
-    paths.push(svgEl('path', { class: `pl-edge ${kind}`, d, 'marker-start': 'url(#pl-tail)', 'marker-end': `url(#pl-arrow-${kind})` }));
-  });
-  svg.classList.toggle('over', !!chain);
-  const marker = (id, size, ref, shape, shapeAttrs, extra = {}) => {
-    const m = svgEl('marker', { id, markerWidth: size, markerHeight: size, refX: ref[0], refY: ref[1], ...extra });
-    m.append(svgEl(shape, shapeAttrs));
-    return m;
-  };
-  const defs = svgEl('defs');
-  defs.append(
-    marker('pl-arrow-chain', 8, [6, 4], 'path', { d: 'M0 0 L8 4 L0 8 z', class: 'pl-arrowhead chain' }, { orient: 'auto' }),
-    marker('pl-arrow-crit', 6, [5, 3], 'path', { d: 'M0 0 L6 3 L0 6 z', class: 'pl-arrowhead crit' }, { orient: 'auto' }),
-    marker('pl-tail', 8, [4, 4], 'circle', { cx: 4, cy: 4, r: 3, class: 'pl-arrowtail' }, { markerUnits: 'userSpaceOnUse' }));
-  svg.replaceChildren(defs, ...halos, ...paths);
 }
 
 /* ---------- Detail panel ---------- */
@@ -731,13 +632,11 @@ function renderDetail() {
   ]));
   panel.classList.remove('hidden');
 
-  // Phone: show it inline under the selected card. Desktop: floating panel.
-  if (isPhone()) {
-    const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`) ||
-      document.querySelector(`.pl-card[data-code="${CSS.escape(code)}"]`);
-    if (el) el.after(panel);
-  } else if (panel.parentElement !== document.querySelector('.pl-main')) {
-    document.querySelector('.pl-main').appendChild(panel);
+  const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(code)}"]`) ||
+    document.querySelector(`.pl-row[data-code="${CSS.escape(code)}"]`);
+  if (el) {
+    el.closest('details').open = true;
+    el.after(panel);
   }
 }
 
@@ -750,7 +649,7 @@ function announce(msg) {
 function select(code) {
   state.selected = state.selected === code ? null : code;
   renderDetail();
-  drawEdges();
+  markChain();
   if (state.selected) announce(`${code} selected. ${state.graph.blocking[code] || 0} courses depend on it.`);
 }
 
@@ -780,7 +679,7 @@ function act(name, input) {
     save(['plannerPetitions']);
   }
   render();
-  const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
+  const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(code)}"]`);
   if (el) el.focus({ preventScroll: true });
 }
 
@@ -814,7 +713,7 @@ function simulate(e) {
     $('whatifClear').classList.remove('hidden');
     state.selected = code;
     renderDetail();
-    drawEdges();
+    markChain();
     return;
   }
   state.whatif = { code, mode };
@@ -832,7 +731,7 @@ function simulate(e) {
   $('whatifClear').classList.remove('hidden');
   state.selected = code;
   renderDetail();
-  drawEdges();
+  markChain();
 }
 
 function clearWhatif() {
@@ -897,38 +796,17 @@ function initControls() {
   $('whatifForm').addEventListener('submit', simulate);
   $('whatifClear').addEventListener('click', clearWhatif);
 
-  // Legend: one row of chips, built from the same status table as the cards.
-  $('legend').prepend(
-    ...['passed', 'inprogress', 'failed', 'retake', 'ready', 'planned', 'locked'].map(st => statusPill(st)),
-    badge('Critical', { class: 'crit-chip', title: 'Courses that would delay graduation if you slip' }),
-    badge('Petition', { icon: 'flag' }));
-
-  const grid = $('plannerGrid');
-  grid.addEventListener('click', e => {
-    const el = e.target.closest('.pl-card');
+  $('plannerSheet').addEventListener('click', e => {
+    const el = e.target.closest('.pl-row');
     if (el) select(el.dataset.code);
   });
-  grid.addEventListener('keydown', e => {
-    const el = e.target.closest('.pl-card');
-    if (el && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault();
-      select(el.dataset.code);
-    }
-  });
-  grid.addEventListener('mouseover', e => {
-    const el = e.target.closest('.pl-card');
-    const code = el ? el.dataset.code : null;
-    if (code !== state.hover) { state.hover = code; drawEdges(); }
-  });
-  grid.addEventListener('mouseleave', () => { state.hover = null; drawEdges(); });
-  grid.addEventListener('toggle', () => drawEdges(), true);
 
   document.addEventListener('click', e => {
     const go = e.target.closest('[data-goto]');
     if (go) {
       state.selected = null;
       select(go.dataset.goto);
-      const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(go.dataset.goto)}"]`);
+      const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(go.dataset.goto)}"]`);
       if (el) { el.scrollIntoView({ block: 'nearest', inline: 'nearest' }); el.focus({ preventScroll: true }); }
       return;
     }
