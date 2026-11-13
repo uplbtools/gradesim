@@ -591,7 +591,7 @@ function renderDetail() {
   facts.push(`${unitsText(c.units)}, offered ${offeringLabel(c).toLowerCase()}${c.offered ? ` (${c.offered[1]} of 4 first sems, ${c.offered[2]} of 3 second sems, ${c.offered[3]} of 2 midyears seen)` : ''}`);
   if (t !== undefined) facts.push(`Planned for ${absLabel(v.startAbs + t)}`);
   const metrics = h('ul', { class: 'pl-metrics' },
-    h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
+    blocking > 0 && h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
     h('li', {}, h('strong', {}, delay), ` ${delay === 1 ? 'course' : 'courses'} on the longest chain through it`),
     slip === undefined ? null : slip > 0
       ? h('li', { class: 'bad' }, h('strong', {}, 'Critical.'), ` Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.`)
@@ -618,11 +618,10 @@ function renderDetail() {
   panel.replaceChildren(...flat([
     h('div', { class: 'pl-detail-head' },
       h('div', {},
-        h('p', { class: 'pl-detail-code' }, c.code, ' ', statusPill(card ? card.status : (i.status === 'failed' ? 'failed' : 'planned'))),
+        h('p', { class: 'pl-detail-code' }, c.code, ' ', statusPill(card ? card.status : (i.status === 'failed' ? 'failed' : 'planned'), card && card.waitingOn ? { label: `Waiting on ${card.waitingOn}` } : {})),
         h('p', { class: 'pl-detail-title' }, c.title)),
       button({ variant: 'icon', icon: 'x', class: 'pl-close', 'aria-label': 'Close details', dataset: { act: 'close' } })),
     h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
-    card && card.waitingOn && h('p', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`),
     metrics,
     c.options && [h('h4', {}, 'Take one of these'), h('ul', { class: 'pl-reqs' }, c.options.map(o => h('li', {},
       h('strong', {}, o), catalog[o] ? ` ${catalog[o].title.replace(/\.$/, '')}` : '',
