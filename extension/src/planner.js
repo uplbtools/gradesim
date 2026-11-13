@@ -627,8 +627,7 @@ function renderDetail() {
       v.passed.has(o) ? ', passed' : '')))],
     h('h4', {}, 'Requires'),
     reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
-    h('h4', {}, 'Unlocks'),
-    deps.length ? h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v))) : h('p', { class: 'pl-muted' }, 'Nothing else in your checklist.'),
+    deps.length > 0 && [h('h4', {}, 'Unlocks'), h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v)))],
     h('div', { class: 'pl-actions' }, actions),
     petition,
   ]));
