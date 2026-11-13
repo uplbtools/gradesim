@@ -466,7 +466,7 @@ function planRow(card, v) {
   const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}${card.grade ? `, grade ${card.grade}` : ''}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
   return h('li', {},
     h('button', {
-      type: 'button', class: `pl-row st-${card.status}${card.history || card.hypothetical ? ' history' : ''}`, 'aria-label': aria,
+      type: 'button', class: `pl-row st-${card.status}${card.history || card.hypothetical ? ' history' : ''}${c.genericRequirement ? ' generic' : ''}`, 'aria-label': aria,
       dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
     },
     h('span', { class: 'pl-mark' }, icon(statusIcon)),
