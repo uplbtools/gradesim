@@ -228,8 +228,12 @@ body.planner-page {
   gap: 8px;
 }
 
-.pl-check input {
+.pl-check input,
+.pl-petition input {
   flex: none;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brand);
 }
 
 .pl-danger {
@@ -644,7 +648,7 @@ button.pl-link:hover {
 }
 
 .pl-petition input {
-  margin-top: 3px;
+  margin-top: 1px;
 }
 
 /* Wide: first and second sem sit side by side, like the printed checklist. */
