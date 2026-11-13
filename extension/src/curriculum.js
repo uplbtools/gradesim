@@ -402,7 +402,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "CMSC 131",
-        "title": "Introduction to Computer Organization and Machine Level Prog",
+        "title": "Introduction to Computer Organization and Machine Level Programming",
         "units": 3,
         "year": 3,
         "sem": "2",
