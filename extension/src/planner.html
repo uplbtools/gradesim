@@ -62,9 +62,13 @@
           </label>
           <label class="pl-menu-item pl-check"><input type="checkbox" id="optMidyear"> Take classes in midyear</label>
           <label class="pl-menu-item pl-check"><input type="checkbox" id="optMidyear9"> Midyear up to 9 units (Dean's approval)</label>
+          <button id="savePlan" type="button" class="pl-menu-item">Save plan<small>Download your marks, moves and options as a file</small></button>
+          <button id="loadPlan" type="button" class="pl-menu-item">Load plan<small>Restore a plan file you saved earlier</small></button>
+          <button id="exportXlsx" type="button" class="pl-menu-item">Export to Excel<small>A color-coded sheet of your plan, term by term</small></button>
           <button id="resetPlan" type="button" class="pl-menu-item pl-danger">Reset plan<small>Clears marks, moves and petitions</small></button>
         </div>
       </details>
+      <input type="file" id="planFile" accept=".json,application/json" hidden>
     </section>
 
     <p id="whatifResult" class="pl-result" aria-live="polite"></p>
@@ -93,6 +97,7 @@
   <script src="requirements.js"></script>
   <script src="catalog.js"></script>
   <script src="scheduler.js"></script>
+  <script src="xlsx.js"></script>
   <script src="planner.js"></script>
 </body>
 </html>
