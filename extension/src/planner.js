@@ -591,7 +591,7 @@ function renderDetail() {
   if (t !== undefined) facts.push(`Planned for ${absLabel(v.startAbs + t)}`);
   const metrics = h('ul', { class: 'pl-metrics' },
     blocking > 0 && h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
-    h('li', {}, h('strong', {}, delay), ` ${delay === 1 ? 'course' : 'courses'} on the longest chain through it`),
+    delay > 1 && h('li', {}, h('strong', {}, delay), ' courses on the longest chain through it'),
     slip === undefined ? null : slip > 0
       ? h('li', { class: 'bad' }, h('strong', {}, 'Critical.'), ` Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.`)
       : h('li', {}, 'Has slack. Taking it a term later does not move graduation.'));
@@ -621,7 +621,7 @@ function renderDetail() {
         h('p', { class: 'pl-detail-title' }, c.title)),
       button({ variant: 'icon', icon: 'x', class: 'pl-close', 'aria-label': 'Close details', dataset: { act: 'close' } })),
     h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
-    metrics,
+    metrics.children.length > 0 && metrics,
     c.options && [h('h4', {}, 'Take one of these'), h('ul', { class: 'pl-reqs' }, c.options.map(o => h('li', {},
       h('strong', {}, o), catalog[o] ? ` ${catalog[o].title.replace(/\.$/, '')}` : '',
       v.passed.has(o) ? ', passed' : '')))],
