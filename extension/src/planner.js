@@ -358,7 +358,7 @@ function renderSummary(v) {
   $('gradSub').textContent = sentences.join(' ');
 
   const list = $('failCosts');
-  const showCosts = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif');
+  const showCosts = v.costs.length > 1;
   list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
     icon(c.cost > 0 ? 'x' : 'check'),
     h('span', {}, h('strong', {}, c.code),
