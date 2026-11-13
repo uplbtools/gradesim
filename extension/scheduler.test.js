@@ -217,4 +217,12 @@ assert.strictEqual(midOnly.assignedTerm['BA 183'], 2);
 const { DEFAULT_UNIT_CAPS } = require('./src/scheduler.js');
 assert.deepStrictEqual(DEFAULT_UNIT_CAPS, { '1': 18, '2': 18, 'midyear': 6 });
 
+// A passed course cannot sit on a failed prerequisite, unless an alternative is passed.
+const { prereqConflicts } = require('./src/scheduler.js');
+const chain = [{ code: 'CMSC 56', prereqs: [] }, { code: 'CMSC 57', pre: [['CMSC 56']] }, { code: 'CMSC 123', pre: [['CMSC 57', 'CMSC 21']] }];
+const marks = m => code => m[code];
+assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC 57': 'passed' })), [{ code: 'CMSC 57', pre: 'CMSC 56' }]);
+assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC 57': 'todo' })), []);
+assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 57': 'failed', 'CMSC 21': 'passed', 'CMSC 123': 'passed' })), []);
+
 console.log('scheduler.test.js: all assertions passed');

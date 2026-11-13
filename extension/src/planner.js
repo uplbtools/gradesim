@@ -2,7 +2,7 @@
 // Framework free. Talks to the browser only through `store` below, so the same
 // file can run on a plain web page (gradesim.uplb.tools) with localStorage.
 // Depends on globals from components.js, curriculum.js, catalog.js,
-// scheduler.js and route-edges.js. Every piece of UI is built with the components.js helpers.
+// scheduler.js. Every piece of UI is built with the components.js helpers.
 
 /* ---------- Storage adapter ---------- */
 
@@ -47,7 +47,7 @@ const ayLabel = abs => {
 
 // amisTermToAbs, gradeResult and the requirement slots come from requirements.js.
 
-// ponytail: month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
+// Month heuristic for the current term (Aug-Dec 1st, Jan-May 2nd,
 // Jun-Jul midyear). Only used when AMIS grades are older than the calendar.
 function calendarAbs(now = new Date()) {
   const y = now.getFullYear();
@@ -67,7 +67,7 @@ const state = {
   graph: null,
   whatif: null,      // { code, mode }
   selected: null,
-  hover: null,
+  acted: null,
   view: null,        // last compute() result
 };
 
@@ -85,7 +85,6 @@ async function init() {
   d.plannerPetitions = d.plannerPetitions || {};
   themeToggle($('themeToggle'), d.theme, next => {
     store.set({ theme: next });
-    requestAnimationFrame(() => drawEdges());
   });
 
   const programCode = d.selectedProgram;
@@ -121,8 +120,6 @@ async function init() {
 
   initControls();
   render();
-  window.addEventListener('resize', () => { drawEdges(); updateScrollHint(); });
-  $('plannerScroll').addEventListener('scroll', updateScrollHint, { passive: true });
 
   // The popup's "See what this costs" link opens planner.html?whatif=CODE.
   const prefill = normCode(new URLSearchParams(location.search).get('whatif') || '');
@@ -174,7 +171,8 @@ function readHistory() {
       const code = normCode(v.course && v.course.course_code);
       if (!code) return;
       attempts.push({ code, title: (v.course && v.course.title) || '', units: parseFloat(v.unit_taken) || 0,
-        result: gradeResult(v.grade), abs: abs != null ? abs : null, order: i });
+        result: gradeResult(v.grade), grade: String(v.grade == null ? '' : v.grade).toUpperCase().trim(),
+        abs: abs != null ? abs : null, order: i });
     });
   });
   // Unknown ids: lay them out as consecutive regular sems ending last term.
@@ -197,13 +195,18 @@ function readHistory() {
   // Curriculum code -> attempts, including GE/HK/NSTP slots and substitutions.
   const byCurr = {};
   const push = (code, a) => { (byCurr[code] = byCurr[code] || []).push(a); };
-  attempts.forEach(a => { if (state.byCode.has(a.code)) push(a.code, a); });
+  // Once a course is passed, later attempts go to its "CODE (n)" row.
+  attempts.forEach(a => {
+    let code = a.code;
+    for (let n = 2; (byCurr[code] || []).some(x => x.result === 'passed') && state.byCode.has(`${a.code} (${n})`); n++) code = `${a.code} (${n})`;
+    if (state.byCode.has(code)) push(code, a);
+  });
 
   // GE, HK, NSTP and free elective slots, and substitutions, filled the same
   // way the popup What if tab counts them.
   const doneOrNow = attempts.filter(a => a.result === 'passed' || a.result === 'inprogress');
   fillRequirementSlots(state.courses, doneOrNow, state.data.substitutions).forEach((a, slot) => {
-    if (a.code !== slot && state.byCode.has(slot)) push(slot, { ...a, via: a.code });
+    if (a.code !== slot && state.byCode.has(slot) && !(byCurr[slot] || []).includes(a)) push(slot, { ...a, via: a.code });
   });
 
   return { attempts, byCurr, latestAbs, passedOutside: new Set(doneOrNow.map(a => a.code)) };
@@ -305,7 +308,9 @@ function compute() {
   const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
     { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left };
+  const conflicts = prereqConflicts(state.courses, code => (info[code] ? info[code].status : passed.has(code) && 'passed'));
+
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left, conflicts };
 }
 
 /* ---------- Summary ---------- */
@@ -339,7 +344,7 @@ function renderSummary(v) {
       : `because of ${v.failures.length} failed courses`;
     deltaEl.replaceChildren(icon('alert'), `${termsText(delta)} later ${why}`);
   } else if (v.failures.length) {
-    deltaEl.replaceChildren(icon('check'), `No delay from ${v.failures.length === 1 ? v.failures[0].code : 'your failed courses'}`);
+    deltaEl.replaceChildren(icon('check'), `No delay from ${v.failures.length === 1 ? v.failures[0].code : v.failures.some(f => f.source === 'whatif') ? 'your failed courses or the what-if' : 'your failed courses'}`);
     deltaEl.classList.add('ok');
   } else {
     deltaEl.textContent = '';
@@ -351,15 +356,16 @@ function renderSummary(v) {
   const sentences = [];
   if (gradAbs != null) sentences.push(`That is ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
   sentences.push(`You have ${unitsText(v.left.units)} left to pass${nowTaking ? ', counting this term' : ''}.`);
-  sentences.push(`The plan takes up to ${v.unitCaps['1']} units a sem and ${state.data.plannerOptions.midyear ? `up to ${v.unitCaps.midyear} in midyear` : 'midyear only where the checklist puts it'}.`);
   $('gradSub').textContent = sentences.join(' ');
 
   const list = $('failCosts');
-  const showCosts = v.costs.length > 1 || (v.costs.length === 1 && v.costs[0].source !== 'whatif');
+  const showCosts = v.costs.length > 1;
   list.replaceChildren(...(showCosts ? v.costs.map(c => h('li', { class: c.cost > 0 ? 'bad' : '' },
     icon(c.cost > 0 ? 'x' : 'check'),
-    h('strong', {}, c.code),
-    ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`)) : []));
+    h('span', {}, h('strong', {}, c.code),
+      ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`))) : []),
+  ...v.conflicts.map(c => h('li', { class: 'bad' }, icon('alert'),
+    h('span', {}, h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`))));
 }
 
 /* ---------- Cards and columns ---------- */
@@ -403,7 +409,7 @@ function buildColumns(v) {
       if (!st) return;
       if (isLast && i.override) st = i.override === 'planned' ? null : i.override;
       if (!st) return;
-      const card = { code: c.code, status: st, via: a.via, history: !isLast };
+      const card = { code: c.code, status: st, via: a.via, grade: a.grade, units: a.units, history: !isLast };
       col(a.abs).cards.push(card);
       if (isLast && st !== 'failed') primary[c.code] = card;
     });
@@ -440,107 +446,80 @@ function buildColumns(v) {
   for (let abs = v.startAbs; abs <= gradAbs; abs++) if (abs % 3 !== 2) col(abs);
 
   const list = Array.from(cols.values()).sort((a, b) => a.abs - b.abs);
-  orderColumns(list, primary);
   return { list, primary };
-}
-
-// Barycenter sweeps: order each column by the mean row of a card's
-// prerequisites (left to right), then of its dependents (right to left).
-// ponytail: plain barycenter, no crossing count; d3-dag if this looks bad.
-function orderColumns(list, primary) {
-  const delay = state.graph.delay;
-  list.forEach(c => c.cards.sort((a, b) => (delay[b.code] || 0) - (delay[a.code] || 0) || a.code.localeCompare(b.code)));
-  const rowOf = () => {
-    const pos = {};
-    list.forEach(c => c.cards.forEach((card, i) => { if (primary[card.code] === card) pos[card.code] = i; }));
-    return pos;
-  };
-  const preds = code => preGroups(state.byCode.get(code)).flat();
-  const succs = code => state.graph.edges.filter(e => e.from === code).map(e => e.to);
-  for (let pass = 0; pass < 4; pass++) {
-    const forward = pass % 2 === 0;
-    const order = forward ? list : [...list].reverse();
-    order.forEach(column => {
-      const pos = rowOf();
-      const key = new Map();
-      column.cards.forEach((card, i) => {
-        const nb = (forward ? preds(card.code) : succs(card.code)).filter(x => pos[x] !== undefined);
-        key.set(card, nb.length ? nb.reduce((s, x) => s + pos[x], 0) / nb.length : i);
-      });
-      column.cards.sort((a, b) => key.get(a) - key.get(b));
-    });
-  }
 }
 
 function cardFacts(card, v) {
   const c = state.byCode.get(card.code);
   const slip = v.slips[card.code];
+  // Free elective rows are placeholders for any course, so never critical.
   const crit = !card.history && slip > 0 && c.genericRequirement !== 'elective' && !['passed', 'inprogress', 'failed'].includes(card.status);
-  let note = null; // [icon, text, warn]
-  if (card.waitingOn) note = ['lock', `Waiting on ${card.waitingOn}`];
-  else if (card.conditional) note = ['flag', 'Petition needed', true];
-  else if (card.unplaceable) note = ['alert', "Can't place", true];
-  else if (card.via && card.via !== card.code) note = [null, `via ${card.via}`];
-  else if (card.hypothetical) note = [null, 'If failed here'];
-  return { crit, note, statusLabel: COURSE_STATUS[card.status][1] };
+  let note = '';
+  let warn = false;
+  if (card.waitingOn) note = `Waiting on ${card.waitingOn}`;
+  else if (card.conditional) { note = 'Petition needed'; warn = true; }
+  else if (card.unplaceable) { note = "Can't place"; warn = true; }
+  else if (card.via && card.via !== card.code) note = `via ${card.via}`;
+  else if (card.hypothetical) note = 'If failed here';
+  return { crit, note, warn };
 }
 
-function courseCard(card, v) {
+function planRow(card, v) {
   const c = state.byCode.get(card.code);
-  const { crit, note, statusLabel } = cardFacts(card, v);
-  const classes = ['pl-card', `st-${card.status}`];
-  if (crit) classes.push('crit');
-  if (card.history || card.hypothetical) classes.push('history');
-  const extra = note && h('span', { class: `pl-note${note[2] ? ' warn' : ''}` }, note[0] && icon(note[0]), note[1]);
-  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}, ${offeringLabel(c)}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
-  return h('div', {
-    class: classes.join(' '), role: 'button', tabindex: '0', 'aria-label': aria,
-    dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
-  },
-  h('span', { class: 'pl-card-top' }, statusPill(card.status, { variant: 'plain' }), unitsBadge(c.units)),
-  h('span', { class: 'pl-code' }, c.code, card.pinned && h('span', { class: 'pl-pin', title: 'Moved later by you' }, ' *')),
-  h('span', { class: 'pl-title' }, c.title),
-  extra,
-  h('span', { class: 'pl-card-foot' }, h('span', { class: 'pl-offer' }, offeringLabel(c)), crit && h('span', { class: 'pl-crit' }, 'Critical')));
+  const { crit, warn, note: fact } = cardFacts(card, v);
+  const [statusIcon, statusLabel] = COURSE_STATUS[card.status];
+  const note = fact || (['passed', 'planned', 'ready'].includes(card.status) ? '' : statusLabel);
+  const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}${card.grade ? `, grade ${card.grade}` : ''}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
+  return h('li', {},
+    h('button', {
+      type: 'button', class: `pl-row st-${card.status}${card.history || card.hypothetical ? ' history' : ''}${c.genericRequirement ? ' generic' : ''}`, 'aria-label': aria,
+      dataset: { code: card.code, ...(v.primary[card.code] === card ? { primary: '1' } : {}) },
+    },
+    h('span', { class: 'pl-mark' }, icon(statusIcon)),
+    h('span', { class: 'pl-code' }, c.code, card.pinned && h('span', { class: 'pl-pin', title: 'Moved later by you' }, ' *')),
+    h('span', { class: 'pl-title' }, c.title),
+    h('span', { class: `pl-row-note${warn ? ' warn' : ''}` }, [note, crit && 'Critical'].filter(Boolean).join(', ')),
+    h('span', { class: 'pl-row-units' }, String(c.units)),
+    h('span', { class: 'pl-row-grade' }, card.grade || '')));
 }
 
-function columnFacts(column, v) {
+const isDated = abs => Number.isFinite(abs) && abs >= 0;
+
+function termBlock(column, v) {
   const isPast = column.abs < v.startAbs;
-  let name;
-  let sub;
-  if (column.abs === -1) { name = 'Credited'; sub = 'No AMIS term'; }
-  else if (column.abs === Infinity) { name = "Can't place"; sub = 'Check prerequisites'; }
-  else { name = absLabel(column.abs).replace(/ \d+$/, ''); sub = ayLabel(column.abs); }
+  const dated = isDated(column.abs);
+  const name = column.abs === -1 ? 'No AMIS term' : column.abs === Infinity ? 'Check prerequisites' : absLabel(column.abs).replace(/ \d+$/, '');
   const units = column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
   const isMid = column.abs % 3 === 2;
-  const future = !isPast && Number.isFinite(column.abs) && column.abs >= 0;
-  const nowTerm = column.cards.some(c => c.status === 'inprogress');
-  const tag = column.abs === v.startAbs ? 'Next' : nowTerm ? 'Now' : isPast && column.abs >= 0 ? 'Taken' : '';
-  return { isPast, name, sub, units, isMid, future, tag, cap: future ? (isMid ? v.unitCaps.midyear : v.unitCaps['1']) : null };
-}
-
-function semesterColumn(column, v, phone) {
-  const { isPast, name, sub, units, isMid, tag: tagText } = columnFacts(column, v);
   let warn = '';
-  if (!isPast && Number.isFinite(column.abs) && column.abs >= 0) {
+  if (!isPast && dated) {
     if (isMid && units > 6) warn = "Over 6 units in midyear needs the Dean's approval (max 9).";
     else if (!isMid && units > v.unitCaps['1']) warn = `Over your ${v.unitCaps['1']}-unit cap, so it needs an overload approval.`;
     else if (!isMid && units > 18) warn = 'Over 18 units, which is allowed up to 21 when the term has lab courses.';
   }
   const loud = warn && (isMid || units > v.unitCaps['1']);
-  const tag = tagText && badge(tagText, { tone: { Next: 'strong', Now: 'info' }[tagText] });
-  return h('section', { class: `pl-col${isPast ? ' past' : ''}`, dataset: { abs: column.abs } },
-    h('details', { open: !(phone && isPast) },
-      h('summary', { class: 'pl-col-head' },
-        h('span', { class: 'pl-col-name' }, name, tag),
-        h('span', { class: 'pl-col-sub' }, sub,
-          h('span', { class: `pl-col-units${loud ? ' warn' : ''}`, title: warn || null }, loud && icon('alert'), unitsText(units))),
-        warn && h('span', { class: 'visually-hidden' }, warn)),
-      h('div', { class: 'pl-cards' },
-        column.cards.length ? column.cards.map(card => courseCard(card, v)) : emptyState('Nothing offered that fits'))));
+  const nowTerm = column.cards.some(c => c.status === 'inprogress');
+  const tag = column.abs === v.startAbs ? 'next' : nowTerm ? 'now' : '';
+  const failed = column.cards.filter(c => c.status === 'failed' && !c.hypothetical).length;
+  const graded = column.cards.filter(c => c.units && Number(c.grade) && !isNonGwaCourseCode(c.via || c.code));
+  const gwaUnits = graded.reduce((s, c) => s + c.units, 0);
+  const gwa = gwaUnits && graded.reduce((s, c) => s + c.units * Number(c.grade), 0) / gwaUnits;
+  // Named courses first, then the GE, HK, NSTP and elective slots.
+  const slot = card => (state.byCode.get(card.code).genericRequirement ? 1 : 0);
+  const cards = column.cards.slice().sort((a, b) => slot(a) - slot(b) || a.code.localeCompare(b.code, undefined, { numeric: true }));
+  return h('details', { class: `pl-term${isPast ? ' past' : ''}`, open: !isPast || nowTerm || failed > 0, dataset: dated ? { sem: column.abs % 3 } : {} },
+    h('summary', {},
+      icon('chevron'),
+      h('span', { class: 'pl-term-name' }, name),
+      tag && h('span', { class: 'pl-term-tag' }, tag),
+      h('span', { class: 'pl-term-facts' },
+        failed > 0 && h('span', { class: 'bad' }, `${failed} failed`),
+        gwa > 0 && h('span', {}, `GWA ${gwa.toFixed(4)}`),
+        h('span', { class: loud ? 'warn' : '', title: warn || null }, loud && icon('alert'), unitsText(units))),
+      warn && h('span', { class: 'visually-hidden' }, warn)),
+    h('ul', { class: `pl-rows${column.cards.some(c => c.grade) ? '' : ' nograde'}` },
+      cards.length ? cards.map(card => planRow(card, v)) : h('li', { class: 'pl-empty' }, 'Nothing offered that fits')));
 }
-
-const isPhone = () => window.matchMedia('(max-width: 719px)').matches;
 
 function render() {
   const v = compute();
@@ -550,103 +529,33 @@ function render() {
   const { list, primary } = buildColumns(v);
   v.primary = primary;
   v.columns = list;
-  const phone = isPhone();
-  document.querySelector('.pl-main').appendChild($('detail')); // may sit inside the grid on phones
-  $('plannerGrid').replaceChildren(...list.map(c => semesterColumn(c, v, phone)));
+  document.querySelector('.pl-main').appendChild($('detail')); // it sits inside the sheet while a course is selected
+  // Academic years, each with its terms.
+  const years = [];
+  list.forEach(column => {
+    const label = isDated(column.abs) ? ayLabel(column.abs) : column.abs === -1 ? 'Credited' : "Can't place";
+    if (!years.length || years[years.length - 1].label !== label) years.push({ label, terms: [] });
+    years[years.length - 1].terms.push(termBlock(column, v));
+  });
+  $('plannerSheet').replaceChildren(...years.map(y => h('section', { class: 'pl-year', 'aria-label': y.label }, h('h3', {}, y.label), y.terms)));
   if (state.selected && !state.byCode.has(state.selected)) state.selected = null;
   renderDetail();
-  requestAnimationFrame(() => { drawEdges(); updateScrollHint(); });
+  markChain();
 }
 
-// When terms run past the right edge, say how many and offer a jump there.
-function updateScrollHint() {
-  const sc = $('plannerScroll');
-  const right = sc.getBoundingClientRect().right;
-  const hiddenCols = isPhone() ? 0 : Array.from(sc.querySelectorAll('.pl-col'))
-    .filter(col => col.getBoundingClientRect().right > right + 1).length;
-  $('scrollHint').replaceChildren(hiddenCols ? button({
-    variant: 'chip', icon: 'next', text: `${plural(hiddenCols, 'more term')} to the right`,
-    onclick: () => { sc.scrollLeft = sc.scrollWidth; },
-  }) : '');
-}
+/* ---------- Focus ---------- */
 
-/* ---------- Edges and focus ---------- */
-
-function chainOf(code) {
-  const anc = state.graph.ancestors(code);
-  const desc = state.graph.descendants(code);
-  return { anc, desc, all: new Set([code, ...anc, ...desc]) };
-}
-
-function drawEdges() {
-  const svg = $('plannerArrows');
-  const grid = $('plannerGrid');
-  const v = state.view;
-  svg.replaceChildren();
-  document.querySelectorAll('.pl-card.dim, .pl-card.chain, .pl-card.focus').forEach(el => el.classList.remove('dim', 'chain', 'focus'));
-  if (!v) return;
-
-  const focus = state.hover || state.selected;
-  const chain = focus ? chainOf(focus) : null;
-  if (chain) {
-    grid.querySelectorAll('.pl-card').forEach(el => {
-      const code = el.dataset.code;
-      el.classList.add(code === focus && el.dataset.primary ? 'focus' : chain.all.has(code) ? 'chain' : 'dim');
-    });
-  }
-  if (isPhone()) return;
-
-  const gridRect = grid.getBoundingClientRect();
-  svg.setAttribute('width', grid.scrollWidth);
-  svg.setAttribute('height', grid.scrollHeight);
-  const nodeOf = code => grid.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
-  const crit = code => v.slips[code] > 0 && state.byCode.get(code).genericRequirement !== 'elective';
-  const paths = [];
-
-  // Arrows travel the lattice gaps like routed cables (route-edges.js).
-  const css = getComputedStyle(grid);
-  const colGap = parseFloat(css.getPropertyValue('--pl-col-gap')) || 36;
-  const rowGap = parseFloat(css.getPropertyValue('--pl-row-gap')) || 20;
-  const rect = el => {
-    const r = el.getBoundingClientRect();
-    return { x: r.left - gridRect.left, y: r.top - gridRect.top, w: r.width, h: r.height };
-  };
-  const drawn = [];
-  state.graph.edges.forEach(({ from, to }) => {
-    let kind = null;
-    if (chain) {
-      const up = (to === focus || chain.anc.has(to)) && chain.anc.has(from);
-      const down = (from === focus || chain.desc.has(from)) && chain.desc.has(to);
-      if (up || down) kind = 'chain';
-    }
-    if (!kind && crit(from) && crit(to)) kind = 'crit';
-    if (!kind) return;
-    const a = nodeOf(from);
-    const b = nodeOf(to);
-    if (!a || !b || a.closest('details:not([open])') || b.closest('details:not([open])')) return;
-    const ra = rect(a);
-    const rb = rect(b);
-    if (ra.x + ra.w > rb.x) return; // same column or backwards: coreq-like, skip
-    drawn.push({ kind, from: ra, to: rb });
+// Tints the selected course's prerequisites and what it unlocks, and dims the rest.
+function markChain() {
+  const focus = state.selected;
+  const chain = focus ? new Set([focus, ...state.graph.ancestors(focus), ...state.graph.descendants(focus)]) : null;
+  $('plannerSheet').querySelectorAll('.pl-row').forEach(el => {
+    const code = el.dataset.code;
+    const on = code === focus && !!el.dataset.primary;
+    el.setAttribute('aria-pressed', String(on));
+    el.classList.toggle('chain', !!chain && !on && chain.has(code));
+    el.classList.toggle('dim', !!chain && !chain.has(code));
   });
-  const halos = [];
-  routeEdges(drawn, { colGap, rowGap }).forEach(({ d }, i) => {
-    const { kind } = drawn[i];
-    if (kind === 'chain') halos.push(svgEl('path', { class: 'pl-edge-halo', d }));
-    paths.push(svgEl('path', { class: `pl-edge ${kind}`, d, 'marker-start': 'url(#pl-tail)', 'marker-end': `url(#pl-arrow-${kind})` }));
-  });
-  svg.classList.toggle('over', !!chain);
-  const marker = (id, size, ref, shape, shapeAttrs, extra = {}) => {
-    const m = svgEl('marker', { id, markerWidth: size, markerHeight: size, refX: ref[0], refY: ref[1], ...extra });
-    m.append(svgEl(shape, shapeAttrs));
-    return m;
-  };
-  const defs = svgEl('defs');
-  defs.append(
-    marker('pl-arrow-chain', 8, [6, 4], 'path', { d: 'M0 0 L8 4 L0 8 z', class: 'pl-arrowhead chain' }, { orient: 'auto' }),
-    marker('pl-arrow-crit', 6, [5, 3], 'path', { d: 'M0 0 L6 3 L0 6 z', class: 'pl-arrowhead crit' }, { orient: 'auto' }),
-    marker('pl-tail', 8, [4, 4], 'circle', { cx: 4, cy: 4, r: 3, class: 'pl-arrowtail' }, { markerUnits: 'userSpaceOnUse' }));
-  svg.replaceChildren(defs, ...halos, ...paths);
 }
 
 /* ---------- Detail panel ---------- */
@@ -676,7 +585,7 @@ function renderDetail() {
   const i = v.info[code];
   const card = v.primary[code];
   const t = v.now.result.assignedTerm[code];
-  const slip = v.slips[code];
+  const slip = c.genericRequirement === 'elective' && v.slips[code] > 0 ? undefined : v.slips[code];
   const blocking = state.graph.blocking[code] || 0;
   const delay = state.graph.delay[code] || 1;
   const deps = state.graph.edges.filter(e => e.from === code).map(e => e.to);
@@ -687,8 +596,8 @@ function renderDetail() {
   facts.push(`${unitsText(c.units)}, offered ${offeringLabel(c).toLowerCase()}${c.offered ? ` (${c.offered[1]} of 4 first sems, ${c.offered[2]} of 3 second sems, ${c.offered[3]} of 2 midyears seen)` : ''}`);
   if (t !== undefined) facts.push(`Planned for ${absLabel(v.startAbs + t)}`);
   const metrics = h('ul', { class: 'pl-metrics' },
-    h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
-    h('li', {}, h('strong', {}, delay), ` ${delay === 1 ? 'course' : 'courses'} on the longest chain through it`),
+    blocking > 0 && h('li', {}, h('strong', {}, blocking), ` ${blocking === 1 ? 'course' : 'courses'} blocked if this is failed`),
+    delay > 1 && h('li', {}, h('strong', {}, delay), ' courses on the longest chain through it'),
     slip === undefined ? null : slip > 0
       ? h('li', { class: 'bad' }, h('strong', {}, 'Critical.'), ` Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.`)
       : h('li', {}, 'Has slack. Taking it a term later does not move graduation.'));
@@ -714,31 +623,28 @@ function renderDetail() {
   panel.replaceChildren(...flat([
     h('div', { class: 'pl-detail-head' },
       h('div', {},
-        h('p', { class: 'pl-detail-code' }, c.code, ' ', statusPill(card ? card.status : (i.status === 'failed' ? 'failed' : 'planned'))),
+        h('p', { class: 'pl-detail-code' }, c.code, ' ', statusPill(card ? card.status : (i.status === 'failed' ? 'failed' : 'planned'), card && card.waitingOn ? { label: `Waiting on ${card.waitingOn}` } : {})),
         h('p', { class: 'pl-detail-title' }, c.title)),
       button({ variant: 'icon', icon: 'x', class: 'pl-close', 'aria-label': 'Close details', dataset: { act: 'close' } })),
     h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
-    card && card.waitingOn && h('p', { class: 'pl-note' }, icon('lock'), `Waiting on ${card.waitingOn}`),
-    metrics,
+    metrics.children.length > 0 && metrics,
     c.options && [h('h4', {}, 'Take one of these'), h('ul', { class: 'pl-reqs' }, c.options.map(o => h('li', {},
       h('strong', {}, o), catalog[o] ? ` ${catalog[o].title.replace(/\.$/, '')}` : '',
       v.passed.has(o) ? ', passed' : '')))],
     h('h4', {}, 'Requires'),
     reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
-    h('h4', {}, 'Unlocks'),
-    deps.length ? h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v))) : h('p', { class: 'pl-muted' }, 'Nothing else in your checklist.'),
+    deps.length > 0 && [h('h4', {}, 'Unlocks'), h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v)))],
     h('div', { class: 'pl-actions' }, actions),
+    state.acted === code && h('p', {}, h('strong', {}, `${$('gradTerm').textContent}.${$('gradDelta').textContent ? ` ${$('gradDelta').textContent}.` : ''}`)),
     petition,
   ]));
   panel.classList.remove('hidden');
 
-  // Phone: show it inline under the selected card. Desktop: floating panel.
-  if (isPhone()) {
-    const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`) ||
-      document.querySelector(`.pl-card[data-code="${CSS.escape(code)}"]`);
-    if (el) el.after(panel);
-  } else if (panel.parentElement !== document.querySelector('.pl-main')) {
-    document.querySelector('.pl-main').appendChild(panel);
+  const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(code)}"]`) ||
+    document.querySelector(`.pl-row[data-code="${CSS.escape(code)}"]`);
+  if (el) {
+    el.closest('details').open = true;
+    el.after(panel);
   }
 }
 
@@ -751,7 +657,7 @@ function announce(msg) {
 function select(code) {
   state.selected = state.selected === code ? null : code;
   renderDetail();
-  drawEdges();
+  markChain();
   if (state.selected) announce(`${code} selected. ${state.graph.blocking[code] || 0} courses depend on it.`);
 }
 
@@ -780,8 +686,9 @@ function act(name, input) {
     else delete d.plannerPetitions[code];
     save(['plannerPetitions']);
   }
+  state.acted = code;
   render();
-  const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(code)}"]`);
+  const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(code)}"]`);
   if (el) el.focus({ preventScroll: true });
 }
 
@@ -815,7 +722,7 @@ function simulate(e) {
     $('whatifClear').classList.remove('hidden');
     state.selected = code;
     renderDetail();
-    drawEdges();
+    markChain();
     return;
   }
   state.whatif = { code, mode };
@@ -833,7 +740,7 @@ function simulate(e) {
   $('whatifClear').classList.remove('hidden');
   state.selected = code;
   renderDetail();
-  drawEdges();
+  markChain();
 }
 
 function clearWhatif() {
@@ -907,38 +814,17 @@ function initControls() {
   $('whatifForm').addEventListener('submit', simulate);
   $('whatifClear').addEventListener('click', clearWhatif);
 
-  // Legend: one row of chips, built from the same status table as the cards.
-  $('legend').prepend(
-    ...['passed', 'inprogress', 'failed', 'retake', 'ready', 'planned', 'locked'].map(st => statusPill(st)),
-    badge('Critical', { class: 'crit-chip', title: 'Courses that would delay graduation if you slip' }),
-    badge('Petition', { icon: 'flag' }));
-
-  const grid = $('plannerGrid');
-  grid.addEventListener('click', e => {
-    const el = e.target.closest('.pl-card');
+  $('plannerSheet').addEventListener('click', e => {
+    const el = e.target.closest('.pl-row');
     if (el) select(el.dataset.code);
   });
-  grid.addEventListener('keydown', e => {
-    const el = e.target.closest('.pl-card');
-    if (el && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault();
-      select(el.dataset.code);
-    }
-  });
-  grid.addEventListener('mouseover', e => {
-    const el = e.target.closest('.pl-card');
-    const code = el ? el.dataset.code : null;
-    if (code !== state.hover) { state.hover = code; drawEdges(); }
-  });
-  grid.addEventListener('mouseleave', () => { state.hover = null; drawEdges(); });
-  grid.addEventListener('toggle', () => drawEdges(), true);
 
   document.addEventListener('click', e => {
     const go = e.target.closest('[data-goto]');
     if (go) {
       state.selected = null;
       select(go.dataset.goto);
-      const el = document.querySelector(`.pl-card[data-primary][data-code="${CSS.escape(go.dataset.goto)}"]`);
+      const el = document.querySelector(`.pl-row[data-primary][data-code="${CSS.escape(go.dataset.goto)}"]`);
       if (el) { el.scrollIntoView({ block: 'nearest', inline: 'nearest' }); el.focus({ preventScroll: true }); }
       return;
     }
@@ -1043,15 +929,24 @@ async function loadPlanFile(file) {
 function exportModel(v) {
   const termOf = {};
   const columns = v.columns.map(column => {
-    const f = columnFacts(column, v);
-    const term = column.abs === -1 ? 'Credited' : column.abs === Infinity ? 'Not placed' : `${f.sub} ${f.name}`;
+    const dated = isDated(column.abs);
+    const future = dated && column.abs >= v.startAbs;
+    const f = {
+      name: dated ? absLabel(column.abs).replace(/ \d+$/, '') : column.abs === -1 ? 'Credited' : "Can't place",
+      sub: dated ? ayLabel(column.abs) : column.abs === -1 ? 'No AMIS term' : 'Check prerequisites',
+      tag: column.abs === v.startAbs ? 'Next' : column.cards.some(c => c.status === 'inprogress') ? 'Now' : dated && !future ? 'Taken' : '',
+      units: column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0),
+      cap: future ? (column.abs % 3 === 2 ? v.unitCaps.midyear : v.unitCaps['1']) : null,
+    };
+    const term = dated ? `${f.sub} ${f.name}` : column.abs === -1 ? 'Credited' : 'Not placed';
     const cards = column.cards.map(card => {
       const c = state.byCode.get(card.code);
-      const { crit, note, statusLabel } = cardFacts(card, v);
+      const { crit, note } = cardFacts(card, v);
+      const statusLabel = COURSE_STATUS[card.status][1];
       if (v.primary[card.code] === card) termOf[card.code] = { term, abs: column.abs, label: statusLabel, status: card.status };
       return {
         code: card.code, title: c.title, units: c.units, offer: offeringLabel(c), status: card.status, label: statusLabel, crit,
-        note: note ? note[1] : card.pinned ? 'moved later by you' : '',
+        note: note || (card.pinned ? 'moved later by you' : ''),
         muted: !!(card.history || card.hypothetical || card.status === 'locked'),
       };
     });
