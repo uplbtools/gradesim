@@ -674,6 +674,16 @@ button.pl-link:hover {
 }
 
 /* Phone: terms stack vertically, collapsible, no arrows. */
+@media (min-width: 720px) and (max-width: 959px) {
+  .pl-whatif {
+    flex-basis: 100%;
+  }
+
+  .pl-tips {
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 719px) {
   .pl-top,
   .pl-main {
