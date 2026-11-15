@@ -9979,242 +9979,377 @@ const UPLB_PROGRAMS = {
     "name": "BS Materials Engineering",
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
-    "available": false,
-    "totalUnitsRequired": 175,
+    "available": true,
+    "totalUnitsRequired": 159,
     "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "MATE 21",
-        "title": "Engineering Drawing",
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "MATE 31",
-        "title": "Introduction to Materials Science",
-        "units": 3,
+        "code": "MATE 10",
+        "title": "Introduction to Materials Engineering",
+        "units": 1,
         "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 41",
-        "title": "Structure of Materials",
-        "units": 4,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 101",
-        "title": "Physical Metallurgy",
-        "units": 4,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 111",
-        "title": "Mechanical Behavior of Materials",
-        "units": 4,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 121",
-        "title": "Ceramic Materials",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 131",
-        "title": "Polymer Materials",
-        "units": 3,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 141",
-        "title": "Electronic Materials",
-        "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 151",
-        "title": "Corrosion Engineering",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 161",
-        "title": "Materials Characterization",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 171",
-        "title": "Materials Processing",
-        "units": 4,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 181",
-        "title": "Materials Selection and Design",
-        "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 190",
-        "title": "Materials Engineering Design",
-        "units": 4,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 191",
-        "title": "Engineering Internship",
-        "units": 3,
-        "gradeType": "S/U",
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "ENSC 21",
-        "title": "Statics of Rigid Bodies",
-        "units": 3,
-        "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "ENSC 22",
-        "title": "Dynamics of Rigid Bodies",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ENSC 21"
-        ]
-      },
-      {
-        "code": "ENSC 24",
-        "title": "Thermodynamics I",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ENSC 21"
-        ]
-      },
-      {
-        "code": "MATH 27",
-        "title": "Analytic Geometry and Calculus I",
-        "units": 3,
-        "year": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
         "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus II",
+        "title": "Analytic Geometry and Calculus III",
         "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "MATH 114",
-        "title": "Differential Equations",
-        "units": 3,
-        "year": 4,
+        "year": 1,
         "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "PHYS 71",
-        "title": "Elementary Physics I",
-        "units": 4,
-        "year": 4,
-        "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PHYS 72",
-        "title": "Elementary Physics II",
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
         "units": 4,
-        "year": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 11",
+        "title": "Statics of Rigid Bodies",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EE 1",
+        "title": "Basic Electrical Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 21",
+        "title": "Structure-Property Relationship of Materials I",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
+          "CHEM 18",
           "PHYS 71"
         ]
       },
       {
-        "code": "CHEM 16",
-        "title": "General Chemistry I",
+        "code": "PHYS 72",
+        "title": "University Physics II",
         "units": 4,
-        "year": 4,
+        "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "CHEM 17",
-        "title": "General Chemistry II",
+        "code": "PHYS 72.1",
+        "title": "University Physics II Laboratory",
+        "units": 1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32",
+        "title": "Quantitative Inorganic Analysis",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32.1",
+        "title": "Quantitative Inorganic Analysis Laboratory",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 101",
+        "title": "Thermodynamics of Materials",
         "units": 4,
-        "year": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 22",
+        "title": "Structure-Property Relationship of Materials II",
+        "units": 4,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CHEM 16"
+          "MATE 21",
+          "ENSC 13",
+          "ENSC 21"
         ]
+      },
+      {
+        "code": "MATE 23",
+        "title": "Structure-Property Relationship of Materials III",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21",
+          "PHYS 72"
+        ]
+      },
+      {
+        "code": "MATE 103",
+        "title": "Rate Processes in Materials Engineering",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 101",
+          "ENSC 21"
+        ]
+      },
+      {
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EE 2",
+        "title": "Basic Electronics Engineering",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and Society",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 16",
+        "title": "Fluid Mechanics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 26",
+        "title": "Computer Applications in Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 150",
+        "title": "Systems Evaluation",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 162",
+        "title": "Experimental Designs",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 105",
+        "title": "Materials Analysis and Testing",
+        "units": 4,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32",
+          "MATE 22",
+          "MATE 23"
+        ]
+      },
+      {
+        "code": "IE 184",
+        "title": "Project Management and Development",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 165",
+        "title": "Materials Synthesis and Processing",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 40",
+          "MATE 103",
+          "MATE 105"
+        ]
+      },
+      {
+        "code": "MATE 165.1",
+        "title": "Materials Synthesis and Processing Laboratory",
+        "units": 2,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "MATE 175",
+        "title": "Materials Fabrication",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "MATE 103",
+          "ENSC 16"
+        ]
+      },
+      {
+        "code": "MATE 175.1",
+        "title": "Materials Fabrication Laboratory",
+        "units": 2,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "MATE 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 198",
+        "title": "Internship",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
       },
       {
         "code": "ENG 10",
@@ -10223,35 +10358,139 @@ const UPLB_PROGRAMS = {
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "MATE 171",
+        "title": "Degradation of Materials",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 194",
+        "title": "Materials Selection and Design",
+        "units": 5,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Elective (MatE)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MATE 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 90",
+        "title": "Laws and Ethics for Materials Engineers",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 173",
+        "title": "Forensic Engineering in Materials",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATE 171"
+        ]
+      },
+      {
+        "code": "MAJ 2",
+        "title": "Elective (MatE)",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MATE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATE 200"
+        ]
       }
     ],
     "requiredCodes": [
-      "MATE 21",
-      "MATE 31",
-      "MATE 41",
-      "MATE 101",
-      "MATE 111",
-      "MATE 121",
-      "MATE 131",
-      "MATE 141",
-      "MATE 151",
-      "MATE 161",
-      "MATE 171",
-      "MATE 181",
-      "MATE 190",
-      "MATE 191",
-      "ENSC 21",
-      "ENSC 22",
-      "ENSC 24",
+      "KAS 1",
+      "COMM 10",
       "MATH 27",
-      "MATH 28",
-      "MATH 114",
       "PHYS 71",
+      "PHYS 71.1",
+      "CHEM 18",
+      "CHEM 18.1",
+      "MATE 10",
+      "ARTS 1",
+      "MATH 28",
+      "CHEM 40",
+      "CHEM 40.1",
+      "ENSC 10.1",
+      "ENSC 11",
+      "EE 1",
+      "MATE 21",
       "PHYS 72",
-      "CHEM 16",
-      "CHEM 17",
-      "ENG 10"
-    ]
+      "PHYS 72.1",
+      "CHEM 32",
+      "CHEM 32.1",
+      "ENSC 13",
+      "ENSC 21",
+      "MATE 101",
+      "ETHICS 1",
+      "MATE 22",
+      "MATE 23",
+      "MATE 103",
+      "ENSC 12",
+      "EE 2",
+      "STS 1",
+      "ENSC 16",
+      "ENSC 26",
+      "IE 150",
+      "STAT 162",
+      "MATE 105",
+      "IE 184",
+      "MATE 165",
+      "MATE 165.1",
+      "MATE 175",
+      "MATE 175.1",
+      "MATE 199",
+      "MATE 198",
+      "ENG 10",
+      "MATE 171",
+      "MATE 194",
+      "MATE 200",
+      "PI 10",
+      "MATE 90",
+      "MATE 173"
+    ],
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSECON": {
     "code": "BSECON",
