@@ -1700,10 +1700,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "STAT 190",
         "title": "Special Problem",
-        "units": 3,
+        "units": 1,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "STAT 190 (2)",
+        "title": "Special Problem",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "STAT 190"
+        ]
       },
       {
         "code": "STAT 191",
@@ -4948,10 +4958,21 @@ const UPLB_PROGRAMS = {
       {
         "code": "PHLO 190",
         "title": "Special Problems",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
+        "track": "sp"
+      },
+      {
+        "code": "PHLO 190 (2)",
+        "title": "Special Problems",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "PHLO 190"
+        ],
         "track": "sp"
       },
       {
@@ -10777,10 +10798,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ECON 199",
         "title": "Undergraduate Seminar",
-        "units": 2,
+        "units": 1,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ECON 199 (2)",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ECON 199"
+        ]
       },
       {
         "code": "ECON 200",
