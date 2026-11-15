@@ -88,6 +88,7 @@ async function init() {
   });
 
   const programCode = d.selectedProgram;
+  state.programCode = programCode;
   state.program = typeof UPLB_PROGRAMS !== 'undefined' ? UPLB_PROGRAMS[programCode] : null;
   if (!state.program || !state.program.majorCourses) {
     $('gradTerm').textContent = 'Pick your program in the extension popup first.';
@@ -254,11 +255,27 @@ function compute() {
     if (wi.mode === 'fail') failures.push({ code: wi.code, past: false, source: 'whatif' });
   }
 
-  const unitCaps = { '1': Number(opts.cap), '2': Number(opts.cap), 'midyear': opts.midyear9 ? 9 : 6 };
+  const byChecklist = opts.cap === 'checklist';
+  const regularCap = byChecklist ? 18 : Number(opts.cap);
+  const unitCaps = { '1': regularCap, '2': regularCap, 'midyear': opts.midyear9 ? 9 : 6 };
+  const termCaps = {};
+  if (byChecklist) {
+    const load = {};
+    state.courses.forEach(c => {
+      if (!isNonGwaCourseCode(c.code)) load[`${c.year} ${c.sem}`] = (load[`${c.year} ${c.sem}`] || 0) + (Number(c.units) || 0);
+    });
+    const entryAy = Math.floor(Math.min(startAbs, ...hist.attempts.map(a => a.abs).filter(isDated)) / 3);
+    for (let t = 0; t < 30; t++) {
+      const abs = startAbs + t;
+      if (abs % 3 !== 2) termCaps[t] = Math.max(18, load[`${Math.floor(abs / 3) - entryAy + 1} ${abs % 3 + 1}`] || 0);
+    }
+  }
+  const capAt = abs => termCaps[abs - startAbs] ?? unitCaps['1'];
   const baseOpts = {
     courses: state.courses.map(c => ({ ...c, petition: !!d.plannerPetitions[c.code] })),
     startSem: semOfAbs(startAbs),
     unitCaps,
+    termCaps,
     useMidyear: !!opts.midyear,
     totalUnits: Number(state.program.totalUnitsRequired) || undefined,
   };
@@ -309,7 +326,7 @@ function compute() {
 
   const conflicts = prereqConflicts(state.courses, code => (info[code] ? info[code].status : passed.has(code) && 'passed'));
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, left, conflicts };
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, capAt, byChecklist, left, conflicts };
 }
 
 /* ---------- Summary ---------- */
@@ -448,19 +465,26 @@ function buildColumns(v) {
   return { list, primary };
 }
 
-function planRow(card, v) {
+function cardFacts(card, v) {
   const c = state.byCode.get(card.code);
   const slip = v.slips[card.code];
   // Free elective rows are placeholders for any course, so never critical.
   const crit = !card.history && slip > 0 && c.genericRequirement !== 'elective' && !['passed', 'inprogress', 'failed'].includes(card.status);
-  const [statusIcon, statusLabel] = COURSE_STATUS[card.status];
-  let note = ['passed', 'planned', 'ready'].includes(card.status) ? '' : statusLabel;
+  let note = '';
   let warn = false;
   if (card.waitingOn) note = `Waiting on ${card.waitingOn}`;
   else if (card.conditional) { note = 'Petition needed'; warn = true; }
   else if (card.unplaceable) { note = "Can't place"; warn = true; }
   else if (card.via && card.via !== card.code) note = `via ${card.via}`;
   else if (card.hypothetical) note = 'If failed here';
+  return { crit, note, warn };
+}
+
+function planRow(card, v) {
+  const c = state.byCode.get(card.code);
+  const { crit, warn, note: fact } = cardFacts(card, v);
+  const [statusIcon, statusLabel] = COURSE_STATUS[card.status];
+  const note = fact || (['passed', 'planned', 'ready'].includes(card.status) ? '' : statusLabel);
   const aria = `${c.code}, ${c.title}. ${statusLabel}${crit ? ', critical' : ''}. ${unitsText(c.units)}${card.grade ? `, grade ${card.grade}` : ''}.${card.waitingOn ? ` Waiting on ${card.waitingOn}.` : ''}`;
   return h('li', {},
     h('button', {
@@ -481,15 +505,15 @@ function termBlock(column, v) {
   const isPast = column.abs < v.startAbs;
   const dated = isDated(column.abs);
   const name = column.abs === -1 ? 'No AMIS term' : column.abs === Infinity ? 'Check prerequisites' : absLabel(column.abs).replace(/ \d+$/, '');
-  const units = column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
+  const units = column.cards.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
   const isMid = column.abs % 3 === 2;
   let warn = '';
   if (!isPast && dated) {
     if (isMid && units > 6) warn = "Over 6 units in midyear needs the Dean's approval (max 9).";
-    else if (!isMid && units > v.unitCaps['1']) warn = `Over your ${v.unitCaps['1']}-unit cap, so it needs an overload approval.`;
-    else if (!isMid && units > 18) warn = 'Over 18 units, which is allowed up to 21 when the term has lab courses.';
+    else if (!isMid && units > v.capAt(column.abs)) warn = `Over your ${v.capAt(column.abs)}-unit cap, so it needs an overload approval.`;
+    else if (!isMid && units > 18) warn = v.byChecklist ? 'Over 18 units, which the checklist puts in this sem.' : 'Over 18 units, which is allowed up to 21 when the term has lab courses.';
   }
-  const loud = warn && (isMid || units > v.unitCaps['1']);
+  const loud = warn && (isMid || units > v.capAt(column.abs));
   const nowTerm = column.cards.some(c => c.status === 'inprogress');
   const tag = column.abs === v.startAbs ? 'next' : nowTerm ? 'now' : '';
   const failed = column.cards.filter(c => c.status === 'failed' && !c.hypothetical).length;
@@ -748,7 +772,7 @@ function initControls() {
   $('optMidyear').checked = !!o.midyear;
   $('optMidyear9').checked = !!o.midyear9;
   const setOpt = () => {
-    o.cap = Number($('optCap').value);
+    o.cap = Number($('optCap').value) || $('optCap').value;
     o.midyear = $('optMidyear').checked;
     o.midyear9 = $('optMidyear9').checked;
     save(['plannerOptions']);
@@ -780,6 +804,12 @@ function initControls() {
     render();
     announce('Plan recomputed from scratch.');
   });
+  $('printPlan').addEventListener('click', () => {
+    $('planMenu').open = false;
+    if (state.selected) select(state.selected);
+    $('plannerSheet').querySelectorAll('details').forEach(d => { d.open = true; });
+    print();
+  });
   const resetDialog = modal($('resetDialog'));
   $('resetPlan').addEventListener('click', () => {
     $('planMenu').open = false;
@@ -794,6 +824,15 @@ function initControls() {
     render();
     announce('Plan reset. Your AMIS grades stay.');
   });
+  $('savePlan').addEventListener('click', savePlanFile);
+  $('loadPlan').addEventListener('click', () => $('planFile').click());
+  $('planFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    $('planMenu').open = false;
+    if (file) loadPlanFile(file);
+  });
+  $('exportXlsx').addEventListener('click', exportXlsx);
   $('whatifForm').addEventListener('submit', simulate);
   $('whatifClear').addEventListener('click', clearWhatif);
 
@@ -822,4 +861,142 @@ function initControls() {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && state.selected) select(state.selected);
   });
+}
+
+/* ---------- Save, load and export ---------- */
+
+const PLAN_KEYS = ['customCourseStatus', 'plannerPins', 'plannerPetitions', 'plannerOptions', 'substitutions'];
+const today = () => new Date().toLocaleDateString('en-CA'); // local YYYY-MM-DD
+
+// Blob + <a download>: no downloads permission needed.
+function download(name, blob) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function notice(text, bad) {
+  const banner = $('plannerBanner');
+  banner.classList.remove('hidden');
+  banner.replaceChildren(icon(bad ? 'alert' : 'check'), h('span', {}, text));
+  announce(text);
+}
+
+// Same shape idea as the popup backup (source tag + plain storage values),
+// minus the AMIS grades, which stay on this device.
+function savePlanFile() {
+  const plan = { source: 'elbi-gradesim-plan', version: 1, savedAt: new Date().toISOString(), program: state.programCode, whatif: state.whatif };
+  PLAN_KEYS.forEach(k => { plan[k] = state.data[k]; });
+  download(`gradesim-plan-${state.programCode}-${today()}.json`, new Blob([JSON.stringify(plan, null, 2)], { type: 'application/json' }));
+  $('planMenu').open = false;
+  announce('Plan saved as a file.');
+}
+
+// Returns a friendly reason the file can't be used, or '' when it is fine.
+function checkPlan(p) {
+  const isObj = x => x != null && typeof x === 'object' && !Array.isArray(x);
+  const all = (o, ok) => isObj(o) && Object.values(o).every(ok);
+  if (!isObj(p) || p.source !== 'elbi-gradesim-plan') return 'That file is not a GradeSim course plan. Pick a file made with Save plan.';
+  if (p.version !== 1) return 'That plan was saved by a newer GradeSim. Update the extension and try again.';
+  const prog = typeof UPLB_PROGRAMS !== 'undefined' && UPLB_PROGRAMS[p.program];
+  if (!prog || !prog.majorCourses) return `That plan is for a program this version does not have (${String(p.program)}).`;
+  const ok = all(p.customCourseStatus, x => ['passed', 'failed', 'planned', 'inprogress'].includes(x)) &&
+    all(p.plannerPins, Number.isInteger) &&
+    all(p.plannerPetitions, x => x === true) &&
+    all(p.substitutions, x => typeof x === 'string') &&
+    isObj(p.plannerOptions) && (p.plannerOptions.cap === 'checklist' || [18, 21].includes(Number(p.plannerOptions.cap))) &&
+    (p.whatif == null || (isObj(p.whatif) && typeof p.whatif.code === 'string' && ['fail', '1', '3'].includes(p.whatif.mode)));
+  return ok ? '' : 'That plan file looks damaged, so nothing was changed.';
+}
+
+async function loadPlanFile(file) {
+  let plan;
+  try { plan = JSON.parse(await file.text()); } catch (e) { plan = null; }
+  const problem = checkPlan(plan);
+  if (problem) { notice(problem, true); return; }
+  const values = {};
+  PLAN_KEYS.forEach(k => { values[k] = plan[k]; });
+
+  if (plan.program !== state.programCode) {
+    const name = UPLB_PROGRAMS[plan.program].name || plan.program;
+    if (!confirm(`This plan is for ${name}. Switch the planner to ${name} and load it? Your current marks and moves are replaced.`)) return;
+    await store.set({ ...values, selectedProgram: plan.program });
+    location.reload();
+    return;
+  }
+  Object.assign(state.data, values);
+  save(PLAN_KEYS);
+  const o = state.data.plannerOptions;
+  $('optCap').value = String(o.cap);
+  $('optMidyear').checked = !!o.midyear;
+  $('optMidyear9').checked = !!o.midyear9;
+  state.whatif = null;
+  $('whatifResult').textContent = '';
+  $('whatifClear').classList.add('hidden');
+  render();
+  if (plan.whatif && Array.from($('whatifCourse').options).some(x => x.value === plan.whatif.code)) {
+    $('whatifMode').value = plan.whatif.mode;
+    $('whatifCourse').value = plan.whatif.code;
+    simulate({ preventDefault() {} });
+  }
+  const saved = new Date(plan.savedAt);
+  notice(`Loaded the plan saved ${Number.isNaN(saved.getTime()) ? 'earlier' : saved.toLocaleDateString('en-CA')}.`);
+}
+
+// The planner as plain data for xlsx.js: columns of cards plus a flat course list.
+function exportModel(v) {
+  const termOf = {};
+  const columns = v.columns.map(column => {
+    const dated = isDated(column.abs);
+    const future = dated && column.abs >= v.startAbs;
+    const f = {
+      name: dated ? absLabel(column.abs).replace(/ \d+$/, '') : column.abs === -1 ? 'Credited' : "Can't place",
+      sub: dated ? ayLabel(column.abs) : column.abs === -1 ? 'No AMIS term' : 'Check prerequisites',
+      tag: column.abs === v.startAbs ? 'Next' : column.cards.some(c => c.status === 'inprogress') ? 'Now' : dated && !future ? 'Taken' : '',
+      units: column.cards.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0),
+      cap: future ? (column.abs % 3 === 2 ? v.unitCaps.midyear : v.capAt(column.abs)) : null,
+    };
+    const term = dated ? `${f.sub} ${f.name}` : column.abs === -1 ? 'Credited' : 'Not placed';
+    const cards = column.cards.map(card => {
+      const c = state.byCode.get(card.code);
+      const { crit, note } = cardFacts(card, v);
+      const statusLabel = COURSE_STATUS[card.status][1];
+      if (v.primary[card.code] === card) termOf[card.code] = { term, abs: column.abs, label: statusLabel, status: card.status };
+      return {
+        code: card.code, title: c.title, units: c.units, offer: offeringLabel(c), status: card.status, label: statusLabel, crit,
+        note: note || (card.pinned ? 'moved later by you' : ''),
+        muted: !!(card.history || card.hypothetical || card.status === 'locked'),
+      };
+    });
+    return { name: f.name, sub: f.sub, tag: f.tag, units: f.units, cap: f.cap, cards };
+  });
+  const courses = state.courses.map(c => {
+    const t = termOf[c.code] || { term: 'Not placed', abs: Infinity, label: v.info[c.code].status === 'failed' ? 'Failed' : 'Planned', status: 'planned' };
+    const groups = preGroups(c);
+    return {
+      code: c.code, title: c.title, units: c.units, term: t.term, abs: t.abs, status: t.status, label: t.label,
+      prereqs: groups.length ? groups.map(g => (g.length > 1 && groups.length > 1 ? `(${g.join(' or ')})` : g.join(' or '))).join(' and ') : 'None',
+    };
+  }).sort((a, b) => a.abs - b.abs || a.code.localeCompare(b.code));
+  const delta = $('gradDelta').textContent.trim();
+  return {
+    title: `${$('gradTerm').textContent}${delta ? ` (${delta})` : ''}`,
+    subtitle: `${state.program.name || state.programCode}. ${$('gradSub').textContent} Exported ${today()} from Elbi GradeSim.`,
+    columns,
+    courses,
+  };
+}
+
+function exportXlsx() {
+  const v = state.view;
+  $('planMenu').open = false;
+  if (!v || typeof GradeSimXlsx === 'undefined') return;
+  const bytes = GradeSimXlsx.writeXlsx(GradeSimXlsx.buildPlannerSheets(exportModel(v)));
+  download(`gradesim-plan-${state.programCode}-${today()}.xlsx`,
+    new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+  announce('Excel file downloaded.');
 }

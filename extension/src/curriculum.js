@@ -256,7 +256,7 @@ const UPLB_PROGRAMS = {
     "majorCourses": [
       {
         "code": "MATH 27",
-        "title": "Analytic Geometry and Calculus I",
+        "title": "Analytic Geometry and Calculus II",
         "units": 3,
         "year": 1,
         "sem": "1",
@@ -264,7 +264,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus II",
+        "title": "Analytic Geometry and Calculus III",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -294,7 +294,7 @@ const UPLB_PROGRAMS = {
         "code": "CMSC 22",
         "title": "Object-Oriented Programming",
         "units": 3,
-        "year": 1,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "CMSC 12"
@@ -304,10 +304,10 @@ const UPLB_PROGRAMS = {
         "code": "CMSC 23",
         "title": "Mobile Computing",
         "units": 3,
-        "year": 1,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
@@ -316,18 +316,16 @@ const UPLB_PROGRAMS = {
         "units": 3,
         "year": 1,
         "sem": "1",
-        "prereqs": [
-          "CMSC 12"
-        ]
+        "prereqs": []
       },
       {
         "code": "CMSC 57",
         "title": "Discrete Mathematical Structures in Computer Science II",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 56"
         ]
       },
       {
@@ -335,9 +333,9 @@ const UPLB_PROGRAMS = {
         "title": "Web Programming",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
@@ -345,29 +343,30 @@ const UPLB_PROGRAMS = {
         "title": "Data Structures",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 57",
+          "CMSC 21"
         ]
       },
       {
         "code": "CMSC 124",
         "title": "Design and Implementation of Programming Languages",
         "units": 3,
-        "year": 2,
+        "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 125",
         "title": "Operating Systems",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
@@ -375,39 +374,39 @@ const UPLB_PROGRAMS = {
         "title": "File Processing and Database Systems",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
         "code": "CMSC 128",
         "title": "Introduction to Software Engineering",
         "units": 3,
-        "year": 2,
+        "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 130",
         "title": "Logic Design and Digital Computer Circuits",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 57"
         ]
       },
       {
         "code": "CMSC 131",
         "title": "Introduction to Computer Organization and Machine Level Programming",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 21"
         ]
       },
       {
@@ -417,7 +416,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 131"
         ]
       },
       {
@@ -427,7 +426,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 125"
         ]
       },
       {
@@ -437,7 +436,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
@@ -447,47 +446,49 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 150",
         "title": "Numerical and Symbolic Computation",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 21",
+          "MATH 27"
         ]
       },
       {
         "code": "CMSC 170",
         "title": "Introduction to Artificial Intelligence",
         "units": 3,
-        "year": 4,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 173",
         "title": "Human Computer Interaction",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123",
+          "STAT 101"
         ]
       },
       {
         "code": "CMSC 180",
         "title": "Introduction to Parallel Computing",
         "units": 3,
-        "year": 4,
+        "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 132"
         ]
       },
       {
@@ -535,9 +536,7 @@ const UPLB_PROGRAMS = {
         "track": "thesis",
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "CMSC 12"
-        ]
+        "prereqs": []
       },
       {
         "code": "CMSC 200 (2)",
@@ -555,8 +554,8 @@ const UPLB_PROGRAMS = {
         "code": "STAT 101",
         "title": "Statistical Methods",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -564,7 +563,7 @@ const UPLB_PROGRAMS = {
         "title": "Writing of Scientific Papers",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       }
     ],
@@ -593,9 +592,14 @@ const UPLB_PROGRAMS = {
       "CMSC 170",
       "CMSC 173",
       "CMSC 180",
+      "CMSC 190",
+      "CMSC 198",
+      "CMSC 199",
+      "CMSC 200",
       "STAT 101",
       "ENG 10"
-    ]
+    ],
+    "hkCoursesRequired": 4
   },
   "BSMATH": {
     "code": "BSMATH",
@@ -644,7 +648,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -684,7 +688,7 @@ const UPLB_PROGRAMS = {
         "title": "Investigative Biology Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -804,7 +808,7 @@ const UPLB_PROGRAMS = {
         "title": "The Life and Works of Jose Rizal",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -876,11 +880,22 @@ const UPLB_PROGRAMS = {
       {
         "code": "MATH 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
+      },
+      {
+        "code": "MATH 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATH 200"
+        ]
       },
       {
         "code": "MATH 135",
@@ -1037,7 +1052,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -1077,7 +1092,7 @@ const UPLB_PROGRAMS = {
         "title": "Investigative Biology Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -1269,11 +1284,22 @@ const UPLB_PROGRAMS = {
       {
         "code": "AMAT 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
+      },
+      {
+        "code": "AMAT 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AMAT 200"
+        ]
       },
       {
         "code": "MAJ 3",
@@ -1453,7 +1479,7 @@ const UPLB_PROGRAMS = {
         "title": "Logic and Matrix Algebra in Statistics",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -1461,7 +1487,7 @@ const UPLB_PROGRAMS = {
         "title": "Statistical Packages",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -1678,10 +1704,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "STAT 190",
         "title": "Special Problem",
-        "units": 3,
+        "units": 1,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "STAT 190 (2)",
+        "title": "Special Problem",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "STAT 190"
+        ]
       },
       {
         "code": "STAT 191",
@@ -1695,16 +1731,16 @@ const UPLB_PROGRAMS = {
         "code": "STAT 174",
         "title": "Introductory Biostatistics",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "STAT 192.1",
         "title": "Statistical Consulting Laboratory",
         "units": 1,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2399,7 +2435,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2407,7 +2443,7 @@ const UPLB_PROGRAMS = {
         "title": "Investigative Biology Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -2415,7 +2451,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -2439,7 +2475,7 @@ const UPLB_PROGRAMS = {
         "title": "Basic Organic Chemistry",
         "units": 4,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2447,15 +2483,15 @@ const UPLB_PROGRAMS = {
         "title": "Basic Organic Chemistry Laboratory",
         "units": 1,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "BIO 14",
         "title": "Biodiversity",
         "units": 5,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2702,10 +2738,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "BIO 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "BIO 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BIO 200"
+        ]
       },
       {
         "code": "MAJ 8",
@@ -2943,7 +2989,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2991,7 +3037,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3023,7 +3069,7 @@ const UPLB_PROGRAMS = {
         "title": "Quantitative Inorganic Analysis",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3031,7 +3077,7 @@ const UPLB_PROGRAMS = {
         "title": "Quantitative Inorganic Analysis Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3071,7 +3117,7 @@ const UPLB_PROGRAMS = {
         "title": "Physical Chemistry I",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3079,15 +3125,15 @@ const UPLB_PROGRAMS = {
         "title": "Organic Chemistry I Laboratory",
         "units": 2,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "CHEM 112",
         "title": "Physical Chemistry II",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3110,8 +3156,8 @@ const UPLB_PROGRAMS = {
         "code": "COMM 10",
         "title": "Critical Perspectives in Communication",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3119,7 +3165,7 @@ const UPLB_PROGRAMS = {
         "title": "Organic Chemistry II",
         "units": 3,
         "year": 2,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3127,7 +3173,7 @@ const UPLB_PROGRAMS = {
         "title": "Organic Chemistry II Laboratory",
         "units": 2,
         "year": 2,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3167,8 +3213,8 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 161A",
         "title": "Biochemistry I",
         "units": 3,
-        "year": 3,
-        "sem": "1",
+        "year": 2,
+        "sem": "midyear",
         "prereqs": []
       },
       {
@@ -3176,7 +3222,7 @@ const UPLB_PROGRAMS = {
         "title": "Chemical Information, Literature and Communication",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3224,7 +3270,7 @@ const UPLB_PROGRAMS = {
         "title": "Biochemistry II",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3254,10 +3300,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHEM 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CHEM 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 200"
+        ]
       },
       {
         "code": "FE 2",
@@ -3445,7 +3501,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3477,7 +3533,7 @@ const UPLB_PROGRAMS = {
         "title": "Theoretical Mechanics I",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3493,7 +3549,7 @@ const UPLB_PROGRAMS = {
         "title": "Physics in Scientific Instruments",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3549,7 +3605,7 @@ const UPLB_PROGRAMS = {
         "title": "Quantum Physics I",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3557,7 +3613,7 @@ const UPLB_PROGRAMS = {
         "title": "Research Methods in Physics",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -3573,7 +3629,7 @@ const UPLB_PROGRAMS = {
         "title": "Physics of Electronic Devices",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3597,7 +3653,7 @@ const UPLB_PROGRAMS = {
         "title": "Experimental Physics I",
         "units": 2,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3628,10 +3684,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "APHY 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "APHY 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "APHY 200"
+        ]
       },
       {
         "code": "PHYS 142",
@@ -4056,10 +4122,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "COMA 200A",
         "title": "Practicum",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "midyear",
         "prereqs": []
+      },
+      {
+        "code": "COMA 200A (2)",
+        "title": "Practicum",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "COMA 200A"
+        ]
       },
       {
         "code": "COMA 105",
@@ -4072,10 +4148,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "COMA 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "COMA 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "COMA 200"
+        ]
       },
       {
         "code": "HUM 102",
@@ -4258,7 +4344,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -4349,7 +4435,7 @@ const UPLB_PROGRAMS = {
         "title": "The Life and Works of Jose Rizal",
         "units": 3,
         "year": 2,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -4406,8 +4492,8 @@ const UPLB_PROGRAMS = {
         "code": "SOC 166",
         "title": "Social Program Evaluation",
         "units": 3,
-        "year": 3,
-        "sem": "2",
+        "year": 4,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -4471,8 +4557,8 @@ const UPLB_PROGRAMS = {
         "code": "SOC 120",
         "title": "Urban Sociology",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -4494,10 +4580,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "SOC 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "SOC 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "SOC 200"
+        ]
       },
       {
         "code": "SOC 112",
@@ -4866,10 +4962,21 @@ const UPLB_PROGRAMS = {
       {
         "code": "PHLO 190",
         "title": "Special Problems",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
+        "track": "sp"
+      },
+      {
+        "code": "PHLO 190 (2)",
+        "title": "Special Problems",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "PHLO 190"
+        ],
         "track": "sp"
       },
       {
@@ -4950,26 +5057,60 @@ const UPLB_PROGRAMS = {
   },
   "AASS": {
     "code": "AASS",
-    "name": "Associate in Arts in Sports Studies",
+    "name": "Associate in Arts (Sports Studies)",
     "college": "CAS",
     "collegeName": "College of Arts and Sciences",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 78,
-    "geCoursesRequired": 5,
+    "geCoursesRequired": 6,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "SS 102",
-        "title": "Introduction to Sports Studies",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PEd 91",
-        "title": "Physical Education 91",
+        "code": "SS 102",
+        "title": "Human Anatomy and Physiology 1",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 1",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MAJ 2",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "PED 91",
+        "title": "Fundamental Rhythms",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -4977,191 +5118,191 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "SS 110",
-        "title": "Foundations of Sports Studies",
+        "title": "Basic Weight Training",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 92",
-        "title": "Physical Education 92",
+        "code": "MAJ 3",
+        "title": "HK Elective",
         "units": 3,
         "year": 1,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "PED 92",
+        "title": "Philippine Games",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
       },
       {
         "code": "SS 103",
-        "title": "Sports Science Fundamentals",
+        "title": "Human Anatomy and Physiology 2",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 151",
-        "title": "Physical Education 151",
+        "code": "PED 151",
+        "title": "Folk Dance",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
         "code": "KAS 1",
         "title": "Kasaysayan ng Pilipinas/Philippine History",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 1,
+        "sem": "midyear",
         "prereqs": []
       },
       {
         "code": "SS 104",
-        "title": "Sports Studies 104",
+        "title": "Tests and Measurement in Exercise and Sport Sciences",
         "units": 3,
         "year": 2,
         "sem": "1",
-        "prereqs": [
-          "SS 102"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 93",
-        "title": "Physical Education 93",
+        "code": "PED 93",
+        "title": "Philosophy of Sports and Physical Education",
         "units": 3,
         "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "sem": "1",
+        "prereqs": []
       },
       {
         "code": "SS 130",
-        "title": "Sports Studies 130",
+        "title": "First Aid",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 174",
-        "title": "Physical Education 174",
+        "code": "PED 174",
+        "title": "Outdoor Recreation",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
       },
       {
-        "code": "PEd 176",
-        "title": "Physical Education 176",
+        "code": "PED 176",
+        "title": "Recreation for Special Groups",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 4",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "MATH 10",
-        "title": "Mathematics 10",
+        "title": "Mathematics, Culture, and Society",
         "units": 3,
-        "year": 3,
-        "sem": "2",
+        "year": 2,
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "SS 120",
-        "title": "Sports Studies 120",
+        "title": "Basic Fitness Dance",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "SS 102"
-        ]
-      },
-      {
-        "code": "PI 100",
-        "title": "The Life, Works, and Writings of Jose Rizal",
-        "units": 3,
-        "year": 4,
-        "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PEd 172",
-        "title": "Physical Education 172",
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 100",
-        "title": "Physical Education 100",
+        "code": "PED 172",
+        "title": "Community Recreation",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
-      },
-      {
-        "code": "PEd 196",
-        "title": "Physical Education 196",
-        "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 130.1",
-        "title": "Physical Education 130.1",
+        "code": "PED 100",
+        "title": "Introduction to Physical Education and Exercise and Sport Sciences",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PED 196",
+        "title": "AASS Internship",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [],
+        "standing": "junior"
+      },
+      {
+        "code": "PED 130.1",
+        "title": "Basic Aquatics",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
       }
     ],
     "requiredCodes": [
+      "ETHICS 1",
       "SS 102",
-      "SS 103",
-      "SS 104",
+      "PED 91",
+      "COMM 10",
       "SS 110",
-      "SS 120",
-      "SS 130",
-      "PEd 91",
-      "PEd 92",
-      "PEd 93",
-      "PEd 100",
-      "PEd 130.1",
-      "PEd 151",
-      "PEd 172",
-      "PEd 174",
-      "PEd 176",
-      "PEd 196",
+      "PED 92",
+      "SS 103",
+      "PED 151",
       "KAS 1",
-      "PI 100",
-      "MATH 10"
+      "SS 104",
+      "PED 93",
+      "SS 130",
+      "PED 174",
+      "PED 176",
+      "MATH 10",
+      "SS 120",
+      "PI 10",
+      "PED 172",
+      "PED 100",
+      "PED 196",
+      "PED 130.1"
     ],
-    "hkCoursesRequired": 5
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSAGRI": {
     "code": "BSAGRI",
@@ -5203,7 +5344,7 @@ const UPLB_PROGRAMS = {
         "title": "Principles of Crop Protection",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5251,7 +5392,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5266,7 +5407,7 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 18.1",
         "title": "University Chemistry Laboratory",
         "units": 2,
-        "year": 2,
+        "year": 1,
         "sem": "1",
         "prereqs": []
       },
@@ -5298,7 +5439,7 @@ const UPLB_PROGRAMS = {
         "code": "ABT 10",
         "title": "Traditional and Modern Biotechnology: Principles and Applications",
         "units": 3,
-        "year": 2,
+        "year": 3,
         "sem": "1",
         "prereqs": []
       },
@@ -5315,7 +5456,7 @@ const UPLB_PROGRAMS = {
         "title": "General Economics",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5323,12 +5464,12 @@ const UPLB_PROGRAMS = {
         "title": "Fundamentals of Plant Physiology",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "AGRI 111",
-        "title": "AGRI 111",
+        "title": "Introduction to Farming Systems",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -5378,8 +5519,8 @@ const UPLB_PROGRAMS = {
         "code": "MGT 101",
         "title": "Concepts and Dynamics of Management",
         "units": 3,
-        "year": 3,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5401,7 +5542,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 195",
-        "title": "AGRI 195",
+        "title": "Research Methods in Agriculture and Food Science",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -5409,10 +5550,10 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 121",
-        "title": "AGRI 121",
+        "title": "Introduction to Ecological Agriculture",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5498,8 +5639,8 @@ const UPLB_PROGRAMS = {
         "code": "ABE 1",
         "title": "Fundamentals of Agricultural and Biosystems Engineering I",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5681,16 +5822,16 @@ const UPLB_PROGRAMS = {
         "code": "AGRI 32",
         "title": "Fundamentals of Crop Science II",
         "units": 3,
-        "year": 1,
-        "sem": "2",
+        "year": 2,
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "AGRI 41",
         "title": "Principles of Crop Protection",
         "units": 3,
-        "year": 1,
-        "sem": "2",
+        "year": 2,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5698,7 +5839,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5721,16 +5862,16 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 40",
         "title": "Basic Organic Chemistry",
         "units": 4,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 40.1",
         "title": "Basic Organic Chemistry Laboratory",
         "units": 1,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5738,7 +5879,7 @@ const UPLB_PROGRAMS = {
         "title": "Pest Management",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5753,8 +5894,8 @@ const UPLB_PROGRAMS = {
         "code": "BIO 30",
         "title": "Genetics",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5762,7 +5903,7 @@ const UPLB_PROGRAMS = {
         "title": "Introductory Biochemistry",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5770,15 +5911,15 @@ const UPLB_PROGRAMS = {
         "title": "Fundamentals of Agricultural Biotechnology",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "STAT 162",
         "title": "Experimental Designs I",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5793,7 +5934,7 @@ const UPLB_PROGRAMS = {
         "code": "MATH 25",
         "title": "Fundamental Calculus",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
         "prereqs": []
       },
@@ -5809,16 +5950,16 @@ const UPLB_PROGRAMS = {
         "code": "ABT 103",
         "title": "Experimental Techniques in Agricultural Biotechnology I",
         "units": 3,
-        "year": 3,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "BIO 101",
         "title": "Introductory Molecular Biology",
         "units": 3,
-        "year": 3,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5839,7 +5980,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ABME 10",
-        "title": "Cultivating the Entrepreneurial Mindset",
+        "title": "Foundations of Entrepreneurship",
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -5866,7 +6007,7 @@ const UPLB_PROGRAMS = {
         "title": "Experimental Techniques in Agricultural Biotechnology II",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5923,8 +6064,8 @@ const UPLB_PROGRAMS = {
         "code": "ABT 107",
         "title": "Recombinant DNA Technology",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -5957,10 +6098,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ABT 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ABT 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABT 200"
+        ]
       },
       {
         "code": "ABT 108",
@@ -6119,7 +6270,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6141,17 +6292,17 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHEM 40",
         "title": "Basic Organic Chemistry",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 40.1",
         "title": "Basic Organic Chemistry Laboratory",
-        "units": 2,
-        "year": 2,
-        "sem": "1",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6183,7 +6334,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6191,7 +6342,7 @@ const UPLB_PROGRAMS = {
         "title": "Statistical Methods",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6212,7 +6363,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MCB 180",
-        "title": "MCB 180",
+        "title": "Introductory Food Microbiology",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6220,7 +6371,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 101",
-        "title": "FST 101",
+        "title": "Food Chemistry I",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6228,7 +6379,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 130",
-        "title": "FST 130",
+        "title": "Food Engineering I",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6300,7 +6451,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 195",
-        "title": "AGRI 195",
+        "title": "Research Methods in Agriculture and Food Science",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6308,7 +6459,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 111",
-        "title": "FST 111",
+        "title": "Food Chemistry II",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6316,7 +6467,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 151",
-        "title": "FST 151",
+        "title": "Sensory Evaluation of Food Products",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6325,14 +6476,24 @@ const UPLB_PROGRAMS = {
       {
         "code": "FST 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
       },
       {
+        "code": "FST 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "FST 200"
+        ]
+      },
+      {
         "code": "FST 198",
-        "title": "FST 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -6390,7 +6551,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 147",
-        "title": "FST 147",
+        "title": "Principles of Food Product and Process Development",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6398,7 +6559,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 175",
-        "title": "FST 175",
+        "title": "Food Laws and Regulations",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6406,7 +6567,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 199",
-        "title": "FST 199",
+        "title": "Undergraduate Seminar",
         "units": 1,
         "year": 4,
         "sem": "2",
@@ -6492,7 +6653,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6564,7 +6725,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6572,7 +6733,7 @@ const UPLB_PROGRAMS = {
         "title": "General Economics",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6580,7 +6741,7 @@ const UPLB_PROGRAMS = {
         "title": "Organic Chemistry I",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6628,7 +6789,7 @@ const UPLB_PROGRAMS = {
         "title": "Quantitative Inorganic Analysis Laboratory",
         "units": 2,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6676,7 +6837,7 @@ const UPLB_PROGRAMS = {
         "title": "Quantitative Inorganic Analysis",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6713,7 +6874,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 61",
-        "title": "Innovations and Entrepreneurship in Agriculture",
+        "title": "Fundamentals of Agricultural Extension Communication",
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -6740,14 +6901,14 @@ const UPLB_PROGRAMS = {
         "title": "Organic Chemistry II Laboratory",
         "units": 2,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "COMM 10",
         "title": "Critical Perspectives in Communication",
         "units": 3,
-        "year": 3,
+        "year": 4,
         "sem": "2",
         "prereqs": []
       },
@@ -6772,7 +6933,7 @@ const UPLB_PROGRAMS = {
         "title": "Biochemistry I",
         "units": 3,
         "year": 3,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6811,8 +6972,8 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 140",
         "title": "Organic Analysis",
         "units": 4,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6869,7 +7030,7 @@ const UPLB_PROGRAMS = {
         "title": "Chemical Information, Literature and Communication",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6903,7 +7064,7 @@ const UPLB_PROGRAMS = {
         "title": "Environmental Chemistry",
         "units": 3,
         "year": 5,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6933,10 +7094,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ACHM 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 5,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ACHM 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 5,
+        "sem": "2",
+        "prereqs": [
+          "ACHM 200"
+        ]
       },
       {
         "code": "STS 1",
@@ -6960,7 +7131,7 @@ const UPLB_PROGRAMS = {
         "title": "Technical Analysis II (Soils, Fertilizers, and Pesticides)",
         "units": 4,
         "year": 5,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -7056,15 +7227,23 @@ const UPLB_PROGRAMS = {
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
     "available": true,
-    "totalUnitsRequired": 169,
+    "totalUnitsRequired": 161,
     "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "ABE 10",
+        "code": "ABE 30",
         "title": "Introduction to Agricultural and Biosystems Engineering",
         "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 31",
+        "title": "Fundamentals of Crop Science I",
+        "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -7074,23 +7253,7 @@ const UPLB_PROGRAMS = {
         "title": "Engineering Graphics Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 18",
-        "title": "University Chemistry",
-        "units": 3,
-        "year": 1,
         "sem": "1",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 18.1",
-        "title": "University Chemistry Laboratory",
-        "units": 2,
-        "year": 1,
-        "sem": "2",
         "prereqs": []
       },
       {
@@ -7100,56 +7263,6 @@ const UPLB_PROGRAMS = {
         "year": 1,
         "sem": "1",
         "prereqs": []
-      },
-      {
-        "code": "ABE 30",
-        "title": "Engineering Surveying",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 32",
-        "title": "Computer-Aided Design",
-        "units": 2,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "CHEM 40",
-        "title": "Basic Organic Chemistry",
-        "units": 4,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "CHEM 18"
-        ]
-      },
-      {
-        "code": "CHEM 40.1",
-        "title": "Basic Organic Chemistry Laboratory",
-        "units": 1,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "CHEM 18"
-        ]
-      },
-      {
-        "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus III",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
       },
       {
         "code": "PHYS 51",
@@ -7164,53 +7277,93 @@ const UPLB_PROGRAMS = {
         "title": "Elements of Physics Laboratory",
         "units": 1,
         "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 21",
+        "title": "Introduction to Animal Science",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "ABE 40",
-        "title": "Engineering Survey Camp",
-        "units": 1,
-        "gradeType": "S/U",
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 32",
+        "title": "Fundamentals of Crop Science II",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "AGRI 31"
         ]
       },
       {
-        "code": "ABE 42",
-        "title": "Engineering Mechanics",
-        "units": 4,
-        "year": 2,
+        "code": "ENSC 11",
+        "title": "Statics of Rigid Bodies",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "MATH 27",
+          "PHYS 51"
+        ]
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus III",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
         ]
       },
       {
         "code": "ABE 43",
-        "title": "Introduction to Numerical Methods and Computing",
+        "title": "Engineering Shop",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": [
-          "ABE 10"
+          "ENSC 10.1"
         ]
       },
       {
         "code": "ABE 48",
-        "title": "Engineering Materials",
-        "units": 2,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ENSC 21",
-        "title": "Mathematical Methods in Engineering",
+        "title": "Fundamentals of Surveying",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -7219,209 +7372,244 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "PHYS 52",
-        "title": "Advanced Physics for Engineers",
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
         "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "PHYS 51"
-        ]
-      },
-      {
-        "code": "PHYS 52.1",
-        "title": "Advanced Physics for Engineers Laboratory",
-        "units": 1,
         "year": 2,
         "sem": "1",
         "prereqs": [
+          "ENSC 11"
+        ]
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 11"
+        ]
+      },
+      {
+        "code": "ENSC 14A",
+        "title": "Engineering Thermodynamics and Heat Transfer",
+        "units": 5,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 28",
           "PHYS 51"
         ]
       },
       {
-        "code": "EE 1",
-        "title": "Basic Electrical Engineering",
+        "code": "AGRI 51",
+        "title": "Principles of Soil Science",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "ABE 52",
-        "title": "Structural Mechanics",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 54",
-        "title": "Thermodynamics I",
+        "title": "Agricultural Structures I",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 10.1",
+          "ENSC 13"
+        ]
+      },
+      {
+        "code": "ABE 53",
+        "title": "Machine Design for Bio-production Systems I",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ENSC 12",
+          "ENSC 13"
         ]
       },
       {
         "code": "ABE 56",
-        "title": "Fluid Mechanics",
+        "title": "Engineering Properties of Agricultural and Biological Materials",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 13"
         ]
       },
       {
         "code": "ABE 57",
-        "title": "Engineering Geology",
+        "title": "Field Hydrology",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 16",
+        "title": "Fluid Mechanics",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 12"
         ]
       },
       {
-        "code": "ABE 58",
-        "title": "Basic Electronics",
+        "code": "ABE 198",
+        "title": "Internship",
         "units": 3,
         "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "midyear",
+        "prereqs": []
       },
       {
-        "code": "ENSC 22",
-        "title": "Differential Equations for Engineering",
+        "code": "ABE 62",
+        "title": "Environmental Control Engineering",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "ENSC 10.1"
+          "ABE 52"
         ]
       },
       {
-        "code": "SOIL 51",
-        "title": "Fundamentals of Soil Science",
+        "code": "ABE 63",
+        "title": "Agricultural and Biosystems Power Engineering",
+        "units": 4,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 14A"
+        ]
+      },
+      {
+        "code": "ABE 65",
+        "title": "Quantitative Approaches in Agricultural and Biosystems Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 28"
+        ]
+      },
+      {
+        "code": "ABE 66",
+        "title": "Agricultural Processing I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 56"
+        ]
+      },
+      {
+        "code": "ABE 67",
+        "title": "Irrigation and Drainage Engineering I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 48",
+          "ABE 57"
+        ]
+      },
+      {
+        "code": "FPPS 183",
+        "title": "Engineering Economic Analysis",
         "units": 3,
         "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "ABE 61",
-        "title": "Engineering Hydrology",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 62",
-        "title": "Hydraulic Engineering",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 63",
-        "title": "Thermodynamics II",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 64",
-        "title": "Transport Processes",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 66",
-        "title": "Instrumentation and Controls",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 72",
-        "title": "Drainage and Land Development",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 73",
-        "title": "Irrigation Engineering",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
         "code": "ABE 74",
-        "title": "Agricultural Waste Management",
-        "units": 3,
+        "title": "Machinery for Bioproduction Systems, Management, and Technopreneurship",
+        "units": 4,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 53",
+          "FPPS 183"
         ]
       },
       {
-        "code": "ABE 75",
-        "title": "Aquacultural Engineering",
+        "code": "ABE 79",
+        "title": "Agricultural and Biosystems Engineering Laws, Specifications, Contracts, and Ethics",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 77",
+        "title": "Soil and Water Conservation Engineering",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 48",
+          "ABE 57"
         ]
       },
       {
-        "code": "ABE 76",
-        "title": "Refrigeration and Air Conditioning",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "2",
+        "prereqs": []
       },
       {
-        "code": "ABE 67",
-        "title": "Structural Engineering",
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FE 1",
+        "title": "Free Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Specialization Course",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ABE 80",
+        "title": "Computer-aided Solutions in Agricultural and Biosystems Engineering",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "ABE 10"
+          "MATH 28"
+        ],
+        "standing": "junior"
+      },
+      {
+        "code": "ABE 88",
+        "title": "Aquaculture Engineering I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 57"
         ]
       },
       {
@@ -7433,158 +7621,145 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ABE 198",
-        "title": "Field Practice",
-        "units": 3,
-        "gradeType": "S/U",
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 81",
-        "title": "Agricultural Machinery and Equipment",
+        "code": "FE 2",
+        "title": "Free Elective",
         "units": 3,
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
-        "code": "ABE 82",
-        "title": "Postharvest and Food Engineering",
-        "units": 3,
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 83",
-        "title": "Soil and Water Conservation Engineering",
+        "code": "MAJ 2",
+        "title": "Specialization Course",
         "units": 3,
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 84",
-        "title": "Agricultural Structures",
-        "units": 3,
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 199",
-        "title": "Seminar",
-        "units": 1,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "ABE 200",
-        "title": "Undergraduate Thesis/Innovationeering",
+        "title": "Undergraduate Thesis/Innovationeering/Engineering Industry Research",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 83",
+        "title": "Electrical System Design for Agricultural and Biosystems Structures",
         "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 52",
+          "PHYS 51",
+          "PHYS 51.1"
         ]
       },
       {
-        "code": "ABE 88",
-        "title": "Biosystems Engineering",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
         "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "2",
+        "prereqs": []
       },
       {
-        "code": "ABE 186",
-        "title": "ABE Codes and Standards, and Contracts",
-        "units": 2,
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 3",
+        "title": "Specialization Course",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ABE 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "standing": "senior"
+      },
+      {
+        "code": "ABE 200 (2)",
+        "title": "Undergraduate Thesis/Innovationeering/Engineering Industry Research",
+        "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 190",
-        "title": "Design Project",
-        "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
+          "ABE 200"
         ]
       }
     ],
     "requiredCodes": [
-      "ABE 10",
       "ABE 30",
-      "ABE 32",
-      "ABE 40",
-      "ABE 42",
-      "ABE 43",
-      "ABE 48",
-      "ABE 52",
-      "ABE 54",
-      "ABE 56",
-      "ABE 57",
-      "ABE 58",
-      "ABE 61",
-      "ABE 62",
-      "ABE 63",
-      "ABE 64",
-      "ABE 66",
-      "ABE 67",
-      "ABE 72",
-      "ABE 73",
-      "ABE 74",
-      "ABE 75",
-      "ABE 76",
-      "ABE 81",
-      "ABE 82",
-      "ABE 83",
-      "ABE 84",
-      "ABE 88",
-      "ABE 186",
-      "ABE 190",
-      "ABE 198",
-      "ABE 199",
-      "ABE 200",
+      "AGRI 31",
       "ENSC 10.1",
-      "ENSC 21",
-      "ENSC 22",
-      "EE 1",
-      "CHEM 18",
-      "CHEM 18.1",
-      "CHEM 40",
-      "CHEM 40.1",
       "MATH 27",
-      "MATH 28",
       "PHYS 51",
       "PHYS 51.1",
-      "PHYS 52",
-      "PHYS 52.1",
-      "SOIL 51",
-      "ENG 10"
-    ]
+      "KAS 1",
+      "PI 10",
+      "AGRI 21",
+      "CHEM 18",
+      "CHEM 18.1",
+      "AGRI 32",
+      "ENSC 11",
+      "MATH 28",
+      "ABE 43",
+      "ABE 48",
+      "ENSC 12",
+      "ENSC 13",
+      "ENSC 14A",
+      "AGRI 51",
+      "ABE 52",
+      "ABE 53",
+      "ABE 56",
+      "ABE 57",
+      "ENSC 16",
+      "ABE 198",
+      "ABE 62",
+      "ABE 63",
+      "ABE 65",
+      "ABE 66",
+      "ABE 67",
+      "FPPS 183",
+      "ABE 74",
+      "ABE 79",
+      "ABE 77",
+      "COMM 10",
+      "STAT 101",
+      "ABE 80",
+      "ABE 88",
+      "ENG 10",
+      "ABE 200",
+      "ABE 83",
+      "ETHICS 1",
+      "ARTS 1",
+      "STS 1",
+      "ABE 199"
+    ],
+    "hkCoursesRequired": 4
   },
   "BSCHE": {
     "code": "BSCHE",
@@ -7650,7 +7825,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -7658,15 +7833,15 @@ const UPLB_PROGRAMS = {
         "title": "Biology and Applications of Microorganisms",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "ENSC 11",
         "title": "Statics of Rigid Bodies",
         "units": 3,
-        "year": 1,
-        "sem": "2",
+        "year": 2,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -7690,7 +7865,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology and Society",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -7698,7 +7873,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -7729,32 +7904,32 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 32",
         "title": "Quantitative Inorganic Analysis",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 32.1",
         "title": "Quantitative Inorganic Analysis Laboratory",
         "units": 2,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 40",
         "title": "Basic Organic Chemistry",
         "units": 4,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 40.1",
         "title": "Basic Organic Chemistry Laboratory",
         "units": 1,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -7794,7 +7969,7 @@ const UPLB_PROGRAMS = {
         "title": "Physical Chemistry I",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -7802,7 +7977,7 @@ const UPLB_PROGRAMS = {
         "title": "Introductory Biochemistry",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -7841,8 +8016,8 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 112",
         "title": "Physical Chemistry II",
         "units": 3,
-        "year": 3,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -7898,14 +8073,14 @@ const UPLB_PROGRAMS = {
         "title": "Strength of Materials",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "CHEM 111.1",
         "title": "Physical Chemistry I Laboratory",
         "units": 2,
-        "year": 3,
+        "year": 2,
         "sem": "2",
         "prereqs": []
       },
@@ -7952,10 +8127,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CHE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CHE 200"
+        ]
       },
       {
         "code": "MAJ 1",
@@ -7970,16 +8155,16 @@ const UPLB_PROGRAMS = {
         "code": "CHE 172",
         "title": "Introduction to Biochemical Engineering",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHE 180",
         "title": "Agro-Industrial Waste Management",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -8151,7 +8336,7 @@ const UPLB_PROGRAMS = {
         "title": "Engineering Graphics Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -8238,8 +8423,8 @@ const UPLB_PROGRAMS = {
         "code": "ABE 48",
         "title": "Fundamentals of Surveying",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -8412,7 +8597,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "CE 198",
-        "title": "Practicum",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -8461,10 +8646,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CE 200"
+        ]
       },
       {
         "code": "ABE 67",
@@ -8576,7 +8771,7 @@ const UPLB_PROGRAMS = {
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
     "available": true,
-    "totalUnitsRequired": 156,
+    "totalUnitsRequired": 159,
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
@@ -8920,10 +9115,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "EE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "EE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "EE 200"
+        ]
       },
       {
         "code": "MAJ 1",
@@ -9401,10 +9606,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "IE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "IE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "IE 200"
+        ]
       },
       {
         "code": "MAJ 2",
@@ -9513,7 +9728,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ME 10",
         "title": "Introduction to Mechanical Engineering",
-        "units": 3,
+        "units": 1,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -9521,7 +9736,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ENSC 10.1",
         "title": "Engineering Graphics Laboratory",
-        "units": 3,
+        "units": 2,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -9615,7 +9830,7 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 43",
+        "code": "ABE 43",
         "title": "Engineering Shop",
         "units": 3,
         "year": 1,
@@ -9663,7 +9878,7 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 113",
+        "code": "AMPE 113",
         "title": "Manufacturing Processes",
         "units": 3,
         "year": 2,
@@ -9672,7 +9887,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "EE 3",
-        "title": "DC and AC Machinery",
+        "title": "Basic Electrical Machines",
         "units": 4,
         "year": 2,
         "sem": "2",
@@ -9735,9 +9950,9 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 53",
+        "code": "ABE 53",
         "title": "Machine Design for Bioproduction Systems I",
-        "units": 3,
+        "units": 4,
         "year": 3,
         "sem": "1",
         "prereqs": []
@@ -9832,7 +10047,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ME 198",
-        "title": "Practicum",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -9876,15 +10091,35 @@ const UPLB_PROGRAMS = {
         "units": 1,
         "year": 4,
         "sem": "1",
-        "prereqs": []
+        "prereqs": [],
+        "standing": "junior"
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "ME 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ME 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ME 200"
+        ]
       },
       {
         "code": "ME 181",
@@ -9903,8 +10138,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "FE 1",
-        "title": "Free Elective",
+        "code": "MAJ 2",
+        "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -9927,13 +10162,13 @@ const UPLB_PROGRAMS = {
       "ENSC 11",
       "MATH 28",
       "IE 31",
-      "ME 43",
+      "ABE 43",
       "ETHICS 1",
       "EE 2",
       "ENSC 12",
       "ENSC 13",
       "ENSC 14",
-      "ME 113",
+      "AMPE 113",
       "EE 3",
       "ENSC 15",
       "ENSC 16",
@@ -9942,7 +10177,7 @@ const UPLB_PROGRAMS = {
       "ME 70",
       "STS 1",
       "IE 150",
-      "ME 53",
+      "ABE 53",
       "ME 160",
       "ME 171",
       "ME 172",
@@ -9970,242 +10205,377 @@ const UPLB_PROGRAMS = {
     "name": "BS Materials Engineering",
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
-    "available": false,
-    "totalUnitsRequired": 175,
+    "available": true,
+    "totalUnitsRequired": 159,
     "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "MATE 21",
-        "title": "Engineering Drawing",
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATH 27",
+        "title": "Analytic Geometry and Calculus II",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71",
+        "title": "University Physics I",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PHYS 71.1",
+        "title": "University Physics I Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "MATE 31",
-        "title": "Introduction to Materials Science",
-        "units": 3,
+        "code": "MATE 10",
+        "title": "Introduction to Materials Engineering",
+        "units": 1,
         "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 41",
-        "title": "Structure of Materials",
-        "units": 4,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 101",
-        "title": "Physical Metallurgy",
-        "units": 4,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 111",
-        "title": "Mechanical Behavior of Materials",
-        "units": 4,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 121",
-        "title": "Ceramic Materials",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 131",
-        "title": "Polymer Materials",
-        "units": 3,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 141",
-        "title": "Electronic Materials",
-        "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 151",
-        "title": "Corrosion Engineering",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 161",
-        "title": "Materials Characterization",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 171",
-        "title": "Materials Processing",
-        "units": 4,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 181",
-        "title": "Materials Selection and Design",
-        "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 190",
-        "title": "Materials Engineering Design",
-        "units": 4,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "MATE 191",
-        "title": "Engineering Internship",
-        "units": 3,
-        "gradeType": "S/U",
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "MATE 21"
-        ]
-      },
-      {
-        "code": "ENSC 21",
-        "title": "Statics of Rigid Bodies",
-        "units": 3,
-        "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "ENSC 22",
-        "title": "Dynamics of Rigid Bodies",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ENSC 21"
-        ]
-      },
-      {
-        "code": "ENSC 24",
-        "title": "Thermodynamics I",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ENSC 21"
-        ]
-      },
-      {
-        "code": "MATH 27",
-        "title": "Analytic Geometry and Calculus I",
-        "units": 3,
-        "year": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
         "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus II",
+        "title": "Analytic Geometry and Calculus III",
         "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "MATH 114",
-        "title": "Differential Equations",
-        "units": 3,
-        "year": 4,
+        "year": 1,
         "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
-      },
-      {
-        "code": "PHYS 71",
-        "title": "Elementary Physics I",
-        "units": 4,
-        "year": 4,
-        "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PHYS 72",
-        "title": "Elementary Physics II",
+        "code": "CHEM 40",
+        "title": "Basic Organic Chemistry",
         "units": 4,
-        "year": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 40.1",
+        "title": "Basic Organic Chemistry Laboratory",
+        "units": 1,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 10.1",
+        "title": "Engineering Graphics Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 11",
+        "title": "Statics of Rigid Bodies",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EE 1",
+        "title": "Basic Electrical Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 21",
+        "title": "Structure-Property Relationship of Materials I",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
+          "CHEM 18",
           "PHYS 71"
         ]
       },
       {
-        "code": "CHEM 16",
-        "title": "General Chemistry I",
+        "code": "PHYS 72",
+        "title": "University Physics II",
         "units": 4,
-        "year": 4,
+        "year": 2,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "CHEM 17",
-        "title": "General Chemistry II",
+        "code": "PHYS 72.1",
+        "title": "University Physics II Laboratory",
+        "units": 1,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32",
+        "title": "Quantitative Inorganic Analysis",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 32.1",
+        "title": "Quantitative Inorganic Analysis Laboratory",
+        "units": 2,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 21",
+        "title": "Mathematical Methods in Engineering",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 101",
+        "title": "Thermodynamics of Materials",
         "units": 4,
-        "year": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATE 21"
+        ]
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 22",
+        "title": "Structure-Property Relationship of Materials II",
+        "units": 4,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CHEM 16"
+          "MATE 21",
+          "ENSC 13",
+          "ENSC 21"
         ]
+      },
+      {
+        "code": "MATE 23",
+        "title": "Structure-Property Relationship of Materials III",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 21",
+          "PHYS 72"
+        ]
+      },
+      {
+        "code": "MATE 103",
+        "title": "Rate Processes in Materials Engineering",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "MATE 101",
+          "ENSC 21"
+        ]
+      },
+      {
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "EE 2",
+        "title": "Basic Electronics Engineering",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology and Society",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 16",
+        "title": "Fluid Mechanics",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 26",
+        "title": "Computer Applications in Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "IE 150",
+        "title": "Systems Evaluation",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STAT 162",
+        "title": "Experimental Designs",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 105",
+        "title": "Materials Analysis and Testing",
+        "units": 4,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "CHEM 32",
+          "MATE 22",
+          "MATE 23"
+        ]
+      },
+      {
+        "code": "IE 184",
+        "title": "Project Management and Development",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 165",
+        "title": "Materials Synthesis and Processing",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 40",
+          "MATE 103",
+          "MATE 105"
+        ]
+      },
+      {
+        "code": "MATE 165.1",
+        "title": "Materials Synthesis and Processing Laboratory",
+        "units": 2,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "MATE 175",
+        "title": "Materials Fabrication",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "MATE 103",
+          "ENSC 16"
+        ]
+      },
+      {
+        "code": "MATE 175.1",
+        "title": "Materials Fabrication Laboratory",
+        "units": 2,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [
+          "STAT 162"
+        ]
+      },
+      {
+        "code": "MATE 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 198",
+        "title": "Internship",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": []
       },
       {
         "code": "ENG 10",
@@ -10214,35 +10584,139 @@ const UPLB_PROGRAMS = {
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "MATE 171",
+        "title": "Degradation of Materials",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 194",
+        "title": "Materials Selection and Design",
+        "units": 5,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Elective (MatE)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MATE 200",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 90",
+        "title": "Laws and Ethics for Materials Engineers",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MATE 173",
+        "title": "Forensic Engineering in Materials",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATE 171"
+        ]
+      },
+      {
+        "code": "MAJ 2",
+        "title": "Elective (MatE)",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MATE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATE 200"
+        ]
       }
     ],
     "requiredCodes": [
-      "MATE 21",
-      "MATE 31",
-      "MATE 41",
-      "MATE 101",
-      "MATE 111",
-      "MATE 121",
-      "MATE 131",
-      "MATE 141",
-      "MATE 151",
-      "MATE 161",
-      "MATE 171",
-      "MATE 181",
-      "MATE 190",
-      "MATE 191",
-      "ENSC 21",
-      "ENSC 22",
-      "ENSC 24",
+      "KAS 1",
+      "COMM 10",
       "MATH 27",
-      "MATH 28",
-      "MATH 114",
       "PHYS 71",
+      "PHYS 71.1",
+      "CHEM 18",
+      "CHEM 18.1",
+      "MATE 10",
+      "ARTS 1",
+      "MATH 28",
+      "CHEM 40",
+      "CHEM 40.1",
+      "ENSC 10.1",
+      "ENSC 11",
+      "EE 1",
+      "MATE 21",
       "PHYS 72",
-      "CHEM 16",
-      "CHEM 17",
-      "ENG 10"
-    ]
+      "PHYS 72.1",
+      "CHEM 32",
+      "CHEM 32.1",
+      "ENSC 13",
+      "ENSC 21",
+      "MATE 101",
+      "ETHICS 1",
+      "MATE 22",
+      "MATE 23",
+      "MATE 103",
+      "ENSC 12",
+      "EE 2",
+      "STS 1",
+      "ENSC 16",
+      "ENSC 26",
+      "IE 150",
+      "STAT 162",
+      "MATE 105",
+      "IE 184",
+      "MATE 165",
+      "MATE 165.1",
+      "MATE 175",
+      "MATE 175.1",
+      "MATE 199",
+      "MATE 198",
+      "ENG 10",
+      "MATE 171",
+      "MATE 194",
+      "MATE 200",
+      "PI 10",
+      "MATE 90",
+      "MATE 173"
+    ],
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSECON": {
     "code": "BSECON",
@@ -10625,18 +11099,38 @@ const UPLB_PROGRAMS = {
       {
         "code": "ECON 199",
         "title": "Undergraduate Seminar",
-        "units": 2,
+        "units": 1,
         "year": 4,
         "sem": "1",
         "prereqs": []
       },
       {
+        "code": "ECON 199 (2)",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ECON 199"
+        ]
+      },
+      {
         "code": "ECON 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ECON 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ECON 200"
+        ]
       },
       {
         "code": "MAJ 5",
@@ -11042,7 +11536,7 @@ const UPLB_PROGRAMS = {
         "title": "Farm Business Accounting",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -11090,7 +11584,7 @@ const UPLB_PROGRAMS = {
         "title": "Food and Nutrition Systems",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -11217,20 +11711,42 @@ const UPLB_PROGRAMS = {
       {
         "code": "AAE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
       },
       {
+        "code": "AAE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AAE 200"
+        ]
+      },
+      {
         "code": "AAE 200A",
         "title": "Major Farm Practice",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "mfp"
+      },
+      {
+        "code": "AAE 200A (2)",
+        "title": "Major Farm Practice",
+        "units": 3,
+        "track": "mfp",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AAE 200A"
+        ]
       },
       {
         "code": "AAE 199",
@@ -11784,26 +12300,26 @@ const UPLB_PROGRAMS = {
     "name": "Associate in Arts in Entrepreneurship",
     "college": "CEM",
     "collegeName": "College of Economics and Management",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 75,
-    "geCoursesRequired": 5,
+    "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "KAS 1",
-        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "COMM 10",
-        "title": "Critical Perspectives in Communication",
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -11819,7 +12335,7 @@ const UPLB_PROGRAMS = {
         "title": "Foundations of Entrepreneurship",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -11831,29 +12347,65 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ARTS 1",
-        "title": "Critical Perspectives in the Arts",
+        "code": "MGT 111",
+        "title": "Principles of Accounting",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "MGT 111",
-        "title": "Principles of Accounting",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
         "units": 3,
-        "year": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 113",
+        "title": "Managerial Accounting",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MGT 111"
+        ]
+      },
+      {
+        "code": "MGT 151",
+        "title": "Introduction to Marketing Management",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "PI 10",
-        "title": "The Life, Works, and Writings of Jose Rizal",
+        "code": "FE 1",
+        "title": "Elective",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "FE 2",
+        "title": "Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ENTR 198",
+        "title": "Internship",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
         "prereqs": []
       },
       {
@@ -11867,103 +12419,111 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "ABME 174",
-        "title": "Business Planning",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABME 10"
-        ]
-      },
-      {
         "code": "ABME 115",
         "title": "Entrepreneurial Finance",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "ABME 10"
+          "MGT 111"
         ]
       },
       {
-        "code": "MGT 113",
-        "title": "Managerial Accounting",
+        "code": "MGT 131",
+        "title": "Introduction to Human Relations and Behavior in Organizations",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "MGT 101"
-        ]
-      },
-      {
-        "code": "MGT 151",
-        "title": "Introduction to Marketing Management",
-        "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "ENTR 198",
-        "title": "Internship",
+        "code": "FE 3",
+        "title": "Elective",
         "units": 3,
-        "gradeType": "S/U",
-        "year": 3,
-        "sem": "2",
-        "prereqs": []
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "FE 4",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning for Everyday Life",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 174",
+        "title": "Business Planning",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABME 115",
+          "ABME 172"
+        ]
       },
       {
         "code": "MGT 161",
         "title": "Business Law",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "MGT 131",
-        "title": "Introduction to Human Relations and Behavior in Organization",
+        "code": "FE 5",
+        "title": "Elective",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "MGT 101"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       }
     ],
     "requiredCodes": [
-      "KAS 1",
       "COMM 10",
+      "KAS 1",
       "STS 1",
-      "ARTS 1",
-      "ETHICS 1",
-      "PI 10",
       "ABME 10",
-      "ABME 172",
-      "ABME 174",
-      "ABME 115",
       "MGT 101",
       "MGT 111",
+      "ARTS 1",
       "MGT 113",
-      "MGT 131",
       "MGT 151",
-      "MGT 161",
-      "ENTR 198"
+      "ENTR 198",
+      "ABME 172",
+      "ABME 115",
+      "MGT 131",
+      "ETHICS 1",
+      "PI 10",
+      "ABME 174",
+      "MGT 161"
     ],
-    "hkCoursesRequired": 4
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSACCT": {
     "code": "BSACCT",
@@ -11989,7 +12549,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -12005,7 +12565,7 @@ const UPLB_PROGRAMS = {
         "title": "General Economics",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -12021,7 +12581,7 @@ const UPLB_PROGRAMS = {
         "title": "Fundamental Accounting Theory and Practice I",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -12037,7 +12597,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -12053,7 +12613,7 @@ const UPLB_PROGRAMS = {
         "title": "Statistical Methods",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -12071,15 +12631,15 @@ const UPLB_PROGRAMS = {
         "title": "Fundamental Accounting Theory and Practice II",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "BA 183",
         "title": "Introduction to Database Management for Accounting",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "midyear",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12089,7 +12649,7 @@ const UPLB_PROGRAMS = {
         "title": "Intermediate Microeconomic Theory",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "ECON 11"
         ]
@@ -12109,7 +12669,7 @@ const UPLB_PROGRAMS = {
         "title": "Introduction to Human Relations and Behavior in Organization",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "MGT 101"
         ]
@@ -12129,7 +12689,7 @@ const UPLB_PROGRAMS = {
         "title": "Accounting Theory and Practice I",
         "units": 6,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12141,7 +12701,7 @@ const UPLB_PROGRAMS = {
         "year": 2,
         "sem": "2",
         "prereqs": [
-          "MGT 101"
+          "MGT 121"
         ]
       },
       {
@@ -12149,7 +12709,7 @@ const UPLB_PROGRAMS = {
         "title": "Accounting Theory and Practice II",
         "units": 6,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12157,7 +12717,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "BA 116",
         "title": "Cost Accounting",
-        "units": 3,
+        "units": 6,
         "year": 2,
         "sem": "2",
         "prereqs": [
@@ -12169,8 +12729,8 @@ const UPLB_PROGRAMS = {
         "title": "Internship I",
         "units": 3,
         "gradeType": "S/U",
-        "year": 3,
-        "sem": "2",
+        "year": 2,
+        "sem": "midyear",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12188,7 +12748,7 @@ const UPLB_PROGRAMS = {
         "title": "Managerial Cost Accounting and Control",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12208,7 +12768,7 @@ const UPLB_PROGRAMS = {
         "title": "Tax Accounting I",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12228,7 +12788,7 @@ const UPLB_PROGRAMS = {
         "title": "Law on Business Transactions",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12238,7 +12798,7 @@ const UPLB_PROGRAMS = {
         "title": "Writing of Scientific Papers",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -12256,7 +12816,7 @@ const UPLB_PROGRAMS = {
         "title": "Advanced Accounting II",
         "units": 6,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12276,7 +12836,7 @@ const UPLB_PROGRAMS = {
         "title": "Tax Accounting II",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12285,7 +12845,7 @@ const UPLB_PROGRAMS = {
         "code": "BA 162",
         "title": "Law on Business Associations",
         "units": 3,
-        "year": 4,
+        "year": 3,
         "sem": "2",
         "prereqs": [
           "BA 99.1"
@@ -12296,8 +12856,8 @@ const UPLB_PROGRAMS = {
         "title": "Internship II",
         "units": 3,
         "gradeType": "S/U",
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "midyear",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12307,7 +12867,7 @@ const UPLB_PROGRAMS = {
         "title": "Investment Management",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "MGT 101"
         ]
@@ -12324,10 +12884,10 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "BA 122",
-        "title": "Computerized Accounting and Auditing Theory and Practice",
+        "title": "Government Accounting and Auditing: Theory and Practice",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12347,7 +12907,7 @@ const UPLB_PROGRAMS = {
         "title": "Computer-based Accounting Systems",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12377,7 +12937,7 @@ const UPLB_PROGRAMS = {
         "title": "Sales and Bailments and other Special Laws",
         "units": 3,
         "year": 4,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "BA 99.1"
         ]
@@ -12397,10 +12957,36 @@ const UPLB_PROGRAMS = {
         "title": "Special Topics",
         "units": 1,
         "year": 4,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "BA 99.1"
         ]
+      },
+      {
+        "code": "BA 190 (2)",
+        "title": "Special Problems",
+        "units": 2,
+        "year": 4,
+        "sem": "2",
+        "prereqs": ["BA 190"]
+      },
+      {
+        "code": "FE 1",
+        "title": "Free Elective",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "FE 2",
+        "title": "Free Elective",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
       }
     ],
     "requiredCodes": [
@@ -12741,10 +13327,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "FOR 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "FOR 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "FOR 200"
+        ]
       },
       {
         "code": "SFFG 125",
@@ -12865,26 +13461,100 @@ const UPLB_PROGRAMS = {
   },
   "AAFOR": {
     "code": "AAFOR",
-    "name": "Associate in Forestry",
+    "name": "Associate of Science in Forestry",
     "college": "CFNR",
     "collegeName": "College of Forestry and Natural Resources",
-    "available": false,
-    "totalUnitsRequired": 72,
+    "available": true,
+    "totalUnitsRequired": 75,
     "geCoursesRequired": 6,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 10",
+        "title": "Biology of Tropical Forest Plants",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
         "code": "FOR 1",
-        "title": "Introduction to Forestry",
+        "title": "Introduction to Forests and Forestry",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "FOR 21",
-        "title": "Dendrology",
+        "code": "FPPS 11",
+        "title": "Wood Structure and Identification",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 30",
+        "title": "Forest Nurseries",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FRM 92",
+        "title": "Forest Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 21",
+        "title": "Taxonomy of Forest Plants",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "FBS 10"
+        ]
+      },
+      {
+        "code": "WLDL 101",
+        "title": "Introduction to Philippine Wildlife",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 101",
+        "title": "Principles and Concepts of Social Forestry",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -12893,103 +13563,148 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "FOR 31",
-        "title": "Forest Mensuration",
-        "units": 4,
+        "code": "SFFG 123",
+        "title": "Forest Policy and Institutions",
+        "units": 3,
         "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 41",
-        "title": "Silvics and Silviculture",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 51",
-        "title": "Forest Ecology",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 101",
-        "title": "Forest Management",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 111",
-        "title": "Forest Utilization",
-        "units": 4,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 121",
-        "title": "Forest Protection",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "BIO 1",
-        "title": "General Biology I",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 16",
-        "title": "General Chemistry I",
-        "units": 4,
-        "year": 4,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "MATH 17",
-        "title": "Algebra and Trigonometry",
-        "units": 5,
-        "year": 4,
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 2,
         "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 127",
+        "title": "Properties and Utilization of Forest Products",
+        "units": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FPPS 11"
+        ]
+      },
+      {
+        "code": "FRM 61",
+        "title": "Forest Biometry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FBS 21"
+        ]
+      },
+      {
+        "code": "FRM 94",
+        "title": "Forest Products Harvesting",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FRM 92"
+        ]
+      },
+      {
+        "code": "SFFG 180",
+        "title": "Organizing Forest-Dependent Communities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 182",
+        "title": "Production Planning and Control",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FRM 165",
+        "title": "Forest Surveys",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "FBS 21",
+          "FRM 61",
+          "FRM 92"
+        ]
+      },
+      {
+        "code": "NRC 140",
+        "title": "Introduction to Geographic Information Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 113",
+        "title": "Forestry Extension",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 103",
+        "title": "Fundamentals of Agroforestry",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       }
     ],
     "requiredCodes": [
+      "COMM 10",
+      "FBS 10",
       "FOR 1",
-      "FOR 21",
-      "FOR 31",
-      "FOR 41",
-      "FOR 51",
-      "FOR 101",
-      "FOR 111",
-      "FOR 121",
-      "BIO 1",
-      "CHEM 16",
-      "MATH 17"
-    ]
+      "FPPS 11",
+      "SFI 30",
+      "FRM 92",
+      "ARTS 1",
+      "ETHICS 1",
+      "FBS 21",
+      "WLDL 101",
+      "SFFG 101",
+      "SFFG 123",
+      "KAS 1",
+      "STS 1",
+      "FPPS 127",
+      "FRM 61",
+      "FRM 94",
+      "SFFG 180",
+      "PI 10",
+      "FPPS 182",
+      "FRM 165",
+      "NRC 140",
+      "SFFG 113",
+      "SFI 103"
+    ],
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSHE": {
     "code": "BSHE",
@@ -13095,7 +13810,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -13119,7 +13834,7 @@ const UPLB_PROGRAMS = {
         "title": "Social Policies",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -13167,15 +13882,15 @@ const UPLB_PROGRAMS = {
         "title": "Community Study in Human Welfare",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "COMM 10",
         "title": "Critical Perspectives in Communication",
         "units": 3,
-        "year": 2,
-        "sem": "midyear",
+        "year": 3,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -13199,7 +13914,7 @@ const UPLB_PROGRAMS = {
         "title": "Consumer Education",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -13240,7 +13955,7 @@ const UPLB_PROGRAMS = {
         "title": "Techniques in Community Organizing",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -13291,7 +14006,7 @@ const UPLB_PROGRAMS = {
         "code": "HUME 123",
         "title": "Climate Change Adaptation and Disaster Risk Reduction in Human Ecosystems",
         "units": 3,
-        "year": 4,
+        "year": 3,
         "sem": "1",
         "prereqs": []
       },
@@ -13324,10 +14039,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CERP 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CERP 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CERP 200"
+        ]
       },
       {
         "code": "HUME 200A",
@@ -13654,10 +14379,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "HNF 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "HNF 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": [
+          "HNF 200"
+        ]
       },
       {
         "code": "HNF 126",
@@ -13877,7 +14612,7 @@ const UPLB_PROGRAMS = {
         "title": "Introduction to Communication Theory",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -13927,7 +14662,7 @@ const UPLB_PROGRAMS = {
         "title": "Visual and Audiovisual Media Production",
         "units": 3,
         "year": 2,
-        "sem": "midyear",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -14050,10 +14785,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "DEVC 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "DEVC 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 200"
+        ]
       },
       {
         "code": "MAJ 8",
@@ -14166,12 +14911,44 @@ const UPLB_PROGRAMS = {
     "name": "Associate of Science in Development Communication",
     "college": "CDC",
     "collegeName": "College of Development Communication",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 72,
-    "geCoursesRequired": 6,
+    "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "WIKA 1",
+        "title": "Wika, Kultura, at Lipunan",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
       {
         "code": "DEVC 10",
         "title": "Introduction to Development Communication",
@@ -14181,28 +14958,130 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
+        "code": "DEVC 11",
+        "title": "Introduction to Media Writing for Development",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
         "code": "DEVC 20",
-        "title": "Communication Theories",
+        "title": "Fundamentals of Development Journalism",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 11"
         ]
       },
       {
         "code": "DEVC 30",
-        "title": "Communication Research Methods",
+        "title": "Fundamentals of Community Broadcasting",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 11"
         ]
       },
       {
         "code": "DEVC 40",
-        "title": "Development Journalism",
+        "title": "Fundamentals of Educational Communication and Technology",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 11"
+        ]
+      },
+      {
+        "code": "DEVC 50",
+        "title": "Introduction to Science Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 11"
+        ]
+      },
+      {
+        "code": "DEVC 70",
+        "title": "Interpersonal Communication in Development",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 103",
+        "title": "Visual and Audiovisual Media Production",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 40"
+        ]
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 135",
+        "title": "Multi-Media Materials Planning and Design",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 103"
+        ]
+      },
+      {
+        "code": "DEVC 125",
+        "title": "Writing and Reporting for Development",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 20",
+          "DEVC 30"
+        ]
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Technical Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "DEVC 80",
+        "title": "Communication and Society",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -14211,43 +15090,59 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "DEVC 50",
-        "title": "Development Broadcasting",
+        "code": "DEVC 144",
+        "title": "Media-Based Learning Systems",
         "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "DEVC 10"
-        ]
-      },
-      {
-        "code": "DEVC 60",
-        "title": "Educational Communication",
-        "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 135"
         ]
       },
       {
-        "code": "ENG 10",
-        "title": "Writing of Scientific Papers",
+        "code": "DEVC 153",
+        "title": "Managing Information for Development",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": []
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 50"
+        ]
+      },
+      {
+        "code": "MAJ 2",
+        "title": "Technical Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
       }
     ],
     "requiredCodes": [
+      "KAS 1",
+      "STS 1",
+      "PI 10",
+      "WIKA 1",
       "DEVC 10",
+      "DEVC 11",
+      "ARTS 1",
+      "ETHICS 1",
       "DEVC 20",
       "DEVC 30",
       "DEVC 40",
       "DEVC 50",
-      "DEVC 60",
-      "ENG 10"
-    ]
+      "DEVC 70",
+      "DEVC 103",
+      "COMM 10",
+      "DEVC 135",
+      "DEVC 125",
+      "DEVC 80",
+      "DEVC 144",
+      "DEVC 153"
+    ],
+    "hkCoursesRequired": 3,
+    "nstpCoursesRequired": 2
   },
   "DVM": {
     "code": "DVM",
@@ -14735,10 +15630,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "VMED 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 5,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "VMED 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 6,
+        "sem": "1",
+        "prereqs": [
+          "VMED 200"
+        ]
       },
       {
         "code": "VETC 173",
@@ -14927,39 +15832,9 @@ function getFreeElectiveUnits(track, program = currentProgram) {
   return program.tracks[resolveTrack(program, track)]?.freeElectiveUnits ?? 15;
 }
 
-// Check if a course is a required major course
-function isRequiredCourse(courseCode) {
-  if (!currentProgram.requiredCodes) return false;
-  
-  const normalized = courseCode.toUpperCase().trim();
-  return currentProgram.requiredCodes.some(code => 
-    code.toUpperCase() === normalized
-  );
-}
-
-// Get remaining required courses
-function getRemainingCourses(completedCourses) {
-  if (!currentProgram.majorCourses) return [];
-  
-  const completedCodes = new Set(
-    completedCourses.map(c => c.code.toUpperCase().trim())
-  );
-  
-  return currentProgram.majorCourses.filter(course => 
-    !completedCodes.has(course.code.toUpperCase())
-  );
-}
-
 // Count completed GE courses
 function countCompletedGE(completedCourses) {
   return completedCourses.filter(c => isGECourse(c.code || c.courseCode, c.title || c.courseTitle)).length;
-}
-
-// Get remaining GE slots
-function getRemainingGESlots(completedCourses) {
-  const completed = countCompletedGE(completedCourses);
-  const required = currentProgram.geCoursesRequired || 9;
-  return Math.max(0, required - completed);
 }
 
 // How far the planner can trust a program's data, for a low-confidence banner.
@@ -15003,10 +15878,7 @@ if (typeof module !== 'undefined' && module.exports) {
     applySpecialization,
     getPlannerCourses,
     getCompletedRequirementSlotCodes,
-    isRequiredCourse,
-    getRemainingCourses,
     countCompletedGE,
-    getRemainingGESlots,
     getProgramDataQuality,
     BSCS_CURRICULUM
   };

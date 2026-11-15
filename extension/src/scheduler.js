@@ -335,6 +335,7 @@ function enrichCourses(list, catalog) {
  * @param {Object} [opts.notBefore] {CODE: minTermIndex}: retakes, delays, pins
  * @param {Object} [opts.reserved]  {termIndex: units} taken by failed attempts
  * @param {Object} [opts.unitCaps]  per-sem unit caps
+ * @param {Object} [opts.termCaps]  {termIndex: units} in place of unitCaps
  * @param {string} [opts.startSem]  sem of termIndex 0 ('1'|'2'|'midyear')
  * @param {number} [opts.totalUnits] program total, for standing
  * @param {boolean} [opts.useMidyear] false = only checklist midyear courses in midyear
@@ -352,9 +353,15 @@ function scheduleEarliest(opts) {
 
   const byCode = new Map();
   courses.forEach(c => byCode.set(normCode(c.code), c));
+  const extraKind = code => /^NSTP\b/.test(code) ? 'NSTP' : /^(HK|PE)\b/.test(code) ? 'HK' : null;
   const unitsOf = code => {
+    if (extraKind(code)) return 0;
     const c = byCode.get(code);
     return c && c.units != null ? Number(c.units) : 3;
+  };
+  const slotOf = code => {
+    const c = byCode.get(code);
+    return (c.year || 9) * 3 + (SEM_DIGIT[c.sem] || 0);
   };
   const totalUnits = opts.totalUnits || Array.from(byCode.keys()).reduce((s, c) => s + unitsOf(c), 0);
 
@@ -409,7 +416,8 @@ function scheduleEarliest(opts) {
 
   for (let t = 0; t < maxTerms && remaining.size > 0; t++) {
     const sem = semAt(t, startSem);
-    const cap = (unitCaps[sem] != null ? unitCaps[sem] : DEFAULT_UNIT_CAPS[sem]) - (reserved[t] || 0);
+    const base = opts.termCaps && opts.termCaps[t] != null ? opts.termCaps[t] : unitCaps[sem] != null ? unitCaps[sem] : DEFAULT_UNIT_CAPS[sem];
+    const cap = base - (reserved[t] || 0);
     const done = c => passed.has(c) || (assignedTerm[c] !== undefined && assignedTerm[c] < t);
 
     let candidates = Array.from(remaining).filter(code => {
@@ -433,16 +441,20 @@ function scheduleEarliest(opts) {
       candidates = next;
     }
 
+    const otherSem = sem === '1' ? '2' : '1';
+    const later = code => (offeredIn(byCode.get(code), otherSem) ? 1 : 0);
     candidates.sort((a, b) => {
       const diff = chainLength(b, new Set()) - chainLength(a, new Set());
       if (diff !== 0) return diff;
-      return unitsOf(b) - unitsOf(a);
+      return later(a) - later(b) || slotOf(a) - slotOf(b) || unitsOf(b) - unitsOf(a);
     });
 
     const placed = [];
     let units = 0;
     candidates.forEach(code => {
       if (assignedTerm[code] !== undefined) return;
+      const kind = extraKind(code);
+      if (kind && placed.some(c => extraKind(c) === kind)) return;
       // Place a course together with its unplaced coreqs, or not at all.
       const bundle = [code, ...coOf.get(code).filter(c => remaining.has(c) && assignedTerm[c] === undefined)];
       const bundleUnits = bundle.reduce((s, c) => s + unitsOf(c), 0);

@@ -56,6 +56,22 @@ const t0Count = ['X1', 'X2', 'X3'].filter(c => capped.assignedTerm[c] === 0).len
 assert.strictEqual(t0Count, 2);
 assert.strictEqual(Math.max(...['X1', 'X2', 'X3'].map(c => capped.assignedTerm[c])), 3);
 
+// HK and NSTP sit outside the cap, like the checklists' (2) and (3)
+const withHk = scheduleEarliest({
+  courses: [C('X1', 3, '1'), C('X2', 3, '1'), C('HK 11', 2, '1'), C('NSTP 1', 3, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 6, '2': 21, 'midyear': 6 },
+  startSem: '1',
+});
+assert.strictEqual(withHk.gradTermIndex, 0);
+const twoHk = scheduleEarliest({
+  courses: [C('HK 1', 2, '1'), C('HK 2', 2, '1'), C('NSTP 1', 3, '1'), C('NSTP 2', 3, '1')],
+  passed: new Set(),
+  startSem: '1',
+});
+assert.notStrictEqual(twoHk.assignedTerm['HK 1'], twoHk.assignedTerm['HK 2']);
+assert.notStrictEqual(twoHk.assignedTerm['NSTP 1'], twoHk.assignedTerm['NSTP 2']);
+
 // notBefore delay honored, and offering still respected (t3 is next 1st sem)
 const delayed = scheduleEarliest({ courses: [C('A', 3, '1')], passed: new Set(), notBefore: { A: 1 }, startSem: '1' });
 assert.strictEqual(delayed.assignedTerm['A'], 3);
@@ -225,4 +241,21 @@ assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC
 assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC 57': 'todo' })), []);
 assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 57': 'failed', 'CMSC 21': 'passed', 'CMSC 123': 'passed' })), []);
 
+// With no prerequisites, a course only offered now goes first, then the checklist order.
+const one = { '1': 3, '2': 3, 'midyear': 0 };
+const Y = (code, year, catalogSem) => ({ code, title: code, units: 3, year, sem: '1', catalogSem, prereqs: [] });
+const order = scheduleEarliest({ courses: [Y('THESIS', 4, '1s,2s'), Y('INTRO', 1, '1s,2s')], passed: new Set(), unitCaps: one, startSem: '1' });
+assert.strictEqual(order.assignedTerm.INTRO, 0);
+const scarce = scheduleEarliest({ courses: [Y('GE', 1, '1s,2s'), Y('LAB', 4, '1s')], passed: new Set(), unitCaps: one, startSem: '1' });
+assert.strictEqual(scarce.assignedTerm.LAB, 0);
+
 console.log('scheduler.test.js: all assertions passed');
+
+const perTerm = scheduleEarliest({
+  courses: [C('X1', 12, '1'), C('X2', 12, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 18, '2': 18, 'midyear': 6 },
+  termCaps: { 0: 24 },
+  startSem: '1',
+});
+assert.strictEqual(perTerm.assignedTerm.X2, 0);
