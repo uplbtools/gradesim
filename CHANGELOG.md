@@ -4,6 +4,7 @@
 
 ### Fixes
 - The Grades tab shows Leave out of GWA only after you press Leave courses out of the GWA, so each course takes less room.
+- The What if result no longer repeats your current GWA and target.
 - The GWA card has a one-line disclaimer and a plain Updated line, and the site and terms links show once.
 
 ## 2.1.5 (2026-11-15)

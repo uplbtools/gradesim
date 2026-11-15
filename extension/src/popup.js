@@ -841,8 +841,6 @@ function renderWhatIf() {
     hero,
     notice({ tone, icon: ic, body: message, action }),
     h('div', { class: 'result-details' },
-      stat('Current GWA', data.gwa.toFixed(4), { variant: 'row' }),
-      stat('Target', `${target.toFixed(2)} or better`, { variant: 'row' }),
       stat('GWA units so far', data.totalUnits, { variant: 'row' }),
       stat('GWA units left', left.gwaUnits, { variant: 'row' })));
 }
