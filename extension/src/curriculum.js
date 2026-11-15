@@ -8085,10 +8085,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CHE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CHE 200"
+        ]
       },
       {
         "code": "MAJ 1",
@@ -13549,10 +13559,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CERP 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CERP 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CERP 200"
+        ]
       },
       {
         "code": "HUME 200A",
