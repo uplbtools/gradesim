@@ -5159,7 +5159,8 @@ const UPLB_PROGRAMS = {
         "units": 3,
         "year": 2,
         "sem": "2",
-        "prereqs": []
+        "prereqs": [],
+        "standing": "junior"
       },
       {
         "code": "PED 130.1",
