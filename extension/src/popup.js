@@ -911,14 +911,49 @@ function generateWrappedData(courses) {
 
 // Each panel is plain data. wrappedPanel() shows it, and drawTinFrame() paints
 // the cards that sit on Reann Vargas's art.
-function generateWrappedPanels(data) {
+function generateWrappedPanels(data, courses) {
   return [
+    generateThisSemPanel(data, courses),
     generateGWAPanel(data),
     generateSemesterPanel(data),
     generateHighlightsPanel(data),
     generateCollectorPanel(data),
     generateProgressPanel(data),
   ];
+}
+
+function generateThisSemPanel(data, courses) {
+  const n = data.semList.length;
+  if (!n) return null;
+  const sem = data.semList[n - 1];
+  const inSem = courses.filter(c => semKeyOf(c) === sem.name);
+  const taken = inSem.filter(c => !NON_GWA_PREFIX.test((c.courseCode || '').trim()));
+  const group = calculateGroupGWA(taken);
+  const held = inSem.some(c => NON_GWA_PREFIX.test((c.courseCode || '').trim()) && ((c.grade || '').toString().toUpperCase().trim() === 'INC' || parseFloat(c.grade) > 3));
+  const scholar = !held && !group.hasFailOrInc && group.totalUnits >= 15
+    ? (group.gwa <= 1.45 ? 'University Scholar' : group.gwa <= 1.75 ? 'College Scholar' : null) : null;
+  const g = sem.gwa;
+  const [title, message] =
+    scholar ? [scholar, 'Ikaw na. Screenshot mo na, deserve mo.']
+    : g <= 1.75 ? ['Uno-heavy sem', 'Ang ganda ng sem mo. Flex mo na.']
+    : g <= 2.0 ? ['Solid sem', 'Kinaya mo lahat. Proud of u.']
+    : g <= 2.5 ? ['Steady sem', 'Pasado lahat ng pinaghirapan mo. Pahinga ka muna.']
+    : g <= 3.0 ? ['Survived the sem', 'Tapos na, nakaraos ka. Panalo pa rin.']
+    : ['Bawi next sem', "Mabigat 'tong sem na 'to. Kaya mo pa 'yan."];
+  let top = null;
+  taken.forEach(c => {
+    const v = parseFloat(c.grade);
+    if (v >= 1 && v <= 5 && !excludedCourses.has(courseIdOf(c)) && (!top || v < top.grade)) top = { code: (c.courseCode || '').trim(), grade: v };
+  });
+  const prev = n > 1 ? data.semList[n - 2].gwa : null;
+  const extra = prev == null ? 'My first sem in Elbi'
+    : data.bestSem === sem ? 'My best sem yet'
+    : prev - g >= 0.01 ? `Up ${(prev - g).toFixed(2)} from last sem`
+    : `${taken.reduce((u, c) => u + (c.units || 0), 0)} units done this sem`;
+  return {
+    emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message, extra, frame: 'sem',
+    highlights: top ? [{ label: '🏆 Top grade', name: top.code, detail: top.grade.toFixed(2) }] : [],
+  };
 }
 
 function generateGWAPanel(data) {
@@ -1014,7 +1049,7 @@ function wrappedId() {
 
 const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
-const FRAMES = { id: 'tin-id', tin: 'tin', note: 'tin-note', tray: 'tray', open: 'tin-red' };
+const FRAMES = { sem: 'tin-grass', id: 'tin-id', tin: 'tin', note: 'tin-note', tray: 'tray', open: 'tin-red' };
 const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b2a22', URL = 'gradesim.uplb.tools';
 
 // Reann Vargas's pages. Each tin, tray and note is tilted, so text is drawn turned with it.
@@ -1048,6 +1083,23 @@ async function drawTinFrame(canvas, p) {
     text(t, weight, size, '#ffffff', y, 1000, x);
     ctx.restore();
   };
+
+  if (p.frame === 'sem') {
+    const id = wrappedId();
+    const top = p.highlights[0];
+    ctx.translate(540, 1040);
+    ctx.rotate(-0.08);
+    ctx.translate(-540, -1040);
+    onGrass(`My ${p.subtitle}`, 700, 50, 540, 760);
+    if (id.number) {
+      onGrass(p.value, 800, 220, 540, 990);
+      onGrass(p.title, 800, 76, 540, 1090);
+    } else onGrass(p.title, 800, 112, 540, 960);
+    onGrass(p.extra, 700, 50, 540, id.number ? 1180 : 1070);
+    if (top) onGrass(`Top grade ${top.name}, ${top.detail}`, 600, 44, 540, id.number ? 1260 : 1150);
+    onGrass(URL, 600, 38, 540, id.number ? 1350 : 1250);
+    return canvas;
+  }
 
   if (p.frame === 'id') {
     const id = wrappedId();
@@ -1167,8 +1219,9 @@ async function drawTinFrame(canvas, p) {
 }
 
 function tinCanvas(p) {
-  const shown = p.frame === 'id' && wrappedId().number && `GWA ${p.value}`;
-  const label = [p.title, shown, p.frame !== 'id' && [p.value, p.subtitle].filter(Boolean).join(' '), p.extra, ...(p.highlights || []).map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn on a picnic blanket'].filter(Boolean).join(', ');
+  const tier = p.frame === 'id' || p.frame === 'sem';
+  const shown = tier && wrappedId().number && `GWA ${p.value}`;
+  const label = [p.title, shown, !tier && [p.value, p.subtitle].filter(Boolean).join(' '), p.extra, ...(p.highlights || []).map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn on a picnic blanket'].filter(Boolean).join(', ');
   const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': label });
   drawTinFrame(canvas, p);
   return canvas;
@@ -1190,7 +1243,7 @@ function wrappedPanel(p) {
 }
 
 function displayWrapped(courses) {
-  wrappedPanels = generateWrappedPanels(generateWrappedData(courses));
+  wrappedPanels = generateWrappedPanels(generateWrappedData(courses), courses).filter(Boolean);
   wrappedYears = new Set(courses.map(c => c.academicYear).filter(Boolean)).size;
   wrappedCurrentPanel = 0;
   updateWrappedDisplay();
@@ -1200,7 +1253,8 @@ function updateWrappedDisplay() {
   if (!wrappedPanels.length) return;
   const p = wrappedPanels[wrappedCurrentPanel];
   $('wrappedPanel').replaceChildren(...flat(wrappedPanel(p)));
-  $('wrappedId').hidden = p.frame !== 'id';
+  $('wrappedId').hidden = p.frame !== 'id' && p.frame !== 'sem';
+  $('wrappedId').querySelectorAll('.wrapped-name').forEach(el => (el.hidden = p.frame !== 'id'));
   $('wrappedExport').hidden = !p.frame;
   $('wrappedProgress').textContent = `${wrappedCurrentPanel + 1} of ${wrappedPanels.length}`;
   $('wrappedPrev').disabled = wrappedCurrentPanel === 0;

@@ -5,6 +5,7 @@
 ### Changes
 - When AMIS posts new grades, or an INC becomes a grade, the toolbar icon shows how many. Opening the popup says how many are new and clears the badge.
 - Help ends with a link to ask a question on GitHub.
+- Wrapped opens on a card for your latest sem. It shows University or College Scholar when the sem qualifies, how much you went up from last sem, and your top grade.
 
 ## 2.1.15 (2026-11-16)
 
