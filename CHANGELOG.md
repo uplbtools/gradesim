@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.17 (2026-11-16)
+
+### Changes
+- BS CS free electives no longer wait for senior standing.
+
 ## 2.1.16 (2026-11-16)
 
 ### Changes

@@ -150,7 +150,6 @@ function freeElectiveCourses(program, track) {
       year: slot.year,
       sem: slot.sem,
       prereqs: [],
-      standing: program.freeElectiveStanding,
       genericRequirement: 'elective'
     });
   }
@@ -252,7 +251,6 @@ const UPLB_PROGRAMS = {
       }
     },
     "defaultTrack": "sp",
-    "freeElectiveStanding": "senior",
     "majorCourses": [
       {
         "code": "MATH 27",
