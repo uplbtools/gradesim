@@ -4950,7 +4950,7 @@ const UPLB_PROGRAMS = {
   },
   "AASS": {
     "code": "AASS",
-    "name": "Associate in Arts in Sports Studies",
+    "name": "Associate in Arts (Sports Studies)",
     "college": "CAS",
     "collegeName": "College of Arts and Sciences",
     "available": true,
