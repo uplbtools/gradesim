@@ -1176,7 +1176,8 @@ input[type="checkbox"] {
   gap: 8px;
 }
 
-.wrapped-id input[type="text"] {
+.wrapped-id input[type="text"],
+.wrapped-id select {
   min-height: 40px;
   padding: 8px 10px;
 }

@@ -6,6 +6,8 @@
 - When AMIS posts new grades, or an INC becomes a grade, the toolbar icon shows how many. Opening the popup says how many are new and clears the badge.
 - Help ends with a link to ask a question on GitHub.
 - Wrapped opens on a card for your latest sem. It shows University or College Scholar when the sem qualifies, how much you went up from last sem, and your top grade.
+- On that card you can pick the sem, write your own line and hide the top grade. The GWA can show as the tier only, 1.xx, 1.8x, 1.x7, 1.87 or in full.
+- Cards get a From AMIS mark with the date when the extension read your grades from AMIS and you haven't entered a removal result or left a course out. A loaded backup no longer brings back the read date.
 
 ## 2.1.15 (2026-11-16)
 

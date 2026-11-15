@@ -150,11 +150,18 @@
             <div class="wrapped-container">
               <div id="wrappedPanel" class="card wrapped-panel" aria-live="polite"></div>
               <div id="wrappedId" class="wrapped-id" hidden>
+                <label class="wrapped-sem" for="wrappedSem">Sem</label>
+                <select class="wrapped-sem" id="wrappedSem"></select>
                 <label class="wrapped-name" for="wrappedName">Your name on the card</label>
                 <input class="wrapped-name" id="wrappedName" type="text" maxlength="40" autocomplete="name">
-                <label class="wrapped-check"><input id="wrappedNumber" type="checkbox">Show my GWA, not only its tier</label>
+                <label for="wrappedShow">GWA on the card</label>
+                <select id="wrappedShow"></select>
+                <label class="wrapped-sem" for="wrappedLine">Your own line</label>
+                <input class="wrapped-sem" id="wrappedLine" type="text" maxlength="40">
+                <label class="wrapped-check wrapped-sem"><input id="wrappedTop" type="checkbox" checked>Show my top grade</label>
                 <p class="hint wrapped-name">Add your photo over the picture in Instagram or Facebook.</p>
               </div>
+              <p id="wrappedAmisHint" class="hint" hidden>Open AMIS so GradeSim reads your grades there, and your cards get the From AMIS mark.</p>
               <div class="wrapped-nav">
                 <button id="wrappedPrev" class="btn btn-secondary btn-sm" type="button" disabled><span data-icon="prev"></span>Previous</button>
                 <span id="wrappedProgress" class="wrapped-progress">1 of 5</span>
