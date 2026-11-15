@@ -8,7 +8,7 @@ const { UPLB_CATALOG } = require('./src/catalog.js');
 // (GE, HK, NSTP, FE) or the data uses (MAJ for major elective slots), and
 // real departments with no class in the listings we have.
 const DEPTS = new Set(Object.keys(UPLB_CATALOG).map(c => c.split(' ')[0]));
-['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL', 'MST', 'WLDL'].forEach(d => DEPTS.add(d));
+['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL', 'MST', 'WLDL', 'AMPE', 'WIKA'].forEach(d => DEPTS.add(d));
 const CODE_RE = /^([A-Z]{2,6}|PEd) \d{1,3}(\.\d{1,2})?[A-Z]?( \(\d\))?$/;
 
 function codeProblem(code) {

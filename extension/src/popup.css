@@ -774,6 +774,7 @@ input[type="number"] {
   font-size: 0.85rem !important;
   color: var(--muted);
   line-height: 1.5;
+  margin-bottom: 12px;
 }
 
 /* GWA */
@@ -1367,7 +1368,12 @@ body.tab-mode {
 body.tab-mode .container {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 24px;
+}
+
+@media (min-width: 600px) {
+  body.tab-mode .container {
+    padding: 24px;
+  }
 }
 
 body.tab-mode #openTabBtn {

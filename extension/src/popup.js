@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Check if opened in a tab
   const urlParams = new URLSearchParams(window.location.search);
-  const isTabMode = urlParams.get('mode') === 'tab' || window.innerWidth > 600;
+  const isTabMode = urlParams.get('mode') === 'tab' || window.innerWidth > 600 || matchMedia('(pointer: coarse)').matches;
   if (isTabMode) {
     document.body.classList.add('tab-mode');
   }

@@ -241,4 +241,12 @@ assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC
 assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC 57': 'todo' })), []);
 assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 57': 'failed', 'CMSC 21': 'passed', 'CMSC 123': 'passed' })), []);
 
+// With no prerequisites, a course only offered now goes first, then the checklist order.
+const one = { '1': 3, '2': 3, 'midyear': 0 };
+const Y = (code, year, catalogSem) => ({ code, title: code, units: 3, year, sem: '1', catalogSem, prereqs: [] });
+const order = scheduleEarliest({ courses: [Y('THESIS', 4, '1s,2s'), Y('INTRO', 1, '1s,2s')], passed: new Set(), unitCaps: one, startSem: '1' });
+assert.strictEqual(order.assignedTerm.INTRO, 0);
+const scarce = scheduleEarliest({ courses: [Y('GE', 1, '1s,2s'), Y('LAB', 4, '1s')], passed: new Set(), unitCaps: one, startSem: '1' });
+assert.strictEqual(scarce.assignedTerm.LAB, 0);
+
 console.log('scheduler.test.js: all assertions passed');
