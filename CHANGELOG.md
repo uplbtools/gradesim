@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.10 (2026-11-16)
+
+### Changes
+- The GWA sits at the top of the Grades tab instead of above every tab, and What if says the current GWA above its result.
+- All text uses Figtree in place of Inter and Raleway.
+
 ## 2.1.9 (2026-11-15)
 
 ### Fixes
