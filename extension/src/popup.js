@@ -366,6 +366,8 @@ async function loadGradesData() {
     loadingEl.classList.add('hidden');
     noDataEl.classList.remove('hidden');
   }
+  $('exportBtn').classList.toggle('hidden', !noDataEl.classList.contains('hidden'));
+  if (syncError) showSyncError(syncError);
 }
 
 function displayGradesData(courses) {
@@ -1305,8 +1307,15 @@ const SYNC_ERRORS = {
   'no-answer': 'Reload your AMIS tab once, then press Refresh.',
 };
 
-// Show a refresh problem at the top, or clear it with null.
+// Show a refresh problem, or clear it with null. With no grades yet it goes in the empty card.
+let syncError = null;
 function showSyncError(code) {
+  syncError = code;
+  if (!$('noData').classList.contains('hidden')) {
+    $('noDataHint').textContent = SYNC_ERRORS[code] || 'Log in to AMIS in a tab, then press Refresh.';
+    $('syncNotice').replaceChildren();
+    return;
+  }
   showNotice($('syncNotice'), SYNC_ERRORS[code] && {
     tone: 'warn', icon: 'alert', body: SYNC_ERRORS[code],
     action: (code === 'no-tab' || code === 'not-logged-in') && button({

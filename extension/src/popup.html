@@ -32,13 +32,12 @@
     </div>
 
     <div id="noData" class="no-data hidden">
-      <p class="no-data-title"><span data-icon="alert"></span>No grades yet</p>
-      <ol class="hint steps">
-        <li>Log in to <a href="https://amis.uplb.edu.ph" target="_blank" rel="noopener">AMIS</a> in a tab.</li>
-        <li>Open Elbi GradeSim from the toolbar.</li>
-        <li>Press Refresh.</li>
-      </ol>
-      <button id="refreshBtn" class="btn btn-primary" type="button">Refresh</button>
+      <p class="no-data-title">No grades yet</p>
+      <p id="noDataHint" class="hint">Log in to AMIS in a tab, then press Refresh.</p>
+      <div class="no-data-actions">
+        <button id="refreshBtn" class="btn btn-primary" type="button">Refresh</button>
+        <a href="https://amis.uplb.edu.ph" target="_blank" rel="noopener">Open AMIS</a>
+      </div>
     </div>
 
     <div id="mainContent" class="hidden">
