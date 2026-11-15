@@ -1193,6 +1193,7 @@ input[type="checkbox"] {
   width: 100%;
   aspect-ratio: 9 / 16;
   border-radius: var(--radius-md);
+  background: var(--brand-tint);
 }
 
 .panel-emoji {

@@ -853,6 +853,7 @@ function initializeWrapped() {
   $('wrappedNext').addEventListener('click', () => navigateWrapped(1));
   $('wrappedExport').addEventListener('click', exportWrappedToPNG);
   $('wrappedName').addEventListener('input', redrawTin);
+  $('wrappedShow').addEventListener('change', e => (gwaShows[wrappedPanels[wrappedCurrentPanel].frame] = e.target.value));
   ['wrappedShow', 'wrappedTop', 'wrappedPhoto'].forEach(id => $(id).addEventListener('change', redrawTin));
   $('wrappedLine').addEventListener('input', redrawTin);
   $('wrappedSem').addEventListener('change', () => {
@@ -1056,6 +1057,7 @@ function wrappedId() {
 }
 
 const GWA_SHOWS = ['none', 'xx', 'bx', 'xc', 'bc', 'full'];
+const gwaShows = { id: 'none', sem: 'full' };
 
 // A GWA written the way students post it, like 1.xx or 1.8x. Two decimals are cut, not rounded.
 function shownGwa(value = '', show = 'none') {
@@ -1380,9 +1382,8 @@ function updateWrappedDisplay() {
   if (!wrappedPanels.length) return;
   const p = wrappedPanels[wrappedCurrentPanel];
   $('wrappedLine').placeholder = p.extra || '';
-  const show = $('wrappedShow').value || 'none';
   $('wrappedShow').replaceChildren(...GWA_SHOWS.map(k => h('option', { value: k }, k === 'none' ? 'Tier only' : shownGwa(p.value, k))));
-  $('wrappedShow').value = show;
+  $('wrappedShow').value = gwaShows[p.frame] || 'none';
   $('wrappedPanel').replaceChildren(...flat(wrappedPanel(p)));
   $('wrappedId').hidden = !p.frame;
   $('wrappedId').querySelectorAll('.wrapped-gwa').forEach(el => (el.hidden = p.frame !== 'id' && p.frame !== 'sem'));

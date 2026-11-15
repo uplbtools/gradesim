@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.19 (2026-11-16)
+
+### Changes
+- The sem card and the ID card each keep their own GWA choice. The sem card starts on the full GWA, like the web app.
+- A Wrapped card shows a tinted block while it draws.
+
 ## 2.1.18 (2026-11-16)
 
 ### Changes
