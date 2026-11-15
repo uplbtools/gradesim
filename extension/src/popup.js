@@ -848,14 +848,6 @@ function initializeWrapped() {
   $('wrappedExport').addEventListener('click', exportWrappedToPNG);
   $('wrappedName').addEventListener('input', redrawTin);
   $('programSelect').addEventListener('change', redrawTin);
-  $('wrappedPhotoBtn').addEventListener('click', () => $('wrappedPhoto').click());
-  $('wrappedPhoto').addEventListener('change', async e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    wrappedPhoto = await createImageBitmap(file).catch(() => wrappedPhoto);
-    $('wrappedPhotoBtn').textContent = 'Change the photo';
-    redrawTin();
-  });
 }
 
 function generateWrappedData(courses) {
@@ -998,7 +990,7 @@ function generateGWAPanel(data) {
     [Infinity, '🌱', 'Comeback arc', "Mababa man ngayon, pwede pa 'yan i-improve. Marami nang naka-recover from this. Kaya mo 'yan."],
   ];
   const [, emoji, title, message] = gwa === 0 ? tiers[0] : tiers.slice(1).find(t => gwa <= t[0]);
-  return { emoji, title, value: gwa > 0 ? gwa.toFixed(4) : '--', subtitle: 'My Elbi GWA', message, frame: gwa > 0 };
+  return { emoji, title, value: gwa > 0 ? gwa.toFixed(4) : '--', subtitle: 'My Elbi GWA', message, frame: gwa > 0 && 'id' };
 }
 
 function generateSemesterPanel(data) {
@@ -1038,7 +1030,7 @@ function generateSemesterPanel(data) {
   else if (semCount >= 2) panel.message = `${semCount} semesters down, more to go.`;
   else panel.message = 'Just getting started.';
 
-  return panel;
+  return { ...panel, frame: panel.highlights.length > 0 && 'tin' };
 }
 
 function generateCollectorPanel(data) {
@@ -1128,22 +1120,21 @@ function generateProgressPanel(data) {
 }
 
 // On-screen Wrapped slide.
-let wrappedPhoto = null;
 let wrappedYears = 0;
 
 function wrappedId() {
-  const name = $('wrappedName').value.trim();
-  if (!name && !wrappedPhoto) return null;
   const year = `${['1st', '2nd', '3rd'][wrappedYears - 1] || `${wrappedYears}th`} year`;
-  return { name, year, course: $('programSelect').value, photo: wrappedPhoto };
+  return { name: $('wrappedName').value.trim(), year, course: $('programSelect').value };
 }
 
 const tinImages = {};
+const bareLabel = label => label.replace(/^\P{L}+/u, '');
 
 // Reann Vargas's tin frame. The lid and the tray are tilted about 10 degrees.
-async function drawTinFrame(canvas, p, id = wrappedId()) {
+async function drawTinFrame(canvas, p) {
   const font = '"Figtree", system-ui, sans-serif';
-  const src = id ? 'frames/tin-id.jpg' : 'frames/tin.jpg';
+  const isId = p.frame === 'id';
+  const src = `frames/${isId ? 'tin-id' : 'tin'}.jpg`;
   const img = tinImages[src] ||= Object.assign(new Image(), { src });
   await Promise.all([img.decode(), document.fonts.load(`800 88px ${font}`)]);
   canvas.width = 1080;
@@ -1153,62 +1144,46 @@ async function drawTinFrame(canvas, p, id = wrappedId()) {
   const tilted = (x, y, draw) => {
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(id ? -0.19 : -0.17);
+    ctx.rotate(isId ? -0.19 : -0.17);
     draw();
     ctx.restore();
   };
-  ctx.textAlign = 'center';
-  if (id) {
-    const { photo } = id;
-    if (photo) tilted(118, 648, () => {
-      const scale = Math.max(297 / photo.width, 318 / photo.height);
-      ctx.beginPath();
-      ctx.rect(0, 0, 297, 318);
-      ctx.clip();
-      ctx.drawImage(photo, (297 - photo.width * scale) / 2, (318 - photo.height * scale) / 2, photo.width * scale, photo.height * scale);
-    });
+  const text = (t, weight, size, color, y, max = 1080) => {
+    do ctx.font = `${weight} ${size}px ${font}`;
+    while (ctx.measureText(t).width > max && --size > 24);
+    ctx.fillStyle = color;
+    ctx.fillText(t, 0, y, max);
+  };
+  if (isId) {
+    const id = wrappedId();
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#1c1917';
-    [[id.name, 556, 638, 285], [id.year, 566, 738, 295], [id.course, 612, 830, 268]].forEach(([text, x, y, max]) => tilted(x, y, () => {
-      let size = 40;
-      do ctx.font = `700 ${size}px ${font}`;
-      while (ctx.measureText(text).width > max && --size > 24);
-      ctx.fillText(text, 0, 0, max);
-    }));
+    [[id.name, 556, 638, 285], [id.year, 566, 738, 295], [id.course, 612, 830, 268]]
+      .forEach(([t, x, y, max]) => tilted(x, y, () => text(t, 700, 40, '#1c1917', 0, max)));
     ctx.textAlign = 'center';
     tilted(592, 1215, () => {
-      ctx.fillStyle = '#7b2a22';
-      ctx.font = `800 190px ${font}`;
-      ctx.fillText(p.value, 0, 0);
-      ctx.fillStyle = '#2b2321';
-      ctx.font = `800 64px ${font}`;
-      ctx.fillText(p.title, 0, 95);
-      ctx.fillStyle = '#4a3f3c';
-      ctx.font = `600 36px ${font}`;
-      ctx.fillText('My Elbi GWA on gradesim.uplb.tools', 0, 160);
+      text(p.value, 800, 190, '#7b2a22', 0);
+      text(p.title, 800, 64, '#2b2321', 95);
+      text('My Elbi GWA on gradesim.uplb.tools', 600, 36, '#4a3f3c', 160);
     });
     return canvas;
   }
+  ctx.textAlign = 'center';
   tilted(500, 700, () => {
-    ctx.fillStyle = '#2b2321';
-    ctx.font = `800 ${p.title.length > 14 ? 76 : 88}px ${font}`;
-    ctx.fillText(p.title, 0, 0);
-    ctx.fillStyle = '#4a3f3c';
-    ctx.font = `600 40px ${font}`;
-    ctx.fillText('gradesim.uplb.tools', 0, 80);
+    text(p.title, 800, 84, '#2b2321', 0);
+    text('gradesim.uplb.tools', 600, 40, '#4a3f3c', 80);
   });
-  tilted(596, 1225, () => {
-    ctx.fillStyle = '#7b2a22';
-    ctx.font = `800 190px ${font}`;
-    ctx.fillText(p.value, 0, 40);
-    ctx.font = `700 52px ${font}`;
-    ctx.fillText(p.subtitle, 0, 130);
-  });
+  p.highlights.forEach((x, i) => tilted(596, 1225, () => {
+    const y = p.highlights.length > 1 ? i * 205 - 150 : -30;
+    text(bareLabel(x.label), 600, 38, '#4a3f3c', y);
+    text(x.name, 800, 62, '#2b2321', y + 72, 700);
+    text(x.detail, 700, 42, '#7b2a22', y + 130);
+  }));
   return canvas;
 }
 
 function tinCanvas(p) {
-  const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': `${p.title}, GWA ${p.value}, drawn in a tin on a picnic blanket` });
+  const label = [p.title, p.frame === 'id' && `GWA ${p.value}`, ...(p.highlights || []).map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn in a tin on a picnic blanket'].filter(Boolean).join(', ');
+  const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': label });
   drawTinFrame(canvas, p);
   return canvas;
 }
@@ -1219,7 +1194,7 @@ function redrawTin() {
 }
 
 function wrappedPanel(p) {
-  if (p.frame) return [tinCanvas(p)];
+  if (p.frame) return [tinCanvas(p), h('p', { class: 'panel-message' }, p.message)];
   return [
     h('div', { class: 'panel-emoji', 'aria-hidden': 'true' }, p.emoji),
     h('h3', { class: 'panel-title' }, p.title),
@@ -1244,7 +1219,7 @@ function displayWrapped(courses) {
 function updateWrappedDisplay() {
   if (!wrappedPanels.length) return;
   $('wrappedPanel').replaceChildren(...flat(wrappedPanel(wrappedPanels[wrappedCurrentPanel])));
-  $('wrappedId').hidden = !wrappedPanels[wrappedCurrentPanel].frame;
+  $('wrappedId').hidden = wrappedPanels[wrappedCurrentPanel].frame !== 'id';
   $('wrappedProgress').textContent = `${wrappedCurrentPanel + 1} of ${wrappedPanels.length}`;
   $('wrappedPrev').disabled = wrappedCurrentPanel === 0;
   $('wrappedNext').disabled = wrappedCurrentPanel === wrappedPanels.length - 1;

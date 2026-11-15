@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.12 (2026-11-16)
+
+### Changes
+- The Semester stats slide in Wrapped is drawn in the tin frame too, with the best and toughest sems in the tray.
+- The GWA slide is always the tin's ID card. The photo upload is gone, and the picture slot is left for a photo added in Instagram or Facebook.
+
 ## 2.1.11 (2026-11-16)
 
 ### Changes
