@@ -294,7 +294,7 @@ const UPLB_PROGRAMS = {
         "code": "CMSC 22",
         "title": "Object-Oriented Programming",
         "units": 3,
-        "year": 1,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "CMSC 12"
@@ -304,10 +304,10 @@ const UPLB_PROGRAMS = {
         "code": "CMSC 23",
         "title": "Mobile Computing",
         "units": 3,
-        "year": 1,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
@@ -316,18 +316,16 @@ const UPLB_PROGRAMS = {
         "units": 3,
         "year": 1,
         "sem": "1",
-        "prereqs": [
-          "CMSC 12"
-        ]
+        "prereqs": []
       },
       {
         "code": "CMSC 57",
         "title": "Discrete Mathematical Structures in Computer Science II",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 56"
         ]
       },
       {
@@ -335,9 +333,9 @@ const UPLB_PROGRAMS = {
         "title": "Web Programming",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
@@ -345,29 +343,30 @@ const UPLB_PROGRAMS = {
         "title": "Data Structures",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 57",
+          "CMSC 21"
         ]
       },
       {
         "code": "CMSC 124",
         "title": "Design and Implementation of Programming Languages",
         "units": 3,
-        "year": 2,
+        "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 125",
         "title": "Operating Systems",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
@@ -375,39 +374,39 @@ const UPLB_PROGRAMS = {
         "title": "File Processing and Database Systems",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 22"
         ]
       },
       {
         "code": "CMSC 128",
         "title": "Introduction to Software Engineering",
         "units": 3,
-        "year": 2,
+        "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 130",
         "title": "Logic Design and Digital Computer Circuits",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 57"
         ]
       },
       {
         "code": "CMSC 131",
         "title": "Introduction to Computer Organization and Machine Level Programming",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 21"
         ]
       },
       {
@@ -417,7 +416,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 131"
         ]
       },
       {
@@ -427,7 +426,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 125"
         ]
       },
       {
@@ -437,7 +436,7 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
@@ -447,47 +446,49 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 150",
         "title": "Numerical and Symbolic Computation",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 21",
+          "MATH 27"
         ]
       },
       {
         "code": "CMSC 170",
         "title": "Introduction to Artificial Intelligence",
         "units": 3,
-        "year": 4,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123"
         ]
       },
       {
         "code": "CMSC 173",
         "title": "Human Computer Interaction",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 3,
+        "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 123",
+          "STAT 101"
         ]
       },
       {
         "code": "CMSC 180",
         "title": "Introduction to Parallel Computing",
         "units": 3,
-        "year": 4,
+        "year": 3,
         "sem": "2",
         "prereqs": [
-          "CMSC 12"
+          "CMSC 132"
         ]
       },
       {
@@ -535,9 +536,7 @@ const UPLB_PROGRAMS = {
         "track": "thesis",
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "CMSC 12"
-        ]
+        "prereqs": []
       },
       {
         "code": "CMSC 200 (2)",
@@ -555,8 +554,8 @@ const UPLB_PROGRAMS = {
         "code": "STAT 101",
         "title": "Statistical Methods",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -564,7 +563,7 @@ const UPLB_PROGRAMS = {
         "title": "Writing of Scientific Papers",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       }
     ],
