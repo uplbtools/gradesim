@@ -592,6 +592,10 @@ const UPLB_PROGRAMS = {
       "CMSC 170",
       "CMSC 173",
       "CMSC 180",
+      "CMSC 190",
+      "CMSC 198",
+      "CMSC 199",
+      "CMSC 200",
       "STAT 101",
       "ENG 10"
     ],
