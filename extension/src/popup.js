@@ -313,7 +313,7 @@ function parseAMISData(data) {
 
     const abs = amisTermToAbs(termId);
     const ay = abs == null ? '' : `${Math.floor(abs / 3)}-${Math.floor(abs / 3) + 1}`;
-    const termInfo = termData.term || (ay ? `${['1st Semester', '2nd Semester', 'Midyear'][abs % 3]} AY ${ay}` : `Term ${termId}`);
+    const termInfo = termData.term || (ay ? `${['1st sem', '2nd sem', 'Midyear'][abs % 3]} AY ${ay}` : `Term ${termId}`);
 
     for (const courseData of termData.values) {
       courses.push({
@@ -386,7 +386,7 @@ function displayGradesData(courses) {
   $('currentGWA').textContent = gwa.toFixed(4);
   $('gwaStats').replaceChildren(...flat([
     stat('Units passed', passedUnits, { variant: 'row' }),
-    excludedCount > 0 && stat('Left out by you', `${plural(excludedCount, 'course')}, ${unitsText(excludedUnits)}`, { variant: 'row' }),
+    excludedCount > 0 && stat('Left out', `${plural(excludedCount, 'course')}, ${unitsText(excludedUnits)}`, { variant: 'row' }),
     syncStatus(fetchedAt, refreshGrades)]));
 
   // Store calculated data for What If
@@ -573,7 +573,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
         icon('chevron'),
         h('h3', { class: 'group-title' }, groupKey),
         h('span', { class: 'group-gwa-info' },
-          h('span', { class: 'group-gwa' }, groupGWA.gwa > 0 ? `GWA ${groupGWA.gwa.toFixed(2)}` : 'No GWA yet'),
+          h('span', { class: 'group-gwa' }, groupGWA.gwa > 0 ? `GWA ${groupGWA.gwa.toFixed(4)}` : 'No GWA yet'),
           honorBadge(scholar))),
       courses.map(course => {
         const courseId = courseIdOf(course);
@@ -590,7 +590,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
           // Only numeric grades have a GWA to leave out of.
           below: [counts && button({
             variant: 'text', class: 'exclude-toggle',
-            text: isExcluded ? 'Count in GWA' : 'Leave out of GWA',
+            text: isExcluded ? 'Left out' : 'Leave out',
             'aria-label': `${isExcluded ? 'Count' : 'Leave'} ${code} ${isExcluded ? 'in' : 'out of'} the GWA`,
             onclick: () => toggleCourseExclusion(courseId, allCourses),
           }), removalPicker(course)],
@@ -996,10 +996,10 @@ function generateGWAPanel(data) {
 
 function generateSemesterPanel(data) {
   const semCount = Object.keys(data.semesterGWAs).length;
-  const panel = { emoji: '📅', title: 'Semester stats', highlights: [], caption: 'My best and toughest semester' };
+  const panel = { emoji: '📅', title: 'Sem stats', highlights: [], caption: 'My best and toughest sem' };
 
   if (semCount === 0) {
-    return { ...panel, value: '--', subtitle: 'No semester grades yet', message: 'Check back once grades are in.', caption: null };
+    return { ...panel, value: '--', subtitle: 'No sem has grades yet', message: 'Check back once grades are in.', caption: null };
   }
 
   if (data.bestSemester) {
@@ -1010,7 +1010,7 @@ function generateSemesterPanel(data) {
     else if (best.gwa <= 1.75) reaction = 'a solid sem';
     else if (best.gwa <= 2.00) reaction = 'a good one';
     else reaction = 'your best so far';
-    panel.highlights.push({ label: '🏆 Best semester', name: best.name, detail: `GWA ${best.gwa.toFixed(2)}, ${reaction}` });
+    panel.highlights.push({ label: '🏆 Best sem', name: best.name, detail: `GWA ${best.gwa.toFixed(4)}, ${reaction}` });
   }
 
   // "Needs work" semester (only if different from best)
@@ -1022,13 +1022,13 @@ function generateSemesterPanel(data) {
     else if (tough.gwa >= 2.5) reaction = 'a challenging one';
     else if (tough.gwa >= 2.0) reaction = 'a tough load';
     else reaction = 'room to grow';
-    panel.highlights.push({ label: '📈 Toughest semester', name: tough.name, detail: `GWA ${tough.gwa.toFixed(2)}, ${reaction}` });
+    panel.highlights.push({ label: '📈 Toughest sem', name: tough.name, detail: `GWA ${tough.gwa.toFixed(4)}, ${reaction}` });
   }
 
-  if (semCount >= 8) panel.message = `${semCount} semesters done. Almost there.`;
+  if (semCount >= 8) panel.message = `${semCount} sems done. Almost there.`;
   else if (semCount >= 6) panel.message = `${semCount} sems done. The end is in sight.`;
   else if (semCount >= 4) panel.message = `${semCount} sems in. You're about halfway.`;
-  else if (semCount >= 2) panel.message = `${semCount} semesters down, more to go.`;
+  else if (semCount >= 2) panel.message = `${semCount} sems down, more to go.`;
   else panel.message = 'Just getting started.';
 
   return { ...panel, frame: panel.highlights.length > 0 && 'tin' };
@@ -1040,9 +1040,9 @@ function generateCollectorPanel(data) {
 
   let emoji, title, message;
   if (totalDistinct >= 10) {
-    [emoji, title, message] = ['🎰', 'Full collection', "You've seen it all, from 1.0 to 5.0 plus S, U, INC and DRP. Your transcript tells a story."];
+    [emoji, title, message] = ['🎰', 'Full collection', "You've seen it all, from 1.00 to 5.00 plus S, U, INC and DRP. Your transcript tells a story."];
   } else if (totalDistinct >= 7) {
-    [emoji, title, message] = ['🃏', 'Variety pack', "A bit of everything. You've taken very different kinds of subjects with different outcomes."];
+    [emoji, title, message] = ['🃏', 'Variety pack', "A bit of everything. You've taken very different kinds of courses with different outcomes."];
   } else if (totalDistinct >= 4) {
     [emoji, title, message] = ['🎲', 'Mixed bag', 'Some ups, some downs. Pretty normal for most students tbh.'];
   } else if (numericGrades === 1 && data.gwa <= 1.5) {
@@ -1062,22 +1062,22 @@ function generatePerseverancePanel(data) {
   let emoji, title, message;
 
   if (fails === 0) {
-    [emoji, title, message] = ['🏅', 'Clean record', "Zero 5.0s. That's actually impressive. Not everyone can say that."];
+    [emoji, title, message] = ['🏅', 'Clean record', "Zero 5.00s. That's actually impressive. Not everyone can say that."];
   } else if (fails === 1) {
     [emoji, title, message] = ['💫', 'One setback', "One 5.0 isn't the end of the world. It happens to plenty of us. Bounce back season."];
   } else if (fails <= 3) {
-    [emoji, title, message] = ['🔥', 'Still standing', `${fails} failed subjects but you're still here. Every retake is a chance to do better.`];
+    [emoji, title, message] = ['🔥', 'Still standing', `${fails} failed courses but you're still here. Every retake is a chance to do better.`];
   } else if (fails <= 5) {
     [emoji, title, message] = ['🦅', 'Fighting spirit', `${fails} times down but not out. The fact that you're still going says a lot.`];
   } else {
-    [emoji, title, message] = ['💎', 'Survivor', `${fails} 5.0s and still pushing through? That takes real grit. Respect.`];
+    [emoji, title, message] = ['💎', 'Survivor', `${fails} 5.00s and still pushing through? That takes real grit. Respect.`];
   }
 
-  return { emoji, title, value: String(fails), subtitle: fails === 1 ? 'subject to retake' : 'subjects to retake', message };
+  return { emoji, title, value: String(fails), subtitle: fails === 1 ? 'course to retake' : 'courses to retake', message };
 }
 
 function generateHighlightsPanel(data) {
-  const panel = { emoji: '✨', title: 'Your highlights', highlights: [], caption: 'My highest and lowest grade', message: 'Every subject counts toward the degree.' };
+  const panel = { emoji: '✨', title: 'Your highlights', highlights: [], caption: 'My highest and lowest grade', message: 'Every course counts toward the degree.' };
 
   if (data.highestGradeCourse) {
     panel.highlights.push({ label: '🏆 Best performance', name: data.highestGradeCourse.code, detail: `Grade ${data.highestGradeCourse.grade.toFixed(2)}` });
@@ -1089,7 +1089,7 @@ function generateHighlightsPanel(data) {
     panel.highlights.push({ label: '🔄 Persistence award', name: data.mostRetakedCourse.code, detail: `Taken ${data.mostRetakedCourse.count} times. You didn't give up.` });
   }
   if (!data.highestGradeCourse && !data.lowestGradeCourse) {
-    panel.subtitle = 'Finish a few subjects to see your highlights.';
+    panel.subtitle = 'Pass a course to see your highlights.';
     panel.caption = null;
   }
   return panel;
@@ -1378,7 +1378,7 @@ async function exportWrappedToPNG() {
 
 const SYNC_ERRORS = {
   'not-logged-in': 'Log in to AMIS, then press Refresh.',
-  'amis-error': "AMIS didn't answer. Try again later.",
+  'amis-error': "AMIS didn't answer. Check that AMIS opens in a tab, then press Refresh.",
   'no-tab': 'Open AMIS in a tab first.',
   'no-answer': 'Reload your AMIS tab once, then press Refresh.',
 };
@@ -1462,11 +1462,11 @@ function wireBackup() {
 // from version 1 or the web app and use the same keys.
 function parseBackup(text) {
   let obj;
-  try { obj = JSON.parse(text); } catch (e) { throw new Error("That file isn't valid JSON, so nothing was changed."); }
-  if (!obj || obj.source !== 'elbi-gradesim') throw new Error("That file isn't an Elbi GradeSim backup.");
+  try { obj = JSON.parse(text); } catch (e) { throw new Error("GradeSim can't read that file, so nothing changed. Pick the backup GradeSim saved."); }
+  if (!obj || obj.source !== 'elbi-gradesim') throw new Error("That file isn't a GradeSim backup, so nothing changed.");
   const v = obj.schemaVersion == null ? 1 : obj.schemaVersion;
   if (!Number.isInteger(v) || v < 1 || v > BACKUP_SCHEMA_VERSION) {
-    throw new Error('That backup comes from a newer version of Elbi GradeSim. Update the extension first.');
+    throw new Error('That backup comes from a newer GradeSim. Update the extension, then load it again.');
   }
   const toSave = {};
   BACKUP_KEYS.forEach(k => { if (obj[k] != null) toSave[k] = obj[k]; });

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.14 (2026-11-16)
+
+### Changes
+- The popup uses the same names as the web app. A semester is a sem, a subject is a course, What if is Target, and Export JSON and Import JSON are Save backup and Load backup.
+- A sem's GWA shows 4 decimals, like the overall GWA.
+- A file GradeSim can't load and an AMIS that doesn't answer now say what to do next.
+
 ## 2.1.13 (2026-11-16)
 
 ### Changes

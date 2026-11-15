@@ -52,7 +52,7 @@
         <div class="content-column">
           <div class="tabs" aria-label="Sections">
             <button class="tab active" type="button" data-tab="grades">Grades</button>
-            <button class="tab" type="button" data-tab="whatif">What if</button>
+            <button class="tab" type="button" data-tab="whatif">Target</button>
             <button class="tab" type="button" data-tab="planner">Planner</button>
             <button class="tab" type="button" data-tab="wrapped">Wrapped</button>
           </div>
@@ -67,7 +67,7 @@
               </section>
 
             <div class="view-toggle" role="group" aria-label="Group grades">
-              <button class="view-btn active" type="button" data-view="semester" aria-pressed="true">By semester</button>
+              <button class="view-btn active" type="button" data-view="semester" aria-pressed="true">By sem</button>
               <button class="view-btn" type="button" data-view="year" aria-pressed="false">By year</button>
             </div>
             <button id="pickExclusions" class="btn-text pick-exclusions" type="button" aria-pressed="false">Leave courses out of the GWA</button>
@@ -159,7 +159,7 @@
                 <span id="wrappedProgress" class="wrapped-progress">1 of 6</span>
                 <button id="wrappedNext" class="btn btn-secondary btn-sm" type="button">Next<span data-icon="next"></span></button>
               </div>
-              <button id="wrappedExport" class="btn btn-primary wrapped-export" type="button">Save slide as an image</button>
+              <button id="wrappedExport" class="btn btn-primary wrapped-export" type="button">Save this card</button>
             </div>
           </section>
         </div>
@@ -167,8 +167,8 @@
     </div>
 
     <div class="data-actions-footer">
-      <button id="exportBtn" class="header-btn" type="button" title="Save grades and settings to a JSON file"><span data-icon="download"></span>Export JSON</button>
-      <button id="importBtn" class="header-btn" type="button" title="Restore grades and settings from a JSON file"><span data-icon="upload"></span>Import JSON</button>
+      <button id="exportBtn" class="header-btn" type="button" title="Save your grades and settings to a file"><span data-icon="download"></span>Save backup</button>
+      <button id="importBtn" class="header-btn" type="button" title="Load grades and settings from a backup"><span data-icon="upload"></span>Load backup</button>
       <input type="file" id="importFile" accept=".json" hidden>
     </div>
     <div id="dataNotice" aria-live="polite"></div>
@@ -191,28 +191,28 @@
         <span class="help-icon"><span data-icon="award"></span></span>
         <div class="help-text">
           <strong>Scholar status</strong>
-          <p>A semester shows University Scholar at a GWA of 1.45 or better and College Scholar at 1.75 or better, when you carried at least 15 units with no 4.00, 5.00 or INC.</p>
+          <p>A sem shows University Scholar at a GWA of 1.45 or better and College Scholar at 1.75 or better, when you carried at least 15 units with no 4.00, 5.00 or INC.</p>
         </div>
       </div>
       <div class="help-item">
         <span class="help-icon"><span data-icon="target"></span></span>
         <div class="help-text">
           <strong>Target Latin honors</strong>
-          <p>In the What if tab, pick a Latin honor such as cum laude. GradeSim shows the average grade you need in your remaining units to reach it.</p>
+          <p>In the Target tab, pick a Latin honor such as cum laude. GradeSim shows the average grade you need in your remaining units to reach it.</p>
         </div>
       </div>
       <div class="help-item">
         <span class="help-icon"><span data-icon="download"></span></span>
         <div class="help-text">
           <strong>Backup and restore</strong>
-          <p>Export JSON saves your grades and settings to a file. Import JSON restores them later or on another device.</p>
+          <p>Save backup puts your grades and settings in a file. Load backup brings them back later or on another device.</p>
         </div>
       </div>
       <div class="help-item">
         <span class="help-icon"><span data-icon="trash"></span></span>
         <div class="help-text">
           <strong>Clear my data</strong>
-          <p>Delete your grades and every setting GradeSim saved in this browser. Export JSON first if you want a copy.</p>
+          <p>Delete your grades and every setting GradeSim saved in this browser. Save a backup first if you want a copy.</p>
           <button id="clearDataBtn" class="btn btn-danger btn-sm" type="button">Clear my data</button>
         </div>
       </div>
@@ -220,7 +220,7 @@
         <span class="help-icon"><span data-icon="sparkles"></span></span>
         <div class="help-text">
           <strong>Elbi GradeSim Wrapped</strong>
-          <p>Wrapped is a short recap of your grades so far. You can save any slide as an image for an Instagram story.</p>
+          <p>Wrapped is a short recap of your grades so far. You can save any card for an Instagram story.</p>
         </div>
       </div>
       <div class="help-item">
