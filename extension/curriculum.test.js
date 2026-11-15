@@ -83,8 +83,9 @@ assert.deepStrictEqual(good.reasons, []);
 const thin = getProgramDataQuality('BAPHILO', UPLB_CATALOG);
 assert.strictEqual(thin.confident, false);
 assert.ok(thin.prereqShare < 0.3 && thin.reasons.length === 1);
-const soon = getProgramDataQuality('ASDC', UPLB_CATALOG);
-assert.strictEqual(soon.confident, false);
+UPLB_PROGRAMS.SOON = { ...UPLB_PROGRAMS.BSCS, available: false };
+assert.strictEqual(getProgramDataQuality('SOON', UPLB_CATALOG).confident, false);
+delete UPLB_PROGRAMS.SOON;
 assert.strictEqual(getProgramDataQuality('NOPE').confident, false);
 
 console.log('curriculum.test.js: all assertions passed');

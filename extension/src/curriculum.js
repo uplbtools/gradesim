@@ -4953,23 +4953,57 @@ const UPLB_PROGRAMS = {
     "name": "Associate in Arts in Sports Studies",
     "college": "CAS",
     "collegeName": "College of Arts and Sciences",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 78,
-    "geCoursesRequired": 5,
+    "geCoursesRequired": 6,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "SS 102",
-        "title": "Introduction to Sports Studies",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PEd 91",
-        "title": "Physical Education 91",
+        "code": "SS 102",
+        "title": "Human Anatomy and Physiology 1",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 1",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MAJ 2",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "PED 91",
+        "title": "Fundamental Rhythms",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -4977,191 +5011,190 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "SS 110",
-        "title": "Foundations of Sports Studies",
+        "title": "Basic Weight Training",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 92",
-        "title": "Physical Education 92",
+        "code": "MAJ 3",
+        "title": "HK Elective",
         "units": 3,
         "year": 1,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "PED 92",
+        "title": "Philippine Games",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
       },
       {
         "code": "SS 103",
-        "title": "Sports Science Fundamentals",
+        "title": "Human Anatomy and Physiology 2",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 151",
-        "title": "Physical Education 151",
+        "code": "PED 151",
+        "title": "Folk Dance",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
         "code": "KAS 1",
         "title": "Kasaysayan ng Pilipinas/Philippine History",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 1,
+        "sem": "midyear",
         "prereqs": []
       },
       {
         "code": "SS 104",
-        "title": "Sports Studies 104",
+        "title": "Tests and Measurement in Exercise and Sport Sciences",
         "units": 3,
         "year": 2,
         "sem": "1",
-        "prereqs": [
-          "SS 102"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 93",
-        "title": "Physical Education 93",
+        "code": "PED 93",
+        "title": "Philosophy of Sports and Physical Education",
         "units": 3,
         "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "sem": "1",
+        "prereqs": []
       },
       {
         "code": "SS 130",
-        "title": "Sports Studies 130",
+        "title": "First Aid",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "SS 102"
         ]
       },
       {
-        "code": "PEd 174",
-        "title": "Physical Education 174",
+        "code": "PED 174",
+        "title": "Outdoor Recreation",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
       },
       {
-        "code": "PEd 176",
-        "title": "Physical Education 176",
+        "code": "PED 176",
+        "title": "Recreation for Special Groups",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 4",
+        "title": "HK Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "MATH 10",
-        "title": "Mathematics 10",
+        "title": "Mathematics, Culture, and Society",
         "units": 3,
-        "year": 3,
-        "sem": "2",
+        "year": 2,
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "SS 120",
-        "title": "Sports Studies 120",
+        "title": "Basic Fitness Dance",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "SS 102"
-        ]
-      },
-      {
-        "code": "PI 100",
-        "title": "The Life, Works, and Writings of Jose Rizal",
-        "units": 3,
-        "year": 4,
-        "sem": "1",
         "prereqs": []
       },
       {
-        "code": "PEd 172",
-        "title": "Physical Education 172",
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 100",
-        "title": "Physical Education 100",
+        "code": "PED 172",
+        "title": "Community Recreation",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
-      },
-      {
-        "code": "PEd 196",
-        "title": "Physical Education 196",
-        "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "prereqs": []
       },
       {
-        "code": "PEd 130.1",
-        "title": "Physical Education 130.1",
+        "code": "PED 100",
+        "title": "Introduction to Physical Education and Exercise and Sport Sciences",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "PEd 91"
-        ]
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PED 196",
+        "title": "AASS Internship",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "PED 130.1",
+        "title": "Basic Aquatics",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
       }
     ],
     "requiredCodes": [
+      "ETHICS 1",
       "SS 102",
-      "SS 103",
-      "SS 104",
+      "PED 91",
+      "COMM 10",
       "SS 110",
-      "SS 120",
-      "SS 130",
-      "PEd 91",
-      "PEd 92",
-      "PEd 93",
-      "PEd 100",
-      "PEd 130.1",
-      "PEd 151",
-      "PEd 172",
-      "PEd 174",
-      "PEd 176",
-      "PEd 196",
+      "PED 92",
+      "SS 103",
+      "PED 151",
       "KAS 1",
-      "PI 100",
-      "MATH 10"
+      "SS 104",
+      "PED 93",
+      "SS 130",
+      "PED 174",
+      "PED 176",
+      "MATH 10",
+      "SS 120",
+      "PI 10",
+      "PED 172",
+      "PED 100",
+      "PED 196",
+      "PED 130.1"
     ],
-    "hkCoursesRequired": 5
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSAGRI": {
     "code": "BSAGRI",
@@ -12032,26 +12065,26 @@ const UPLB_PROGRAMS = {
     "name": "Associate in Arts in Entrepreneurship",
     "college": "CEM",
     "collegeName": "College of Economics and Management",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 75,
-    "geCoursesRequired": 5,
+    "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "KAS 1",
-        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "COMM 10",
-        "title": "Critical Perspectives in Communication",
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -12067,7 +12100,7 @@ const UPLB_PROGRAMS = {
         "title": "Foundations of Entrepreneurship",
         "units": 3,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -12079,29 +12112,65 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ARTS 1",
-        "title": "Critical Perspectives in the Arts",
+        "code": "MGT 111",
+        "title": "Principles of Accounting",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "MGT 111",
-        "title": "Principles of Accounting",
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
         "units": 3,
-        "year": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MGT 113",
+        "title": "Managerial Accounting",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MGT 111"
+        ]
+      },
+      {
+        "code": "MGT 151",
+        "title": "Introduction to Marketing Management",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "PI 10",
-        "title": "The Life, Works, and Writings of Jose Rizal",
+        "code": "FE 1",
+        "title": "Elective",
         "units": 3,
-        "year": 2,
+        "year": 1,
         "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "FE 2",
+        "title": "Elective",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ENTR 198",
+        "title": "Internship",
+        "units": 3,
+        "year": 1,
+        "sem": "midyear",
         "prereqs": []
       },
       {
@@ -12115,103 +12184,111 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "ABME 174",
-        "title": "Business Planning",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABME 10"
-        ]
-      },
-      {
         "code": "ABME 115",
         "title": "Entrepreneurial Finance",
         "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
-          "ABME 10"
+          "MGT 111"
         ]
       },
       {
-        "code": "MGT 113",
-        "title": "Managerial Accounting",
+        "code": "MGT 131",
+        "title": "Introduction to Human Relations and Behavior in Organizations",
         "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "MGT 101"
-        ]
-      },
-      {
-        "code": "MGT 151",
-        "title": "Introduction to Marketing Management",
-        "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "1",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "ENTR 198",
-        "title": "Internship",
+        "code": "FE 3",
+        "title": "Elective",
         "units": 3,
-        "gradeType": "S/U",
-        "year": 3,
-        "sem": "2",
-        "prereqs": []
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "FE 4",
+        "title": "Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "ETHICS 1",
-        "title": "Ethics and Moral Reasoning for Everyday Life",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABME 174",
+        "title": "Business Planning",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ABME 115",
+          "ABME 172"
+        ]
       },
       {
         "code": "MGT 161",
         "title": "Business Law",
         "units": 3,
-        "year": 4,
-        "sem": "1",
+        "year": 2,
+        "sem": "2",
         "prereqs": [
           "MGT 101"
         ]
       },
       {
-        "code": "MGT 131",
-        "title": "Introduction to Human Relations and Behavior in Organization",
+        "code": "FE 5",
+        "title": "Elective",
         "units": 3,
-        "year": 4,
+        "year": 2,
         "sem": "2",
-        "prereqs": [
-          "MGT 101"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       }
     ],
     "requiredCodes": [
-      "KAS 1",
       "COMM 10",
+      "KAS 1",
       "STS 1",
-      "ARTS 1",
-      "ETHICS 1",
-      "PI 10",
       "ABME 10",
-      "ABME 172",
-      "ABME 174",
-      "ABME 115",
       "MGT 101",
       "MGT 111",
+      "ARTS 1",
       "MGT 113",
-      "MGT 131",
       "MGT 151",
-      "MGT 161",
-      "ENTR 198"
+      "ENTR 198",
+      "ABME 172",
+      "ABME 115",
+      "MGT 131",
+      "ETHICS 1",
+      "PI 10",
+      "ABME 174",
+      "MGT 161"
     ],
-    "hkCoursesRequired": 4
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSACCT": {
     "code": "BSACCT",
@@ -13116,23 +13193,97 @@ const UPLB_PROGRAMS = {
     "name": "Associate in Forestry",
     "college": "CFNR",
     "collegeName": "College of Forestry and Natural Resources",
-    "available": false,
-    "totalUnitsRequired": 72,
+    "available": true,
+    "totalUnitsRequired": 75,
     "geCoursesRequired": 6,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 10",
+        "title": "Biology of Tropical Forest Plants",
+        "units": 4,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
         "code": "FOR 1",
-        "title": "Introduction to Forestry",
+        "title": "Introduction to Forests and Forestry",
         "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "FOR 21",
-        "title": "Dendrology",
+        "code": "FPPS 11",
+        "title": "Wood Structure and Identification",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 30",
+        "title": "Forest Nurseries",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FRM 92",
+        "title": "Forest Engineering",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FBS 21",
+        "title": "Taxonomy of Forest Plants",
+        "units": 4,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "FBS 10"
+        ]
+      },
+      {
+        "code": "WLDL 101",
+        "title": "Introduction to Philippine Wildlife",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 101",
+        "title": "Principles and Concepts of Social Forestry",
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -13141,103 +13292,148 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "FOR 31",
-        "title": "Forest Mensuration",
-        "units": 4,
+        "code": "SFFG 123",
+        "title": "Forest Policy and Institutions",
+        "units": 3,
         "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 41",
-        "title": "Silvics and Silviculture",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 51",
-        "title": "Forest Ecology",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 101",
-        "title": "Forest Management",
-        "units": 4,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 111",
-        "title": "Forest Utilization",
-        "units": 4,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "FOR 121",
-        "title": "Forest Protection",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "FOR 1"
-        ]
-      },
-      {
-        "code": "BIO 1",
-        "title": "General Biology I",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 16",
-        "title": "General Chemistry I",
-        "units": 4,
-        "year": 4,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "MATH 17",
-        "title": "Algebra and Trigonometry",
-        "units": 5,
-        "year": 4,
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 2,
         "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 127",
+        "title": "Properties and Utilization of Forest Products",
+        "units": 4,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FPPS 11"
+        ]
+      },
+      {
+        "code": "FRM 61",
+        "title": "Forest Biometry",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FBS 21"
+        ]
+      },
+      {
+        "code": "FRM 94",
+        "title": "Forest Products Harvesting",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "FRM 92"
+        ]
+      },
+      {
+        "code": "SFFG 180",
+        "title": "Organizing Forest-Dependent Communities",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FPPS 182",
+        "title": "Production Planning and Control",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FRM 165",
+        "title": "Forest Surveys",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "FBS 21",
+          "FRM 61",
+          "FRM 92"
+        ]
+      },
+      {
+        "code": "NRC 140",
+        "title": "Introduction to Geographic Information Systems",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFFG 113",
+        "title": "Forestry Extension",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "SFI 103",
+        "title": "Fundamentals of Agroforestry",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
         "prereqs": []
       }
     ],
     "requiredCodes": [
+      "COMM 10",
+      "FBS 10",
       "FOR 1",
-      "FOR 21",
-      "FOR 31",
-      "FOR 41",
-      "FOR 51",
-      "FOR 101",
-      "FOR 111",
-      "FOR 121",
-      "BIO 1",
-      "CHEM 16",
-      "MATH 17"
-    ]
+      "FPPS 11",
+      "SFI 30",
+      "FRM 92",
+      "ARTS 1",
+      "ETHICS 1",
+      "FBS 21",
+      "WLDL 101",
+      "SFFG 101",
+      "SFFG 123",
+      "KAS 1",
+      "STS 1",
+      "FPPS 127",
+      "FRM 61",
+      "FRM 94",
+      "SFFG 180",
+      "PI 10",
+      "FPPS 182",
+      "FRM 165",
+      "NRC 140",
+      "SFFG 113",
+      "SFI 103"
+    ],
+    "hkCoursesRequired": 4,
+    "nstpCoursesRequired": 2
   },
   "BSHE": {
     "code": "BSHE",
@@ -14414,12 +14610,44 @@ const UPLB_PROGRAMS = {
     "name": "Associate of Science in Development Communication",
     "college": "CDC",
     "collegeName": "College of Development Communication",
-    "available": false,
+    "available": true,
     "totalUnitsRequired": 72,
-    "geCoursesRequired": 6,
+    "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "WIKA 1",
+        "title": "Wika, Kultura, at Lipunan",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
       {
         "code": "DEVC 10",
         "title": "Introduction to Development Communication",
@@ -14429,28 +14657,130 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
+        "code": "DEVC 11",
+        "title": "Introduction to Media Writing for Development",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
         "code": "DEVC 20",
-        "title": "Communication Theories",
+        "title": "Fundamentals of Development Journalism",
         "units": 3,
         "year": 1,
         "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 11"
         ]
       },
       {
         "code": "DEVC 30",
-        "title": "Communication Research Methods",
+        "title": "Fundamentals of Community Broadcasting",
         "units": 3,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 11"
         ]
       },
       {
         "code": "DEVC 40",
-        "title": "Development Journalism",
+        "title": "Fundamentals of Educational Communication and Technology",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 11"
+        ]
+      },
+      {
+        "code": "DEVC 50",
+        "title": "Introduction to Science Communication",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 11"
+        ]
+      },
+      {
+        "code": "DEVC 70",
+        "title": "Interpersonal Communication in Development",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 10"
+        ]
+      },
+      {
+        "code": "DEVC 103",
+        "title": "Visual and Audiovisual Media Production",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 40"
+        ]
+      },
+      {
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "DEVC 135",
+        "title": "Multi-Media Materials Planning and Design",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 103"
+        ]
+      },
+      {
+        "code": "DEVC 125",
+        "title": "Writing and Reporting for Development",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "DEVC 20",
+          "DEVC 30"
+        ]
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Technical Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "DEVC 80",
+        "title": "Communication and Society",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -14459,43 +14789,59 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "DEVC 50",
-        "title": "Development Broadcasting",
+        "code": "DEVC 144",
+        "title": "Media-Based Learning Systems",
         "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "DEVC 10"
-        ]
-      },
-      {
-        "code": "DEVC 60",
-        "title": "Educational Communication",
-        "units": 3,
-        "year": 3,
+        "year": 2,
         "sem": "2",
         "prereqs": [
-          "DEVC 10"
+          "DEVC 135"
         ]
       },
       {
-        "code": "ENG 10",
-        "title": "Writing of Scientific Papers",
+        "code": "DEVC 153",
+        "title": "Managing Information for Development",
         "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": []
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 50"
+        ]
+      },
+      {
+        "code": "MAJ 2",
+        "title": "Technical Elective",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
       }
     ],
     "requiredCodes": [
+      "KAS 1",
+      "STS 1",
+      "PI 10",
+      "WIKA 1",
       "DEVC 10",
+      "DEVC 11",
+      "ARTS 1",
+      "ETHICS 1",
       "DEVC 20",
       "DEVC 30",
       "DEVC 40",
       "DEVC 50",
-      "DEVC 60",
-      "ENG 10"
-    ]
+      "DEVC 70",
+      "DEVC 103",
+      "COMM 10",
+      "DEVC 135",
+      "DEVC 125",
+      "DEVC 80",
+      "DEVC 144",
+      "DEVC 153"
+    ],
+    "hkCoursesRequired": 3,
+    "nstpCoursesRequired": 2
   },
   "DVM": {
     "code": "DVM",
