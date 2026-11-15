@@ -1155,13 +1155,13 @@ function navigateWrapped(direction) {
 }
 
 // Export the current Wrapped slide as a transparent story-sized PNG, drawn
-// with the bundled Inter and Raleway faces.
+// with the bundled Figtree face.
 async function exportWrappedToPNG() {
   const p = wrappedPanels[wrappedCurrentPanel];
   if (!p) return;
 
-  const DISPLAY = '"Raleway", "Inter", sans-serif';
-  const TEXT = '"Inter", system-ui, sans-serif';
+  const DISPLAY = '"Figtree", system-ui, sans-serif';
+  const TEXT = DISPLAY;
   await Promise.all([
     document.fonts.load(`800 28px ${DISPLAY}`),
     document.fonts.load(`600 16px ${TEXT}`),
