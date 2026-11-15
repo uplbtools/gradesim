@@ -1170,6 +1170,12 @@ input[type="checkbox"] {
   font-weight: 600;
 }
 
+.wrapped-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .wrapped-id input[type="text"] {
   min-height: 40px;
   padding: 8px 10px;
@@ -1210,33 +1216,6 @@ input[type="checkbox"] {
   background: var(--brand-tint);
   color: var(--ink);
   max-width: 300px;
-}
-
-.highlight-course {
-  width: 100%;
-  max-width: 300px;
-  padding: 8px 12px;
-  text-align: left;
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-.highlight-label,
-.highlight-detail {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.highlight-name {
-  font-weight: 700;
-}
-
-.grade-badges {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
 }
 
 .wrapped-nav {

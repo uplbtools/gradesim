@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.15 (2026-11-16)
+
+### Changes
+- Every Wrapped card is drawn on Reann Vargas's picnic art. The GWA card shows your tier, and a checkbox adds the number.
+- Semester stats shows a line of your sem GWAs and your comeback sem. The 5.00 count is now part of the grade collection card, so Wrapped has five cards.
+- Each card shows gradesim.uplb.tools, and a card saves as a JPEG.
+
 ## 2.1.14 (2026-11-16)
 
 ### Changes

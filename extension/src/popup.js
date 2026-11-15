@@ -848,132 +848,70 @@ function initializeWrapped() {
   $('wrappedNext').addEventListener('click', () => navigateWrapped(1));
   $('wrappedExport').addEventListener('click', exportWrappedToPNG);
   $('wrappedName').addEventListener('input', redrawTin);
+  $('wrappedNumber').addEventListener('change', redrawTin);
   $('programSelect').addEventListener('change', redrawTin);
 }
 
 function generateWrappedData(courses) {
-  const data = {
-    gwa: 0,
-    totalUnits: 0,
-    distinctGrades: new Set(),
-    gradeDistribution: {},
-    fails: 0,
-    retakes: {},
-    highestGradeCourse: null,
-    lowestGradeCourse: null,
-    mostRetakedCourse: null,
-    totalCourses: 0,
-    specialGrades: [],
-    semesterGWAs: {}
-  };
-
-  let totalWeighted = 0;
-  const semesterData = {};
+  const distinct = new Set();
+  const distribution = {};
+  const retakes = {};
+  const sems = new Map();
+  let fails = 0, weighted = 0, units = 0, passedUnits = 0, best = null, worst = null;
 
   courses.forEach(course => {
-    const courseCode = course.courseCode || '';
-    const gradeStr = (course.grade || '').toString().toUpperCase().trim();
-    const semKey = course.term || `${course.academicYear} - ${course.semester}`;
-
+    const code = (course.courseCode || '').trim();
     // Same rules as the GWA: no PE, HK or NSTP, and nothing the user left out.
-    if (NON_GWA_PREFIX.test(courseCode.trim()) || excludedCourses.has(courseIdOf(course))) {
-      return;
-    }
-
-    data.distinctGrades.add(gradeStr);
-
-    if (NON_NUMERIC_GRADES.includes(gradeStr)) {
-      if (!data.specialGrades.includes(gradeStr)) {
-        data.specialGrades.push(gradeStr);
-      }
-      return;
-    }
-
-    const grade = parseFloat(course.grade);
-    const units = course.units || 0;
-
-    if (isNaN(grade) || grade < 1.0 || grade > 5.0 || units === 0) return;
-
-    data.totalCourses++;
-
-    if (!semesterData[semKey]) {
-      semesterData[semKey] = { totalWeighted: 0, totalUnits: 0 };
-    }
-    semesterData[semKey].totalWeighted += grade * units;
-    semesterData[semKey].totalUnits += units;
-
-    const gradeKey = grade.toFixed(2);
-    data.gradeDistribution[gradeKey] = (data.gradeDistribution[gradeKey] || 0) + 1;
-
-    const codeNorm = courseCode.toUpperCase().trim();
-    data.retakes[codeNorm] = (data.retakes[codeNorm] || 0) + 1;
-
-    if (grade === 5.0) {
-      data.fails++;
-    }
-
-    if (!data.highestGradeCourse || grade < data.highestGradeCourse.grade) {
-      data.highestGradeCourse = { code: courseCode, title: course.courseTitle, grade };
-    }
-
-    // Track lowest grade course (excluding 5.0)
-    if (grade < 5.0) {
-      if (!data.lowestGradeCourse || grade > data.lowestGradeCourse.grade) {
-        data.lowestGradeCourse = { code: courseCode, title: course.courseTitle, grade };
-      }
-    }
-
-    totalWeighted += grade * units;
-    data.totalUnits += units;
+    if (NON_GWA_PREFIX.test(code) || excludedCourses.has(courseIdOf(course))) return;
+    const gradeStr = (course.grade || '').toString().toUpperCase().trim();
+    distinct.add(gradeStr);
+    if (NON_NUMERIC_GRADES.includes(gradeStr)) return;
+    const g = parseFloat(course.grade);
+    const u = course.units || 0;
+    if (isNaN(g) || g < 1 || g > 5 || !u) return;
+    const name = course.term || `${course.academicYear} - ${course.semester}`;
+    const s = sems.get(name) || { w: 0, u: 0, abs: amisTermToAbs(course.termId) ?? 0 };
+    s.w += g * u;
+    s.u += u;
+    sems.set(name, s);
+    distribution[g.toFixed(2)] = (distribution[g.toFixed(2)] || 0) + 1;
+    retakes[code.toUpperCase()] = (retakes[code.toUpperCase()] || 0) + 1;
+    if (g === 5) fails++;
+    if (!best || g < best.grade) best = { code, grade: g };
+    if (g < 5 && (!worst || g > worst.grade)) worst = { code, grade: g };
+    weighted += g * u;
+    units += u;
+    if (g <= 3) passedUnits += u;
   });
 
-  let maxRetakes = 0;
-  Object.entries(data.retakes).forEach(([code, count]) => {
-    if (count > maxRetakes) {
-      maxRetakes = count;
-      const courseInfo = courses.find(c => c.courseCode.toUpperCase() === code);
-      data.mostRetakedCourse = { code, title: courseInfo?.courseTitle || code, count };
-    }
+  let mostRetaken = null;
+  Object.entries(retakes).forEach(([code, count]) => {
+    if (count > 1 && (!mostRetaken || count > mostRetaken.count)) mostRetaken = { code, count };
   });
 
-  if (maxRetakes <= 1) data.mostRetakedCourse = null;
-
-  data.gwa = data.totalUnits > 0 ? totalWeighted / data.totalUnits : 0;
-
-  Object.entries(semesterData).forEach(([sem, semData]) => {
-    if (semData.totalUnits > 0) {
-      data.semesterGWAs[sem] = {
-        gwa: semData.totalWeighted / semData.totalUnits,
-        units: semData.totalUnits
-      };
-    }
+  const semList = Array.from(sems, ([name, s]) => ({ name, gwa: s.w / s.u, abs: s.abs })).sort((a, b) => a.abs - b.abs);
+  let comeback = null;
+  semList.forEach((s, i) => {
+    const up = i ? semList[i - 1].gwa - s.gwa : 0;
+    if (up >= 0.1 && (!comeback || up > comeback.up)) comeback = { sem: s, up };
   });
-
-  let bestSem = null, worstSem = null;
-  Object.entries(data.semesterGWAs).forEach(([sem, semInfo]) => {
-    if (!bestSem || semInfo.gwa < bestSem.gwa) {
-      bestSem = { name: sem, gwa: semInfo.gwa, units: semInfo.units };
-    }
-    if (!worstSem || semInfo.gwa > worstSem.gwa) {
-      worstSem = { name: sem, gwa: semInfo.gwa, units: semInfo.units };
-    }
-  });
-  data.bestSemester = bestSem;
-  data.needsWorkSemester = worstSem;
-
-  return data;
+  return {
+    gwa: units ? weighted / units : 0,
+    passedUnits, distinct, numericKinds: Object.keys(distribution).length, fails, best, worst, mostRetaken,
+    semList, comeback,
+    bestSem: semList.reduce((a, s) => (!a || s.gwa < a.gwa ? s : a), null),
+    worstSem: semList.reduce((a, s) => (!a || s.gwa > a.gwa ? s : a), null),
+  };
 }
 
-// Each panel is plain data: { emoji, title, value, subtitle, badges, highlights,
-// message, caption }. wrappedPanel() draws it on screen and the export draws
-// the same object on a canvas.
+// Each panel is plain data. wrappedPanel() shows it, and drawTinFrame() paints
+// the cards that sit on Reann Vargas's art.
 function generateWrappedPanels(data) {
   return [
     generateGWAPanel(data),
     generateSemesterPanel(data),
-    generateCollectorPanel(data),
-    generatePerseverancePanel(data),
     generateHighlightsPanel(data),
+    generateCollectorPanel(data),
     generateProgressPanel(data),
   ];
 }
@@ -981,7 +919,7 @@ function generateWrappedPanels(data) {
 function generateGWAPanel(data) {
   const gwa = data.gwa;
   const tiers = [
-    [0, '📚', 'Loading', "Freshie ka ba? Or di pa nag-uupload ng grades si registrar. Either way, good luck this sem."],
+    [0, '📚', 'No grades yet', "Freshie ka ba? Or di pa nag-uupload ng grades si registrar. Either way, good luck this sem."],
     [1.20, '🏆', 'Summa material', "Grabe naman 'to. Penge tips naman. Seryoso, pano mo nagagawa 'yan habang may social life?"],
     [1.45, '⭐', 'Magna tingz', 'Consistent high grades. Ikaw yung type na maayos notes tapos hinahanap ka ng groupmates pag may exam.'],
     [1.75, '🎯', 'Cum laude szn', 'Solid GWA. Di ka nag-slack off pero di rin naman nagpaka-robot. Balance talaga.'],
@@ -995,129 +933,70 @@ function generateGWAPanel(data) {
 }
 
 function generateSemesterPanel(data) {
-  const semCount = Object.keys(data.semesterGWAs).length;
-  const panel = { emoji: '📅', title: 'Sem stats', highlights: [], caption: 'My best and toughest sem' };
-
-  if (semCount === 0) {
-    return { ...panel, value: '--', subtitle: 'No sem has grades yet', message: 'Check back once grades are in.', caption: null };
+  const n = data.semList.length;
+  const b = data.bestSem;
+  if (!b) return { emoji: '📅', title: 'Sem stats', value: '--', subtitle: 'No sem has grades yet', message: 'Check back once grades are in.' };
+  const bestWord = b.gwa <= 1.25 ? 'Your peak' : b.gwa <= 1.5 ? 'Nice run' : b.gwa <= 1.75 ? 'Solid sem' : b.gwa <= 2 ? 'Good one' : 'Best so far';
+  const highlights = [{ label: '🏆 Best sem', name: b.name, detail: `GWA ${b.gwa.toFixed(4)}. ${bestWord}` }];
+  const t = data.worstSem;
+  const up = data.comeback;
+  if (up && up.sem.name !== b.name) highlights.push({ label: '📈 Comeback sem', name: up.sem.name, detail: `GWA ${up.sem.gwa.toFixed(4)}. Up ${up.up.toFixed(2)} from the sem before` });
+  else if (t && t.name !== b.name) {
+    const word = t.gwa >= 3 ? 'Rough one' : t.gwa >= 2.5 ? 'Challenging' : t.gwa >= 2 ? 'Tough load' : 'Room to grow';
+    highlights.push({ label: '📈 Toughest sem', name: t.name, detail: `GWA ${t.gwa.toFixed(4)}. ${word}` });
   }
-
-  if (data.bestSemester) {
-    const best = data.bestSemester;
-    let reaction;
-    if (best.gwa <= 1.25) reaction = 'your peak';
-    else if (best.gwa <= 1.50) reaction = 'a strong run';
-    else if (best.gwa <= 1.75) reaction = 'a solid sem';
-    else if (best.gwa <= 2.00) reaction = 'a good one';
-    else reaction = 'your best so far';
-    panel.highlights.push({ label: '🏆 Best sem', name: best.name, detail: `GWA ${best.gwa.toFixed(4)}, ${reaction}` });
-  }
-
-  // "Needs work" semester (only if different from best)
-  if (data.needsWorkSemester && data.bestSemester &&
-      data.needsWorkSemester.name !== data.bestSemester.name) {
-    const tough = data.needsWorkSemester;
-    let reaction;
-    if (tough.gwa >= 3.0) reaction = 'a rough one';
-    else if (tough.gwa >= 2.5) reaction = 'a challenging one';
-    else if (tough.gwa >= 2.0) reaction = 'a tough load';
-    else reaction = 'room to grow';
-    panel.highlights.push({ label: '📈 Toughest sem', name: tough.name, detail: `GWA ${tough.gwa.toFixed(4)}, ${reaction}` });
-  }
-
-  if (semCount >= 8) panel.message = `${semCount} sems done. Almost there.`;
-  else if (semCount >= 6) panel.message = `${semCount} sems done. The end is in sight.`;
-  else if (semCount >= 4) panel.message = `${semCount} sems in. You're about halfway.`;
-  else if (semCount >= 2) panel.message = `${semCount} sems down, more to go.`;
-  else panel.message = 'Just getting started.';
-
-  return { ...panel, frame: panel.highlights.length > 0 && 'tin' };
-}
-
-function generateCollectorPanel(data) {
-  const numericGrades = Object.keys(data.gradeDistribution).length;
-  const totalDistinct = data.distinctGrades.size;
-
-  let emoji, title, message;
-  if (totalDistinct >= 10) {
-    [emoji, title, message] = ['🎰', 'Full collection', "You've seen it all, from 1.00 to 5.00 plus S, U, INC and DRP. Your transcript tells a story."];
-  } else if (totalDistinct >= 7) {
-    [emoji, title, message] = ['🃏', 'Variety pack', "A bit of everything. You've taken very different kinds of courses with different outcomes."];
-  } else if (totalDistinct >= 4) {
-    [emoji, title, message] = ['🎲', 'Mixed bag', 'Some ups, some downs. Pretty normal for most students tbh.'];
-  } else if (numericGrades === 1 && data.gwa <= 1.5) {
-    [emoji, title, message] = ['🎯', 'One-track mind', "Same high grade over and over? That's rare consistency. How."];
-  } else {
-    [emoji, title, message] = ['📊', 'Steady grades', "You stick to a range. Predictable in a good way. You know what you're doing."];
-  }
-
-  const badges = Array.from(data.distinctGrades).sort()
-    .map(grade => ({ text: grade || 'None', special: NON_NUMERIC_GRADES.includes(grade) }));
-
-  return { emoji, title, value: String(totalDistinct), subtitle: 'distinct grades collected', badges, message };
-}
-
-function generatePerseverancePanel(data) {
-  const fails = data.fails;
-  let emoji, title, message;
-
-  if (fails === 0) {
-    [emoji, title, message] = ['🏅', 'Clean record', "Zero 5.00s. That's actually impressive. Not everyone can say that."];
-  } else if (fails === 1) {
-    [emoji, title, message] = ['💫', 'One setback', "One 5.0 isn't the end of the world. It happens to plenty of us. Bounce back season."];
-  } else if (fails <= 3) {
-    [emoji, title, message] = ['🔥', 'Still standing', `${fails} failed courses but you're still here. Every retake is a chance to do better.`];
-  } else if (fails <= 5) {
-    [emoji, title, message] = ['🦅', 'Fighting spirit', `${fails} times down but not out. The fact that you're still going says a lot.`];
-  } else {
-    [emoji, title, message] = ['💎', 'Survivor', `${fails} 5.00s and still pushing through? That takes real grit. Respect.`];
-  }
-
-  return { emoji, title, value: String(fails), subtitle: fails === 1 ? 'course to retake' : 'courses to retake', message };
+  const message = n >= 8 ? `${n} sems done. Almost there.`
+    : n >= 6 ? `${n} sems done. The end is in sight.`
+    : n >= 4 ? `${n} sems in. You're halfway through.`
+    : n >= 2 ? `${n} sems down, many more to go.`
+    : 'Just getting started. Enjoy the ride.';
+  return { emoji: '📅', title: 'Sem stats', value: String(n), subtitle: n === 1 ? 'sem with grades' : 'sems with grades', message, highlights, frame: 'tin', sems: data.semList.map(s => s.gwa) };
 }
 
 function generateHighlightsPanel(data) {
-  const panel = { emoji: '✨', title: 'Your highlights', highlights: [], caption: 'My highest and lowest grade', message: 'Every course counts toward the degree.' };
+  const highlights = [];
+  if (data.best) highlights.push({ label: '🏆 Best performance', name: data.best.code, detail: `Grade ${data.best.grade.toFixed(2)}` });
+  if (data.worst) highlights.push({ label: '📈 Room to grow', name: data.worst.code, detail: `Grade ${data.worst.grade.toFixed(2)}` });
+  if (data.mostRetaken) highlights.push({ label: '🔄 Persistence award', name: data.mostRetaken.code, detail: `Taken ${data.mostRetaken.count} times. You didn't give up` });
+  return {
+    emoji: '🫴', title: 'Your highlights', highlights,
+    subtitle: highlights.length ? null : 'Pass a course to see your highlights.',
+    message: 'Every course counts toward the diploma.',
+    extra: `${data.passedUnits} units passed`, frame: data.best && 'tray',
+  };
+}
 
-  if (data.highestGradeCourse) {
-    panel.highlights.push({ label: '🏆 Best performance', name: data.highestGradeCourse.code, detail: `Grade ${data.highestGradeCourse.grade.toFixed(2)}` });
-  }
-  if (data.lowestGradeCourse && data.lowestGradeCourse.grade < 5.0) {
-    panel.highlights.push({ label: '📈 Room to grow', name: data.lowestGradeCourse.code, detail: `Grade ${data.lowestGradeCourse.grade.toFixed(2)}` });
-  }
-  if (data.mostRetakedCourse && data.mostRetakedCourse.count > 1) {
-    panel.highlights.push({ label: '🔄 Persistence award', name: data.mostRetakedCourse.code, detail: `Taken ${data.mostRetakedCourse.count} times. You didn't give up.` });
-  }
-  if (!data.highestGradeCourse && !data.lowestGradeCourse) {
-    panel.subtitle = 'Pass a course to see your highlights.';
-    panel.caption = null;
-  }
-  return panel;
+function generateCollectorPanel(data) {
+  const total = data.distinct.size;
+  const [emoji, title, message] =
+    total >= 10 ? ['🎰', 'Full collection', "You've seen it all, from 1.00 to 5.00 plus S, U, INC and DRP. Your transcript tells a story."]
+    : total >= 7 ? ['🃏', 'Variety pack', "A bit of everything. You've taken very different kinds of courses with different outcomes."]
+    : total >= 4 ? ['🎲', 'Mixed bag', 'Some ups, some downs. Pretty normal for most students tbh.']
+    : data.numericKinds === 1 && data.gwa <= 1.5 ? ['🎯', 'One-track mind', "Same high grade over and over? That's rare consistency. How."]
+    : ['📊', 'Steady grades', "You stick to a range. Predictable in a good way. You know what you're doing."];
+  const badges = Array.from(data.distinct).filter(Boolean).sort()
+    .map(text => ({ text, special: NON_NUMERIC_GRADES.includes(text) }));
+  const f = data.fails;
+  const extra = f === 0 ? 'Zero 5.00s. Clean record.' : f === 1 ? 'One 5.00, and still here.' : `${f} 5.00s, and still standing.`;
+  return { emoji, title, value: String(total), subtitle: total === 1 ? 'kind of grade' : 'kinds of grades', badges, message, extra, frame: total > 0 && 'note' };
 }
 
 function generateProgressPanel(data) {
-  const currentProgram = getCurrentCurriculum();
-  const totalRequired = currentProgram?.totalUnitsRequired || 155;
-  const completed = data.totalUnits;
-  const remaining = Math.max(0, totalRequired - completed);
-  const percentage = Math.min(100, Math.round((completed / totalRequired) * 100));
-
-  let emoji, title, message;
-  if (percentage >= 100) {
-    [emoji, title, message] = ['🎓', 'Graduation ready', 'All units done. Time to march. Congratulations, you made it.'];
-  } else if (percentage >= 80) {
-    [emoji, title, message] = ['🚀', 'Almost there', `${remaining} units left. The finish line is in sight. Last push na 'to.`];
-  } else if (percentage >= 60) {
-    [emoji, title, message] = ['⚡', 'Past halfway', `${remaining} units to go. More than half done, and you've got momentum.`];
-  } else if (percentage >= 40) {
-    [emoji, title, message] = ['🌤️', 'Making progress', `${remaining} units remaining. Take it one sem at a time.`];
-  } else if (percentage >= 20) {
-    [emoji, title, message] = ['🌅', 'Early days', `${remaining} units ahead of you. Plenty of time to figure things out.`];
-  } else {
-    [emoji, title, message] = ['🌱', 'Just starting', `${remaining} units to complete. It's a marathon, not a sprint.`];
-  }
-
-  return { emoji, title, value: `${percentage}%`, subtitle: `${completed} of ${totalRequired} units passed`, message };
+  const totalRequired = getCurrentCurriculum()?.totalUnitsRequired || 155;
+  const done = data.passedUnits;
+  const left = Math.max(0, totalRequired - done);
+  const pct = Math.min(100, Math.round((done / totalRequired) * 100));
+  const [emoji, title, message] =
+    pct >= 100 ? ['🎓', 'Graduation ready', 'All units done. Time to march. Congratulations, you made it.']
+    : pct >= 80 ? ['🚀', 'Almost there', `${left} units left. The finish line is in sight. Last push na 'to.`]
+    : pct >= 60 ? ['⚡', 'Past halfway', `${left} units to go. More than half done, and you've got momentum.`]
+    : pct >= 40 ? ['🌤️', 'Making progress', `${left} units remaining. Take it one sem at a time.`]
+    : pct >= 20 ? ['🌅', 'Early days', `${left} units ahead of you. Plenty of time to figure things out.`]
+    : ['🌱', 'Just starting', `${left} units to complete. It's a marathon, not a sprint.`];
+  return {
+    emoji, title, value: `${pct}%`, subtitle: `${done} of ${totalRequired} units passed`, message,
+    progress: pct / 100, extra: left ? `${left} units to go` : 'All units done', frame: done > 0 && 'open',
+  };
 }
 
 // On-screen Wrapped slide.
@@ -1125,73 +1004,173 @@ let wrappedYears = 0;
 
 function wrappedId() {
   const year = `${['1st', '2nd', '3rd'][wrappedYears - 1] || `${wrappedYears}th`} year`;
-  return { name: $('wrappedName').value.trim(), year, course: $('programSelect').value };
+  return { name: $('wrappedName').value.trim(), year, course: $('programSelect').value, number: $('wrappedNumber').checked };
 }
 
 const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
+const FRAMES = { id: 'tin-id', tin: 'tin', note: 'tin-note', tray: 'tray', open: 'tin-red' };
+const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b2a22', URL = 'gradesim.uplb.tools';
 
-// Reann Vargas's tin frame. The lid and the tray are tilted about 10 degrees.
+// Reann Vargas's pages. Each tin, tray and note is tilted, so text is drawn turned with it.
 async function drawTinFrame(canvas, p) {
   const font = '"Figtree", system-ui, sans-serif';
-  const isId = p.frame === 'id';
-  const src = `frames/${isId ? 'tin-id' : 'tin'}.jpg`;
+  const src = `frames/${FRAMES[p.frame]}.jpg`;
   const img = tinImages[src] ||= Object.assign(new Image(), { src });
   await Promise.all([img.decode(), document.fonts.load(`800 88px ${font}`)]);
   canvas.width = 1080;
   canvas.height = 1920;
   const ctx = canvas.getContext('2d');
   ctx.drawImage(img, 0, 0, 1080, 1920);
-  const tilted = (x, y, draw) => {
+  ctx.textAlign = 'center';
+  const at = (x, y, turn, draw) => {
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(isId ? -0.19 : -0.17);
+    ctx.rotate(turn);
     draw();
     ctx.restore();
   };
-  const text = (t, weight, size, color, y, max = 1080) => {
+  const text = (t, weight, size, color, y, max = 1080, x = 0) => {
     do ctx.font = `${weight} ${size}px ${font}`;
     while (ctx.measureText(t).width > max && --size > 24);
     ctx.fillStyle = color;
-    ctx.fillText(t, 0, y, max);
+    ctx.fillText(t, x, y, max);
   };
-  if (isId) {
+  const onGrass = (t, weight, size, x, y) => {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.75)';
+    ctx.shadowBlur = 18;
+    text(t, weight, size, '#ffffff', y, 1000, x);
+    ctx.restore();
+  };
+
+  if (p.frame === 'id') {
     const id = wrappedId();
     ctx.textAlign = 'left';
     [[id.name, 556, 638, 285], [id.year, 566, 738, 295], [id.course, 612, 830, 268]]
-      .forEach(([t, x, y, max]) => tilted(x, y, () => text(t, 700, 40, '#1c1917', 0, max)));
+      .forEach(([t, x, y, max]) => at(x, y, -0.19, () => text(t, 700, 40, INK, 0, max)));
     ctx.textAlign = 'center';
-    tilted(592, 1215, () => {
-      text(p.value, 800, 190, '#7b2a22', 0);
-      text(p.title, 800, 64, '#2b2321', 95);
-      text('My Elbi GWA on gradesim.uplb.tools', 600, 36, '#4a3f3c', 160);
+    at(592, 1215, -0.19, () => {
+      if (id.number) {
+        text(p.value, 800, 190, RED, 0);
+        text(p.title, 800, 64, INK, 95);
+      } else {
+        text(p.title, 800, 120, RED, 20, 700);
+        text('My Elbi GWA tier', 700, 44, INK, 95);
+      }
+      text(`Make yours on ${URL}`, 600, 36, SOFT, 160);
     });
     return canvas;
   }
-  ctx.textAlign = 'center';
-  tilted(500, 700, () => {
-    text(p.title, 800, 84, '#2b2321', 0);
-    text('gradesim.uplb.tools', 600, 40, '#4a3f3c', 80);
+
+  if (p.frame === 'tin') {
+    at(500, 690, -0.17, () => {
+      text(`${p.value} ${p.value === '1' ? 'sem' : 'sems'} done`, 800, 68, INK, -110, 380, -120);
+      const g = p.sems;
+      if (g.length > 1) {
+        const x = i => -280 + (560 * i) / (g.length - 1);
+        const y = v => -40 + ((Math.min(3, Math.max(1, v)) - 1) / 2) * 150;
+        ctx.strokeStyle = RED;
+        ctx.lineWidth = 8;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        g.forEach((v, i) => (i ? ctx.lineTo(x(i), y(v)) : ctx.moveTo(x(i), y(v))));
+        ctx.stroke();
+        ctx.fillStyle = RED;
+        g.forEach((v, i) => {
+          ctx.beginPath();
+          ctx.arc(x(i), y(v), 13, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      text(URL, 600, 36, SOFT, 175);
+    });
+    p.highlights.forEach((x, i) => at(596, 1225, -0.17, () => {
+      const y = p.highlights.length > 1 ? i * 205 - 150 : -30;
+      text(bareLabel(x.label), 600, 38, SOFT, y);
+      text(x.name, 800, 62, INK, y + 72, 700);
+      text(x.detail, 700, 40, RED, y + 130, 700);
+    }));
+    return canvas;
+  }
+
+  if (p.frame === 'note') {
+    const badges = p.badges.slice(0, 12);
+    at(340, 778, -0.17, () => badges.forEach((b, i) => {
+      const cx = ((i % 3) - 1) * 132;
+      const cy = (Math.floor(i / 3) - (Math.ceil(badges.length / 3) - 1) / 2) * 88;
+      ctx.fillStyle = b.special ? INK : RED;
+      ctx.beginPath();
+      ctx.roundRect(cx - 58, cy - 32, 116, 64, 32);
+      ctx.fill();
+      text(b.text, 800, 34, '#ffffff', cy + 12, 100, cx);
+    }));
+    at(770, 700, -0.17, () => {
+      text(p.value, 800, 160, RED, 40, 300);
+      text(p.subtitle, 700, 38, INK, 100, 300);
+    });
+    at(590, 1215, -0.18, () => {
+      text('My grade collection', 600, 38, SOFT, -130);
+      text(p.title, 800, 84, INK, -40, 700);
+      text(p.extra, 700, 46, RED, 40, 700);
+      text(URL, 600, 36, SOFT, 140);
+    });
+    return canvas;
+  }
+
+  if (p.frame === 'tray') {
+    const [best, low, kept] = p.highlights;
+    onGrass('My highlights', 800, 76, 470, 540);
+    at(375, 1070, -0.1, () => {
+      text(bareLabel(best.label), 600, 36, SOFT, -170, 330);
+      text(best.name, 800, 80, INK, -80, 330);
+      text(best.detail.replace('Grade ', ''), 800, 150, RED, 90, 330);
+    });
+    const corner = (x, y, hl, fallback) => at(x, y, -0.1, () => {
+      const [label, name, detail] = hl ? [bareLabel(hl.label), hl.name, hl.detail] : fallback;
+      text(label, 600, 32, SOFT, -55, 300);
+      text(name, 800, 54, INK, 10, 300);
+      text(detail, 700, 34, RED, 60, 300);
+    });
+    corner(838, 805, low, ['', '', '']);
+    corner(860, 1185, kept, ['So far', p.extra, 'and counting']);
+    onGrass(URL, 700, 40, 540, 1555);
+    return canvas;
+  }
+
+  at(488, 700, -0.19, () => {
+    text(p.title, 800, 64, INK, -140, 700);
+    text(p.value, 800, 200, RED, 50, 700);
+    text(p.subtitle, 700, 42, INK, 130, 700);
   });
-  p.highlights.forEach((x, i) => tilted(596, 1225, () => {
-    const y = p.highlights.length > 1 ? i * 205 - 150 : -30;
-    text(bareLabel(x.label), 600, 38, '#4a3f3c', y);
-    text(x.name, 800, 62, '#2b2321', y + 72, 700);
-    text(x.detail, 700, 42, '#7b2a22', y + 130);
-  }));
+  at(585, 1225, -0.2, () => {
+    const w = 640;
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.beginPath();
+    ctx.roundRect(-w / 2, -120, w, 48, 24);
+    ctx.fill();
+    ctx.fillStyle = RED;
+    ctx.beginPath();
+    ctx.roundRect(-w / 2, -120, Math.max(48, w * p.progress), 48, 24);
+    ctx.fill();
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 10;
+    text(p.extra, 800, 64, '#ffffff', 10, 700);
+    text(URL, 600, 36, '#ffffff', 110);
+  });
   return canvas;
 }
 
 function tinCanvas(p) {
-  const label = [p.title, p.frame === 'id' && `GWA ${p.value}`, ...(p.highlights || []).map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn in a tin on a picnic blanket'].filter(Boolean).join(', ');
+  const shown = p.frame === 'id' && wrappedId().number && `GWA ${p.value}`;
+  const label = [p.title, shown, p.frame !== 'id' && [p.value, p.subtitle].filter(Boolean).join(' '), p.extra, ...(p.highlights || []).map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn on a picnic blanket'].filter(Boolean).join(', ');
   const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': label });
   drawTinFrame(canvas, p);
   return canvas;
 }
 
 function redrawTin() {
-  const canvas = $('wrappedPanel').querySelector('canvas');
-  if (canvas) drawTinFrame(canvas, wrappedPanels[wrappedCurrentPanel]);
+  if ($('wrappedPanel').querySelector('canvas')) updateWrappedDisplay();
 }
 
 function wrappedPanel(p) {
@@ -1201,11 +1180,6 @@ function wrappedPanel(p) {
     h('h3', { class: 'panel-title' }, p.title),
     p.value && h('div', { class: 'panel-value' }, p.value),
     p.subtitle && h('div', { class: 'panel-subtitle' }, p.subtitle),
-    p.badges && h('div', { class: 'grade-badges' }, p.badges.map(b => badge(b.text, { tone: b.special ? 'warn' : 'neutral' }))),
-    (p.highlights || []).map(x => h('div', { class: 'highlight-course' },
-      h('div', { class: 'highlight-label' }, x.label),
-      h('div', { class: 'highlight-name' }, x.name),
-      h('div', { class: 'highlight-detail' }, x.detail))),
     p.message && h('p', { class: 'panel-message' }, p.message),
   ];
 }
@@ -1219,8 +1193,10 @@ function displayWrapped(courses) {
 
 function updateWrappedDisplay() {
   if (!wrappedPanels.length) return;
-  $('wrappedPanel').replaceChildren(...flat(wrappedPanel(wrappedPanels[wrappedCurrentPanel])));
-  $('wrappedId').hidden = wrappedPanels[wrappedCurrentPanel].frame !== 'id';
+  const p = wrappedPanels[wrappedCurrentPanel];
+  $('wrappedPanel').replaceChildren(...flat(wrappedPanel(p)));
+  $('wrappedId').hidden = p.frame !== 'id';
+  $('wrappedExport').hidden = !p.frame;
   $('wrappedProgress').textContent = `${wrappedCurrentPanel + 1} of ${wrappedPanels.length}`;
   $('wrappedPrev').disabled = wrappedCurrentPanel === 0;
   $('wrappedNext').disabled = wrappedCurrentPanel === wrappedPanels.length - 1;
@@ -1234,144 +1210,11 @@ function navigateWrapped(direction) {
   }
 }
 
-// Export the current Wrapped slide as a transparent story-sized PNG, drawn
-// with the bundled Figtree face.
 async function exportWrappedToPNG() {
   const p = wrappedPanels[wrappedCurrentPanel];
-  if (!p) return;
-  const save = c => h('a', { download: `elbi-wrapped-${wrappedCurrentPanel + 1}.png`, href: c.toDataURL('image/png') }).click();
-  if (p.frame) return save(await drawTinFrame(document.createElement('canvas'), p));
-
-  const DISPLAY = '"Figtree", system-ui, sans-serif';
-  const TEXT = DISPLAY;
-  await Promise.all([
-    document.fonts.load(`800 28px ${DISPLAY}`),
-    document.fonts.load(`600 16px ${TEXT}`),
-  ]).catch(() => {});
-  await document.fonts.ready;
-
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const scale = 2;
-  const width = 360;
-  const height = 640;
-  canvas.width = width * scale;
-  canvas.height = height * scale;
-  ctx.scale(scale, scale);
-  ctx.clearRect(0, 0, width, height);
-
-  const badges = p.badges || [];
-  const highlights = p.highlights || [];
-  let contentHeight = 120;
-  if (p.subtitle) contentHeight += 30;
-  if (badges.length) contentHeight += 50;
-  contentHeight += highlights.length * 55;
-  let currentY = Math.max(80, (height - contentHeight) / 2 - 40);
-
-  ctx.textAlign = 'center';
-
-  // Story colors stay bright orange so they read on any photo.
-  const orange = '#fc5200';
-  const orangeLight = '#ff7a33';
-
-  // Text with a dark outline for contrast on any background
-  function drawText(text, x, y, fillColor) {
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#000000';
-    ctx.lineJoin = 'round';
-    ctx.miterLimit = 2;
-    ctx.strokeText(text, x, y);
-    ctx.fillStyle = fillColor;
-    ctx.fillText(text, x, y);
-  }
-
-  function wrapText(text, maxWidth) {
-    const lines = [];
-    let line = '';
-    text.split(' ').forEach(word => {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > maxWidth && line) {
-        lines.push(line);
-        line = word;
-      } else {
-        line = test;
-      }
-    });
-    if (line) lines.push(line);
-    return lines;
-  }
-
-  ctx.font = `800 13px ${DISPLAY}`;
-  drawText('Elbi GradeSim', width / 2, 64, orangeLight);
-  ctx.font = `600 12px ${TEXT}`;
-  drawText('gradesim.uplb.tools', width / 2, 82, orange);
-
-  ctx.font = '56px sans-serif';
-  drawText(p.emoji, width / 2, currentY, '#ffffff');
-  currentY += 50;
-
-  if (p.value && p.value !== '--') {
-    ctx.font = `800 40px ${DISPLAY}`;
-    drawText(p.value, width / 2, currentY + 20, orange);
-    currentY += 60;
-  }
-
-  if (p.subtitle) {
-    ctx.font = `600 16px ${TEXT}`;
-    wrapText(p.subtitle, width - 60).forEach(line => {
-      drawText(line, width / 2, currentY + 10, orangeLight);
-      currentY += 20;
-    });
-    currentY += 10;
-  }
-
-  if (badges.length) {
-    currentY += 15;
-    const badgeWidth = 44;
-    const maxPerRow = Math.floor((width - 60) / badgeWidth);
-    for (let i = 0; i < badges.length; i += maxPerRow) {
-      const row = badges.slice(i, i + maxPerRow);
-      let badgeX = (width - row.length * badgeWidth) / 2;
-      row.forEach(b => {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        ctx.strokeStyle = orange;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(badgeX, currentY, 40, 24, 4);
-        ctx.fill();
-        ctx.stroke();
-        ctx.font = `600 13px ${TEXT}`;
-        drawText(b.text, badgeX + 20, currentY + 17, orange);
-        badgeX += badgeWidth;
-      });
-      currentY += 30;
-    }
-    currentY += 10;
-  }
-
-  if (highlights.length) {
-    currentY += 10;
-    highlights.forEach(x => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-      ctx.strokeStyle = orange;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.roundRect(40, currentY, width - 80, 45, 6);
-      ctx.fill();
-      ctx.stroke();
-      ctx.font = `700 15px ${TEXT}`;
-      drawText(x.name, width / 2, currentY + 19, orange);
-      ctx.font = `500 13px ${TEXT}`;
-      drawText(x.detail, width / 2, currentY + 36, orangeLight);
-      currentY += 55;
-    });
-    if (p.caption) {
-      ctx.font = `600 16px ${TEXT}`;
-      drawText(p.caption, width / 2, currentY + 10, orangeLight);
-    }
-  }
-
-  save(canvas);
+  if (!p?.frame) return;
+  const canvas = await drawTinFrame(document.createElement('canvas'), p);
+  h('a', { download: `gradesim-wrapped-${wrappedCurrentPanel + 1}.jpg`, href: canvas.toDataURL('image/jpeg', 0.92) }).click();
 }
 
 /* ---------- Grade refresh, backup and clear data (platform) ---------- */
