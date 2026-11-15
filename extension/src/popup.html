@@ -149,6 +149,12 @@
           <section id="wrappedTab" class="tab-content" hidden>
             <div class="wrapped-container">
               <div id="wrappedPanel" class="card wrapped-panel" aria-live="polite"></div>
+              <div class="wrapped-nav">
+                <button id="wrappedPrev" class="btn btn-secondary btn-sm" type="button" disabled><span data-icon="prev"></span>Previous</button>
+                <span id="wrappedProgress" class="wrapped-progress">1 of 5</span>
+                <button id="wrappedNext" class="btn btn-secondary btn-sm" type="button">Next<span data-icon="next"></span></button>
+              </div>
+              <button id="wrappedExport" class="btn btn-primary wrapped-export" type="button">Save this card</button>
               <div id="wrappedId" class="wrapped-id" hidden>
                 <label class="wrapped-sem" for="wrappedSem">Sem</label>
                 <select class="wrapped-sem" id="wrappedSem"></select>
@@ -163,12 +169,6 @@
                 <p id="wrappedPhotoHint" class="hint">Add your photo over the picture in Instagram or Facebook.</p>
               </div>
               <p id="wrappedAmisHint" class="hint" hidden>Open AMIS so GradeSim reads your grades there, and your cards get the From AMIS mark.</p>
-              <div class="wrapped-nav">
-                <button id="wrappedPrev" class="btn btn-secondary btn-sm" type="button" disabled><span data-icon="prev"></span>Previous</button>
-                <span id="wrappedProgress" class="wrapped-progress">1 of 5</span>
-                <button id="wrappedNext" class="btn btn-secondary btn-sm" type="button">Next<span data-icon="next"></span></button>
-              </div>
-              <button id="wrappedExport" class="btn btn-primary wrapped-export" type="button">Save this card</button>
             </div>
           </section>
         </div>
