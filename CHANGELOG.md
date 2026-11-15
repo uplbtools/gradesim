@@ -6,6 +6,7 @@
 - HK 12 taken for more than one sport now fills one HK slot each time. Before, only the first HK 12 counted.
 - BS CS free electives no longer wait for senior standing.
 - Every Wrapped card credits its design to Reann Vargas and Danica Manadong at the bottom of the image.
+- The sem card sits in Reann's tin with a spot for your photo, its GWA, your best course and a ribbon for University or College Scholar. Every other card can leave a polaroid spot for a photo you add in Instagram or Facebook.
 
 ## 2.1.16 (2026-11-16)
 

@@ -853,7 +853,7 @@ function initializeWrapped() {
   $('wrappedNext').addEventListener('click', () => navigateWrapped(1));
   $('wrappedExport').addEventListener('click', exportWrappedToPNG);
   $('wrappedName').addEventListener('input', redrawTin);
-  ['wrappedShow', 'wrappedTop'].forEach(id => $(id).addEventListener('change', redrawTin));
+  ['wrappedShow', 'wrappedTop', 'wrappedPhoto'].forEach(id => $(id).addEventListener('change', redrawTin));
   $('wrappedLine').addEventListener('input', redrawTin);
   $('wrappedSem').addEventListener('change', () => {
     wrappedPanels = generateWrappedPanels(generateWrappedData(wrappedCourses), wrappedCourses, Number($('wrappedSem').value)).filter(Boolean);
@@ -957,7 +957,7 @@ function generateThisSemPanel(data, courses, pick = data.semList.length - 1) {
     : `${taken.reduce((u, c) => u + (c.units || 0), 0)} units done this sem`;
   return {
     emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message, extra, frame: 'sem',
-    highlights: top ? [{ label: '🏆 Top grade', name: top.code, detail: top.grade.toFixed(2) }] : [],
+    highlights: top ? [{ label: '🏆 Best course', name: top.code, detail: top.grade.toFixed(2) }] : [],
   };
 }
 
@@ -1055,7 +1055,7 @@ function wrappedId() {
     ? new Date(fetchedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   return {
     name: $('wrappedName').value.trim(), year, course: $('programSelect').value, show: $('wrappedShow').value || 'none',
-    top: $('wrappedTop').checked, line: $('wrappedLine').value.trim(), amis,
+    top: $('wrappedTop').checked, line: $('wrappedLine').value.trim(), amis, photo: $('wrappedPhoto').checked,
   };
 }
 
@@ -1071,7 +1071,7 @@ function shownGwa(value = '', show = 'none') {
 
 const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
-const FRAMES = { sem: 'tin-grass', id: 'tin-id', tin: 'tin', note: 'tin-note', tray: 'tray', open: 'tin-red' };
+const FRAMES = { sem: 'tin-note', id: 'tin-id', tin: 'tin', note: 'tin', tray: 'tray', open: 'tin-red' };
 const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b2a22', URL = 'gradesim.uplb.tools';
 const CREDIT = 'Design by Reann Vargas and Danica Manadong';
 
@@ -1099,14 +1099,47 @@ async function drawTinFrame(canvas, p) {
     ctx.fillStyle = color;
     ctx.fillText(t, x, y, max);
   };
-  const onGrass = (t, weight, size, x, y) => {
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.75)';
-    ctx.shadowBlur = 18;
-    text(t, weight, size, '#ffffff', y, 1000, x);
-    ctx.restore();
+  const shadow = blur => {
+    ctx.shadowColor = 'rgba(0,0,0,0.35)';
+    ctx.shadowBlur = blur;
+    ctx.shadowOffsetY = blur / 3;
   };
+  // A cream label on the picnic cloth or grass.
+  const tag = (t, size, x, y, turn) => at(x, y, turn, () => {
+    ctx.font = `800 ${size}px ${font}`;
+    const w = ctx.measureText(t).width + size * 1.4;
+    ctx.save();
+    shadow(16);
+    ctx.fillStyle = '#fbf5ea';
+    ctx.beginPath();
+    ctx.roundRect(-w / 2, -size * 0.95, w, size * 1.5, 10);
+    ctx.fill();
+    ctx.restore();
+    text(t, 800, size, INK, size * 0.18);
+  });
+  const star = (x, y, r, turn) => at(x, y, turn, () => {
+    ctx.fillStyle = '#f2c230';
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const a = (Math.PI / 5) * i - Math.PI / 2;
+      const d = i % 2 ? r * 0.45 : r;
+      ctx.lineTo(Math.cos(a) * d, Math.sin(a) * d);
+    }
+    ctx.fill();
+  });
   const id = wrappedId();
+  const photo = tinImages['frames/photo.jpg'] ||= Object.assign(new Image(), { src: 'frames/photo.jpg' });
+  if (id.photo && p.frame !== 'id') await photo.decode();
+  // A polaroid with Reann's picture placeholder, for a photo added in Instagram.
+  const polaroid = (x, y, w, turn) => at(x, y, turn, () => {
+    const ph = w * 1.07;
+    ctx.save();
+    shadow(24);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(-w / 2 - 16, -ph / 2 - 16, w + 32, ph + 70);
+    ctx.restore();
+    ctx.drawImage(photo, -w / 2, -ph / 2, w, ph);
+  });
   const g = shownGwa(p.value, id.show);
 
   if (id.amis) {
@@ -1144,19 +1177,48 @@ async function drawTinFrame(canvas, p) {
   ctx.fillStyle = '#ffffff';
   ctx.fillText(CREDIT, 540, 1561);
 
+  if (id.photo && (p.frame === 'tin' || p.frame === 'note')) polaroid(722, 455, 220, 0.12);
+  if (id.photo && (p.frame === 'tray' || p.frame === 'open')) polaroid(842, 420, 230, 0.1);
+
   if (p.frame === 'sem') {
     const top = id.top ? p.highlights[0] : null;
-    ctx.translate(540, 1040);
-    ctx.rotate(-0.08);
-    ctx.translate(-540, -1040);
-    onGrass(`My ${p.subtitle}`, 700, 50, 540, 760);
-    if (g) {
-      onGrass(g, 800, 220, 540, 990);
-      onGrass(p.title, 800, 76, 540, 1090);
-    } else onGrass(p.title, 800, 112, 540, 960);
-    onGrass(id.line || p.extra, 700, 50, 540, g ? 1180 : 1070);
-    if (top) onGrass(`Top grade ${top.name}, ${top.detail}`, 600, 44, 540, g ? 1260 : 1150);
-    onGrass(URL, 600, 38, 540, g ? 1350 : 1250);
+    const [term, ay] = p.subtitle.split(' AY ');
+    if (id.photo) at(345, 744, -0.163, () => ctx.drawImage(photo, -175, -185, 350, 375));
+    at(752, 730, -0.16, () => {
+      text('My', 600, 36, SOFT, -66, 280);
+      text(term, 800, 56, INK, 0, 290);
+      if (ay) text(`AY ${ay}`, 700, 38, RED, 56, 290);
+    });
+    at(595, 1228, -0.14, () => {
+      const lines = [];
+      if (id.line || p.extra) lines.push([id.line || p.extra, 700, 44, INK]);
+      if (top) lines.push([`Best course ${top.name}, ${top.detail}`, 600, 38, SOFT]);
+      let y = g ? -150 : -95;
+      if (/Scholar$/.test(p.title)) {
+        ctx.font = `800 58px ${font}`;
+        const w = ctx.measureText(p.title).width + 120;
+        ctx.fillStyle = RED;
+        ctx.beginPath();
+        ctx.moveTo(-w / 2 - 40, y - 52);
+        ctx.lineTo(w / 2 + 40, y - 52);
+        ctx.lineTo(w / 2 + 10, y - 8);
+        ctx.lineTo(w / 2 + 40, y + 36);
+        ctx.lineTo(-w / 2 - 40, y + 36);
+        ctx.lineTo(-w / 2 - 10, y - 8);
+        ctx.closePath();
+        ctx.fill();
+        text(p.title, 800, 58, '#fff4e0', y + 12, w - 60);
+        star(-w / 2 + 6, y - 56, 40, -0.3);
+        star(w / 2 - 6, y - 52, 32, 0.25);
+      } else text(p.title, 800, g ? 72 : 96, INK, y + 10, 680);
+      if (g) text(g, 800, 170, RED, (y += 175));
+      y += g ? 70 : 85;
+      lines.forEach(([t, weight, size, color]) => {
+        text(t, weight, size, color, y, 680);
+        y += size + 22;
+      });
+      text(URL, 600, 32, SOFT, Math.max(y + 8, 200));
+    });
     return canvas;
   }
 
@@ -1180,7 +1242,7 @@ async function drawTinFrame(canvas, p) {
 
   if (p.frame === 'tin') {
     at(500, 690, -0.17, () => {
-      text(`${p.value} ${p.value === '1' ? 'sem' : 'sems'} done`, 800, 68, INK, -110, 380, -120);
+      text(`${p.value} ${p.value === '1' ? 'sem' : 'sems'} done`, 800, 68, INK, -110, id.photo ? 300 : 380, id.photo ? -170 : -120);
       const g = p.sems;
       if (g.length > 1) {
         const x = i => -280 + (560 * i) / (g.length - 1);
@@ -1198,10 +1260,10 @@ async function drawTinFrame(canvas, p) {
           ctx.fill();
         });
       }
-      text(URL, 600, 36, SOFT, 175);
     });
+    at(596, 1225, -0.17, () => text(URL, 600, 32, SOFT, 222));
     p.highlights.forEach((x, i) => at(596, 1225, -0.17, () => {
-      const y = p.highlights.length > 1 ? i * 205 - 150 : -30;
+      const y = p.highlights.length > 1 ? i * 195 - 180 : -40;
       text(bareLabel(x.label), 600, 38, SOFT, y);
       text(x.name, 800, 62, INK, y + 72, 700);
       text(x.detail, 700, 40, RED, y + 130, 700);
@@ -1220,8 +1282,8 @@ async function drawTinFrame(canvas, p) {
       ctx.fill();
       text(b.text, 800, 34, '#ffffff', cy + 12, 100, cx);
     }));
-    at(770, 700, -0.17, () => {
-      text(p.value, 800, 160, RED, 40, 300);
+    at(770, id.photo ? 770 : 700, -0.17, () => {
+      text(p.value, 800, id.photo ? 130 : 160, RED, 40, 300);
       text(p.subtitle, 700, 38, INK, 100, 300);
     });
     at(590, 1215, -0.18, () => {
@@ -1235,7 +1297,7 @@ async function drawTinFrame(canvas, p) {
 
   if (p.frame === 'tray') {
     const [best, low, kept] = p.highlights;
-    onGrass('My highlights', 800, 76, 470, 540);
+    tag('My highlights', 64, 430, 520, -0.1);
     at(375, 1070, -0.1, () => {
       text(bareLabel(best.label), 600, 36, SOFT, -170, 330);
       text(best.name, 800, 80, INK, -80, 330);
@@ -1249,7 +1311,7 @@ async function drawTinFrame(canvas, p) {
     });
     corner(838, 805, low, ['', '', '']);
     corner(860, 1185, kept, ['So far', p.extra, 'and counting']);
-    onGrass(URL, 700, 40, 540, 1512);
+    tag(URL, 36, 540, 1478, -0.05);
     return canvas;
   }
 
@@ -1321,7 +1383,10 @@ function updateWrappedDisplay() {
   $('wrappedShow').replaceChildren(...GWA_SHOWS.map(k => h('option', { value: k }, k === 'none' ? 'Tier only' : shownGwa(p.value, k))));
   $('wrappedShow').value = show;
   $('wrappedPanel').replaceChildren(...flat(wrappedPanel(p)));
-  $('wrappedId').hidden = p.frame !== 'id' && p.frame !== 'sem';
+  $('wrappedId').hidden = !p.frame;
+  $('wrappedId').querySelectorAll('.wrapped-gwa').forEach(el => (el.hidden = p.frame !== 'id' && p.frame !== 'sem'));
+  $('wrappedId').querySelectorAll('.wrapped-photo').forEach(el => (el.hidden = p.frame === 'id'));
+  $('wrappedPhotoHint').hidden = p.frame !== 'id' && !$('wrappedPhoto').checked;
   $('wrappedId').querySelectorAll('.wrapped-name').forEach(el => (el.hidden = p.frame !== 'id'));
   $('wrappedId').querySelectorAll('.wrapped-sem').forEach(el => (el.hidden = p.frame !== 'sem'));
   $('wrappedAmisHint').hidden = !p.frame || !!wrappedId().amis;
