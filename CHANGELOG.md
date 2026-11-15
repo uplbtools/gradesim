@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.13 (2026-11-16)
+
+### Changes
+- The planner now opens in the web app at gradesim.uplb.tools, which gets your grades from the extension. The extension's own planner page is gone, and Web app replaces Full tab.
+- The web app also gets your removal exam results, track, specialization and planner marks, and it loads newer grades by itself after the first import.
+
 ## 2.1.12 (2026-11-16)
 
 ### Changes

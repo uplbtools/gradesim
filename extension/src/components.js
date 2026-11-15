@@ -1,4 +1,4 @@
-// components.js - the shared UI pieces of the popup and the planner.
+// components.js - the UI pieces of the popup.
 // Plain functions that return DOM elements. No markup strings are assigned to
 // innerHTML anywhere (the Firefox add-on linter flags it), and every style
 // comes from the classes in popup.css, which only use tokens.css values.
@@ -136,22 +136,6 @@ function honorBadge(kind) {
     college: ['College Scholar', 'brand'],
   };
   return map[kind] ? badge(map[kind][0], { tone: map[kind][1], icon: 'award' }) : null;
-}
-
-// Course status in the planner. Icon plus word, never color alone.
-const COURSE_STATUS = {
-  passed: ['check', 'Passed'],
-  inprogress: ['clock', 'Taking now'],
-  failed: ['x', 'Failed'],
-  retake: ['retake', 'Retake'],
-  ready: ['ready', 'Ready'],
-  planned: ['planned', 'Planned'],
-  locked: ['lock', 'Waiting'],
-};
-// variant: plain (inside a card) | pill (bordered)
-function statusPill(status, { variant = 'pill', label } = {}) {
-  const [ic, word] = COURSE_STATUS[status] || COURSE_STATUS.planned;
-  return h('span', { class: `status status-${variant} st-${status}` }, icon(ic), label || word);
 }
 
 const unitsBadge = units => h('span', { class: 'units-badge' }, unitsText(units));

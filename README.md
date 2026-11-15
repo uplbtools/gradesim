@@ -40,7 +40,7 @@ Load `extension/dist/<browser>/` as an unpacked extension in developer mode. See
 
 ```text
 extension/
-  src/         popup, planner, content and background scripts, curriculum data
+  src/         popup, content and background scripts, curriculum data
   manifests/   one manifest per browser
   icons/       16, 32, 48 and 128 px icons
   build.sh     copies src and the right manifest into dist/<browser>/

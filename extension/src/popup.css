@@ -1,5 +1,4 @@
-/* Elbi GradeSim popup, UPLB Tools identity. Colors, type and radii come from tokens.css.
-   The planner loads this file too, so the component classes from components.js live here. */
+/* Elbi GradeSim popup, UPLB Tools identity. Colors, type and radii come from tokens.css. */
 * {
   margin: 0;
   padding: 0;
@@ -231,38 +230,6 @@ fieldset {
   border-color: color-mix(in srgb, var(--warn) 35%, transparent);
   color: var(--warn);
 }
-
-/* Course status: icon plus word, never color alone */
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 600;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-.status-pill {
-  padding: 2px 9px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--bg-card);
-  color: var(--body);
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-.status.st-passed .icon,
-.status-plain.st-passed { color: var(--ok); }
-.status.st-inprogress .icon,
-.status-plain.st-inprogress { color: var(--info); }
-.status.st-failed .icon,
-.status.st-retake .icon,
-.status-plain.st-failed,
-.status-plain.st-retake { color: var(--bad); }
-.status.st-ready .icon,
-.status-plain.st-ready { color: var(--brand); }
 
 .units-badge {
   font-size: 0.8125rem;

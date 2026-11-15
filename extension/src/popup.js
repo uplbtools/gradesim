@@ -45,14 +45,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   themeToggle($('themeToggle'), theme, next => chrome.storage.local.set({ theme: next }));
 
   // Check if opened in a tab
-  const urlParams = new URLSearchParams(window.location.search);
-  const isTabMode = urlParams.get('mode') === 'tab' || window.innerWidth > 600 || matchMedia('(pointer: coarse)').matches;
+  const isTabMode = window.innerWidth > 600 || matchMedia('(pointer: coarse)').matches;
   if (isTabMode) {
     document.body.classList.add('tab-mode');
   }
 
   $('openTabBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('popup.html?mode=tab') });
+    chrome.tabs.create({ url: `${WEB_APP}/?from=extension` });
   });
 
   const help = modal($('helpDialog'));
@@ -197,9 +196,11 @@ function fillProgramSelect(select, current) {
   ]));
 }
 
+// The planner lives in the web app, which gets the grades from this extension.
+const WEB_APP = 'https://gradesim.uplb.tools';
 function openPlanner(failedCode) {
-  const q = failedCode ? `?whatif=${encodeURIComponent(failedCode)}` : '';
-  chrome.tabs.create({ url: chrome.runtime.getURL(`planner.html${q}`) });
+  const q = failedCode ? `&whatif=${encodeURIComponent(failedCode)}` : '';
+  chrome.tabs.create({ url: `${WEB_APP}/?from=extension${q}#planner` });
 }
 
 // Set the curriculum and redraw the track and specialization pickers for it.
