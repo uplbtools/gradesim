@@ -121,7 +121,7 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
 // Latin honors count only as many electives as the program requires, the
 // earliest first (UPLB catalog, Graduation with Honors). Returns the passed
 // rows that fill no slot, which the honors GWA leaves out. A program with no
-// elective slots returns none, since its data cannot tell extra from missing.
+// elective slots returns none, since its data can't tell extra from missing.
 function surplusElectives(courses, passedRows, substitutions = {}) {
   if (!courses.some(c => c.genericRequirement === 'elective')) return [];
   const used = new Set(fillRequirementSlots(courses, passedRows, substitutions).values());
@@ -180,7 +180,7 @@ function gwaOutlook(gwa, units, left, target) {
   }
   const required = (target * (units + left) - sum) / left;
   // Grades run from 1.00 to 3.00 for a pass, so a needed average above 3.00
-  // means any passing grade is enough, and one under 1.00 cannot happen.
+  // means any passing grade is enough, and one under 1.00 can't happen.
   const status = required < 1 - 1e-9 ? 'out-of-reach' : required >= 3 ? 'any-pass' : 'reachable';
   return { status, required, ceiling, bestHonor };
 }

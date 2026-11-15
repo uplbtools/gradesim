@@ -14,7 +14,7 @@ No extension? The web app at [gradesim.uplb.tools](https://gradesim.uplb.tools) 
 
 ## What it does
 
-- Reads your grades from AMIS while you are logged in and computes your GWA
+- Reads your grades from AMIS while you're logged in and computes your GWA
 - Shows your Latin honors standing and the average you need on your remaining units
 - Lists your grades by semester or year, with per-term scholar status
 - Lets you leave courses out of the GWA and record substitutions

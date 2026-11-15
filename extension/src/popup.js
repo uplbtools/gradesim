@@ -27,7 +27,7 @@ let customCourseStatus = {};
 let removals = {};
 
 const NON_NUMERIC_GRADES = ['S', 'U', 'INC', 'DRP', 'W', 'P', 'DFG'];
-// PE, HK and NSTP are not in the GWA. A word boundary keeps PEd (Physical
+// PE, HK and NSTP aren't in the GWA. A word boundary keeps PEd (Physical
 // Education majors) and similar codes in.
 const NON_GWA_PREFIX = /^(NSTP|HK|PE)\b/i;
 const courseIdOf = course => String(course.id || `${course.courseCode}-${course.termId}`);
@@ -414,7 +414,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
 
     const semKey = semKeyOf(course);
 
-    // NSTP, HK and PE are not in the GWA.
+    // NSTP, HK and PE aren't in the GWA.
     if (NON_GWA_PREFIX.test(courseCode.trim())) {
       if (gradeStr === 'INC' || parseFloat(gradeStr) > 3) holds.add(semKey);
       return;
@@ -431,7 +431,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
 
     // For non-numeric grades, add to completed but don't calculate GWA
     if (isNonNumericGrade) {
-      // S (Satisfactory) counts as passed, U (Unsatisfactory) does not
+      // S (Satisfactory) counts as passed, U (Unsatisfactory) doesn't
       if (gradeStr === 'S') {
         completedCourses.push({
           code: course.courseCode,
@@ -462,7 +462,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
     totalUnits += units;
     totalCourses++;
 
-    // 4.00 and 5.00 count in the GWA but do not complete the course.
+    // 4.00 and 5.00 count in the GWA but don't complete the course.
     if (grade <= 3.0) {
       passedUnits += units;
       completedCourses.push({
@@ -544,7 +544,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
     const groupGWA = calculateGroupGWA(courses);
     if (courses.some(c => holds.has(semKeyOf(c)))) groupGWA.hasFailOrInc = true;
 
-    // Scholar lists need 15 academic units (HK and NSTP do not count) and no
+    // Scholar lists need 15 academic units (HK and NSTP don't count) and no
     // 5.00, 4.00 or INC in any course, HK and NSTP included.
     let scholar = null;
     if (groupGWA.gwa > 0 && groupGWA.totalUnits >= 15 && !groupGWA.hasFailOrInc) {
@@ -785,7 +785,7 @@ function renderWhatIf() {
   const left = window.requirementsLeft;
   if (!data) { el.replaceChildren(); return; }
   if (!left) {
-    showNotice(el, { tone: 'warn', icon: 'alert', body: `GradeSim does not have the ${getCurrentCurriculum().name} checklist yet, so it cannot count your remaining units. Your GWA above still works.` });
+    showNotice(el, { tone: 'warn', icon: 'alert', body: `GradeSim doesn't have the ${getCurrentCurriculum().name} checklist yet, so it can't count your remaining units. Your GWA above still works.` });
     return;
   }
 
@@ -821,7 +821,7 @@ function renderWhatIf() {
   } else if (o.status === 'any-pass') {
     hero = stat('Average you need', '3.00', { variant: 'hero', note: 'any passing grade' });
     [tone, ic] = ['ok', 'check'];
-    message = data.gwa <= target ? `You are at ${name.toLowerCase()} now. Pass every course left and you keep it.` : `Pass every course left and you reach ${name.toLowerCase()}.`;
+    message = data.gwa <= target ? `You're at ${name.toLowerCase()} now. Pass every course left and you keep it.` : `Pass every course left and you reach ${name.toLowerCase()}.`;
   } else {
     hero = stat('Average you need', o.required.toFixed(2), { variant: 'hero', note: `on your ${unitsText(left.gwaUnits)} left` });
     const r = o.required;
@@ -1300,7 +1300,7 @@ async function exportWrappedToPNG() {
 
 const SYNC_ERRORS = {
   'not-logged-in': 'Log in to AMIS, then press Refresh.',
-  'amis-error': 'AMIS did not answer, try again later.',
+  'amis-error': "AMIS didn't answer. Try again later.",
   'no-tab': 'Open AMIS in a tab first.',
   'no-answer': 'Reload your AMIS tab once, then press Refresh.',
 };
@@ -1377,8 +1377,8 @@ function wireBackup() {
 // from version 1 or the web app and use the same keys.
 function parseBackup(text) {
   let obj;
-  try { obj = JSON.parse(text); } catch (e) { throw new Error('That file is not valid JSON, so nothing was changed.'); }
-  if (!obj || obj.source !== 'elbi-gradesim') throw new Error('That file is not an Elbi GradeSim backup.');
+  try { obj = JSON.parse(text); } catch (e) { throw new Error("That file isn't valid JSON, so nothing was changed."); }
+  if (!obj || obj.source !== 'elbi-gradesim') throw new Error("That file isn't an Elbi GradeSim backup.");
   const v = obj.schemaVersion == null ? 1 : obj.schemaVersion;
   if (!Number.isInteger(v) || v < 1 || v > BACKUP_SCHEMA_VERSION) {
     throw new Error('That backup comes from a newer version of Elbi GradeSim. Update the extension first.');

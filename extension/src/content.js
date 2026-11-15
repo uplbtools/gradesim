@@ -25,7 +25,7 @@
   }
 
   // Keep the AMIS shape (popup.js, planner.js and the web app read it) but drop
-  // every field they do not use.
+  // every field they don't use.
   function slim(data) {
     const out = {};
     for (const [termId, t] of Object.entries(data.student_grades)) {

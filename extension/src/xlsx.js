@@ -1,11 +1,11 @@
 // xlsx.js - tiny .xlsx writer for the course planner export.
-// Writes SpreadsheetML parts into a store-only (uncompressed) ZIP, so there is
+// Writes SpreadsheetML parts into a store-only (uncompressed) ZIP, so there's
 // no library to bundle and nothing remote to load. Framework free; also
 // requirable from node for tests.
 // ponytail: no compression. A full plan is well under 200 KB uncompressed;
 // add deflate (CompressionStream) if files ever get big.
 
-// One global (GradeSimXlsx) so helper names cannot clash with planner.js.
+// One global (GradeSimXlsx) so helper names can't clash with planner.js.
 (function () {
   /* ---------- ZIP (store only) ---------- */
 

@@ -353,7 +353,7 @@ function renderSummary(v) {
   const r = v.now.result;
   const gradAbs = r.gradTermIndex >= 0 ? v.startAbs + r.gradTermIndex : null;
   $('gradTerm').textContent = gradAbs == null
-    ? (r.unschedulable.length ? 'Some courses cannot be placed' : 'All planned requirements done')
+    ? (r.unschedulable.length ? "Some courses can't be placed" : 'All planned requirements done')
     : `Graduate ${absLabel(gradAbs)}`;
 
   const delta = termsLate(v, v.ideal.result.gradTermIndex, r.gradTermIndex);
@@ -377,7 +377,7 @@ function renderSummary(v) {
   const termsLeft = r.plan.filter(p => p.courses.length).length;
   const nowTaking = Object.values(v.info).some(i => i.status === 'inprogress');
   const sentences = [];
-  if (gradAbs != null) sentences.push(`That is ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
+  if (gradAbs != null) sentences.push(`That's ${ayLabel(gradAbs)}, with ${termsText(termsLeft)} of classes from ${absLabel(v.startAbs)}.`);
   sentences.push(`You have ${unitsText(v.left.units)} left to pass${nowTaking ? ', counting this term' : ''}.`);
   $('gradSub').textContent = sentences.join(' ');
 
@@ -388,7 +388,7 @@ function renderSummary(v) {
     h('span', {}, h('strong', {}, c.code),
       ` ${c.source === 'whatif' ? 'in the what-if' : c.past ? 'failed' : 'marked failed'}, ${c.cost > 0 ? `${termsText(c.cost)} later` : 'no delay'}`))) : []),
   ...v.conflicts.map(c => h('li', { class: 'bad' }, icon('alert'),
-    h('span', {}, h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} cannot be failed. Check the mark on ${c.pre}.`))));
+    h('span', {}, h('strong', {}, c.code), ` is passed, so its prerequisite ${c.pre} can't be failed. Check the mark on ${c.pre}.`))));
 }
 
 /* ---------- Cards and columns ---------- */
@@ -623,7 +623,7 @@ function renderDetail() {
     delay > 1 && h('li', {}, h('strong', {}, delay), ' courses on the longest chain through it'),
     slip === undefined ? null : slip > 0
       ? h('li', { class: 'bad' }, h('strong', {}, 'Critical.'), ` Taking it a term later delays graduation by ${slip === Infinity ? 'more than the plan can show' : termsText(termsLate(v, v.now.result.gradTermIndex, v.now.result.gradTermIndex + slip))}.`)
-      : h('li', {}, 'Has slack. Taking it a term later does not move graduation.'));
+      : h('li', {}, "It has slack. Taking it a term later doesn't move graduation."));
 
   const reqs = [];
   groups.forEach(g => reqs.push(h('li', {}, courseLinks(g, v))));
@@ -643,7 +643,7 @@ function renderDetail() {
   if (state.data.plannerPins[code] != null) actions.push(button({ variant: 'text', text: 'Back to earliest', dataset: { act: 'unpin' } }));
   const petition = restricted(c) && i.status !== 'passed' && h('label', { class: 'pl-check pl-petition' },
     h('input', { type: 'checkbox', dataset: { act: 'petition' }, checked: !!state.data.plannerPetitions[code] }),
-    ' Plan on a petitioned class when it is not offered. Needs about 10 students and department, college and OVCAA approval, so treat it as conditional.');
+    " Plan on a petitioned class when it isn't offered. It needs about 10 students and department, college and OVCAA approval, so treat it as conditional.");
 
   panel.replaceChildren(...flat([
     h('div', { class: 'pl-detail-head' },
@@ -745,7 +745,7 @@ function simulate(e) {
     const retake = t === undefined ? '' : ` The retake is planned for ${absLabel(v.startAbs + t)}.`;
     $('whatifResult').textContent = pastFail.cost > 0
       ? `${code} is failed on AMIS, which moves graduation ${termsText(pastFail.cost)} later, to ${absLabel(v.startAbs + v.now.result.gradTermIndex)}.${retake}`
-      : `${code} is failed on AMIS, but it does not move graduation.${retake}`;
+      : `${code} is failed on AMIS, but it doesn't move graduation.${retake}`;
     $('whatifClear').classList.remove('hidden');
     state.selected = code;
     renderDetail();
@@ -763,7 +763,7 @@ function simulate(e) {
   const verb = mode === 'fail' ? `Failing ${code}` : `Taking ${code} ${mode === '1' ? 'a term' : 'a year'} later`;
   $('whatifResult').textContent = slip > 0
     ? `${verb} moves graduation to ${absLabel(v.startAbs + after.gradTermIndex)}, ${termsText(slip)} later.${pushed.length ? ` It also pushes back ${list}.` : ''}`
-    : `${verb} does not move graduation.${pushed.length ? ` It shifts ${list}.` : ' Nothing else shifts.'}`;
+    : `${verb} doesn't move graduation.${pushed.length ? ` It shifts ${list}.` : ' Nothing else shifts.'}`;
   $('whatifClear').classList.remove('hidden');
   state.selected = code;
   renderDetail();
@@ -907,14 +907,14 @@ function savePlanFile() {
   announce('Plan saved as a file.');
 }
 
-// Returns a friendly reason the file can't be used, or '' when it is fine.
+// Returns a friendly reason the file can't be used, or '' when it's fine.
 function checkPlan(p) {
   const isObj = x => x != null && typeof x === 'object' && !Array.isArray(x);
   const all = (o, ok) => isObj(o) && Object.values(o).every(ok);
-  if (!isObj(p) || p.source !== 'elbi-gradesim-plan') return 'That file is not a GradeSim course plan. Pick a file made with Save plan.';
+  if (!isObj(p) || p.source !== 'elbi-gradesim-plan') return "That file isn't a GradeSim course plan. Pick a file made with Save plan.";
   if (p.version !== 1) return 'That plan was saved by a newer GradeSim. Update the extension and try again.';
   const prog = typeof UPLB_PROGRAMS !== 'undefined' && UPLB_PROGRAMS[p.program];
-  if (!prog || !prog.majorCourses) return `That plan is for a program this version does not have (${String(p.program)}).`;
+  if (!prog || !prog.majorCourses) return `That plan is for a program this version doesn't have (${String(p.program)}).`;
   const ok = all(p.customCourseStatus, x => ['passed', 'failed', 'planned', 'inprogress'].includes(x)) &&
     all(p.plannerPins, Number.isInteger) &&
     all(p.plannerPetitions, x => x === true) &&
