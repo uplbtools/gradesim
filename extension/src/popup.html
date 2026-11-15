@@ -47,15 +47,6 @@
             <label for="programSelect" id="programLabel">Your program</label>
             <select id="programSelect"></select>
           </section>
-
-          <section class="card gwa-section" aria-labelledby="gwaHeading">
-            <h2 id="gwaHeading">My Elbi GWA</h2>
-            <span id="currentGWA" class="gwa-value">--.--</span>
-            <div id="honorStatus" class="honor-status"></div>
-            <p class="disclaimer">This is an unofficial estimate. Check it with the OUR.</p>
-            <div id="gwaStats" class="gwa-stats"></div>
-            <div id="honorsGwa" class="gwa-stats"></div>
-          </section>
         </div>
 
         <div class="content-column">
@@ -67,6 +58,14 @@
           </div>
 
           <section id="gradesTab" class="tab-content">
+              <section class="gwa-section" aria-labelledby="gwaHeading">
+                <h2 id="gwaHeading">GWA <span id="currentGWA" class="gwa-value">--.--</span></h2>
+                <div id="honorStatus" class="honor-status"></div>
+                <p class="disclaimer">This is an unofficial estimate. Check it with the OUR.</p>
+                <div id="gwaStats" class="gwa-stats"></div>
+                <div id="honorsGwa" class="gwa-stats"></div>
+              </section>
+
             <div class="view-toggle" role="group" aria-label="Group grades">
               <button class="view-btn active" type="button" data-view="semester" aria-pressed="true">By semester</button>
               <button class="view-btn" type="button" data-view="year" aria-pressed="false">By year</button>
@@ -77,6 +76,7 @@
 
           <section id="whatifTab" class="tab-content" hidden>
             <div id="whatifQuality"></div>
+            <p id="whatifNow" class="hint whatif-now"></p>
             <div id="whatifResults" class="card whatif-results" aria-live="polite"></div>
 
             <fieldset class="honor-fieldset">

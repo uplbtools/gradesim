@@ -786,9 +786,10 @@ function renderWhatIf() {
   const el = $('whatifResults');
   const data = window.gradesData;
   const left = window.requirementsLeft;
+  $('whatifNow').textContent = data?.gwa > 0 ? `Your GWA is ${data.gwa.toFixed(4)} now.` : '';
   if (!data) { el.replaceChildren(); return; }
   if (!left) {
-    showNotice(el, { tone: 'warn', icon: 'alert', body: `GradeSim doesn't have the ${getCurrentCurriculum().name} checklist yet, so it can't count your remaining units. Your GWA above still works.` });
+    showNotice(el, { tone: 'warn', icon: 'alert', body: `GradeSim doesn't have the ${getCurrentCurriculum().name} checklist yet, so it can't count your remaining units. Your GWA on the Grades tab still works.` });
     return;
   }
 

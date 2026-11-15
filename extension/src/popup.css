@@ -755,31 +755,30 @@ input[type="number"] {
 
 /* GWA */
 .gwa-section {
-  padding: 16px;
   margin-bottom: 16px;
-  text-align: center;
 }
 
 .gwa-section h2 {
-  font-size: 0.8rem;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  color: var(--muted);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--ink);
 }
 
 .gwa-value {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1.15;
-  color: var(--brand);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 12px;
 }
 
 .gwa-section .disclaimer {
-  margin: 0 auto;
+  margin: 4px 0 0;
+}
+
+.whatif-now:empty {
+  display: none;
 }
 
 /* Stats sit in one divided strip on the card surface, not in boxes. */
@@ -1381,20 +1380,6 @@ body.tab-mode .container {
 
 body.tab-mode #openTabBtn {
   display: none;
-}
-
-@media (min-width: 900px) {
-  body.tab-mode .tab-layout-grid {
-    display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-    gap: 24px;
-    align-items: start;
-  }
-
-  body.tab-mode .sidebar-column {
-    position: sticky;
-    top: 24px;
-  }
 }
 
 /* Footer */
