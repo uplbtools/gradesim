@@ -91,7 +91,8 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
   const outside = rows.filter(r => {
     const code = norm(r);
     if (named.has(code) || used.has(code) || seen.has(code)) return false;
-    seen.add(code);
+    // HK 12 repeats once per sport.
+    if (!/^(HK|PE)\b/.test(code)) seen.add(code);
     return true;
   });
   // Specialization slots take only the courses their pool lists.
