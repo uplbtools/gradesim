@@ -1,14 +1,24 @@
 # Changelog
 
-## Unreleased
+## 2.1.4 (2026-11-15)
 
 ### Features
+- Plan options can save your plan to a file, load it back and export it to Excel.
+- Plan options has Print, which puts every term on paper like the official checklist.
+- Max load has a third choice, The checklist's load, which allows each sem the units your checklist puts in it.
 - The planner is a checklist sheet grouped by academic year, with one line per course. Finished terms collapse to one line with their sem GWA, and a course's details open under its row. It replaces the card grid and its arrows.
 - The planner warns when you passed a course whose prerequisite you failed.
 
 ### Fixes
 - BS CS lists CMSC 190 and CMSC 200 in two sems each, CMSC 198 Practicum in midyear and CMSC 199 Undergraduate Seminar. Taking a course again fills its second row.
 - CMSC 131 shows its full title, a free elective in the last term no longer gets a Critical line, and the disclaimer wraps evenly.
+- Thesis, special problem and seminar courses that run over two sems show as two rows, like the checklists.
+- BS Accountancy, BS ABE, BS CS, BS ME, BS EE, BS FST and BS MatE follow their checklists in the 2025 college catalogs, and 108 rows across 16 programs moved to their checklist sem.
+- BS MatE and the four associate programs are available.
+- Wrong course titles in BS Agriculture, BS FST, BS AChem, BS ABio and BS CE are fixed, and MATH 27 and 28 are Calculus II and III.
+- HK and NSTP no longer count toward the 18-unit cap, so many plans finish a sem or more sooner.
+- Among courses with the same prerequisites, the planner places the one not offered next sem first, then follows the checklist order.
+- The popup hides the Full tab button on phones.
 
 ## 2.1.3 (2026-11-13)
 
