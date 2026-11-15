@@ -9910,7 +9910,8 @@ const UPLB_PROGRAMS = {
         "units": 1,
         "year": 4,
         "sem": "1",
-        "prereqs": []
+        "prereqs": [],
+        "standing": "junior"
       },
       {
         "code": "MAJ 1",
