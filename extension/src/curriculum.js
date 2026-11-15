@@ -5328,7 +5328,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 111",
-        "title": "AGRI 111",
+        "title": "Introduction to Farming Systems",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -5401,7 +5401,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 195",
-        "title": "AGRI 195",
+        "title": "Research Methods in Agriculture and Food Science",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -5409,7 +5409,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 121",
-        "title": "AGRI 121",
+        "title": "Introduction to Ecological Agriculture",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -5839,7 +5839,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ABME 10",
-        "title": "Cultivating the Entrepreneurial Mindset",
+        "title": "Foundations of Entrepreneurship",
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -6212,7 +6212,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MCB 180",
-        "title": "MCB 180",
+        "title": "Introductory Food Microbiology",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6220,7 +6220,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 101",
-        "title": "FST 101",
+        "title": "Food Chemistry I",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6228,7 +6228,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 130",
-        "title": "FST 130",
+        "title": "Food Engineering I",
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -6300,7 +6300,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 195",
-        "title": "AGRI 195",
+        "title": "Research Methods in Agriculture and Food Science",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6308,7 +6308,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 111",
-        "title": "FST 111",
+        "title": "Food Chemistry II",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6316,7 +6316,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 151",
-        "title": "FST 151",
+        "title": "Sensory Evaluation of Food Products",
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -6332,7 +6332,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 198",
-        "title": "FST 198",
+        "title": "Practicum",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -6390,7 +6390,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 147",
-        "title": "FST 147",
+        "title": "Principles of Food Product and Process Development",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6398,7 +6398,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 175",
-        "title": "FST 175",
+        "title": "Food Laws and Regulations",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -6406,7 +6406,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "FST 199",
-        "title": "FST 199",
+        "title": "Undergraduate Seminar",
         "units": 1,
         "year": 4,
         "sem": "2",
@@ -6713,7 +6713,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "AGRI 61",
-        "title": "Innovations and Entrepreneurship in Agriculture",
+        "title": "Fundamentals of Agricultural Extension Communication",
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -8412,7 +8412,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "CE 198",
-        "title": "Practicum",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
