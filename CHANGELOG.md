@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.20 (2026-11-16)
+
+### Changes
+- A restricted elective, such as BA Comm's foreign language and SOSC or PHLO electives, takes only the subjects its checklist names. A PHLO course no longer counts as a foreign language.
+
 ## 2.1.19 (2026-11-16)
 
 ### Changes

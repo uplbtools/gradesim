@@ -853,6 +853,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "MATH Major Elective",
+        "allow": ["MATH"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -1216,6 +1217,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (AMAT/MATH)",
+        "allow": ["AMAT", "MATH"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -1257,6 +1259,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (AMAT/MATH)",
+        "allow": ["AMAT", "MATH"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -1302,6 +1305,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 3",
         "title": "Elective (AMAT/MATH)",
+        "allow": ["AMAT", "MATH"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -1319,6 +1323,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 4",
         "title": "Elective (AMAT/MATH)",
+        "allow": ["AMAT", "MATH"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -1346,6 +1351,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 5",
         "title": "Elective (AMAT/MATH)",
+        "allow": ["AMAT", "MATH"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -3357,6 +3363,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (CHEM)",
+        "allow": ["CHEM"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -3665,6 +3672,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (APHY/PHYS)",
+        "allow": ["APHY", "PHYS"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -3708,6 +3716,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (APHY/PHYS)",
+        "allow": ["APHY", "PHYS"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -3717,6 +3726,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 3",
         "title": "Elective (APHY/PHYS)",
+        "allow": ["APHY", "PHYS"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -3726,6 +3736,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 4",
         "title": "Elective (APHY/PHYS)",
+        "allow": ["APHY", "PHYS"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -3768,6 +3779,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 5",
         "title": "Elective (APHY/PHYS)",
+        "allow": ["APHY", "PHYS"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -4042,6 +4054,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 6",
         "title": "Elective (Foreign Language)",
+        "allow": ["FRCH", "JAP", "SPAN"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4051,6 +4064,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 7",
         "title": "Elective (SOSC or PHLO)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC", "PHLO"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4060,6 +4074,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 8",
         "title": "Elective (STAT)",
+        "allow": ["STAT"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4111,6 +4126,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 11",
         "title": "Elective (Foreign Language)",
+        "allow": ["FRCH", "JAP", "SPAN"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -4180,6 +4196,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 12",
         "title": "Elective (SOSC or PHLO)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC", "PHLO"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -4213,6 +4230,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 13",
         "title": "Elective (SOSC or PHLO)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC", "PHLO"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -4404,6 +4422,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -4413,6 +4432,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -4439,6 +4459,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 3",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4448,6 +4469,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 4",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4816,6 +4838,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "PHLO Elective",
+        "allow": ["PHLO"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -4898,6 +4921,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 4",
         "title": "Elective (PHLO)",
+        "allow": ["PHLO"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -4907,6 +4931,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 5",
         "title": "Elective (PHLO)",
+        "allow": ["PHLO"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -4932,6 +4957,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 6",
         "title": "Elective (PHLO)",
+        "allow": ["PHLO"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -10095,6 +10121,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
+        "allow": ["ME 158", "AMPE 123", "AMPE 133", "AMPE 134", "EE 188"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -10138,6 +10165,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
+        "allow": ["ME 158", "AMPE 123", "AMPE 133", "AMPE 134", "EE 188"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -10602,6 +10630,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (MatE)",
+        "allow": ["MATE"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -10645,6 +10674,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (MatE)",
+        "allow": ["MATE"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -14741,6 +14771,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 6",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -14750,6 +14781,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 7",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 3,
         "sem": "2",
@@ -14819,6 +14851,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 10",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -14860,6 +14893,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 11",
         "title": "Elective (SOSC)",
+        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
         "units": 3,
         "year": 4,
         "sem": "2",

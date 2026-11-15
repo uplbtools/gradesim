@@ -110,10 +110,15 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
     if (/^NSTP\b/.test(code)) return 'nstp';
     return r.units > 0 ? 'elective' : null;
   };
+  // A slot with an allow list, like a foreign language elective, takes only
+  // those subjects, and fills before the open slots.
+  const fits = (slot, r) => !slot.allow || slot.allow.some(a => norm(r) === a || norm(r).startsWith(`${a} `));
   ['ge', 'hk', 'nstp', 'elective'].forEach(kind => {
     const taken = outside.filter(r => !pooled.has(r) && kindOf(r) === kind);
-    courses.filter(c => c.genericRequirement === kind && !c.options).forEach((slot, i) => {
-      if (taken[i]) fill.set(normalizeCourseCode(slot.code), taken[i]);
+    const slots = courses.filter(c => c.genericRequirement === kind && !c.options);
+    [...slots.filter(c => c.allow), ...slots.filter(c => !c.allow)].forEach(slot => {
+      const i = taken.findIndex(r => fits(slot, r));
+      if (i >= 0) fill.set(normalizeCourseCode(slot.code), taken.splice(i, 1)[0]);
     });
   });
   return fill;

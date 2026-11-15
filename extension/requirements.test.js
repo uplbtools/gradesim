@@ -181,3 +181,17 @@ console.log('requirements.test.js: surplus electives passed');
   assert.ok(fillRequirementSlots(thesis, [row('CMSC 200', 3), row('CMSC 200', 3)]).has('CMSC 200 (2)'));
 }
 console.log('requirements.test.js: BSCS special problem and practicum passed');
+
+// BA Comm: a restricted elective takes only the subjects its title names.
+{
+  const row = (code) => ({ code, title: '', units: 3, result: 'passed' });
+  const comm = plannerCourseList(UPLB_PROGRAMS.BACOMM, null, UPLB_CATALOG);
+  const slot = title => comm.find(c => c.title === title).code;
+  const fill = fillRequirementSlots(comm, [row('PHLO 171'), row('FRCH 10'), row('STAT 166')]);
+  assert.strictEqual(fill.get(slot('Elective (Foreign Language)')).code, 'FRCH 10');
+  assert.strictEqual(fill.get(slot('Elective (SOSC or PHLO)')).code, 'PHLO 171');
+  assert.strictEqual(fill.get(slot('Elective (STAT)')).code, 'STAT 166');
+  const phlo = fillRequirementSlots(comm, [row('PHLO 171')]);
+  assert.ok(!phlo.has(slot('Elective (Foreign Language)')), 'PHLO is not a foreign language');
+}
+console.log('requirements.test.js: restricted electives passed');
