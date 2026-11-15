@@ -7056,15 +7056,23 @@ const UPLB_PROGRAMS = {
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
     "available": true,
-    "totalUnitsRequired": 169,
+    "totalUnitsRequired": 161,
     "geCoursesRequired": 9,
     "tracks": null,
     "defaultTrack": null,
     "majorCourses": [
       {
-        "code": "ABE 10",
+        "code": "ABE 30",
         "title": "Introduction to Agricultural and Biosystems Engineering",
         "units": 1,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 31",
+        "title": "Fundamentals of Crop Science I",
+        "units": 3,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -7074,23 +7082,7 @@ const UPLB_PROGRAMS = {
         "title": "Engineering Graphics Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 18",
-        "title": "University Chemistry",
-        "units": 3,
-        "year": 1,
         "sem": "1",
-        "prereqs": []
-      },
-      {
-        "code": "CHEM 18.1",
-        "title": "University Chemistry Laboratory",
-        "units": 2,
-        "year": 1,
-        "sem": "2",
         "prereqs": []
       },
       {
@@ -7100,56 +7092,6 @@ const UPLB_PROGRAMS = {
         "year": 1,
         "sem": "1",
         "prereqs": []
-      },
-      {
-        "code": "ABE 30",
-        "title": "Engineering Surveying",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 32",
-        "title": "Computer-Aided Design",
-        "units": 2,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "CHEM 40",
-        "title": "Basic Organic Chemistry",
-        "units": 4,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "CHEM 18"
-        ]
-      },
-      {
-        "code": "CHEM 40.1",
-        "title": "Basic Organic Chemistry Laboratory",
-        "units": 1,
-        "year": 1,
-        "sem": "1",
-        "prereqs": [
-          "CHEM 18"
-        ]
-      },
-      {
-        "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus III",
-        "units": 3,
-        "year": 1,
-        "sem": "2",
-        "prereqs": [
-          "MATH 27"
-        ]
       },
       {
         "code": "PHYS 51",
@@ -7164,53 +7106,93 @@ const UPLB_PROGRAMS = {
         "title": "Elements of Physics Laboratory",
         "units": 1,
         "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "KAS 1",
+        "title": "Kasaysayan ng Pilipinas/Philippine History",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "PI 10",
+        "title": "The Life and Works of Jose Rizal",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 21",
+        "title": "Introduction to Animal Science",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": []
       },
       {
-        "code": "ABE 40",
-        "title": "Engineering Survey Camp",
-        "units": 1,
-        "gradeType": "S/U",
+        "code": "CHEM 18",
+        "title": "University Chemistry",
+        "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "CHEM 18.1",
+        "title": "University Chemistry Laboratory",
+        "units": 2,
+        "year": 1,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "AGRI 32",
+        "title": "Fundamentals of Crop Science II",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "AGRI 31"
         ]
       },
       {
-        "code": "ABE 42",
-        "title": "Engineering Mechanics",
-        "units": 4,
-        "year": 2,
+        "code": "ENSC 11",
+        "title": "Statics of Rigid Bodies",
+        "units": 3,
+        "year": 1,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "MATH 27",
+          "PHYS 51"
+        ]
+      },
+      {
+        "code": "MATH 28",
+        "title": "Analytic Geometry and Calculus III",
+        "units": 3,
+        "year": 1,
+        "sem": "2",
+        "prereqs": [
+          "MATH 27"
         ]
       },
       {
         "code": "ABE 43",
-        "title": "Introduction to Numerical Methods and Computing",
+        "title": "Engineering Shop",
         "units": 3,
         "year": 2,
         "sem": "1",
         "prereqs": [
-          "ABE 10"
+          "ENSC 10.1"
         ]
       },
       {
         "code": "ABE 48",
-        "title": "Engineering Materials",
-        "units": 2,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ENSC 21",
-        "title": "Mathematical Methods in Engineering",
+        "title": "Fundamentals of Surveying",
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -7219,209 +7201,243 @@ const UPLB_PROGRAMS = {
         ]
       },
       {
-        "code": "PHYS 52",
-        "title": "Advanced Physics for Engineers",
+        "code": "ENSC 12",
+        "title": "Dynamics of Rigid Bodies",
         "units": 3,
-        "year": 2,
-        "sem": "2",
-        "prereqs": [
-          "PHYS 51"
-        ]
-      },
-      {
-        "code": "PHYS 52.1",
-        "title": "Advanced Physics for Engineers Laboratory",
-        "units": 1,
         "year": 2,
         "sem": "1",
         "prereqs": [
+          "ENSC 11"
+        ]
+      },
+      {
+        "code": "ENSC 13",
+        "title": "Strength of Materials",
+        "units": 3,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 11"
+        ]
+      },
+      {
+        "code": "ENSC 14A",
+        "title": "Engineering Thermodynamics and Heat Transfer",
+        "units": 5,
+        "year": 2,
+        "sem": "1",
+        "prereqs": [
+          "MATH 28",
           "PHYS 51"
         ]
       },
       {
-        "code": "EE 1",
-        "title": "Basic Electrical Engineering",
+        "code": "AGRI 51",
+        "title": "Principles of Soil Science",
         "units": 3,
         "year": 2,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
         "code": "ABE 52",
-        "title": "Structural Mechanics",
-        "units": 3,
-        "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 54",
-        "title": "Thermodynamics I",
+        "title": "Agricultural Structures I",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 10.1",
+          "ENSC 13"
+        ]
+      },
+      {
+        "code": "ABE 53",
+        "title": "Machine Design for Bio-production Systems I",
+        "units": 4,
+        "year": 2,
+        "sem": "2",
+        "prereqs": [
+          "ENSC 12",
+          "ENSC 13"
         ]
       },
       {
         "code": "ABE 56",
-        "title": "Fluid Mechanics",
+        "title": "Engineering Properties of Agricultural and Biological Materials",
         "units": 3,
         "year": 2,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 13"
         ]
       },
       {
         "code": "ABE 57",
-        "title": "Engineering Geology",
+        "title": "Field Hydrology",
+        "units": 3,
+        "year": 2,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ENSC 16",
+        "title": "Fluid Mechanics",
         "units": 3,
         "year": 2,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ENSC 12"
         ]
       },
       {
-        "code": "ABE 58",
-        "title": "Basic Electronics",
+        "code": "ABE 198",
+        "title": "Internship",
         "units": 3,
         "year": 2,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "midyear",
+        "prereqs": []
       },
       {
-        "code": "ENSC 22",
-        "title": "Differential Equations for Engineering",
+        "code": "ABE 62",
+        "title": "Environmental Control Engineering",
         "units": 3,
         "year": 3,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "ENSC 10.1"
+          "ABE 52"
         ]
       },
       {
-        "code": "SOIL 51",
-        "title": "Fundamentals of Soil Science",
+        "code": "ABE 63",
+        "title": "Agricultural and Biosystems Power Engineering",
+        "units": 4,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ENSC 14A"
+        ]
+      },
+      {
+        "code": "ABE 65",
+        "title": "Quantitative Approaches in Agricultural and Biosystems Engineering",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "MATH 28"
+        ]
+      },
+      {
+        "code": "ABE 66",
+        "title": "Agricultural Processing I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 56"
+        ]
+      },
+      {
+        "code": "ABE 67",
+        "title": "Irrigation and Drainage Engineering I",
+        "units": 3,
+        "year": 3,
+        "sem": "1",
+        "prereqs": [
+          "ABE 48",
+          "ABE 57"
+        ]
+      },
+      {
+        "code": "FPPS 183",
+        "title": "Engineering Economic Analysis",
         "units": 3,
         "year": 3,
         "sem": "1",
         "prereqs": []
       },
       {
-        "code": "ABE 61",
-        "title": "Engineering Hydrology",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 62",
-        "title": "Hydraulic Engineering",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 63",
-        "title": "Thermodynamics II",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 64",
-        "title": "Transport Processes",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 66",
-        "title": "Instrumentation and Controls",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 72",
-        "title": "Drainage and Land Development",
-        "units": 3,
-        "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 73",
-        "title": "Irrigation Engineering",
-        "units": 3,
-        "year": 3,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
         "code": "ABE 74",
-        "title": "Agricultural Waste Management",
-        "units": 3,
+        "title": "Machinery for Bioproduction Systems, Management, and Technopreneurship",
+        "units": 4,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 53",
+          "FPPS 183"
         ]
       },
       {
-        "code": "ABE 75",
-        "title": "Aquacultural Engineering",
+        "code": "ABE 79",
+        "title": "Agricultural and Biosystems Engineering Laws, Specifications, Contracts, and Ethics",
+        "units": 1,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 77",
+        "title": "Soil and Water Conservation Engineering",
         "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 48",
+          "ABE 57"
         ]
       },
       {
-        "code": "ABE 76",
-        "title": "Refrigeration and Air Conditioning",
+        "code": "COMM 10",
+        "title": "Critical Perspectives in Communication",
         "units": 3,
         "year": 3,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "2",
+        "prereqs": []
       },
       {
-        "code": "ABE 67",
-        "title": "Structural Engineering",
+        "code": "STAT 101",
+        "title": "Statistical Methods",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "FE 1",
+        "title": "Free Elective",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "MAJ 1",
+        "title": "Specialization Course",
+        "units": 3,
+        "year": 3,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ABE 80",
+        "title": "Computer-aided Solutions in Agricultural and Biosystems Engineering",
         "units": 3,
         "year": 4,
-        "sem": "2",
+        "sem": "1",
         "prereqs": [
-          "ABE 10"
+          "MATH 28"
+        ]
+      },
+      {
+        "code": "ABE 88",
+        "title": "Aquaculture Engineering I",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "ABE 57"
         ]
       },
       {
@@ -7433,158 +7449,144 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ABE 198",
-        "title": "Field Practice",
-        "units": 3,
-        "gradeType": "S/U",
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 81",
-        "title": "Agricultural Machinery and Equipment",
+        "code": "FE 2",
+        "title": "Free Elective",
         "units": 3,
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
-        "code": "ABE 82",
-        "title": "Postharvest and Food Engineering",
-        "units": 3,
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 83",
-        "title": "Soil and Water Conservation Engineering",
+        "code": "MAJ 2",
+        "title": "Specialization Course",
         "units": 3,
         "year": 4,
         "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 84",
-        "title": "Agricultural Structures",
-        "units": 3,
-        "year": 4,
-        "sem": "2",
-        "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 199",
-        "title": "Seminar",
-        "units": 1,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "prereqs": [],
+        "genericRequirement": "elective"
       },
       {
         "code": "ABE 200",
-        "title": "Undergraduate Thesis/Innovationeering",
+        "title": "Undergraduate Thesis/Innovationeering/Engineering Industry Research",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 83",
+        "title": "Electrical System Design for Agricultural and Biosystems Structures",
         "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
+          "ABE 52",
+          "PHYS 51",
+          "PHYS 51.1"
         ]
       },
       {
-        "code": "ABE 88",
-        "title": "Biosystems Engineering",
+        "code": "ETHICS 1",
+        "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
         "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
-        ]
+        "sem": "2",
+        "prereqs": []
       },
       {
-        "code": "ABE 186",
-        "title": "ABE Codes and Standards, and Contracts",
-        "units": 2,
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "STS 1",
+        "title": "Science, Technology, and Society",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "MAJ 3",
+        "title": "Specialization Course",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
+        "code": "ABE 199",
+        "title": "Undergraduate Seminar",
+        "units": 1,
+        "year": 4,
+        "sem": "2",
+        "prereqs": []
+      },
+      {
+        "code": "ABE 200 (2)",
+        "title": "Undergraduate Thesis/Innovationeering/Engineering Industry Research",
+        "units": 3,
         "year": 4,
         "sem": "2",
         "prereqs": [
-          "ABE 10"
-        ]
-      },
-      {
-        "code": "ABE 190",
-        "title": "Design Project",
-        "units": 3,
-        "year": 4,
-        "sem": "1",
-        "prereqs": [
-          "ABE 10"
+          "ABE 200"
         ]
       }
     ],
     "requiredCodes": [
-      "ABE 10",
       "ABE 30",
-      "ABE 32",
-      "ABE 40",
-      "ABE 42",
-      "ABE 43",
-      "ABE 48",
-      "ABE 52",
-      "ABE 54",
-      "ABE 56",
-      "ABE 57",
-      "ABE 58",
-      "ABE 61",
-      "ABE 62",
-      "ABE 63",
-      "ABE 64",
-      "ABE 66",
-      "ABE 67",
-      "ABE 72",
-      "ABE 73",
-      "ABE 74",
-      "ABE 75",
-      "ABE 76",
-      "ABE 81",
-      "ABE 82",
-      "ABE 83",
-      "ABE 84",
-      "ABE 88",
-      "ABE 186",
-      "ABE 190",
-      "ABE 198",
-      "ABE 199",
-      "ABE 200",
+      "AGRI 31",
       "ENSC 10.1",
-      "ENSC 21",
-      "ENSC 22",
-      "EE 1",
-      "CHEM 18",
-      "CHEM 18.1",
-      "CHEM 40",
-      "CHEM 40.1",
       "MATH 27",
-      "MATH 28",
       "PHYS 51",
       "PHYS 51.1",
-      "PHYS 52",
-      "PHYS 52.1",
-      "SOIL 51",
-      "ENG 10"
-    ]
+      "KAS 1",
+      "PI 10",
+      "AGRI 21",
+      "CHEM 18",
+      "CHEM 18.1",
+      "AGRI 32",
+      "ENSC 11",
+      "MATH 28",
+      "ABE 43",
+      "ABE 48",
+      "ENSC 12",
+      "ENSC 13",
+      "ENSC 14A",
+      "AGRI 51",
+      "ABE 52",
+      "ABE 53",
+      "ABE 56",
+      "ABE 57",
+      "ENSC 16",
+      "ABE 198",
+      "ABE 62",
+      "ABE 63",
+      "ABE 65",
+      "ABE 66",
+      "ABE 67",
+      "FPPS 183",
+      "ABE 74",
+      "ABE 79",
+      "ABE 77",
+      "COMM 10",
+      "STAT 101",
+      "ABE 80",
+      "ABE 88",
+      "ENG 10",
+      "ABE 200",
+      "ABE 83",
+      "ETHICS 1",
+      "ARTS 1",
+      "STS 1",
+      "ABE 199"
+    ],
+    "hkCoursesRequired": 4
   },
   "BSCHE": {
     "code": "BSCHE",
