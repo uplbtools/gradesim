@@ -876,11 +876,22 @@ const UPLB_PROGRAMS = {
       {
         "code": "MATH 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
+      },
+      {
+        "code": "MATH 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "MATH 200"
+        ]
       },
       {
         "code": "MATH 135",
@@ -1269,11 +1280,22 @@ const UPLB_PROGRAMS = {
       {
         "code": "AMAT 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
+      },
+      {
+        "code": "AMAT 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AMAT 200"
+        ]
       },
       {
         "code": "MAJ 3",
@@ -2702,10 +2724,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "BIO 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "BIO 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "BIO 200"
+        ]
       },
       {
         "code": "MAJ 8",
@@ -3254,10 +3286,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHEM 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CHEM 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CHEM 200"
+        ]
       },
       {
         "code": "FE 2",
@@ -3628,10 +3670,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "APHY 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "APHY 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "APHY 200"
+        ]
       },
       {
         "code": "PHYS 142",
@@ -4072,10 +4124,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "COMA 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "COMA 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "COMA 200"
+        ]
       },
       {
         "code": "HUM 102",
@@ -4494,10 +4556,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "SOC 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "SOC 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "SOC 200"
+        ]
       },
       {
         "code": "SOC 112",
@@ -6325,10 +6397,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "FST 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "FST 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "FST 200"
+        ]
       },
       {
         "code": "FST 198",
@@ -8461,10 +8543,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "CE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "CE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "CE 200"
+        ]
       },
       {
         "code": "ABE 67",
@@ -8920,10 +9012,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "EE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "EE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "EE 200"
+        ]
       },
       {
         "code": "MAJ 1",
@@ -9401,10 +9503,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "IE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "IE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "IE 200"
+        ]
       },
       {
         "code": "MAJ 2",
@@ -9881,10 +9993,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ME 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ME 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ME 200"
+        ]
       },
       {
         "code": "ME 181",
@@ -10633,10 +10755,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ECON 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ECON 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ECON 200"
+        ]
       },
       {
         "code": "MAJ 5",
@@ -11217,20 +11349,42 @@ const UPLB_PROGRAMS = {
       {
         "code": "AAE 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "thesis"
       },
       {
+        "code": "AAE 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "track": "thesis",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AAE 200"
+        ]
+      },
+      {
         "code": "AAE 200A",
         "title": "Major Farm Practice",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": [],
         "track": "mfp"
+      },
+      {
+        "code": "AAE 200A (2)",
+        "title": "Major Farm Practice",
+        "units": 3,
+        "track": "mfp",
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "AAE 200A"
+        ]
       },
       {
         "code": "AAE 199",
@@ -12741,10 +12895,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "FOR 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "FOR 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "FOR 200"
+        ]
       },
       {
         "code": "SFFG 125",
@@ -14050,10 +14214,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "DEVC 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "DEVC 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "DEVC 200"
+        ]
       },
       {
         "code": "MAJ 8",
