@@ -19,6 +19,8 @@ function codeProblem(code) {
 
 // Rough unit totals by degree when a program states none.
 function expectedTotal(p) {
+  // BS MST's specializations add rows.
+  if (p.totalUnitsRequired && p.code !== 'BSMST') return [p.totalUnitsRequired, p.totalUnitsRequired];
   if (p.totalUnitsRequired) return [p.totalUnitsRequired * 0.9, p.totalUnitsRequired * 1.1];
   if (p.code === 'DVM') return [200, 240];
   if (/^A/.test(p.code)) return [70, 80];
