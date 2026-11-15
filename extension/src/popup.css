@@ -774,6 +774,7 @@ input[type="number"] {
   font-size: 0.85rem !important;
   color: var(--muted);
   line-height: 1.5;
+  margin-bottom: 12px;
 }
 
 /* GWA */
