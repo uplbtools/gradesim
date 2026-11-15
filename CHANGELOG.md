@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.17 (2026-11-16)
+
+### Changes
+- Every Wrapped card credits its design to Reann Vargas and Danica Manadong at the bottom of the image.
+
 ## 2.1.16 (2026-11-16)
 
 ### Changes

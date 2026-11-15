@@ -1073,6 +1073,7 @@ const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
 const FRAMES = { sem: 'tin-grass', id: 'tin-id', tin: 'tin', note: 'tin-note', tray: 'tray', open: 'tin-red' };
 const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b2a22', URL = 'gradesim.uplb.tools';
+const CREDIT = 'Design by Reann Vargas and Danica Manadong';
 
 // Reann Vargas's pages. Each tin, tray and note is tilted, so text is drawn turned with it.
 async function drawTinFrame(canvas, p) {
@@ -1133,6 +1134,15 @@ async function drawTinFrame(canvas, p) {
     ctx.fillText(label, 132, 308);
     ctx.textAlign = 'center';
   }
+
+  ctx.font = `600 28px ${font}`;
+  const cw = ctx.measureText(CREDIT).width + 48;
+  ctx.fillStyle = 'rgba(28,25,23,0.82)';
+  ctx.beginPath();
+  ctx.roundRect(540 - cw / 2, 1526, cw, 50, 25);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(CREDIT, 540, 1561);
 
   if (p.frame === 'sem') {
     const top = id.top ? p.highlights[0] : null;
@@ -1239,7 +1249,7 @@ async function drawTinFrame(canvas, p) {
     });
     corner(838, 805, low, ['', '', '']);
     corner(860, 1185, kept, ['So far', p.extra, 'and counting']);
-    onGrass(URL, 700, 40, 540, 1555);
+    onGrass(URL, 700, 40, 540, 1512);
     return canvas;
   }
 
