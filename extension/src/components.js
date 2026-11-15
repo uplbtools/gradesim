@@ -58,11 +58,6 @@ function flat(children) {
 }
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-function svgEl(tag, attrs) {
-  const el = document.createElementNS(SVG_NS, tag);
-  Object.entries(attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
-  return el;
-}
 
 /* ---------- Icons (Lucide, ISC license, https://lucide.dev) ---------- */
 
