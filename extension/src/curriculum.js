@@ -6141,7 +6141,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHEM 40",
         "title": "Basic Organic Chemistry",
-        "units": 3,
+        "units": 4,
         "year": 2,
         "sem": "1",
         "prereqs": []
@@ -6149,7 +6149,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "CHEM 40.1",
         "title": "Basic Organic Chemistry Laboratory",
-        "units": 2,
+        "units": 1,
         "year": 2,
         "sem": "1",
         "prereqs": []
