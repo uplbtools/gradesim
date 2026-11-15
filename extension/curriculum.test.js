@@ -26,7 +26,7 @@ assert.strictEqual(countCompletedGE(completed), 2);
 
 const bscsSlots = genericRequirementCourses(UPLB_PROGRAMS.BSCS);
 assert.strictEqual(bscsSlots.filter(c => c.genericRequirement === 'ge').length, 9);
-assert.strictEqual(bscsSlots.filter(c => c.genericRequirement === 'hk').length, 2);
+assert.strictEqual(bscsSlots.filter(c => c.genericRequirement === 'hk').length, 4);
 assert.strictEqual(bscsSlots.filter(c => c.genericRequirement === 'nstp').length, 2);
 
 const doneSlots = getCompletedRequirementSlotCodes(completed, UPLB_PROGRAMS.BSCS);

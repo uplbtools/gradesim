@@ -594,7 +594,8 @@ const UPLB_PROGRAMS = {
       "CMSC 180",
       "STAT 101",
       "ENG 10"
-    ]
+    ],
+    "hkCoursesRequired": 4
   },
   "BSMATH": {
     "code": "BSMATH",

@@ -64,7 +64,7 @@ assert.deepStrictEqual(left.electives, { doneUnits: 6, totalUnits: 18 });
 assert.ok(!leftCodes.has('CMSC 21'));
 ['CMSC 123', 'MATH 27', 'CMSC 100', 'CMSC 127'].forEach(c => assert.ok(leftCodes.has(c), c));
 // HK and NSTP units are left to take but do not count in the GWA.
-assert.strictEqual(left.units - left.gwaUnits, 2 + 3);
+assert.strictEqual(left.units - left.gwaUnits, 3 * 2 + 3);
 
 // The planner's units left: schedule what the slots leave open, the way
 // planner.js does, and add up every course it places or cannot place.
