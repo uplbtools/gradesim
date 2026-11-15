@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Terms: one quiet line on first run, the full text one tap away.
   const terms = modal($('termsDialog'));
-  $('viewTermsLink').addEventListener('click', () => terms.open());
   const { termsAccepted, lastError } = await chrome.storage.local.get(['termsAccepted', 'lastError']);
   if (!termsAccepted) {
     $('termsNotice').replaceChildren(notice({
@@ -128,6 +127,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // View toggle handling (semester or year)
+  $('pickExclusions').addEventListener('click', e => {
+    const on = $('gradesTab').classList.toggle('picking');
+    e.currentTarget.setAttribute('aria-pressed', on);
+    e.currentTarget.textContent = on ? 'Done' : 'Leave courses out of the GWA';
+  });
+
   document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.view-btn').forEach(b => {

@@ -341,7 +341,7 @@ fieldset {
   color: var(--brand);
 }
 
-/* Last updated line with Refresh. */
+/* Updated line with Refresh. */
 .sync-status {
   display: flex;
   align-items: center;
@@ -688,26 +688,6 @@ header h1 {
   background: var(--brand-tint);
 }
 
-.credits {
-  margin: -4px 0 12px;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-.credits a,
-.credits .btn-text {
-  color: var(--muted);
-  font: inherit;
-  min-height: 0;
-  padding: 0;
-}
-
-.credits a:hover,
-.credits .btn-text:hover {
-  color: var(--brand);
-}
-
 /* Program selector */
 .program-selector {
   padding: 12px;
@@ -814,8 +794,7 @@ input[type="number"] {
 
 /* First run: only the program picker until one is chosen (#82). */
 body.needs-program .gwa-section,
-body.needs-program .content-column,
-body.needs-program .credits {
+body.needs-program .content-column {
   display: none;
 }
 
@@ -948,6 +927,20 @@ body.needs-program #programLabel {
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--muted);
+}
+
+.course-row:not(.excluded) .exclude-toggle {
+  display: none;
+}
+
+.picking .course-row .exclude-toggle {
+  display: inline-flex;
+}
+
+.pick-exclusions {
+  display: block;
+  margin: 0 auto 12px;
+  font-size: 0.8rem;
 }
 
 .exclude-toggle:hover {

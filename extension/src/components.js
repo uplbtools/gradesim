@@ -183,8 +183,7 @@ function notice({ tone = 'neutral', icon: ic, title, body, action, class: cls, .
     action && h('div', { class: 'notice-action' }, action));
 }
 
-// "Last updated 3 hours ago" with a Refresh button. Past an hour it says the
-// grades may be out of date. fetchedAt is a ms timestamp or empty.
+// "Updated 3 hours ago" with a Refresh button.
 function syncStatus(fetchedAt, onRefresh) {
   const min = fetchedAt ? Math.max(0, Math.round((Date.now() - fetchedAt) / 60000)) : null;
   let text = 'Press Refresh to get your latest grades.';
@@ -193,9 +192,9 @@ function syncStatus(fetchedAt, onRefresh) {
       : min < 60 ? `${plural(min, 'minute')} ago`
       : min < 24 * 60 ? `${plural(Math.round(min / 60), 'hour')} ago`
       : `${plural(Math.round(min / 1440), 'day')} ago`;
-    text = `Last updated ${ago}${min >= 60 ? ', so it may be out of date' : ''}.`;
+    text = `Updated ${ago}.`;
   }
-  return h('div', { class: `sync-status${min == null || min >= 60 ? ' stale' : ''}` },
+  return h('div', { class: `sync-status${min == null ? ' stale' : ''}` },
     h('span', {}, text),
     button({ variant: 'text', icon: 'retake', text: 'Refresh', class: 'refresh-btn', onclick: onRefresh }));
 }
