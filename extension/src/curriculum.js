@@ -9513,7 +9513,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ME 10",
         "title": "Introduction to Mechanical Engineering",
-        "units": 3,
+        "units": 1,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -9521,7 +9521,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ENSC 10.1",
         "title": "Engineering Graphics Laboratory",
-        "units": 3,
+        "units": 2,
         "year": 1,
         "sem": "1",
         "prereqs": []
@@ -9615,7 +9615,7 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 43",
+        "code": "ABE 43",
         "title": "Engineering Shop",
         "units": 3,
         "year": 1,
@@ -9663,7 +9663,7 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 113",
+        "code": "AMPE 113",
         "title": "Manufacturing Processes",
         "units": 3,
         "year": 2,
@@ -9672,7 +9672,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "EE 3",
-        "title": "DC and AC Machinery",
+        "title": "Basic Electrical Machines",
         "units": 4,
         "year": 2,
         "sem": "2",
@@ -9735,9 +9735,9 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "ME 53",
+        "code": "ABE 53",
         "title": "Machine Design for Bioproduction Systems I",
-        "units": 3,
+        "units": 4,
         "year": 3,
         "sem": "1",
         "prereqs": []
@@ -9832,7 +9832,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "ME 198",
-        "title": "Practicum",
+        "title": "Internship",
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -9879,6 +9879,15 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
+        "code": "MAJ 1",
+        "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [],
+        "genericRequirement": "elective"
+      },
+      {
         "code": "ME 200",
         "title": "Undergraduate Thesis",
         "units": 6,
@@ -9903,8 +9912,8 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
-        "code": "FE 1",
-        "title": "Free Elective",
+        "code": "MAJ 2",
+        "title": "Elective (ME 158, AMPE 123, AMPE 133, AMPE 134 or EE 188)",
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -9927,13 +9936,13 @@ const UPLB_PROGRAMS = {
       "ENSC 11",
       "MATH 28",
       "IE 31",
-      "ME 43",
+      "ABE 43",
       "ETHICS 1",
       "EE 2",
       "ENSC 12",
       "ENSC 13",
       "ENSC 14",
-      "ME 113",
+      "AMPE 113",
       "EE 3",
       "ENSC 15",
       "ENSC 16",
@@ -9942,7 +9951,7 @@ const UPLB_PROGRAMS = {
       "ME 70",
       "STS 1",
       "IE 150",
-      "ME 53",
+      "ABE 53",
       "ME 160",
       "ME 171",
       "ME 172",
