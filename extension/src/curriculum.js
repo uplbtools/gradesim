@@ -804,7 +804,7 @@ const UPLB_PROGRAMS = {
         "title": "The Life and Works of Jose Rizal",
         "units": 3,
         "year": 3,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2399,7 +2399,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2415,7 +2415,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -2943,7 +2943,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -2991,7 +2991,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -3110,8 +3110,8 @@ const UPLB_PROGRAMS = {
         "code": "COMM 10",
         "title": "Critical Perspectives in Communication",
         "units": 3,
-        "year": 2,
-        "sem": "2",
+        "year": 3,
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -4258,7 +4258,7 @@ const UPLB_PROGRAMS = {
         "title": "Science, Technology, and Society",
         "units": 3,
         "year": 1,
-        "sem": "midyear",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -5266,7 +5266,7 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 18.1",
         "title": "University Chemistry Laboratory",
         "units": 2,
-        "year": 2,
+        "year": 1,
         "sem": "1",
         "prereqs": []
       },
@@ -5698,7 +5698,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6492,7 +6492,7 @@ const UPLB_PROGRAMS = {
         "title": "Critical Perspectives in the Arts",
         "units": 3,
         "year": 1,
-        "sem": "1",
+        "sem": "2",
         "prereqs": []
       },
       {
@@ -6564,7 +6564,7 @@ const UPLB_PROGRAMS = {
         "title": "University Chemistry Laboratory",
         "units": 2,
         "year": 1,
-        "sem": "2",
+        "sem": "1",
         "prereqs": []
       },
       {
@@ -6747,7 +6747,7 @@ const UPLB_PROGRAMS = {
         "code": "COMM 10",
         "title": "Critical Perspectives in Communication",
         "units": 3,
-        "year": 3,
+        "year": 4,
         "sem": "2",
         "prereqs": []
       },
