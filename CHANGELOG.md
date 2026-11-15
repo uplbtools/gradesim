@@ -4,6 +4,7 @@
 
 ### Changes
 - The GWA slide in Wrapped is drawn in Reann Vargas's tin frame, and it saves as a 1080 x 1920 story image.
+- A name or a photo turns that slide into the tin's ID card, with the year and the program code filled in. Both stay on the device.
 
 ## 2.1.10 (2026-11-16)
 

@@ -149,6 +149,13 @@
           <section id="wrappedTab" class="tab-content" hidden>
             <div class="wrapped-container">
               <div id="wrappedPanel" class="card wrapped-panel" aria-live="polite"></div>
+              <div id="wrappedId" class="wrapped-id" hidden>
+                <label for="wrappedName">Your name on the card</label>
+                <input id="wrappedName" type="text" maxlength="40" autocomplete="name">
+                <button id="wrappedPhotoBtn" class="btn btn-secondary btn-sm" type="button">Add your photo</button>
+                <input type="file" id="wrappedPhoto" accept="image/*" hidden>
+                <p class="hint">Your name and photo stay on this device.</p>
+              </div>
               <div class="wrapped-nav">
                 <button id="wrappedPrev" class="btn btn-secondary btn-sm" type="button" disabled><span data-icon="prev"></span>Previous</button>
                 <span id="wrappedProgress" class="wrapped-progress">1 of 6</span>

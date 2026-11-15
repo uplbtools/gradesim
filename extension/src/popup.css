@@ -703,6 +703,7 @@ header h1 {
 }
 
 select,
+input[type="text"],
 input[type="number"] {
   font: inherit;
   color: var(--ink);
@@ -1189,6 +1190,22 @@ input[type="checkbox"] {
   min-height: 300px;
   padding: 20px;
   text-align: center;
+}
+
+.wrapped-id {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wrapped-id label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.wrapped-id input[type="text"] {
+  min-height: 40px;
+  padding: 8px 10px;
 }
 
 .panel-frame {
