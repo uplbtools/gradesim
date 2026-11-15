@@ -8576,7 +8576,7 @@ const UPLB_PROGRAMS = {
     "college": "CEAT",
     "collegeName": "College of Engineering and Agro-Industrial Technology",
     "available": true,
-    "totalUnitsRequired": 156,
+    "totalUnitsRequired": 159,
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
