@@ -979,14 +979,12 @@ function generateSemesterPanel(data) {
   const n = data.semList.length;
   const b = data.bestSem;
   if (!b) return { emoji: '📅', title: 'Sem stats', value: '--', subtitle: 'No sem has grades yet', message: 'Check back once grades are in.' };
-  const bestWord = b.gwa <= 1.25 ? 'Your peak' : b.gwa <= 1.5 ? 'Nice run' : b.gwa <= 1.75 ? 'Solid sem' : b.gwa <= 2 ? 'Good one' : 'Best so far';
-  const highlights = [{ label: '🏆 Best sem', name: b.name, detail: `GWA ${b.gwa.toFixed(4)}. ${bestWord}` }];
+  const highlights = [{ label: '🏆 Best sem', name: b.name, detail: `GWA ${b.gwa.toFixed(4)}` }];
   const t = data.worstSem;
   const up = data.comeback;
   if (up && up.sem.name !== b.name) highlights.push({ label: '📈 Comeback sem', name: up.sem.name, detail: `GWA ${up.sem.gwa.toFixed(4)}. Up ${up.up.toFixed(2)} from the sem before` });
   else if (t && t.name !== b.name) {
-    const word = t.gwa >= 3 ? 'Rough one' : t.gwa >= 2.5 ? 'Challenging' : t.gwa >= 2 ? 'Tough load' : 'Room to grow';
-    highlights.push({ label: '📈 Toughest sem', name: t.name, detail: `GWA ${t.gwa.toFixed(4)}. ${word}` });
+    highlights.push({ label: '📈 Toughest sem', name: t.name, detail: `GWA ${t.gwa.toFixed(4)}` });
   }
   const message = n >= 8 ? `${n} sems done. Almost there.`
     : n >= 6 ? `${n} sems done. The end is in sight.`
@@ -998,9 +996,9 @@ function generateSemesterPanel(data) {
 
 function generateHighlightsPanel(data) {
   const highlights = [];
-  if (data.best) highlights.push({ label: '🏆 Best performance', name: data.best.code, detail: `Grade ${data.best.grade.toFixed(2)}` });
-  if (data.worst) highlights.push({ label: '📈 Room to grow', name: data.worst.code, detail: `Grade ${data.worst.grade.toFixed(2)}` });
-  if (data.mostRetaken) highlights.push({ label: '🔄 Persistence award', name: data.mostRetaken.code, detail: `Taken ${data.mostRetaken.count} times. You didn't give up` });
+  if (data.best) highlights.push({ label: '🏆 Best grade', name: data.best.code, detail: `Grade ${data.best.grade.toFixed(2)}` });
+  if (data.worst) highlights.push({ label: '📈 Lowest grade', name: data.worst.code, detail: `Grade ${data.worst.grade.toFixed(2)}` });
+  if (data.mostRetaken) highlights.push({ label: '🔄 Most retaken', name: data.mostRetaken.code, detail: `Taken ${data.mostRetaken.count} times` });
   return {
     emoji: '🫴', title: 'Your highlights', highlights,
     subtitle: highlights.length ? null : 'Pass a course to see your highlights.',
@@ -1020,7 +1018,7 @@ function generateCollectorPanel(data) {
   const badges = Array.from(data.distinct).filter(Boolean).sort()
     .map(text => ({ text, special: NON_NUMERIC_GRADES.includes(text) }));
   const f = data.fails;
-  const extra = f === 0 ? 'Zero 5.00s. Clean record.' : f === 1 ? 'One 5.00, and still here.' : `${f} 5.00s, and still standing.`;
+  const extra = f === 0 ? 'Zero 5.00s' : f === 1 ? 'One 5.00' : `${f} 5.00s`;
   return { emoji, title, value: String(total), subtitle: total === 1 ? 'kind of grade' : 'kinds of grades', badges, message, extra, frame: total > 0 && 'note' };
 }
 
@@ -1313,7 +1311,7 @@ async function drawTinFrame(canvas, p) {
       text(detail, 700, 34, RED, 60, 300);
     });
     corner(838, 805, low, ['', '', '']);
-    corner(860, 1185, kept, ['So far', p.extra, 'and counting']);
+    corner(860, 1185, kept, ['So far', p.extra, '']);
     tag(URL, 36, 540, 1478, -0.05);
     return canvas;
   }
