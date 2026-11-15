@@ -686,7 +686,7 @@ button.pl-link:hover {
   }
 }
 
-@media (max-width: 719px) {
+@media screen and (max-width: 719px) {
   .pl-top,
   .pl-main {
     padding-left: 16px;
@@ -792,5 +792,44 @@ button.pl-link:hover {
   .pl-row,
   .pl-term > summary > .icon:first-child {
     transition: none;
+  }
+}
+
+@media print {
+  .theme-toggle,
+  .pl-banner,
+  .pl-summary .disclaimer,
+  .pl-controls,
+  .pl-result,
+  .pl-detail,
+  .pl-term > summary > .icon {
+    display: none !important;
+  }
+
+  .pl-year h3 {
+    break-after: avoid;
+  }
+
+  .pl-term {
+    break-inside: avoid;
+  }
+
+  .pl-term > summary {
+    min-height: 28px;
+  }
+
+  .pl-rows {
+    column-gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .pl-row {
+    min-height: 0;
+    padding: 2px 4px;
+    font-size: 0.72rem;
+  }
+
+  .pl-row.dim {
+    opacity: 1;
   }
 }
