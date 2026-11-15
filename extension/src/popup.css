@@ -249,7 +249,7 @@ fieldset {
   background: var(--bg-card);
   color: var(--body);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 
@@ -265,7 +265,7 @@ fieldset {
 .status-plain.st-ready { color: var(--brand); }
 
 .units-badge {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -285,7 +285,7 @@ fieldset {
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -296,7 +296,7 @@ fieldset {
 }
 
 .stat-note {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -442,7 +442,7 @@ fieldset {
 /* One quiet line, never a banner (#36). */
 .disclaimer {
   max-width: 70ch;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.4;
   color: var(--muted);
 }
@@ -666,7 +666,7 @@ header h1 {
 }
 
 .byline {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -905,7 +905,7 @@ body.needs-program #programLabel {
 }
 
 .grade-value.pending {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--muted);
 }
@@ -928,7 +928,7 @@ body.needs-program #programLabel {
 .exclude-toggle {
   min-height: 28px;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--muted);
 }
@@ -956,7 +956,7 @@ body.needs-program #programLabel {
   min-height: 28px;
   margin-top: 4px;
   padding: 2px 6px;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
 }
 
 .course-row.excluded .exclude-toggle {
@@ -1052,15 +1052,6 @@ input[type="checkbox"] {
   margin: 0;
   border: 0;
   box-shadow: none;
-}
-
-.remaining-summary {
-  margin-bottom: 16px;
-}
-
-.remaining-link {
-  width: 100%;
-  margin-top: 10px;
 }
 
 /* Track and substitutions, folded away by default. */
@@ -1391,6 +1382,6 @@ body.tab-mode #openTabBtn {
 .footer {
   padding: 0 16px 16px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }

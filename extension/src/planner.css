@@ -220,7 +220,7 @@ body.planner-page {
 
 .pl-menu-item small {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
 }
 
 .pl-check {
@@ -354,7 +354,7 @@ body.planner-page {
   padding: 1px 8px;
   border: 1px solid var(--brand-line);
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--brand);
 }
@@ -452,7 +452,7 @@ body.planner-page {
 }
 
 .pl-row-note {
-  font-size: 0.76rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
   color: var(--muted);
@@ -614,7 +614,7 @@ button.pl-link:hover {
 
 .pl-or {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
 }
 
 .pl-deps {

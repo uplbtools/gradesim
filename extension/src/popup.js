@@ -384,7 +384,6 @@ function displayGradesData(courses) {
   $('currentGWA').textContent = gwa.toFixed(4);
   $('gwaStats').replaceChildren(...flat([
     stat('Units passed', passedUnits, { variant: 'row' }),
-    stat('Courses in your GWA', totalCourses, { variant: 'row' }),
     excludedCount > 0 && stat('Left out by you', `${plural(excludedCount, 'course')}, ${unitsText(excludedUnits)}`, { variant: 'row' }),
     syncStatus(fetchedAt, refreshGrades)]));
 
@@ -642,7 +641,6 @@ function displayRemaining() {
 
   if (!curriculum.available) {
     window.requirementsLeft = null;
-    $('remainingSummary').replaceChildren();
     trackInfoEl.replaceChildren();
     renderWhatIf();
     return;
@@ -711,14 +709,6 @@ function displayRemaining() {
           displayGradesData(window.gradesData.courses);
         },
       })))));
-
-  $('remainingSummary').replaceChildren(...flat([
-    h('h3', {}, 'Left to take'),
-    stat('Courses', left.left.length, { variant: 'row' }),
-    stat('Units', left.units, { variant: 'row' }),
-    stat('GE courses done', `${left.ge.done} of ${left.ge.total}`, { variant: 'row' }),
-    left.electives.totalUnits > 0 && stat('Free elective units done', `${left.electives.doneUnits} of ${left.electives.totalUnits}`, { variant: 'row' }),
-    button({ text: 'See them in the planner', icon: 'external', class: 'remaining-link', onclick: () => openPlanner() })]));
 
   window.currentTrack = currentTrack;
   renderWhatIf();
@@ -841,12 +831,7 @@ function renderWhatIf() {
     message = `${name} is in reach with ${how}.`;
   }
 
-  el.replaceChildren(
-    hero,
-    notice({ tone, icon: ic, body: message, action }),
-    h('div', { class: 'result-details' },
-      stat('GWA units so far', data.totalUnits, { variant: 'row' }),
-      stat('GWA units left', left.gwaUnits, { variant: 'row' })));
+  el.replaceChildren(hero, notice({ tone, icon: ic, body: message, action }));
 }
 
 /* ---------- Wrapped ---------- */

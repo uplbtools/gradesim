@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.8 (2026-11-15)
+
+### Fixes
+- The GWA card drops the course count, and What if drops the GWA units and Left to take lists, since the result and the planner already show them.
+- No text in the popup or the planner is smaller than 13px.
+
 ## 2.1.7 (2026-11-15)
 
 ### Fixes
