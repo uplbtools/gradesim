@@ -242,3 +242,12 @@ assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 56': 'failed', 'CMSC
 assert.deepStrictEqual(prereqConflicts(chain, marks({ 'CMSC 57': 'failed', 'CMSC 21': 'passed', 'CMSC 123': 'passed' })), []);
 
 console.log('scheduler.test.js: all assertions passed');
+
+const perTerm = scheduleEarliest({
+  courses: [C('X1', 12, '1'), C('X2', 12, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 18, '2': 18, 'midyear': 6 },
+  termCaps: { 0: 24 },
+  startSem: '1',
+});
+assert.strictEqual(perTerm.assignedTerm.X2, 0);

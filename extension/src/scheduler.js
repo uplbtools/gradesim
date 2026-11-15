@@ -335,6 +335,7 @@ function enrichCourses(list, catalog) {
  * @param {Object} [opts.notBefore] {CODE: minTermIndex}: retakes, delays, pins
  * @param {Object} [opts.reserved]  {termIndex: units} taken by failed attempts
  * @param {Object} [opts.unitCaps]  per-sem unit caps
+ * @param {Object} [opts.termCaps]  {termIndex: units} in place of unitCaps
  * @param {string} [opts.startSem]  sem of termIndex 0 ('1'|'2'|'midyear')
  * @param {number} [opts.totalUnits] program total, for standing
  * @param {boolean} [opts.useMidyear] false = only checklist midyear courses in midyear
@@ -411,7 +412,8 @@ function scheduleEarliest(opts) {
 
   for (let t = 0; t < maxTerms && remaining.size > 0; t++) {
     const sem = semAt(t, startSem);
-    const cap = (unitCaps[sem] != null ? unitCaps[sem] : DEFAULT_UNIT_CAPS[sem]) - (reserved[t] || 0);
+    const base = opts.termCaps && opts.termCaps[t] != null ? opts.termCaps[t] : unitCaps[sem] != null ? unitCaps[sem] : DEFAULT_UNIT_CAPS[sem];
+    const cap = base - (reserved[t] || 0);
     const done = c => passed.has(c) || (assignedTerm[c] !== undefined && assignedTerm[c] < t);
 
     let candidates = Array.from(remaining).filter(code => {
