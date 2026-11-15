@@ -356,6 +356,10 @@ function scheduleEarliest(opts) {
     const c = byCode.get(code);
     return c && c.units != null ? Number(c.units) : 3;
   };
+  const slotOf = code => {
+    const c = byCode.get(code);
+    return (c.year || 9) * 3 + (SEM_DIGIT[c.sem] || 0);
+  };
   const totalUnits = opts.totalUnits || Array.from(byCode.keys()).reduce((s, c) => s + unitsOf(c), 0);
 
   // Requisites restricted to known courses; unknown ones can't gate anything.
@@ -433,10 +437,12 @@ function scheduleEarliest(opts) {
       candidates = next;
     }
 
+    const otherSem = sem === '1' ? '2' : '1';
+    const later = code => (offeredIn(byCode.get(code), otherSem) ? 1 : 0);
     candidates.sort((a, b) => {
       const diff = chainLength(b, new Set()) - chainLength(a, new Set());
       if (diff !== 0) return diff;
-      return unitsOf(b) - unitsOf(a);
+      return later(a) - later(b) || slotOf(a) - slotOf(b) || unitsOf(b) - unitsOf(a);
     });
 
     const placed = [];
