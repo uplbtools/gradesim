@@ -1176,6 +1176,10 @@ input[type="checkbox"] {
   gap: 8px;
 }
 
+.wrapped-photo:not([hidden]) + #wrappedPhotoHint {
+  margin: -6px 0 0 21px;
+}
+
 .wrapped-id input[type="text"],
 .wrapped-id select {
   min-height: 40px;

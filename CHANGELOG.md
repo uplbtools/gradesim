@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.18 (2026-11-16)
+
+### Changes
+- The sem card lines up with Reann's tin. The photo covers the note, and the text follows the tin's tilt and sits centered on the cloth.
+- The line under each Wrapped card is gone, and the photo hint sits under its checkbox.
+
 ## 2.1.17 (2026-11-16)
 
 ### Changes

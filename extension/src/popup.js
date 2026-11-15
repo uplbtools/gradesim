@@ -938,13 +938,11 @@ function generateThisSemPanel(data, courses, pick = data.semList.length - 1) {
   const scholar = !held && !group.hasFailOrInc && group.totalUnits >= 15
     ? (group.gwa <= 1.45 ? 'University Scholar' : group.gwa <= 1.75 ? 'College Scholar' : null) : null;
   const g = sem.gwa;
-  const [title, message] =
-    scholar ? [scholar, 'Ikaw na. Screenshot mo na, deserve mo.']
-    : g <= 1.75 ? ['Uno-heavy sem', 'Ang ganda ng sem mo. Flex mo na.']
-    : g <= 2.0 ? ['Solid sem', 'Kinaya mo lahat. Proud of u.']
-    : g <= 2.5 ? ['Steady sem', 'Pasado lahat ng pinaghirapan mo. Pahinga ka muna.']
-    : g <= 3.0 ? ['Survived the sem', 'Tapos na, nakaraos ka. Panalo pa rin.']
-    : ['Bawi next sem', "Mabigat 'tong sem na 'to. Kaya mo pa 'yan."];
+  const title = scholar || (g <= 1.75 ? 'Uno-heavy sem'
+    : g <= 2.0 ? 'Solid sem'
+    : g <= 2.5 ? 'Steady sem'
+    : g <= 3.0 ? 'Survived the sem'
+    : 'Bawi next sem');
   let top = null;
   taken.forEach(c => {
     const v = parseFloat(c.grade);
@@ -956,7 +954,7 @@ function generateThisSemPanel(data, courses, pick = data.semList.length - 1) {
     : prev - g >= 0.01 ? `Up ${(prev - g).toFixed(2)} from last sem`
     : `${taken.reduce((u, c) => u + (c.units || 0), 0)} units done this sem`;
   return {
-    emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message, extra, frame: 'sem',
+    emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message: '', extra, frame: 'sem',
     highlights: top ? [{ label: '🏆 Best course', name: top.code, detail: top.grade.toFixed(2) }] : [],
   };
 }
@@ -1183,41 +1181,46 @@ async function drawTinFrame(canvas, p) {
   if (p.frame === 'sem') {
     const top = id.top ? p.highlights[0] : null;
     const [term, ay] = p.subtitle.split(' AY ');
-    if (id.photo) at(345, 744, -0.163, () => ctx.drawImage(photo, -175, -185, 350, 375));
-    at(752, 730, -0.16, () => {
+    if (id.photo) at(340, 743, -0.174, () => {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-216, -216, 432, 432);
+      ctx.drawImage(photo, 0, 10, 280, 280, -194, -194, 388, 388);
+    });
+    at(745, 715, -0.192, () => {
       text('My', 600, 36, SOFT, -66, 280);
       text(term, 800, 56, INK, 0, 290);
       if (ay) text(`AY ${ay}`, 700, 38, RED, 56, 290);
     });
-    at(595, 1228, -0.14, () => {
-      const lines = [];
-      if (id.line || p.extra) lines.push([id.line || p.extra, 700, 44, INK]);
-      if (top) lines.push([`Best course ${top.name}, ${top.detail}`, 600, 38, SOFT]);
-      let y = g ? -150 : -95;
-      if (/Scholar$/.test(p.title)) {
-        ctx.font = `800 58px ${font}`;
-        const w = ctx.measureText(p.title).width + 120;
-        ctx.fillStyle = RED;
-        ctx.beginPath();
-        ctx.moveTo(-w / 2 - 40, y - 52);
-        ctx.lineTo(w / 2 + 40, y - 52);
-        ctx.lineTo(w / 2 + 10, y - 8);
-        ctx.lineTo(w / 2 + 40, y + 36);
-        ctx.lineTo(-w / 2 - 40, y + 36);
-        ctx.lineTo(-w / 2 - 10, y - 8);
-        ctx.closePath();
-        ctx.fill();
-        text(p.title, 800, 58, '#fff4e0', y + 12, w - 60);
-        star(-w / 2 + 6, y - 56, 40, -0.3);
-        star(w / 2 - 6, y - 52, 32, 0.25);
-      } else text(p.title, 800, g ? 72 : 96, INK, y + 10, 680);
-      if (g) text(g, 800, 170, RED, (y += 175));
-      y += g ? 70 : 85;
-      lines.forEach(([t, weight, size, color]) => {
-        text(t, weight, size, color, y, 680);
-        y += size + 22;
+    // The stack is centered on the tray, a 787 by 462 cloth.
+    at(590, 1219, -0.195, () => {
+      const scholar = /Scholar$/.test(p.title);
+      const rows = [[p.title, 800, scholar ? 58 : g ? 66 : 90, scholar ? '#fff4e0' : INK]];
+      if (g) rows.push([g, 800, 150, RED]);
+      if (id.line || p.extra) rows.push([id.line || p.extra, 700, 42, INK]);
+      if (top) rows.push([`Best course ${top.name}, ${top.detail}`, 600, 36, SOFT]);
+      rows.push([URL, 600, 30, SOFT]);
+      const tall = rows.map(([, , size], k) => (k === 0 && scholar ? 88 : size * 0.74));
+      let y = -(tall.reduce((a, b) => a + b, 0) + 20 * (rows.length - 1)) / 2;
+      rows.forEach(([t, weight, size, color], k) => {
+        if (k === 0 && scholar) {
+          ctx.font = `800 58px ${font}`;
+          const w = ctx.measureText(t).width + 120;
+          ctx.fillStyle = RED;
+          ctx.beginPath();
+          ctx.moveTo(-w / 2 - 40, y);
+          ctx.lineTo(w / 2 + 40, y);
+          ctx.lineTo(w / 2 + 10, y + 44);
+          ctx.lineTo(w / 2 + 40, y + 88);
+          ctx.lineTo(-w / 2 - 40, y + 88);
+          ctx.lineTo(-w / 2 - 10, y + 44);
+          ctx.closePath();
+          ctx.fill();
+          text(t, weight, size, color, y + 64, w - 60);
+          star(-w / 2 + 6, y - 4, 40, -0.3);
+          star(w / 2 - 6, y, 32, 0.25);
+        } else text(t, weight, size, color, y + tall[k], 680);
+        y += tall[k] + 20;
       });
-      text(URL, 600, 32, SOFT, Math.max(y + 8, 200));
     });
     return canvas;
   }
@@ -1354,7 +1357,7 @@ function redrawTin() {
 }
 
 function wrappedPanel(p) {
-  if (p.frame) return [tinCanvas(p), h('p', { class: 'panel-message' }, p.message)];
+  if (p.frame) return [tinCanvas(p)];
   return [
     h('div', { class: 'panel-emoji', 'aria-hidden': 'true' }, p.emoji),
     h('h3', { class: 'panel-title' }, p.title),
