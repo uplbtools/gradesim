@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+### Features
+- The planner is a checklist sheet grouped by academic year, with one line per course. Finished terms collapse to one line with their sem GWA, and a course's details open under its row. It replaces the card grid and its arrows.
+- The planner warns when you passed a course whose prerequisite you failed.
+
+### Fixes
+- BS CS lists CMSC 190 and CMSC 200 in two sems each, CMSC 198 Practicum in midyear and CMSC 199 Undergraduate Seminar. Taking a course again fills its second row.
+- CMSC 131 shows its full title, a free elective in the last term no longer gets a Critical line, and the disclaimer wraps evenly.
+
+## 2.1.3 (2026-11-13)
+
+### Features
+- BS Biology has its eight majors and BS MST its four specializations. BS MST is rebuilt from the 2025 CAS catalog and is available again.
+- A 4.00 gets a removal exam picker. A pass counts as 3.00 and a fail as 5.00 in the GWA, What if and the planner.
+- The GWA card shows a separate GWA for Latin honors that counts only as many electives as your program requires.
+
+## 2.1.2 (2026-10-06)
+
+### Features
+- BS AAE, BS ABME and BS Economics get a specialization picker.
+
+## 2.1.1 (2026-10-06)
+
+### Fixes
+- HIST 1 fills KAS 1 without a manual substitution.
+- Planner prerequisite arrows run on evenly spaced lanes.
+
 ## 2.1.0 (2026-10-06)
 
 ### Features
