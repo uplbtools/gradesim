@@ -788,6 +788,10 @@ input[type="number"] {
   border-top: 1px solid var(--border);
 }
 
+.gwa-stats:empty {
+  display: none;
+}
+
 .honor-status:not(:empty) {
   margin-bottom: 10px;
 }
