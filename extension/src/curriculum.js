@@ -7428,7 +7428,8 @@ const UPLB_PROGRAMS = {
         "sem": "1",
         "prereqs": [
           "MATH 28"
-        ]
+        ],
+        "standing": "junior"
       },
       {
         "code": "ABE 88",
@@ -7525,7 +7526,8 @@ const UPLB_PROGRAMS = {
         "units": 1,
         "year": 4,
         "sem": "2",
-        "prereqs": []
+        "prereqs": [],
+        "standing": "senior"
       },
       {
         "code": "ABE 200 (2)",
