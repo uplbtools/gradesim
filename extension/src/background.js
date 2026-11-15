@@ -11,6 +11,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
+// Toolbar badge with the number of new grades, cleared when the popup opens.
+const showBadge = n => chrome.action.setBadgeText({ text: n ? String(n) : '' });
+chrome.action.setBadgeBackgroundColor({ color: '#7b2a22' });
+chrome.storage.local.get('newGrades').then(d => showBadge(d.newGrades));
+chrome.storage.onChanged.addListener(changes => {
+  if (changes.newGrades) showBadge(changes.newGrades.newValue);
+});
+
 // Web app bridge (Chrome, Edge, Opera, Brave). The manifest lists
 // https://gradesim.uplb.tools under externally_connectable, so only that site
 // can send these. GRADESIM_PING says whether grades exist and when AMIS was last

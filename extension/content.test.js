@@ -63,6 +63,15 @@ async function page({ token, status = 200, body = AMIS_RESPONSE, stored = {} }) 
     }] } },
   });
 
+  // A grade that changed (INC to 1.25) counts as new, and counts add up until the popup opens.
+  const row = grade => ({ student_grades: { 1241: { values: [{ id: 77, grade }] } } });
+  p = await page({ token: 'abc', stored: { gradesData: row('INC') } });
+  assert.strictEqual(p.store.newGrades, 1);
+  p = await page({ token: 'abc', stored: { gradesData: { student_grades: {} }, newGrades: 2 } });
+  assert.strictEqual(p.store.newGrades, 3);
+  p = await page({ token: 'abc', stored: { gradesData: row('1.25') } });
+  assert.strictEqual(p.store.newGrades, undefined);
+
   // Logged out: no token (Nuxt writes "false") means no request.
   p = await page({ token: 'false' });
   assert.strictEqual(p.calls.length, 0);

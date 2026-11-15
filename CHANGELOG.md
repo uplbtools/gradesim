@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.16 (2026-11-16)
+
+### Changes
+- When AMIS posts new grades, or an INC becomes a grade, the toolbar icon shows how many. Opening the popup says how many are new and clears the badge.
+
 ## 2.1.15 (2026-11-16)
 
 ### Changes

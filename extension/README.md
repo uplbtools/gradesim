@@ -16,7 +16,7 @@ Source for the Elbi GradeSim browser extension. Start with the [main README](../
 
 It skips the automatic fetch when `fetchedAt` is under an hour old. The popup's Refresh button sends `{ type: 'FETCH_GRADES', force: true }` to the open AMIS tab, which fetches right away and replies with `{ ok, lastError, fetchedAt }`.
 
-Other keys: `selectedProgram`, `selectedTracks`, `selectedSpecializations` (program code to specialization key), `excludedCourses`, `substitutions`, `customCourseStatus`, `removals` (`<termId>:<code>` to `pass` or `fail` for a 4.00), `plannerPins`, `plannerPetitions`, `plannerOptions`, `theme`, `termsAccepted`. Export JSON writes all of them plus `schemaVersion`. Import restores all of them except `termsAccepted` and `lastError`. `{ type: 'CLEAR_DATA' }` to the background script clears everything.
+Other keys: `selectedProgram`, `selectedTracks`, `selectedSpecializations` (program code to specialization key), `excludedCourses`, `substitutions`, `customCourseStatus`, `removals` (`<termId>:<code>` to `pass` or `fail` for a 4.00), `plannerPins`, `plannerPetitions`, `plannerOptions`, `theme`, `termsAccepted`, `newGrades` (grades AMIS added or changed since the popup last opened, shown as the toolbar badge). Export JSON writes all of them plus `schemaVersion`. Import restores all of them except `termsAccepted`, `lastError` and `newGrades`. `{ type: 'CLEAR_DATA' }` to the background script clears everything.
 
 ## Permissions
 

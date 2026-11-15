@@ -9,6 +9,7 @@
 //   gradesData  { student_grades: { <termId>: { term, values: [course] } } }
 //   fetchedAt   ms timestamp of the last successful fetch
 //   lastError   'not-logged-in', 'amis-error' or null
+//   newGrades   count of grades AMIS added or changed since the popup was last opened
 
 (function () {
   'use strict';
@@ -64,6 +65,13 @@
     }
   }
 
+  // Grades that are new or changed since the saved copy, by AMIS row id.
+  function changedGrades(oldData, data) {
+    const rows = d => Object.values(d.student_grades).flatMap(t => t.values);
+    const before = new Map(rows(oldData).map(v => [v.id, v.grade]));
+    return rows(data).filter(v => v.grade != null && String(v.grade).trim() !== '' && before.get(v.id) !== v.grade).length;
+  }
+
   // Resolves to { ok, lastError, fetchedAt, skipped? }.
   async function refresh(force) {
     if (!force) {
@@ -73,6 +81,9 @@
     if (!inFlight) {
       inFlight = fetchGrades()
         .then(async result => {
+          const { gradesData: old } = await chrome.storage.local.get('gradesData');
+          const added = old && result.gradesData ? changedGrades(old, result.gradesData) : 0;
+          if (added) result.newGrades = added + ((await chrome.storage.local.get('newGrades')).newGrades || 0);
           await chrome.storage.local.set(result);
           return { ok: !result.lastError, lastError: result.lastError, fetchedAt: result.fetchedAt };
         })

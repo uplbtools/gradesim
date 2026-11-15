@@ -77,6 +77,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }));
   }
   showSyncError(lastError);
+  const { newGrades } = await chrome.storage.local.get('newGrades');
+  if (newGrades) {
+    if (!lastError) showNotice($('syncNotice'), { tone: 'ok', icon: 'check', body: `AMIS has ${newGrades === 1 ? '1 new grade' : `${newGrades} new grades`} since you last opened GradeSim.` });
+    chrome.storage.local.remove('newGrades');
+  }
 
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
