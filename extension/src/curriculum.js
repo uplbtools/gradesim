@@ -15000,10 +15000,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "VMED 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 5,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "VMED 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 6,
+        "sem": "1",
+        "prereqs": [
+          "VMED 200"
+        ]
       },
       {
         "code": "VETC 173",
