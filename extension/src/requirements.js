@@ -191,6 +191,21 @@ function gwaOutlook(gwa, units, left, target) {
   return { status, required, ceiling, bestHonor };
 }
 
+// Regular sems before the latest one with under 15 academic units, which
+// Latin honors don't allow.
+function lightSems(courses) {
+  const sems = new Map();
+  courses.forEach(c => {
+    const abs = amisTermToAbs(c.termId);
+    const grade = (c.grade || '').toString().toUpperCase().trim();
+    if (abs == null || abs % 3 === 2 || /^(NSTP|HK|PE)\b/i.test((c.courseCode || '').trim()) || ['DRP', 'W'].includes(grade)) return;
+    const sem = sems.get(abs) || { label: c.term, abs, units: 0 };
+    sem.units += c.units || 0;
+    sems.set(abs, sem);
+  });
+  return [...sems.values()].sort((a, b) => a.abs - b.abs).slice(0, -1).filter(s => s.units < 15);
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { gradeResult, amisTermToAbs, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, surplusElectives, remainingRequirements, gwaOutlook, LATIN_HONORS };
+  module.exports = { gradeResult, amisTermToAbs, lightSems, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, surplusElectives, remainingRequirements, gwaOutlook, LATIN_HONORS };
 }

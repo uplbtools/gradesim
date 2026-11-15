@@ -497,7 +497,8 @@ function calculateGWA(courses, excludedIds = new Set()) {
 function displayHonorStatus(gwa, totalUnits) {
   // Nothing graded yet, or not on any honor track: show nothing.
   const kind = !totalUnits ? null : gwa <= 1.20 ? 'summa' : gwa <= 1.45 ? 'magna' : gwa <= 1.75 ? 'cum' : null;
-  $('honorStatus').replaceChildren(honorBadge(kind) || '');
+  const light = kind ? lightSems(window.gradesData?.courses || []) : [];
+  $('honorStatus').replaceChildren(honorBadge(kind) || '', ...(light.length ? [h('p', { class: 'hint' }, `${light.map(s => `${s.label} had ${s.units} units`).join(', and ')}. Latin honors need at least 15 units each sem, or the checklist's load when it's lower, unless your college accepted a reason such as health.`)] : []));
 }
 
 // How a grade reads in a course row: text, tone class, and an icon if any.
