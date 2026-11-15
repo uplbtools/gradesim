@@ -652,7 +652,7 @@ function renderDetail() {
         h('p', { class: 'pl-detail-title' }, c.title)),
       button({ variant: 'icon', icon: 'x', class: 'pl-close', 'aria-label': 'Close details', dataset: { act: 'close' } })),
     h('p', { class: 'pl-muted' }, `${facts.join('. ')}.`),
-    metrics.children.length > 0 && metrics,
+    i.status !== 'passed' && metrics.children.length > 0 && metrics,
     c.options && [h('h4', {}, 'Take one of these'), h('ul', { class: 'pl-reqs' }, c.options.map(o => h('li', {},
       h('strong', {}, o), catalog[o] ? ` ${catalog[o].title.replace(/\.$/, '')}` : '',
       v.passed.has(o) ? ', passed' : '')))],

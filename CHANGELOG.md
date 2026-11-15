@@ -5,6 +5,7 @@
 ### Fixes
 - The planner no longer lets you mark a course failed when a course that needs it is passed, or mark a course passed when its prerequisite is failed.
 - With no grades, the popup shows one line with Refresh and Open AMIS, and Export JSON waits until there are grades.
+- A passed course's details no longer show what a failure would block.
 - The popup and planner copy uses contractions and full sentences.
 
 ## 2.1.4 (2026-11-15)
