@@ -324,15 +324,22 @@ function compute() {
   const left = remainingRequirements(state.courses, hist.attempts.filter(a => a.result === 'passed'),
     { substitutions: d.substitutions, overrides: d.customCourseStatus });
 
-  const conflicts = prereqConflicts(state.courses, code => (info[code] ? info[code].status : passed.has(code) && 'passed'));
+  const statusOf = code => (info[code] ? info[code].status : passed.has(code) && 'passed');
+  const conflicts = prereqConflicts(state.courses, statusOf);
 
-  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, capAt, byChecklist, left, conflicts };
+  return { hist, info, startAbs, passed: now.passed, failures, costs, now, ideal, noWhatif, slips, unitCaps, capAt, byChecklist, left, conflicts, statusOf };
 }
 
 /* ---------- Summary ---------- */
 
 // "N terms later" counted in terms the student would attend: midyears count
 // only when the plan uses them.
+// The new conflict a mark would create, such as a failed prerequisite of a passed course.
+function markConflict(v, code, mark) {
+  const known = new Set(v.conflicts.map(c => `${c.code}>${c.pre}`));
+  return prereqConflicts(state.courses, c => (c === code ? mark : v.statusOf(c))).find(c => !known.has(`${c.code}>${c.pre}`));
+}
+
 function termsLate(v, fromT, toT) {
   let n = 0;
   for (let t = fromT + 1; t <= toT; t++) {
@@ -627,8 +634,10 @@ function renderDetail() {
 
   const actions = [];
   const past = i.tries.length > 0;
-  if (i.status !== 'passed') actions.push(button({ icon: 'check', text: 'Mark passed', dataset: { act: 'passed' } }));
-  if (i.status !== 'failed') actions.push(button({ icon: 'x', text: past || i.status === 'inprogress' ? 'Mark failed' : 'Mark failed (what-if)', dataset: { act: 'failed' } }));
+  const passBlock = i.status !== 'passed' && markConflict(v, code, 'passed');
+  const failBlock = i.status !== 'failed' && markConflict(v, code, 'failed');
+  if (i.status !== 'passed' && !passBlock) actions.push(button({ icon: 'check', text: 'Mark passed', dataset: { act: 'passed' } }));
+  if (i.status !== 'failed' && !failBlock) actions.push(button({ icon: 'x', text: past || i.status === 'inprogress' ? 'Mark failed' : 'Mark failed (what-if)', dataset: { act: 'failed' } }));
   if (i.override) actions.push(button({ variant: 'text', text: `Use ${past ? 'AMIS status' : 'plan'} again`, dataset: { act: 'clear' } }));
   if (t !== undefined) actions.push(button({ variant: 'text', text: 'Take a term later', dataset: { act: 'later' } }));
   if (state.data.plannerPins[code] != null) actions.push(button({ variant: 'text', text: 'Back to earliest', dataset: { act: 'unpin' } }));
@@ -651,6 +660,8 @@ function renderDetail() {
     reqs.length ? h('ul', { class: 'pl-reqs' }, reqs) : h('p', { class: 'pl-muted' }, 'No prerequisites.'),
     deps.length > 0 && [h('h4', {}, 'Unlocks'), h('p', { class: 'pl-deps' }, deps.map(d => courseLinks([d], v)))],
     h('div', { class: 'pl-actions' }, actions),
+    failBlock && h('p', { class: 'pl-muted' }, `${failBlock.code} is passed, so ${code} can't be marked failed.`),
+    passBlock && h('p', { class: 'pl-muted' }, `${passBlock.pre} is failed, so ${code} can't be marked passed.`),
     state.acted === code && h('p', {}, h('strong', {}, `${$('gradTerm').textContent}.${$('gradDelta').textContent ? ` ${$('gradDelta').textContent}.` : ''}`)),
     petition,
   ]));
