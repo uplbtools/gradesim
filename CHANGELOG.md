@@ -4,6 +4,7 @@
 
 ### Changes
 - The Latin honors badge names each past sem with under 15 units, since honors need at least 15 units a sem unless the checklist's load is lower or the college accepted a reason.
+- BS Math's major electives take only MATH courses, as the CAS catalog says.
 
 ## 2.1.20 (2026-11-16)
 

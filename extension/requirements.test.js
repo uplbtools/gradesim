@@ -204,3 +204,12 @@ assert.deepStrictEqual(lightSems([
   sem(1253, 'Midyear', 6),
   sem(1261, 'Now', 9),
 ]).map(s => [s.label, s.units]), [['1st sem', 12]]);
+
+// BS Math major electives take only MATH courses.
+{
+  const math = plannerCourseList(UPLB_PROGRAMS.BSMATH, null, UPLB_CATALOG);
+  const majors = math.filter(c => c.title === 'MATH Major Elective');
+  assert.ok(majors.length >= 3 && majors.every(c => c.allow?.join() === 'MATH'));
+  const fill = fillRequirementSlots(math, [{ code: 'STAT 101', title: '', units: 3, result: 'passed' }]);
+  assert.ok(majors.every(c => !fill.has(c.code)), 'STAT is not a MATH major elective');
+}

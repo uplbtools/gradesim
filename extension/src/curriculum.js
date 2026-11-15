@@ -819,7 +819,8 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MAJ 1",
-        "title": "Major Elective",
+        "title": "MATH Major Elective",
+        "allow": ["MATH"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -922,7 +923,8 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MAJ 3",
-        "title": "Major Elective",
+        "title": "MATH Major Elective",
+        "allow": ["MATH"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -956,7 +958,8 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MAJ 4",
-        "title": "Major Elective",
+        "title": "MATH Major Elective",
+        "allow": ["MATH"],
         "units": 3,
         "year": 4,
         "sem": "2",
