@@ -6142,16 +6142,16 @@ const UPLB_PROGRAMS = {
         "code": "CHEM 40",
         "title": "Basic Organic Chemistry",
         "units": 4,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
         "code": "CHEM 40.1",
         "title": "Basic Organic Chemistry Laboratory",
         "units": 1,
-        "year": 2,
-        "sem": "1",
+        "year": 1,
+        "sem": "2",
         "prereqs": []
       },
       {
