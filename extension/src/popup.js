@@ -309,7 +309,9 @@ function parseAMISData(data) {
   for (const [termId, termData] of Object.entries(data.student_grades)) {
     if (!termData || !termData.values) continue;
 
-    const termInfo = termData.term || `Term ${termId}`;
+    const abs = amisTermToAbs(termId);
+    const ay = abs == null ? '' : `${Math.floor(abs / 3)}-${Math.floor(abs / 3) + 1}`;
+    const termInfo = termData.term || (ay ? `${['1st Semester', '2nd Semester', 'Midyear'][abs % 3]} AY ${ay}` : `Term ${termId}`);
 
     for (const courseData of termData.values) {
       courses.push({
@@ -323,7 +325,7 @@ function parseAMISData(data) {
         termId: termId,
         term: termInfo,
         semester: courseData.grade_term?.term || '',
-        academicYear: courseData.grade_term?.ay || '',
+        academicYear: courseData.grade_term?.ay || ay,
         status: courseData.status
       });
     }
@@ -534,7 +536,9 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
     return 0;
   };
 
+  const newest = key => Math.max(...groupedCourses[key].map(c => amisTermToAbs(c.termId) ?? -1));
   const sortedGroups = Object.keys(groupedCourses).sort((a, b) => {
+    if (newest(a) !== newest(b)) return newest(b) - newest(a);
     const splitA = a.split(',');
     const splitB = b.split(',');
     if (splitA[0] !== splitB[0]) {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.7 (2026-11-15)
+
+### Fixes
+- The Grades tab lists terms newest first by their AMIS term number, and grades imported without a term name show the semester and year in place of "Term 1241".
+
 ## 2.1.6 (2026-11-15)
 
 ### Fixes
