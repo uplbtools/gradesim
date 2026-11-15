@@ -908,7 +908,7 @@ function checkPlan(p) {
     all(p.plannerPins, Number.isInteger) &&
     all(p.plannerPetitions, x => x === true) &&
     all(p.substitutions, x => typeof x === 'string') &&
-    isObj(p.plannerOptions) && [18, 21].includes(Number(p.plannerOptions.cap)) &&
+    isObj(p.plannerOptions) && (p.plannerOptions.cap === 'checklist' || [18, 21].includes(Number(p.plannerOptions.cap))) &&
     (p.whatif == null || (isObj(p.whatif) && typeof p.whatif.code === 'string' && ['fail', '1', '3'].includes(p.whatif.mode)));
   return ok ? '' : 'That plan file looks damaged, so nothing was changed.';
 }
@@ -957,8 +957,8 @@ function exportModel(v) {
       name: dated ? absLabel(column.abs).replace(/ \d+$/, '') : column.abs === -1 ? 'Credited' : "Can't place",
       sub: dated ? ayLabel(column.abs) : column.abs === -1 ? 'No AMIS term' : 'Check prerequisites',
       tag: column.abs === v.startAbs ? 'Next' : column.cards.some(c => c.status === 'inprogress') ? 'Now' : dated && !future ? 'Taken' : '',
-      units: column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0),
-      cap: future ? (column.abs % 3 === 2 ? v.unitCaps.midyear : v.unitCaps['1']) : null,
+      units: column.cards.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0),
+      cap: future ? (column.abs % 3 === 2 ? v.unitCaps.midyear : v.capAt(column.abs)) : null,
     };
     const term = dated ? `${f.sub} ${f.name}` : column.abs === -1 ? 'Credited' : 'Not placed';
     const cards = column.cards.map(card => {
