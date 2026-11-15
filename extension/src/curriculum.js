@@ -13192,7 +13192,7 @@ const UPLB_PROGRAMS = {
   },
   "AAFOR": {
     "code": "AAFOR",
-    "name": "Associate in Forestry",
+    "name": "Associate of Science in Forestry",
     "college": "CFNR",
     "collegeName": "College of Forestry and Natural Resources",
     "available": true,
