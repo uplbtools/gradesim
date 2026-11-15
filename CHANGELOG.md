@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.9 (2026-11-15)
+
+### Fixes
+- Each term on the Grades tab opens and closes from its header, and only the newest one starts open.
+- The track notice on What if is one short sentence.
+
 ## 2.1.8 (2026-11-15)
 
 ### Fixes

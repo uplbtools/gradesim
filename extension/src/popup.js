@@ -16,6 +16,7 @@ let excludedCourses = new Set();
 
 // Store current view mode
 let currentView = 'semester';
+const openGroups = new Map();
 
 // Store course substitutions - requiredCode -> takenCode
 let substitutions = {};
@@ -549,7 +550,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
     return b.localeCompare(a);
   });
 
-  listEl.replaceChildren(...sortedGroups.map(groupKey => {
+  listEl.replaceChildren(...sortedGroups.map((groupKey, i) => {
     const courses = groupedCourses[groupKey];
     const groupGWA = calculateGroupGWA(courses);
     if (courses.some(c => holds.has(semKeyOf(c)))) groupGWA.hasFailOrInc = true;
@@ -562,8 +563,13 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
       else if (groupGWA.gwa <= 1.75) scholar = 'college';
     }
 
-    return h('section', { class: 'semester-group list-card' },
-      h('div', { class: 'semester-header' },
+    return h('details', {
+      class: 'semester-group list-card',
+      open: openGroups.get(groupKey) ?? i === 0,
+      ontoggle: e => openGroups.set(groupKey, e.currentTarget.open),
+    },
+      h('summary', { class: 'semester-header' },
+        icon('chevron'),
         h('h3', { class: 'group-title' }, groupKey),
         h('span', { class: 'group-gwa-info' },
           h('span', { class: 'group-gwa' }, groupGWA.gwa > 0 ? `GWA ${groupGWA.gwa.toFixed(2)}` : 'No GWA yet'),
@@ -654,14 +660,10 @@ function displayRemaining() {
       currentTrack = detectedTrack;
       const trackInfo = curriculum.tracks[detectedTrack];
       const trackName = trackInfo ? `${trackInfo.name} (${trackInfo.code})` : detectedTrack;
-      showNotice(trackInfoEl, { tone: 'ok', icon: 'check', body: `Your AMIS record shows the ${trackName} track.` });
+      showNotice(trackInfoEl, { tone: 'ok', icon: 'check', body: `AMIS shows the ${trackName}.` });
     } else {
       currentTrack = resolveTrack(curriculum, window.selectedTracks?.[curriculum.code]);
-      const fallback = curriculum.tracks[currentTrack];
-      showNotice(trackInfoEl, {
-        tone: 'warn', icon: 'alert',
-        body: `No SP or thesis course on AMIS yet, so GradeSim assumes ${fallback.name} (${fallback.code}). Pick yours below.`,
-      });
+      showNotice(trackInfoEl, { tone: 'warn', icon: 'alert', body: "Your track isn't on AMIS yet, so pick one below." });
     }
 
     const trackRadio = document.querySelector(`input[name="track"][value="${CSS.escape(currentTrack)}"]`);

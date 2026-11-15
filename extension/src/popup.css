@@ -855,9 +855,28 @@ body.needs-program #programLabel {
   justify-content: space-between;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   padding: 8px 12px;
   background: var(--bg-card);
+  cursor: pointer;
+  list-style: none;
+}
+
+.semester-header::-webkit-details-marker {
+  display: none;
+}
+
+.semester-header > .icon {
+  color: var(--muted);
+  transform: rotate(-90deg);
+}
+
+.semester-group[open] > .semester-header {
   border-bottom: 1px solid var(--border);
+}
+
+.semester-group[open] > .semester-header > .icon {
+  transform: none;
 }
 
 .group-title {
