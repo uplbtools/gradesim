@@ -16,7 +16,7 @@ Source for the Elbi GradeSim browser extension. Start with the [main README](../
 
 It skips the automatic fetch when `fetchedAt` is under an hour old. The popup's Refresh button sends `{ type: 'FETCH_GRADES', force: true }` to the open AMIS tab, which fetches right away and replies with `{ ok, lastError, fetchedAt }`.
 
-Other keys: `selectedProgram`, `selectedTracks`, `selectedSpecializations` (program code to specialization key), `excludedCourses`, `substitutions`, `customCourseStatus`, `plannerPins`, `plannerPetitions`, `plannerOptions`, `theme`, `termsAccepted`. Export JSON writes all of them plus `schemaVersion`. Import restores all of them except `termsAccepted` and `lastError`. `{ type: 'CLEAR_DATA' }` to the background script clears everything.
+Other keys: `selectedProgram`, `selectedTracks`, `selectedSpecializations` (program code to specialization key), `excludedCourses`, `substitutions`, `customCourseStatus`, `removals` (`<termId>:<code>` to `pass` or `fail` for a 4.00), `plannerPins`, `plannerPetitions`, `plannerOptions`, `theme`, `termsAccepted`. Export JSON writes all of them plus `schemaVersion`. Import restores all of them except `termsAccepted` and `lastError`. `{ type: 'CLEAR_DATA' }` to the background script clears everything.
 
 ## Permissions
 
@@ -39,4 +39,4 @@ Load `dist/chrome` (Chrome, Edge, Brave, Opera) or `dist/firefox` as an unpacked
 
 ## Curriculum data
 
-Programs live in `src/curriculum.js` and the AMIS course catalog in `src/catalog.js`. The pipeline that builds them from the official checklists is in `../scratch/`.
+Programs live in `src/curriculum.js` and the AMIS course catalog in `src/catalog.js`. `curriculum.js` is edited by hand now, because the generators in `../scratch/` predate tracks and specializations.
