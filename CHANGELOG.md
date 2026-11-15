@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.11 (2026-11-16)
+
+### Changes
+- The GWA slide in Wrapped is drawn in Reann Vargas's tin frame, and it saves as a 1080 x 1920 story image.
+
 ## 2.1.10 (2026-11-16)
 
 ### Changes

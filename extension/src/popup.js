@@ -988,7 +988,7 @@ function generateGWAPanel(data) {
     [Infinity, '🌱', 'Comeback arc', "Mababa man ngayon, pwede pa 'yan i-improve. Marami nang naka-recover from this. Kaya mo 'yan."],
   ];
   const [, emoji, title, message] = gwa === 0 ? tiers[0] : tiers.slice(1).find(t => gwa <= t[0]);
-  return { emoji, title, value: gwa > 0 ? gwa.toFixed(4) : '--', subtitle: 'My Elbi GWA', message };
+  return { emoji, title, value: gwa > 0 ? gwa.toFixed(4) : '--', subtitle: 'My Elbi GWA', message, frame: gwa > 0 };
 }
 
 function generateSemesterPanel(data) {
@@ -1118,7 +1118,50 @@ function generateProgressPanel(data) {
 }
 
 // On-screen Wrapped slide.
+// Reann Vargas's tin frame. The lid and the cloth are tilted about 10 degrees.
+async function drawTinFrame(canvas, p) {
+  const font = '"Figtree", system-ui, sans-serif';
+  const img = new Image();
+  img.src = 'frames/tin.jpg';
+  await Promise.all([img.decode(), document.fonts.load(`800 88px ${font}`)]);
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, 1080, 1920);
+  ctx.textAlign = 'center';
+  const tilted = (x, y, draw) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(-0.17);
+    draw();
+    ctx.restore();
+  };
+  tilted(500, 700, () => {
+    ctx.fillStyle = '#2b2321';
+    ctx.font = `800 ${p.title.length > 14 ? 76 : 88}px ${font}`;
+    ctx.fillText(p.title, 0, 0);
+    ctx.fillStyle = '#4a3f3c';
+    ctx.font = `600 40px ${font}`;
+    ctx.fillText('gradesim.uplb.tools', 0, 80);
+  });
+  tilted(596, 1225, () => {
+    ctx.fillStyle = '#7b2a22';
+    ctx.font = `800 190px ${font}`;
+    ctx.fillText(p.value, 0, 40);
+    ctx.font = `700 52px ${font}`;
+    ctx.fillText(p.subtitle, 0, 130);
+  });
+  return canvas;
+}
+
+function tinCanvas(p) {
+  const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': `${p.title}, GWA ${p.value}, drawn in a tin on a picnic blanket` });
+  drawTinFrame(canvas, p);
+  return canvas;
+}
+
 function wrappedPanel(p) {
+  if (p.frame) return [tinCanvas(p)];
   return [
     h('div', { class: 'panel-emoji', 'aria-hidden': 'true' }, p.emoji),
     h('h3', { class: 'panel-title' }, p.title),
@@ -1160,6 +1203,8 @@ function navigateWrapped(direction) {
 async function exportWrappedToPNG() {
   const p = wrappedPanels[wrappedCurrentPanel];
   if (!p) return;
+  const save = c => h('a', { download: `elbi-wrapped-${wrappedCurrentPanel + 1}.png`, href: c.toDataURL('image/png') }).click();
+  if (p.frame) return save(await drawTinFrame(document.createElement('canvas'), p));
 
   const DISPLAY = '"Figtree", system-ui, sans-serif';
   const TEXT = DISPLAY;
@@ -1290,7 +1335,7 @@ async function exportWrappedToPNG() {
     }
   }
 
-  h('a', { download: `elbi-wrapped-${wrappedCurrentPanel + 1}.png`, href: canvas.toDataURL('image/png') }).click();
+  save(canvas);
 }
 
 /* ---------- Grade refresh, backup and clear data (platform) ---------- */

@@ -32,7 +32,7 @@ build_target() {
      "$SRC_DIR"/scheduler.js "$SRC_DIR"/components.js "$SRC_DIR"/xlsx.js "$out/"
 
   cp "$SRC_DIR"/tokens.css "$SRC_DIR"/plumbob.svg "$out/"
-  cp -r "$SRC_DIR"/fonts "$out/"
+  cp -r "$SRC_DIR"/fonts "$SRC_DIR"/frames "$out/"
 
   # Copy icons
   mkdir -p "$out/icons"
