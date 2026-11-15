@@ -481,7 +481,7 @@ function termBlock(column, v) {
   const isPast = column.abs < v.startAbs;
   const dated = isDated(column.abs);
   const name = column.abs === -1 ? 'No AMIS term' : column.abs === Infinity ? 'Check prerequisites' : absLabel(column.abs).replace(/ \d+$/, '');
-  const units = column.cards.reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
+  const units = column.cards.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + (Number(state.byCode.get(c.code).units) || 0), 0);
   const isMid = column.abs % 3 === 2;
   let warn = '';
   if (!isPast && dated) {
