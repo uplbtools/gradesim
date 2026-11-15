@@ -174,7 +174,7 @@ console.log('requirements.test.js: surplus electives passed');
   const fresh = scheduleEarliest({ courses: sp, passed: new Set(), useMidyear: false, totalUnits: 130 });
   assert.strictEqual(fresh.plan.find(t => t.courses.includes('CMSC 198')).sem, 'midyear');
   const firstFE = Math.min(...sp.filter(c => /^FE/.test(c.code)).map(c => fresh.assignedTerm[c.code]));
-  assert.ok(firstFE >= 9, `free electives start in senior year, got term ${firstFE}`);
+  assert.ok(firstFE < 9, `free electives need no standing, got term ${firstFE}`);
   assert.ok(fresh.assignedTerm['CMSC 190 (2)'] > fresh.assignedTerm['CMSC 190']);
   const thesis = plannerCourseList(UPLB_PROGRAMS.BSCS, 'thesis', UPLB_CATALOG);
   assert.strictEqual(thesis.filter(c => !isNonGwaCourseCode(c.code)).reduce((s, c) => s + c.units, 0), 130);
