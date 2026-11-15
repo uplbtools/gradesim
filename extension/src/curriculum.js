@@ -4108,10 +4108,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "COMA 200A",
         "title": "Practicum",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "midyear",
         "prereqs": []
+      },
+      {
+        "code": "COMA 200A (2)",
+        "title": "Practicum",
+        "units": 3,
+        "year": 4,
+        "sem": "1",
+        "prereqs": [
+          "COMA 200A"
+        ]
       },
       {
         "code": "COMA 105",
@@ -6029,10 +6039,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ABT 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 4,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ABT 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 4,
+        "sem": "2",
+        "prereqs": [
+          "ABT 200"
+        ]
       },
       {
         "code": "ABT 108",
@@ -7015,10 +7035,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "ACHM 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 5,
         "sem": "1",
         "prereqs": []
+      },
+      {
+        "code": "ACHM 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 5,
+        "sem": "2",
+        "prereqs": [
+          "ACHM 200"
+        ]
       },
       {
         "code": "STS 1",
@@ -13818,10 +13848,20 @@ const UPLB_PROGRAMS = {
       {
         "code": "HNF 200",
         "title": "Undergraduate Thesis",
-        "units": 6,
+        "units": 3,
         "year": 3,
         "sem": "2",
         "prereqs": []
+      },
+      {
+        "code": "HNF 200 (2)",
+        "title": "Undergraduate Thesis",
+        "units": 3,
+        "year": 3,
+        "sem": "midyear",
+        "prereqs": [
+          "HNF 200"
+        ]
       },
       {
         "code": "HNF 126",
