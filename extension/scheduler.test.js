@@ -56,6 +56,22 @@ const t0Count = ['X1', 'X2', 'X3'].filter(c => capped.assignedTerm[c] === 0).len
 assert.strictEqual(t0Count, 2);
 assert.strictEqual(Math.max(...['X1', 'X2', 'X3'].map(c => capped.assignedTerm[c])), 3);
 
+// HK and NSTP sit outside the cap, like the checklists' (2) and (3)
+const withHk = scheduleEarliest({
+  courses: [C('X1', 3, '1'), C('X2', 3, '1'), C('HK 11', 2, '1'), C('NSTP 1', 3, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 6, '2': 21, 'midyear': 6 },
+  startSem: '1',
+});
+assert.strictEqual(withHk.gradTermIndex, 0);
+const twoHk = scheduleEarliest({
+  courses: [C('HK 1', 2, '1'), C('HK 2', 2, '1'), C('NSTP 1', 3, '1'), C('NSTP 2', 3, '1')],
+  passed: new Set(),
+  startSem: '1',
+});
+assert.notStrictEqual(twoHk.assignedTerm['HK 1'], twoHk.assignedTerm['HK 2']);
+assert.notStrictEqual(twoHk.assignedTerm['NSTP 1'], twoHk.assignedTerm['NSTP 2']);
+
 // notBefore delay honored, and offering still respected (t3 is next 1st sem)
 const delayed = scheduleEarliest({ courses: [C('A', 3, '1')], passed: new Set(), notBefore: { A: 1 }, startSem: '1' });
 assert.strictEqual(delayed.assignedTerm['A'], 3);

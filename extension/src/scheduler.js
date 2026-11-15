@@ -352,7 +352,9 @@ function scheduleEarliest(opts) {
 
   const byCode = new Map();
   courses.forEach(c => byCode.set(normCode(c.code), c));
+  const extraKind = code => /^NSTP\b/.test(code) ? 'NSTP' : /^(HK|PE)\b/.test(code) ? 'HK' : null;
   const unitsOf = code => {
+    if (extraKind(code)) return 0;
     const c = byCode.get(code);
     return c && c.units != null ? Number(c.units) : 3;
   };
@@ -443,6 +445,8 @@ function scheduleEarliest(opts) {
     let units = 0;
     candidates.forEach(code => {
       if (assignedTerm[code] !== undefined) return;
+      const kind = extraKind(code);
+      if (kind && placed.some(c => extraKind(c) === kind)) return;
       // Place a course together with its unplaced coreqs, or not at all.
       const bundle = [code, ...coOf.get(code).filter(c => remaining.has(c) && assignedTerm[c] === undefined)];
       const bundleUnits = bundle.reduce((s, c) => s + unitsOf(c), 0);
