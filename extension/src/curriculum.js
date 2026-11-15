@@ -256,7 +256,7 @@ const UPLB_PROGRAMS = {
     "majorCourses": [
       {
         "code": "MATH 27",
-        "title": "Analytic Geometry and Calculus I",
+        "title": "Analytic Geometry and Calculus II",
         "units": 3,
         "year": 1,
         "sem": "1",
@@ -264,7 +264,7 @@ const UPLB_PROGRAMS = {
       },
       {
         "code": "MATH 28",
-        "title": "Analytic Geometry and Calculus II",
+        "title": "Analytic Geometry and Calculus III",
         "units": 3,
         "year": 1,
         "sem": "2",
