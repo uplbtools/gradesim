@@ -14927,39 +14927,9 @@ function getFreeElectiveUnits(track, program = currentProgram) {
   return program.tracks[resolveTrack(program, track)]?.freeElectiveUnits ?? 15;
 }
 
-// Check if a course is a required major course
-function isRequiredCourse(courseCode) {
-  if (!currentProgram.requiredCodes) return false;
-  
-  const normalized = courseCode.toUpperCase().trim();
-  return currentProgram.requiredCodes.some(code => 
-    code.toUpperCase() === normalized
-  );
-}
-
-// Get remaining required courses
-function getRemainingCourses(completedCourses) {
-  if (!currentProgram.majorCourses) return [];
-  
-  const completedCodes = new Set(
-    completedCourses.map(c => c.code.toUpperCase().trim())
-  );
-  
-  return currentProgram.majorCourses.filter(course => 
-    !completedCodes.has(course.code.toUpperCase())
-  );
-}
-
 // Count completed GE courses
 function countCompletedGE(completedCourses) {
   return completedCourses.filter(c => isGECourse(c.code || c.courseCode, c.title || c.courseTitle)).length;
-}
-
-// Get remaining GE slots
-function getRemainingGESlots(completedCourses) {
-  const completed = countCompletedGE(completedCourses);
-  const required = currentProgram.geCoursesRequired || 9;
-  return Math.max(0, required - completed);
 }
 
 // How far the planner can trust a program's data, for a low-confidence banner.
@@ -15003,10 +14973,7 @@ if (typeof module !== 'undefined' && module.exports) {
     applySpecialization,
     getPlannerCourses,
     getCompletedRequirementSlotCodes,
-    isRequiredCourse,
-    getRemainingCourses,
     countCompletedGE,
-    getRemainingGESlots,
     getProgramDataQuality,
     BSCS_CURRICULUM
   };
