@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.5 (2026-11-15)
+
+### Fixes
+- The planner no longer lets you mark a course failed when a course that needs it is passed, or mark a course passed when its prerequisite is failed.
+
 ## 2.1.4 (2026-11-15)
 
 ### Features
