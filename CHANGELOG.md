@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.22 (2026-11-16)
+
+### Changes
+- GradeSim uses UP maroon (#7b1113), the same maroon as Room TBA.
+
 ## 2.1.21 (2026-11-16)
 
 ### Changes

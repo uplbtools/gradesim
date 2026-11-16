@@ -1071,7 +1071,7 @@ function shownGwa(value = '', show = 'none') {
 const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
 const FRAMES = { sem: 'tin-note', id: 'tin-id', tin: 'tin', note: 'tin', tray: 'tray', open: 'tin-red' };
-const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b2a22', URL = 'gradesim.uplb.tools';
+const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b1113', URL = 'gradesim.uplb.tools';
 const CREDIT = 'Design by Reann Vargas and Danica Manadong';
 
 // Reann Vargas's pages. Each tin, tray and note is tilted, so text is drawn turned with it.

@@ -14,11 +14,11 @@
 :root {
   color-scheme: light dark;
 
-  --brand: hsl(5, 53%, 32%);
-  --brand-deep: hsl(5, 53%, 26%);
-  --brand-tint: hsl(5 53% 32% / 0.08);
-  --brand-tint-strong: hsl(5 53% 32% / 0.14);
-  --brand-line: hsl(5 53% 32% / 0.25);
+  --brand: hsl(359, 76%, 27%);
+  --brand-deep: hsl(359, 76%, 22%);
+  --brand-tint: hsl(359 76% 27% / 0.08);
+  --brand-tint-strong: hsl(359 76% 27% / 0.14);
+  --brand-line: hsl(359 76% 27% / 0.25);
   --brand-green: hsl(145, 63%, 22%);
   --on-brand: hsl(0, 0%, 100%);
 
