@@ -4,7 +4,7 @@
 const assert = require('assert');
 Object.assign(globalThis, require('./src/curriculum.js'), require('./src/scheduler.js'));
 const { UPLB_CATALOG } = require('./src/catalog.js');
-const { amisTermToAbs, lightSems, gradeResult, removalKey, applyRemovals, surplusElectives, amisCourses, plannerCourseList, fillRequirementSlots, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
+const { amisTermToAbs, lightSems, standingFor, gradeResult, removalKey, applyRemovals, surplusElectives, amisCourses, plannerCourseList, fillRequirementSlots, remainingRequirements, gwaOutlook } = require('./src/requirements.js');
 
 assert.strictEqual(amisTermToAbs(1251), 2025 * 3);
 assert.strictEqual(amisTermToAbs('1232'), 2023 * 3 + 1);
@@ -217,6 +217,16 @@ assert.deepStrictEqual(lightSems([
   sem(1253, 'Midyear', 6),
   sem(1261, 'Now', 9),
 ]).map(s => [s.label, s.units]), [['1st sem', 12]]);
+
+// Scholastic standing follows the share of units below 3.00 in the latest regular sem.
+{
+  const sem5 = (termId, low) => Array.from({ length: 5 }, (_, i) => sem(termId, 'S' + termId, 3, 'X ' + i, i < low ? '5.00' : '2.00'));
+  assert.strictEqual(standingFor(sem5(1251, 0)), null);
+  assert.deepStrictEqual([1, 2, 3, 4, 5].map(n => standingFor(sem5(1251, n))?.level), [undefined, 'warning', 'probation', 'dropped', 'barred']);
+  assert.strictEqual(standingFor([...sem5(1242, 3), ...sem5(1251, 3)]).level, 'dropped');
+  const s = standingFor([...sem5(1251, 3), sem(1253, 'Midyear', 3, 'M 1', '5.00'), sem(1251, 'S', 2, 'HK 12', '5.00'), sem(1251, 'S', 3, 'Y 1', 'INC'), sem(1251, 'S', 3, 'Y 2', '4.00')]);
+  assert.deepStrictEqual([s.level, s.low, s.units], ['probation', 9, 15]);
+}
 
 // BS IE technical cognates and BA Comm majors take only their department lists.
 {

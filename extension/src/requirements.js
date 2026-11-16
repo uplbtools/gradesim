@@ -210,6 +210,30 @@ function lightSems(courses) {
   return [...sems.values()].sort((a, b) => a.abs - b.abs).slice(0, -1).filter(s => s.units < 15);
 }
 
+// Scholastic standing after the latest regular sem, from the share of academic
+// units with final grades below 3 (UPLB Academic Catalogue, Scholastic
+// Standing). Midyears, a 4.00 still open for removal, and INC, DRP and W are
+// left out.
+function standingFor(courses) {
+  const sems = new Map();
+  courses.forEach(c => {
+    const abs = amisTermToAbs(c.termId);
+    const n = parseFloat(c.grade);
+    if (abs == null || abs % 3 === 2 || /^(NSTP|HK|PE)\b/i.test((c.courseCode || '').trim()) || isNaN(n) || n === 4) return;
+    const sem = sems.get(abs) || { label: c.term, abs, units: 0, low: 0 };
+    sem.units += c.units || 0;
+    if (n > 3) sem.low += c.units || 0;
+    sems.set(abs, sem);
+  });
+  const [last, prev] = [...sems.values()].filter(s => s.units > 0).sort((a, b) => b.abs - a.abs);
+  if (!last) return null;
+  const share = s => s.low / s.units;
+  const onProbation = prev && share(prev) >= 0.5 && share(prev) <= 0.75;
+  const p = share(last);
+  const level = p === 1 ? 'barred' : p > 0.75 || (onProbation && p >= 0.5) ? 'dropped' : p >= 0.5 ? 'probation' : p >= 0.25 ? 'warning' : null;
+  return level ? { ...last, level } : null;
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { gradeResult, amisTermToAbs, lightSems, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, surplusElectives, remainingRequirements, gwaOutlook, LATIN_HONORS };
+  module.exports = { gradeResult, amisTermToAbs, lightSems, standingFor, removalKey, applyRemovals, amisCourses, plannerCourseList, fillRequirementSlots, surplusElectives, remainingRequirements, gwaOutlook, LATIN_HONORS };
 }
