@@ -102,7 +102,7 @@ Object.values(UPLB_PROGRAMS).filter(p => p.specializations).forEach(p => {
   const rows = new Map((p.majorCourses || []).map(c => [normalizeCourseCode(c.code), c]));
   const baseUnits = getPlannerCourses(p, p.defaultTrack).reduce((s, c) => s + c.units, 0);
   Object.entries(p.specializations).forEach(([key, spec]) => {
-    if (!spec.name || !/page \d+/.test(spec.source || '')) fail(p.code, `specialization ${key} needs a name and a catalog page`);
+    if (!spec.name || !/page \d+|https:\/\//.test(spec.source || '')) fail(p.code, `specialization ${key} needs a name and a catalog page or link`);
     const courseRows = spec.courses || [];
     courseRows.forEach(c => {
       if (c.slot && !(rows.get(c.slot) && rows.get(c.slot).genericRequirement === 'elective')) fail(p.code, `${key} slot ${c.slot} is not a MAJ elective row`);

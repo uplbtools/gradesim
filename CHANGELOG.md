@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Changes
-- BS Agriculture students can pick Agronomy, Horticulture, Agricultural Systems, Landscape Agroforestry, Soil Science or Agricultural Extension as their major, and its major courses and seminar fill the major slots. The four ASI majors also fill their specialized course slots from the ASI list.
+- BS Agriculture students can pick Agronomy, Animal Science, Horticulture, Agricultural Systems, Landscape Agroforestry, Soil Science or Agricultural Extension as their major, and its major courses and seminar fill the major slots. Animal Science and the four ASI majors also fill their specialized course slots from their institute lists.
 - BA Philosophy's Readings in Speculative Thought slot takes only SPEC, the AMIS code for that course.
 
 ## 2.1.22 (2026-11-16)

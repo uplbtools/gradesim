@@ -5416,6 +5416,61 @@ const UPLB_PROGRAMS = {
           }
         ]
       },
+      "ansc": {
+        "name": "Animal Science",
+        "source": "Institute of Animal Science, BSA major in Animal Science, https://web.archive.org/web/20240727064052/https://ias.uplb.edu.ph/?p=138198",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "ANSC 101",
+              "ANSC 102",
+              "ANSC 103",
+              "ANSC 104",
+              "ANSC 105",
+              "ANSC 106",
+              "ABT 120"
+            ]
+          },
+          {
+            "name": "Specialized course",
+            "slots": [
+              "MAJ 4",
+              "MAJ 11",
+              "MAJ 12",
+              "MAJ 13"
+            ],
+            "courses": [
+              "ANSC 111",
+              "ANSC 116",
+              "ANSC 117",
+              "ANSC 121",
+              "ANSC 122",
+              "ANSC 131",
+              "ANSC 132",
+              "ANSC 135",
+              "ANSC 136",
+              "ANSC 137",
+              "ANSC 142",
+              "ANSC 143",
+              "ANSC 144",
+              "ANSC 145",
+              "ANSC 161",
+              "ANSC 172",
+              "ANSC 173",
+              "ANSC 191"
+            ]
+          }
+        ]
+      },
       "asys": {
         "name": "Agricultural Systems",
         "source": "ASI brochure on asi.cafs.uplb.edu.ph, page 2, read from web.archive.org",
