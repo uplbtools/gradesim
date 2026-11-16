@@ -5102,6 +5102,15 @@ const UPLB_PROGRAMS = {
     "defaultTrack": null,
     "majorCourses": [
       {
+        "code": "ARTS 1",
+        "title": "Critical Perspectives in the Arts",
+        "units": 3,
+        "year": 1,
+        "sem": "1",
+        "prereqs": [],
+        "alt": ["STS 1"]
+      },
+      {
         "code": "ETHICS 1",
         "title": "Ethics and Moral Reasoning in Everyday Life",
         "units": 3,
@@ -5314,6 +5323,7 @@ const UPLB_PROGRAMS = {
       }
     ],
     "requiredCodes": [
+      "ARTS 1",
       "ETHICS 1",
       "SS 102",
       "PED 91",
