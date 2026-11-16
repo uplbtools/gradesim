@@ -764,7 +764,7 @@ function removalPicker(course) {
       const again = document.querySelector(`.removal-select[data-removal="${CSS.escape(key)}"]`);
       if (again) again.focus();
     },
-  }, option('', 'Removal exam not taken'), option('pass', 'Passed removal, 3.00'), option('fail', 'Failed removal, 5.00'));
+  }, option('', 'Not removed yet, 5.00 after a year'), option('pass', 'Passed removal, 3.00'), option('fail', 'Failed removal, 5.00'));
   select.value = removals[key] || '';
   return select;
 }

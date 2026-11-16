@@ -4,6 +4,7 @@
 
 ### Changes
 - The GWA card says when the latest sem's grades below 3.00 mean a warning, probation or worse under UPLB's rules on scholastic standing.
+- A 4.00's removal picker says it turns into 5.00 after a year if it isn't removed.
 
 ## Unreleased
 
