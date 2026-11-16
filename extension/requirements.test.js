@@ -213,3 +213,15 @@ assert.deepStrictEqual(lightSems([
   const fill = fillRequirementSlots(math, [{ code: 'STAT 101', title: '', units: 3, result: 'passed' }]);
   assert.ok(majors.every(c => !fill.has(c.code)), 'STAT is not a MATH major elective');
 }
+
+// BS Agriculture majors take their institute's major courses.
+{
+  const passed = codes => codes.map(code => ({ code, title: '', units: 3, result: 'passed' }));
+  const agro = plannerCourseList(UPLB_PROGRAMS.BSAGRI, null, UPLB_CATALOG, 'agronomy');
+  const fill = fillRequirementSlots(agro, passed(['AGR 141', 'ENT 101']));
+  assert.strictEqual(fill.get('MAJ 1')?.code, 'AGR 141');
+  assert.strictEqual(fill.get('MAJ 4')?.code, 'ENT 101');
+  const soil = plannerCourseList(UPLB_PROGRAMS.BSAGRI, null, UPLB_CATALOG, 'soil');
+  assert.ok(['SOIL 101', 'SOIL 199'].every(code => soil.some(c => c.code === code)));
+  assert.ok(soil.filter(c => c.options).every(c => c.options.includes('SOIL 142')));
+}

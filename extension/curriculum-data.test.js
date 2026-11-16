@@ -8,7 +8,7 @@ const { UPLB_CATALOG } = require('./src/catalog.js');
 // (GE, HK, NSTP, FE) or the data uses (MAJ for major elective slots), and
 // real departments with no class in the listings we have.
 const DEPTS = new Set(Object.keys(UPLB_CATALOG).map(c => c.split(' ')[0]));
-['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL', 'MST', 'WLDL', 'AMPE', 'WIKA'].forEach(d => DEPTS.add(d));
+['GE', 'HK', 'NSTP', 'FE', 'MAJ', 'HIST', 'PED', 'POSC', 'SOIL', 'MST', 'WLDL', 'AMPE', 'WIKA', 'AF'].forEach(d => DEPTS.add(d));
 const CODE_RE = /^([A-Z]{2,6}|PEd) \d{1,3}(\.\d{1,2})?[A-Z]?( \(\d\))?$/;
 
 function codeProblem(code) {
@@ -96,7 +96,7 @@ Object.values(UPLB_PROGRAMS).filter(p => p.tracks).forEach(p => {
 // A specialization's `courses` rows are checked the same way; a row with a
 // `slot` replaces that MAJ slot, any other row adds its units to the total.
 // These are in the catalog PDFs but had no AMIS class in the terms we have.
-const NOT_IN_AMIS = new Set(['FRM 110', 'BIO 151', 'BIO 130A', 'BIO 130B', 'MCB 101', 'BOT 110', 'BOT 140', 'ZOO 140', 'ZOO 113', 'CHEM 102', 'PHYS 193.1', 'WLDL 101']);
+const NOT_IN_AMIS = new Set(['SFI 123', 'SFI 143', 'AF 199', 'SOIL 191', 'FRM 110', 'BIO 151', 'BIO 130A', 'BIO 130B', 'MCB 101', 'BOT 110', 'BOT 140', 'ZOO 140', 'ZOO 113', 'CHEM 102', 'PHYS 193.1', 'WLDL 101']);
 const checklistCodes = new Set(Object.values(UPLB_PROGRAMS).flatMap(p => (p.majorCourses || []).map(c => normalizeCourseCode(c.code))));
 Object.values(UPLB_PROGRAMS).filter(p => p.specializations).forEach(p => {
   const rows = new Map((p.majorCourses || []).map(c => [normalizeCourseCode(c.code), c]));

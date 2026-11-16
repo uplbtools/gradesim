@@ -5342,6 +5342,298 @@ const UPLB_PROGRAMS = {
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
+    "specializations": {
+      "agronomy": {
+        "name": "Agronomy",
+        "source": "ICropS, Agronomy Undergraduate Programs (March 2025), page 1",
+        "note": "The specialized courses are picked with the major adviser.",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "AGR 141",
+              "AGR 170",
+              "CRSC 101",
+              "CRSC 102",
+              "CRSC 105",
+              "SOIL 111",
+              "SOIL 150",
+              "SOIL 170"
+            ]
+          },
+          {
+            "name": "Seminar",
+            "slots": [
+              "MAJ 10"
+            ],
+            "courses": [
+              "CRSC 199"
+            ]
+          }
+        ]
+      },
+      "horticulture": {
+        "name": "Horticulture",
+        "source": "ICropS, Horticulture Undergraduate Programs (March 2025), page 1",
+        "note": "The specialized courses are picked with the major adviser.",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "CRSC 101",
+              "CRSC 102",
+              "CRSC 105",
+              "HORT 104",
+              "HORT 132",
+              "BOT 132",
+              "HORT 180"
+            ]
+          },
+          {
+            "name": "Seminar",
+            "slots": [
+              "MAJ 10"
+            ],
+            "courses": [
+              "CRSC 199"
+            ]
+          }
+        ]
+      },
+      "asys": {
+        "name": "Agricultural Systems",
+        "source": "ASI brochure on asi.cafs.uplb.edu.ph, page 2, read from web.archive.org",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "ASYS 101",
+              "ASYS 110",
+              "ASYS 120",
+              "ASYS 145",
+              "ASYS 146",
+              "SOIL 111"
+            ]
+          },
+          {
+            "name": "Specialized course",
+            "slots": [
+              "MAJ 4",
+              "MAJ 11",
+              "MAJ 12",
+              "MAJ 13"
+            ],
+            "courses": [
+              "AGRI 161",
+              "ASYS 130",
+              "LAF 101",
+              "SOIL 161"
+            ]
+          }
+        ],
+        "courses": [
+          {
+            "code": "ASYS 199",
+            "title": "Seminar in Agricultural Systems",
+            "units": 1,
+            "year": 4,
+            "sem": "1",
+            "slot": "MAJ 10"
+          }
+        ]
+      },
+      "laf": {
+        "name": "Landscape Agroforestry",
+        "source": "ASI brochure on asi.cafs.uplb.edu.ph, page 2, read from web.archive.org",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "LAF 101",
+              "ASYS 145",
+              "SFFG 133",
+              "SOIL 161"
+            ]
+          },
+          {
+            "name": "Specialized course",
+            "slots": [
+              "MAJ 4",
+              "MAJ 11",
+              "MAJ 12",
+              "MAJ 13"
+            ],
+            "courses": [
+              "SOIL 170",
+              "ASYS 110",
+              "ASYS 120",
+              "ASYS 146"
+            ]
+          }
+        ],
+        "courses": [
+          {
+            "code": "SFI 123",
+            "title": "Fundamentals of Agroforestry",
+            "units": 3,
+            "year": 3,
+            "sem": "1",
+            "slot": "MAJ 1"
+          },
+          {
+            "code": "SFI 143",
+            "title": "Agroforestry Design and Development",
+            "units": 3,
+            "year": 3,
+            "sem": "2",
+            "slot": "MAJ 2"
+          },
+          {
+            "code": "AF 199",
+            "title": "Seminar in Agroforestry",
+            "units": 1,
+            "year": 4,
+            "sem": "1",
+            "slot": "MAJ 10"
+          }
+        ]
+      },
+      "soil": {
+        "name": "Soil Science",
+        "source": "ASI brochure on asi.cafs.uplb.edu.ph, page 2, read from web.archive.org",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "SOIL 101",
+              "SOIL 110",
+              "SOIL 120",
+              "SOIL 130",
+              "SOIL 140",
+              "SOIL 150"
+            ]
+          },
+          {
+            "name": "Specialized course",
+            "slots": [
+              "MAJ 4",
+              "MAJ 11",
+              "MAJ 12",
+              "MAJ 13"
+            ],
+            "courses": [
+              "SOIL 142",
+              "SOIL 151",
+              "SOIL 161",
+              "SOIL 170",
+              "SOIL 191"
+            ]
+          },
+          {
+            "name": "Seminar",
+            "slots": [
+              "MAJ 10"
+            ],
+            "courses": [
+              "SOIL 199"
+            ]
+          }
+        ]
+      },
+      "aers": {
+        "name": "Agricultural Extension",
+        "source": "ASI brochure on asi.cafs.uplb.edu.ph, page 2, read from web.archive.org",
+        "pools": [
+          {
+            "name": "Major course",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 6",
+              "MAJ 7",
+              "MAJ 8"
+            ],
+            "courses": [
+              "AERS 141",
+              "AERS 142",
+              "AERS 154",
+              "AERS 160",
+              "DEVC 40",
+              "EDUC 111"
+            ]
+          },
+          {
+            "name": "Specialized course",
+            "slots": [
+              "MAJ 4",
+              "MAJ 11",
+              "MAJ 12",
+              "MAJ 13"
+            ],
+            "courses": [
+              "EDUC 102",
+              "EDUC 144",
+              "EDUC 122",
+              "DEVC 70",
+              "DEVC 80",
+              "DEVC 153",
+              "DEVC 154",
+              "DEVC 180",
+              "SDS 172"
+            ]
+          }
+        ],
+        "courses": [
+          {
+            "code": "AERS 199",
+            "title": "Undergraduate Seminar",
+            "units": 1,
+            "year": 4,
+            "sem": "1",
+            "slot": "MAJ 10"
+          }
+        ]
+      }
+    },
     "majorCourses": [
       {
         "code": "AGRI 11",
