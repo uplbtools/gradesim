@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- A checklist line that names either of two courses, like SOC 130 or SOC 135 in BA Socio and CERP, HFDS or SDS 200 in BS HE, takes either one. Eight programs have these lines in the 2025 catalogs.
+
 ## 2.1.22 (2026-11-16)
 
 ### Changes
