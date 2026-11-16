@@ -205,6 +205,18 @@ assert.deepStrictEqual(lightSems([
   sem(1261, 'Now', 9),
 ]).map(s => [s.label, s.units]), [['1st sem', 12]]);
 
+// BS IE technical cognates and BA Comm majors take only their department lists.
+{
+  const ie = plannerCourseList(UPLB_PROGRAMS.BSIE, null, UPLB_CATALOG);
+  const fill = fillRequirementSlots(ie, [{ code: 'MGT 131', title: '', units: 3, result: 'passed' }, { code: 'MGT 101', title: '', units: 3, result: 'passed' }]);
+  const cog = ie.filter(c => c.title === 'Technical Cognate').map(c => fill.get(c.code)?.code).filter(Boolean);
+  assert.deepStrictEqual(cog, ['MGT 131']);
+  const comm = plannerCourseList(UPLB_PROGRAMS.BACOMM, null, UPLB_CATALOG);
+  const fc = fillRequirementSlots(comm, [{ code: 'THEA 151', title: '', units: 3, result: 'passed' }, { code: 'ENG 101', title: '', units: 3, result: 'passed' }]);
+  const majors = comm.filter(c => c.title === 'Major').map(c => fc.get(c.code)?.code).filter(Boolean);
+  assert.deepStrictEqual(majors, ['THEA 151']);
+}
+
 // BS Math major electives take only MATH courses.
 {
   const math = plannerCourseList(UPLB_PROGRAMS.BSMATH, null, UPLB_CATALOG);

@@ -4008,7 +4008,8 @@ const UPLB_PROGRAMS = {
         "year": 2,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 2",
@@ -4017,7 +4018,8 @@ const UPLB_PROGRAMS = {
         "year": 2,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 3",
@@ -4026,7 +4028,8 @@ const UPLB_PROGRAMS = {
         "year": 2,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "COMA 190",
@@ -4043,7 +4046,8 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 5",
@@ -4052,7 +4056,8 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 6",
@@ -4115,7 +4120,8 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 10",
@@ -4124,7 +4130,8 @@ const UPLB_PROGRAMS = {
         "year": 3,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["SPCM 151", "SPCM 152", "SPCM 153", "SPCM 154", "SPCM 155", "SPCM 156", "SPCM 157", "SPCM 158", "SPCM 159", "THEA 151", "THEA 152", "THEA 153", "THEA 154", "THEA 155", "THEA 156", "THEA 157", "ENG 151", "ENG 152", "ENG 153", "ENG 154", "ENG 155", "ENG 156", "ENG 157", "ENG 158", "FIL 150", "FIL 155"]
       },
       {
         "code": "MAJ 11",
@@ -9589,7 +9596,8 @@ const UPLB_PROGRAMS = {
         "year": 4,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["IE 191", "CHE 180", "MGT 131", "MGT 133", "CMSC 21", "CMSC 22"]
       },
       {
         "code": "ENG 10",
@@ -9656,7 +9664,8 @@ const UPLB_PROGRAMS = {
         "year": 4,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["IE 191", "CHE 180", "MGT 131", "MGT 133", "CMSC 21", "CMSC 22"]
       },
       {
         "code": "IE 90",
