@@ -5,10 +5,6 @@
 ### Changes
 - BS Industrial Engineering's technical cognates take only the six courses the IE department lists.
 - BA Communication Arts' major slots take only the Speech, Theater Arts and Writing courses in the Department of Humanities catalog.
-
-## Unreleased
-
-### Changes
 - BA Philosophy's Readings in Speculative Thought slot takes only SPEC, the AMIS code for that course.
 
 ## 2.1.22 (2026-11-16)
