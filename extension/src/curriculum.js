@@ -2053,6 +2053,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "DEVC 40",
         "title": "Fundamentals of Educational Communication and Technology",
+        "alt": ["MST 40"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -3114,6 +3115,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "CMSC 12",
         "title": "Foundations of Computer Science",
+        "alt": ["AMAT 152"],
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -4408,6 +4410,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "SOC 130",
         "title": "Social Psychology",
+        "alt": ["SOC 135"],
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -4432,7 +4435,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Elective (SOSC)",
-        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
+        "allow": ["ANTH", "HIST", "POSC", "PSY"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -4442,7 +4445,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Elective (SOSC)",
-        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
+        "allow": ["ANTH", "HIST", "POSC", "PSY"],
         "units": 3,
         "year": 2,
         "sem": "2",
@@ -4469,7 +4472,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 3",
         "title": "Elective (SOSC)",
-        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
+        "allow": ["ANTH", "HIST", "POSC", "PSY"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4479,7 +4482,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 4",
         "title": "Elective (SOSC)",
-        "allow": ["ANTH", "ECON", "HIST", "POSC", "PSY", "SOC", "SOSC"],
+        "allow": ["ANTH", "HIST", "POSC", "PSY"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -4636,6 +4639,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "SOC 160",
         "title": "Social Change",
+        "alt": ["SOC 165"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -4644,6 +4648,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "SOC 170",
         "title": "Social Problems",
+        "alt": ["SOC 175"],
         "units": 3,
         "year": 4,
         "sem": "2",
@@ -4799,6 +4804,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ECON 11",
         "title": "General Economics",
+        "alt": ["POSC 10"],
         "units": 3,
         "year": 1,
         "sem": "2",
@@ -6096,6 +6102,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ABT 198",
         "title": "Practicum",
+        "alt": ["ABT 200A"],
         "units": 3,
         "year": 3,
         "sem": "midyear",
@@ -6147,6 +6154,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "ABT 200",
         "title": "Undergraduate Thesis",
+        "alt": ["ABT 190"],
         "units": 3,
         "year": 4,
         "sem": "1",
@@ -6820,6 +6828,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "CMSC 12",
         "title": "Foundations of Computer Science",
+        "alt": ["AMAT 152"],
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -6916,6 +6925,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "AAE 111",
         "title": "Farm Management",
+        "alt": ["AAE 120"],
         "units": 3,
         "year": 3,
         "sem": "1",
@@ -14094,6 +14104,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "CERP 200",
         "title": "Undergraduate Thesis",
+        "alt": ["HFDS 200", "SDS 200"],
         "units": 3,
         "year": 4,
         "sem": "1",

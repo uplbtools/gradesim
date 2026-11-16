@@ -182,6 +182,19 @@ console.log('requirements.test.js: surplus electives passed');
 }
 console.log('requirements.test.js: BSCS special problem and practicum passed');
 
+// An either-or checklist line takes the other course, and a second one is an elective.
+{
+  const row = (code, units) => ({ code, title: '', units, result: 'passed' });
+  const he = plannerCourseList(UPLB_PROGRAMS.BSHE, null, UPLB_CATALOG);
+  const thesis = fillRequirementSlots(he, [row('HFDS 200', 3), row('HFDS 200', 3)]);
+  assert.ok(thesis.has('CERP 200') && thesis.has('CERP 200 (2)'), 'HFDS 200 fills the BS HE thesis rows');
+  const socio = plannerCourseList(UPLB_PROGRAMS.BASOCIO, null, UPLB_CATALOG);
+  const both = fillRequirementSlots(socio, [row('SOC 135', 3), row('SOC 130', 3)]);
+  assert.strictEqual(both.get('SOC 130').code, 'SOC 130');
+  assert.ok([...both.values()].some(r => r.code === 'SOC 135') && !both.has('SOC 135'), 'the other course counts as an elective');
+}
+console.log('requirements.test.js: either-or checklist lines passed');
+
 // BA Comm: a restricted elective takes only the subjects its title names.
 {
   const row = (code) => ({ code, title: '', units: 3, result: 'passed' });
