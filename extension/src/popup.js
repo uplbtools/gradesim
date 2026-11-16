@@ -494,11 +494,21 @@ function calculateGWA(courses, excludedIds = new Set()) {
   return { gwa, totalUnits, passedUnits, totalCourses, gradesBySemester, completedCourses, excludedUnits, excludedCount, holds };
 }
 
+const STANDING = {
+  warning: "Under UPLB's rules on scholastic standing, that gets a warning from your Dean.",
+  probation: 'That puts you on probation next sem, and your Dean may limit your load. Passing more than half your units next sem lifts it.',
+  dropped: "Under UPLB's rules that can drop you from your college. Talk to your College Secretary about readmission.",
+  barred: "Under UPLB's rules that can bar you from readmission. Talk to your College Secretary soon."
+};
+
 function displayHonorStatus(gwa, totalUnits) {
   // Nothing graded yet, or not on any honor track: show nothing.
   const kind = !totalUnits ? null : gwa <= 1.20 ? 'summa' : gwa <= 1.45 ? 'magna' : gwa <= 1.75 ? 'cum' : null;
   const light = kind ? lightSems(window.gradesData?.courses || []) : [];
-  $('honorStatus').replaceChildren(honorBadge(kind) || '', ...(light.length ? [h('p', { class: 'hint' }, `${light.map(s => `${s.label} had ${s.units} units`).join(', and ')}. Latin honors need at least 15 units each sem, or the checklist's load when it's lower, unless your college accepted a reason such as health.`)] : []));
+  const standing = standingFor(window.gradesData?.courses || []);
+  $('honorStatus').replaceChildren(honorBadge(kind) || '',
+    ...(standing ? [h('p', { class: 'hint' }, `${standing.low} of ${standing.units} units in ${standing.label} got grades below 3.00. ${STANDING[standing.level]}`)] : []),
+    ...(light.length ? [h('p', { class: 'hint' }, `${light.map(s => `${s.label} had ${s.units} units`).join(', and ')}. Latin honors need at least 15 units each sem, or the checklist's load when it's lower, unless your college accepted a reason such as health.`)] : []));
 }
 
 // How a grade reads in a course row: text, tone class, and an icon if any.

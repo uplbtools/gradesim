@@ -3,6 +3,11 @@
 ## Unreleased
 
 ### Changes
+- The GWA card says when the latest sem's grades below 3.00 mean a warning, probation or worse under UPLB's rules on scholastic standing.
+
+## Unreleased
+
+### Changes
 - BA Philosophy's Readings in Speculative Thought slot takes only SPEC, the AMIS code for that course.
 
 ## 2.1.22 (2026-11-16)
