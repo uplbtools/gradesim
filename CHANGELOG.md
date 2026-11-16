@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- BA Philosophy's Readings in Speculative Thought slot takes only SPEC, the AMIS code for that course.
+
 ## 2.1.22 (2026-11-16)
 
 ### Changes
