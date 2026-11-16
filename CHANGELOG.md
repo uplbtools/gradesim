@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Changes
+- BA Sociology's social science electives take only Anthropology, History, Political Science or Psychology, as the CAS catalog footnote says.
+
 ## 2.1.22 (2026-11-16)
 
 ### Changes
