@@ -215,6 +215,10 @@ assert.deepStrictEqual(lightSems([
   const fc = fillRequirementSlots(comm, [{ code: 'THEA 151', title: '', units: 3, result: 'passed' }, { code: 'ENG 101', title: '', units: 3, result: 'passed' }]);
   const majors = comm.filter(c => c.title === 'Major').map(c => fc.get(c.code)?.code).filter(Boolean);
   assert.deepStrictEqual(majors, ['THEA 151']);
+  const aass = plannerCourseList(UPLB_PROGRAMS.AASS, null, UPLB_CATALOG);
+  const fa = fillRequirementSlots(aass, [{ code: 'PEd 120.1', title: '', units: 3, result: 'passed' }, { code: 'PEd 101', title: '', units: 3, result: 'passed' }, { code: 'STS 1', title: '', units: 3, result: 'passed' }]);
+  assert.deepStrictEqual(aass.filter(c => c.title === 'HK Elective').map(c => fa.get(c.code)?.code).filter(Boolean), ['PEd 120.1']);
+  assert.strictEqual(fa.get('ARTS 1')?.code, 'STS 1');
 }
 
 // BS Math major electives take only MATH courses.

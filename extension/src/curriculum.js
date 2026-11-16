@@ -5133,7 +5133,8 @@ const UPLB_PROGRAMS = {
         "year": 1,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["PED 120.1", "PED 120.2", "PED 130.2", "PED 131.1", "PED 131.2", "PED 133.1", "PED 133.2", "PED 158"]
       },
       {
         "code": "MAJ 2",
@@ -5142,7 +5143,8 @@ const UPLB_PROGRAMS = {
         "year": 1,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["PED 120.1", "PED 120.2", "PED 130.2", "PED 131.1", "PED 131.2", "PED 133.1", "PED 133.2", "PED 158"]
       },
       {
         "code": "PED 91",
@@ -5177,7 +5179,8 @@ const UPLB_PROGRAMS = {
         "year": 1,
         "sem": "2",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["PED 120.1", "PED 120.2", "PED 130.2", "PED 131.1", "PED 131.2", "PED 133.1", "PED 133.2", "PED 158"]
       },
       {
         "code": "PED 92",
@@ -5262,7 +5265,8 @@ const UPLB_PROGRAMS = {
         "year": 2,
         "sem": "1",
         "prereqs": [],
-        "genericRequirement": "elective"
+        "genericRequirement": "elective",
+        "allow": ["PED 120.1", "PED 120.2", "PED 130.2", "PED 131.1", "PED 131.2", "PED 133.1", "PED 133.2", "PED 158"]
       },
       {
         "code": "MATH 10",
