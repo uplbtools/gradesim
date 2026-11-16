@@ -4806,6 +4806,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Readings in Speculative Thought",
+        "allow": ["SPEC"],
         "units": 3,
         "year": 1,
         "sem": "2",
