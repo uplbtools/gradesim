@@ -444,7 +444,8 @@ function calculateGWA(courses, excludedIds = new Set()) {
       return;
     }
 
-    const units = course.units || 0;
+    // A 1-unit thesis sem extends the work and adds no credit.
+    const units = course.units === 1 && / 200[A-Z]?$/.test(normalizeCourseCode(courseCode)) ? 0 : course.units || 0;
     const isNonNumericGrade = NON_NUMERIC_GRADES.includes(gradeStr);
 
     // Group by semester (for display - includes all courses)
