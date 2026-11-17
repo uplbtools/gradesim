@@ -95,8 +95,8 @@ function fillRequirementSlots(courses, rows, substitutions = {}) {
   const outside = rows.filter(r => {
     const code = norm(r);
     if (named.has(code) || used.has(code) || seen.has(code) || filled.has(code)) return false;
-    // HK 12 repeats once per sport.
-    if (!/^(HK|PE)\b/.test(code)) seen.add(code);
+    // HK 12 repeats once per sport, and AMIS lets a 190, 191, 199 or 200 be taken again.
+    if (!/^(HK|PE)\b| (19[019]|200)[A-Z]?$/.test(code)) seen.add(code);
     return true;
   });
   // Specialization slots take only the courses their pool lists.
