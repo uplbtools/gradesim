@@ -192,6 +192,11 @@ console.log('requirements.test.js: BSCS special problem and practicum passed');
   const both = fillRequirementSlots(socio, [row('SOC 135', 3), row('SOC 130', 3)]);
   assert.strictEqual(both.get('SOC 130').code, 'SOC 130');
   assert.ok([...both.values()].some(r => r.code === 'SOC 135') && !both.has('SOC 135'), 'the other course counts as an elective');
+  // AMIS offers Major Farm Practice as AAE 200.
+  const taken = [row('AAE 200', 3), row('AAE 200', 3)];
+  const mfp = fillRequirementSlots(plannerCourseList(UPLB_PROGRAMS.BSAAE, 'mfp', UPLB_CATALOG), taken);
+  assert.ok(mfp.has('AAE 200A') && mfp.has('AAE 200A (2)'), 'AAE 200 fills the farm practice rows');
+  assert.ok(fillRequirementSlots(plannerCourseList(UPLB_PROGRAMS.BSAAE, 'thesis', UPLB_CATALOG), taken).has('AAE 200 (2)'));
 }
 console.log('requirements.test.js: either-or checklist lines passed');
 

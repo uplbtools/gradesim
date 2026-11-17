@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.26 (2026-11-17)
+
+### Fixes
+- BS AAE's Major Farm Practice rows take AAE 200, the only code AMIS offers for it.
+
 ## 2.1.25 (2026-11-17)
 
 ### Fixes

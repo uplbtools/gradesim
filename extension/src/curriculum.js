@@ -12143,6 +12143,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "AAE 200A",
         "title": "Major Farm Practice",
+        "alt": ["AAE 200"],
         "units": 3,
         "year": 4,
         "sem": "1",
