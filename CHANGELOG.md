@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.1.27 (unreleased)
+## 2.1.28 (unreleased)
+
+### Fixes
+- The four HK rows are HK 11 (Wellness and Basic Injury Management) and then HK 12 three times, as the checklists list them. Only HK 11 fills the first row.
+
+## 2.1.27 (2026-11-17)
 
 ### Fixes
 - A special topics course (191) taken again with a new topic fills another elective slot. AMIS lets every 190, 191, 199 and 200 be taken again.

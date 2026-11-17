@@ -33,7 +33,7 @@ const doneSlots = getCompletedRequirementSlotCodes(completed, UPLB_PROGRAMS.BSCS
 assert.strictEqual(doneSlots.has('GE 1'), true);
 assert.strictEqual(doneSlots.has('GE 2'), true);
 assert.strictEqual(doneSlots.has('GE 3'), false);
-assert.strictEqual(doneSlots.has('HK 1'), true);
+assert.strictEqual(doneSlots.has('HK 11'), true);
 assert.strictEqual(doneSlots.has('HK 2'), false);
 assert.strictEqual(doneSlots.has('NSTP 1'), true);
 assert.strictEqual(doneSlots.has('NSTP 2'), false);

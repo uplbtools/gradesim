@@ -57,7 +57,7 @@ const leftCodes = new Set(left.left.map(c => c.code));
 // One GE model (#94): ETHICS 1, STS 1 and ARTS 1 fill three GE slots.
 assert.deepStrictEqual(left.ge, { done: 3, total: 9 });
 // HK and NSTP complete (#78), PEd and ECON 11 fill free elective slots.
-assert.ok(!leftCodes.has('HK 1') && leftCodes.has('HK 2'));
+assert.ok(!leftCodes.has('HK 11') && leftCodes.has('HK 12'));
 assert.ok(!leftCodes.has('NSTP 1') && leftCodes.has('NSTP 2'));
 assert.deepStrictEqual(left.electives, { doneUnits: 6, totalUnits: 18 });
 // Retaken course is done; open failure, INC and courses in progress are left.
@@ -170,7 +170,7 @@ console.log('requirements.test.js: surplus electives passed');
   assert.ok(once.has('CMSC 190') && !once.has('CMSC 190 (2)') && once.has('CMSC 198') && !once.has('FE 1'));
   assert.ok(fillRequirementSlots(sp, [row('CMSC 190', 1), row('CMSC 190', 2)]).has('CMSC 190 (2)'));
   const hk = fillRequirementSlots(sp, [row('HK 11', 2), row('HK 12', 2), row('HK 12', 2), row('HK 12', 2)]);
-  assert.ok(['HK 1', 'HK 2', 'HK 3', 'HK 4'].every(c => hk.has(c)), 'each HK 12 sport fills its own slot');
+  assert.ok(['HK 11', 'HK 12', 'HK 12 (2)', 'HK 12 (3)'].every(c => hk.has(c)), 'each HK 12 sport fills its own slot');
   const topics = fillRequirementSlots(sp, [row('CMSC 191', 3), row('CMSC 191', 3), row('ECON 11', 3), row('ECON 11', 3)]);
   assert.ok(['FE 1', 'FE 2', 'FE 3'].every(c => topics.has(c)) && !topics.has('FE 4'), 'a special topics course taken again fills another slot');
   const fresh = scheduleEarliest({ courses: sp, passed: new Set(), useMidyear: false, totalUnits: 130 });
