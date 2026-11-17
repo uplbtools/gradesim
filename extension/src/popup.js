@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   customCourseStatus = savedSubstitutions.customCourseStatus || {};
 
   $('openPlannerBtn').addEventListener('click', () => openPlanner());
+  showEnlisted();
 
   // In the small popup, a tab switch brings the tab's answer to the top so
   // the What if result shows without scrolling.
@@ -206,6 +207,23 @@ const WEB_APP = 'https://gradesim.uplb.tools';
 function openPlanner(failedCode) {
   const q = failedCode ? `&whatif=${encodeURIComponent(failedCode)}` : '';
   chrome.tabs.create({ url: `${WEB_APP}/?from=extension${q}#planner` });
+}
+
+// Room TBA's planner opens the classes AMIS says the student is enlisted in, latest sem first.
+async function showEnlisted() {
+  const { enlisted } = await chrome.storage.local.get('enlisted');
+  const term = Math.max(...Object.keys(enlisted || {}).map(Number));
+  const abs = amisTermToAbs(term);
+  if (abs == null) return;
+  const s = enlisted[term];
+  const courses = new Set(s.map(r => r[0])).size;
+  $('enlistedHint').textContent = `AMIS lists ${plural(courses, 'course')} for your ${['1st sem', '2nd sem', 'midyear'][abs % 3]}. Room TBA shows each room on the map and saves the schedule to your calendar.`;
+  $('openClassesBtn').addEventListener('click', async () => {
+    const { selectedProgram } = await chrome.storage.local.get('selectedProgram');
+    const plan = btoa(JSON.stringify({ v: 1, t: term, s })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    chrome.tabs.create({ url: `https://room-tba.uplb.tools/planner?plan=${plan}${selectedProgram ? `&program=${selectedProgram}` : ''}` });
+  });
+  $('enlistedBox').hidden = false;
 }
 
 // Set the curriculum and redraw the track and specialization pickers for it.

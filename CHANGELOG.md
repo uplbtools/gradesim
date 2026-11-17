@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.1.28 (unreleased)
+## 2.1.29 (unreleased)
+
+### Changes
+- The Planner tab has See my classes in Room TBA. It opens the classes AMIS lists as enlisted in Room TBA's planner, which shows the rooms on the map and saves the schedule to a calendar.
+
+## 2.1.28 (2026-11-18)
 
 ### Fixes
 - The four HK rows are HK 11 (Wellness and Basic Injury Management) and then HK 12 three times, as the checklists list them. Only HK 11 fills the first row.
