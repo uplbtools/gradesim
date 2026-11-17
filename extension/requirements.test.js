@@ -171,6 +171,8 @@ console.log('requirements.test.js: surplus electives passed');
   assert.ok(fillRequirementSlots(sp, [row('CMSC 190', 1), row('CMSC 190', 2)]).has('CMSC 190 (2)'));
   const hk = fillRequirementSlots(sp, [row('HK 11', 2), row('HK 12', 2), row('HK 12', 2), row('HK 12', 2)]);
   assert.ok(['HK 1', 'HK 2', 'HK 3', 'HK 4'].every(c => hk.has(c)), 'each HK 12 sport fills its own slot');
+  const topics = fillRequirementSlots(sp, [row('CMSC 191', 3), row('CMSC 191', 3), row('ECON 11', 3), row('ECON 11', 3)]);
+  assert.ok(['FE 1', 'FE 2', 'FE 3'].every(c => topics.has(c)) && !topics.has('FE 4'), 'a special topics course taken again fills another slot');
   const fresh = scheduleEarliest({ courses: sp, passed: new Set(), useMidyear: false, totalUnits: 130 });
   assert.strictEqual(fresh.plan.find(t => t.courses.includes('CMSC 198')).sem, 'midyear');
   const firstFE = Math.min(...sp.filter(c => /^FE/.test(c.code)).map(c => fresh.assignedTerm[c.code]));

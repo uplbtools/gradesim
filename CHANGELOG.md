@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.27 (unreleased)
+
+### Fixes
+- A special topics course (191) taken again with a new topic fills another elective slot. AMIS lets every 190, 191, 199 and 200 be taken again.
+
 ## 2.1.26 (2026-11-17)
 
 ### Fixes
