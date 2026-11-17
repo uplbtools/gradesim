@@ -409,11 +409,11 @@ function displayGradesData(courses) {
   displayWrapped(courses);
 }
 
-// A special problem (190) is enlisted in parts. The early units get an S, and
-// the final grade then counts for all of them. Returns that grade for the S row, or null.
+// A special problem (190) or thesis (200) is enlisted in parts. The early units get an S,
+// and the final grade then counts for all of them. Returns that grade for the S row, or null.
 function carriedGrade(course, courses) {
   const code = normalizeCourseCode(course.courseCode);
-  if (String(course.grade || '').toUpperCase().trim() !== 'S' || !/ 190$/.test(code)) return null;
+  if (String(course.grade || '').toUpperCase().trim() !== 'S' || !/ (190|200[A-Z]?)$/.test(code)) return null;
   const final = courses.map(c => normalizeCourseCode(c.courseCode) === code ? parseFloat(c.grade) : NaN).find(g => g >= 1 && g <= 3);
   return final ?? null;
 }
