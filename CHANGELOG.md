@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.27 (unreleased)
+
+### Fixes
+- Every special problem (190) counts all its units in the GWA, like CMSC 190. AMIS shows the early units as S, and the final grade applies to them too.
+
 ## 2.1.26 (2026-11-17)
 
 ### Fixes

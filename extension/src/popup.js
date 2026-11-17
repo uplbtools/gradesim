@@ -409,11 +409,11 @@ function displayGradesData(courses) {
   displayWrapped(courses);
 }
 
-// CMSC 190 is taken twice. The first unit gets an S, and the final grade then
-// counts for all three units. Returns that grade for the S row, or null.
+// A special problem (190) is enlisted in parts. The early units get an S, and
+// the final grade then counts for all of them. Returns that grade for the S row, or null.
 function carriedGrade(course, courses) {
   const code = normalizeCourseCode(course.courseCode);
-  if (String(course.grade || '').toUpperCase().trim() !== 'S' || code !== 'CMSC 190') return null;
+  if (String(course.grade || '').toUpperCase().trim() !== 'S' || !/ 190$/.test(code)) return null;
   const final = courses.map(c => normalizeCourseCode(c.courseCode) === code ? parseFloat(c.grade) : NaN).find(g => g >= 1 && g <= 3);
   return final ?? null;
 }
