@@ -409,6 +409,15 @@ function displayGradesData(courses) {
   displayWrapped(courses);
 }
 
+// CMSC 190 is taken twice. The first unit gets an S, and the final grade then
+// counts for all three units. Returns that grade for the S row, or null.
+function carriedGrade(course, courses) {
+  const code = normalizeCourseCode(course.courseCode);
+  if (String(course.grade || '').toUpperCase().trim() !== 'S' || code !== 'CMSC 190') return null;
+  const final = courses.map(c => normalizeCourseCode(c.courseCode) === code ? parseFloat(c.grade) : NaN).find(g => g >= 1 && g <= 3);
+  return final ?? null;
+}
+
 function calculateGWA(courses, excludedIds = new Set()) {
   let totalWeightedGrade = 0;
   let totalUnits = 0;
@@ -444,8 +453,10 @@ function calculateGWA(courses, excludedIds = new Set()) {
     }
     gradesBySemester[semKey].push({ ...course, isNonNumeric: isNonNumericGrade });
 
+    const carried = carriedGrade(course, courses);
+
     // For non-numeric grades, add to completed but don't calculate GWA
-    if (isNonNumericGrade) {
+    if (carried == null && isNonNumericGrade) {
       // S (Satisfactory) counts as passed, U (Unsatisfactory) doesn't
       if (gradeStr === 'S') {
         completedCourses.push({
@@ -459,7 +470,7 @@ function calculateGWA(courses, excludedIds = new Set()) {
     }
 
     // Skip courses without valid numeric grades
-    const grade = parseFloat(course.grade);
+    const grade = carried ?? parseFloat(course.grade);
     if (isNaN(grade) || grade < 1.0 || grade > 5.0) {
       return;
     }
@@ -597,6 +608,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
         const g = gradeDisplay(course);
         const counts = !course.isNonNumeric && !isNaN(parseFloat(course.grade));
         const code = course.courseCode || course.code;
+        const carried = carriedGrade(course, allCourses);
         return courseRow({
           code,
           title: course.courseTitle || course.title || '',
@@ -609,7 +621,7 @@ function displayGradesList(gradesBySemester, allCourses, holds = new Set()) {
             text: isExcluded ? 'Left out' : 'Leave out',
             'aria-label': `${isExcluded ? 'Count' : 'Leave'} ${code} ${isExcluded ? 'in' : 'out of'} the GWA`,
             onclick: () => toggleCourseExclusion(courseId, allCourses),
-          }), removalPicker(course)],
+          }), carried != null && h('span', { class: 'hint' }, `Counts as ${carried.toFixed(2)}, your final ${code} grade`), removalPicker(course)],
           aside: h('span', { class: `grade-value ${g.cls}`, 'aria-label': `Grade ${g.text}${g.failed ? ', failed' : ''}` },
             g.icon && icon(g.icon), g.text),
         });

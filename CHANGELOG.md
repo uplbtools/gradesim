@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.25 (2026-11-17)
+
+### Fixes
+- CMSC 190 counts all three units in the GWA. AMIS shows its first unit as S, and the final grade now applies to it too.
+
 ## 2.1.24 (2026-11-17)
 
 ### Changes
