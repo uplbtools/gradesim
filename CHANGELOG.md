@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.30 (unreleased)
+
+### Fixes
+- A CMSC 190 unit graded S takes the latest passing CMSC 190 grade, as in the web app. It took the earliest one when there were two.
+
 ## 2.1.29 (unreleased)
 
 ### Changes

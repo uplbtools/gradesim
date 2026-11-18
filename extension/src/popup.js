@@ -432,7 +432,7 @@ function displayGradesData(courses) {
 function carriedGrade(course, courses) {
   const code = normalizeCourseCode(course.courseCode);
   if (String(course.grade || '').toUpperCase().trim() !== 'S' || code !== 'CMSC 190') return null;
-  const final = courses.map(c => normalizeCourseCode(c.courseCode) === code ? parseFloat(c.grade) : NaN).find(g => g >= 1 && g <= 3);
+  const final = courses.map(c => normalizeCourseCode(c.courseCode) === code ? parseFloat(c.grade) : NaN).findLast(g => g >= 1 && g <= 3);
   return final ?? null;
 }
 
