@@ -327,7 +327,7 @@ function enrichCourses(list, catalog) {
 /* ---------- Scheduler ---------- */
 
 /**
- * Greedy topological scheduler.
+ * One greedy pass over the terms. In the terms of semBound, courses the other sem doesn't offer go first.
  *
  * @param {Object} opts
  * @param {Array}  opts.courses     {code,units,sem,pre|prereqs,co,standing,offered,catalogSem,petition}
@@ -341,7 +341,7 @@ function enrichCourses(list, catalog) {
  * @param {boolean} [opts.useMidyear] false = only checklist midyear courses in midyear
  * @param {number} [opts.maxTerms]
  */
-function scheduleEarliest(opts) {
+function schedulePass(opts, semBound) {
   const courses = plannableCourses(opts.courses);
   const passed = new Set(Array.from(opts.passed || []).map(normCode));
   const notBefore = opts.notBefore || {};
@@ -412,6 +412,7 @@ function scheduleEarliest(opts) {
   const assignedTerm = {};
   const conditional = {};
   const plan = [];
+  const crowded = [];
   let emptyStreak = 0;
 
   for (let t = 0; t < maxTerms && remaining.size > 0; t++) {
@@ -445,8 +446,8 @@ function scheduleEarliest(opts) {
     const later = code => (offeredIn(byCode.get(code), otherSem) ? 1 : 0);
     candidates.sort((a, b) => {
       const diff = chainLength(b, new Set()) - chainLength(a, new Set());
-      if (diff !== 0) return diff;
-      return later(a) - later(b) || slotOf(a) - slotOf(b) || unitsOf(b) - unitsOf(a);
+      if (semBound.has(t)) return later(a) - later(b) || diff || slotOf(a) - slotOf(b) || unitsOf(b) - unitsOf(a);
+      return diff || later(a) - later(b) || slotOf(a) - slotOf(b) || unitsOf(b) - unitsOf(a);
     });
 
     const placed = [];
@@ -472,6 +473,7 @@ function scheduleEarliest(opts) {
         if (!offeredIn(byCode.get(c), sem)) conditional[c] = true;
       });
     });
+    if (placed.some(later) && candidates.some(c => assignedTerm[c] === undefined && !later(c))) crowded.push(t);
     placed.forEach(c => { doneUnits += unitsOf(c); });
 
     if (placed.length > 0) {
@@ -493,7 +495,26 @@ function scheduleEarliest(opts) {
   }
 
   const gradTermIndex = plan.length > 0 ? plan[plan.length - 1].termIndex : -1;
-  return { plan, gradTermIndex, assignedTerm, conditional, unschedulable, warnings };
+  return { plan, gradTermIndex, assignedTerm, conditional, unschedulable, warnings, crowded };
+}
+
+/**
+ * Greedy topological scheduler with a look ahead. A term that left out a course only its sem offers
+ * takes such courses first when that ends the plan sooner.
+ */
+function scheduleEarliest(opts) {
+  const end = r => r.unschedulable.length * (opts.maxTerms || 30) + r.gradTermIndex;
+  const semBound = new Set();
+  let best = schedulePass(opts, semBound);
+  for (let t = 0; t < best.gradTermIndex; t++) {
+    if (!best.crowded.includes(t)) continue;
+    const trial = schedulePass(opts, new Set(semBound).add(t));
+    if (end(trial) < end(best)) {
+      best = trial;
+      semBound.add(t);
+    }
+  }
+  return best;
 }
 
 /* ---------- Curricular Analytics metrics ---------- */
