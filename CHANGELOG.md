@@ -1,11 +1,11 @@
 # Changelog
 
-## 2.1.30 (unreleased)
+## 2.1.30 (2026-11-18)
 
 ### Fixes
 - A CMSC 190 unit graded S takes the latest passing CMSC 190 grade, as in the web app. It took the earliest one when there were two.
 
-## 2.1.29 (unreleased)
+## 2.1.29 (2026-11-18)
 
 ### Changes
 - The Planner tab has See my classes in Room TBA. It opens the classes AMIS lists as enlisted in Room TBA's planner, which shows the rooms on the map and saves the schedule to a calendar.
