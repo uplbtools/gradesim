@@ -455,8 +455,13 @@ function scheduleEarliest(opts) {
       if (assignedTerm[code] !== undefined) return;
       const kind = extraKind(code);
       if (kind && placed.some(c => extraKind(c) === kind)) return;
-      // Place a course together with its unplaced coreqs, or not at all.
-      const bundle = [code, ...coOf.get(code).filter(c => remaining.has(c) && assignedTerm[c] === undefined)];
+      // Place a course together with its unplaced coreqs and theirs, or not at all.
+      const bundle = [code];
+      for (const b of bundle) {
+        for (const c of coOf.get(b)) {
+          if (remaining.has(c) && assignedTerm[c] === undefined && !bundle.includes(c)) bundle.push(c);
+        }
+      }
       const bundleUnits = bundle.reduce((s, c) => s + unitsOf(c), 0);
       if (units + bundleUnits > cap) return;
       units += bundleUnits;

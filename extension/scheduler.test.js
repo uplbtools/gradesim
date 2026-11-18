@@ -259,3 +259,11 @@ const perTerm = scheduleEarliest({
   startSem: '1',
 });
 assert.strictEqual(perTerm.assignedTerm.X2, 0);
+
+const coChain = scheduleEarliest({
+  courses: [{ ...C('P', 2, '1'), co: ['Q'] }, C('F', 2, '1'), { ...C('Q', 2, '1'), co: ['R'] }, C('R', 2, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 6, '2': 6, 'midyear': 6 },
+  startSem: '1',
+});
+assert.strictEqual(coChain.assignedTerm.R, coChain.assignedTerm.Q);
