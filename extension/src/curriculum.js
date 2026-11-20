@@ -11316,6 +11316,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 1",
         "title": "Language Elective",
+        "allow": ["FRCH", "JAP", "SPAN"],
         "units": 3,
         "year": 2,
         "sem": "1",
@@ -11365,6 +11366,7 @@ const UPLB_PROGRAMS = {
       {
         "code": "MAJ 2",
         "title": "Language Elective",
+        "allow": ["FRCH", "JAP", "SPAN"],
         "units": 3,
         "year": 2,
         "sem": "2",
