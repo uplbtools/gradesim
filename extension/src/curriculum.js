@@ -9369,6 +9369,14 @@ const UPLB_PROGRAMS = {
         "prereqs": []
       },
       {
+        "code": "EE 198",
+        "title": "Internship",
+        "units": 3,
+        "year": 2,
+        "sem": "midyear",
+        "prereqs": []
+      },
+      {
         "code": "EE 60",
         "title": "Signals and Systems",
         "units": 3,
@@ -9470,14 +9478,6 @@ const UPLB_PROGRAMS = {
         "units": 1,
         "year": 3,
         "sem": "2",
-        "prereqs": []
-      },
-      {
-        "code": "EE 198",
-        "title": "Internship",
-        "units": 3,
-        "year": 3,
-        "sem": "midyear",
         "prereqs": []
       },
       {
@@ -14131,6 +14131,35 @@ const UPLB_PROGRAMS = {
     "geCoursesRequired": 9,
     "hkCoursesRequired": 4,
     "nstpCoursesRequired": 2,
+    "specializations": {
+      "hsp": {
+        "name": "Human Settlements Planning",
+        "source": "DCERP undergraduate page, https://dcerp.che.uplb.edu.ph/?p=2646",
+        "pools": [
+          {
+            "name": "Major",
+            "slots": [
+              "MAJ 1",
+              "MAJ 2",
+              "MAJ 3",
+              "MAJ 4",
+              "MAJ 5",
+              "MAJ 6",
+              "MAJ 7"
+            ],
+            "courses": [
+              "CERP 122",
+              "CERP 162",
+              "CERP 163",
+              "CERP 164",
+              "CERP 165",
+              "CERP 166",
+              "CERP 170"
+            ]
+          }
+        ]
+      }
+    },
     "majorCourses": [
       {
         "code": "KAS 1",

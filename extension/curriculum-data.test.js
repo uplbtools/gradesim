@@ -134,5 +134,11 @@ Object.values(UPLB_PROGRAMS).filter(p => p.specializations).forEach(p => {
   });
 });
 
+const hsp = getPlannerCourses(UPLB_PROGRAMS.BSHE, null, 'hsp').map(c => c.code);
+assert.ok(['CERP 122', 'CERP 162', 'CERP 163', 'CERP 164', 'CERP 165', 'CERP 166', 'CERP 170'].every(c => hsp.includes(c) && UPLB_CATALOG[c]),
+  'Human Settlements Planning fills BS Human Ecology\'s major rows with courses AMIS has');
+assert.ok(!hsp.some(c => c.startsWith('MAJ ')), 'Human Settlements Planning leaves no major row open');
+assert.strictEqual(UPLB_PROGRAMS.BSEE.majorCourses.find(c => c.code === 'EE 198').year, 2, 'EE 198 is in the midyear after second year');
+
 assert.deepStrictEqual(failures, [], `\n${failures.join('\n')}`);
 console.log(`curriculum-data.test.js: ${available.length} available programs pass`);
