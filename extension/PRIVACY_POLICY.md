@@ -6,6 +6,7 @@ In short:
 
 - Elbi GradeSim reads your grades from the UPLB AMIS grades API using your own logged-in session. It never sees or stores your password.
 - It keeps only the course fields it needs, in your browser's extension storage on your device.
+- It also reads which classes you're enlisted in and keeps each one's course code, section and type. See my classes in Room TBA opens Room TBA with those in the link, and with no grades.
 - It sends nothing to any server. There are no analytics, ads or tracking.
 - It shares your grades with the Elbi GradeSim web app at gradesim.uplb.tools only when you press Import there, and that hand-off stays inside your browser.
 - Clear my data in the popup's Help, or removing the extension, deletes everything it stored.

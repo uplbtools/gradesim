@@ -80,16 +80,18 @@ function genericRequirementCourses(program) {
 
   const existingHK = countExisting(c => /^(HK|PE)\b/.test(normalizeCourseCode(c.code)));
   const hkRequired = program?.hkCoursesRequired == null ? 2 : program.hkCoursesRequired;
+  // HK 11 comes first, then HK 12 once per activity.
   for (let i = existingHK; i < hkRequired; i++) {
     const slot = defaultSlot(i);
     courses.push({
-      code: `HK ${i + 1}`,
-      title: 'Human Kinetics',
+      code: i === 0 ? 'HK 11' : i === 1 ? 'HK 12' : `HK 12 (${i})`,
+      title: i === 0 ? 'Wellness and Basic Injury Management' : 'Human Kinetics Activities',
       units: 2,
       year: slot.year,
       sem: slot.sem,
       prereqs: [],
-      genericRequirement: 'hk'
+      genericRequirement: 'hk',
+      ...(i === 0 && { allow: ['HK 11', 'PE 1'] })
     });
   }
 

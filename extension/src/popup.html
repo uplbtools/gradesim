@@ -25,6 +25,7 @@
 
     <div id="termsNotice"></div>
     <div id="syncNotice" role="status"></div>
+    <div id="updateNotice" role="status"></div>
 
     <div id="loading" class="loading" role="status">
       <p>Loading your grades</p>
@@ -144,6 +145,11 @@
             <h3>Course planner</h3>
             <p class="hint">The planner shows when you can graduate and what a failed course costs. It opens on gradesim.uplb.tools with your grades.</p>
             <button id="openPlannerBtn" class="btn btn-primary" type="button">Open planner</button>
+            <div id="enlistedBox" hidden>
+              <h3>Your classes</h3>
+              <p id="enlistedHint" class="hint"></p>
+              <button id="openClassesBtn" class="btn btn-secondary" type="button">See my classes in Room TBA</button>
+            </div>
           </section>
 
           <section id="wrappedTab" class="tab-content" hidden>
@@ -162,9 +168,6 @@
                 <input class="wrapped-name" id="wrappedName" type="text" maxlength="40" autocomplete="name">
                 <label class="wrapped-gwa" for="wrappedShow">GWA on the card</label>
                 <select class="wrapped-gwa" id="wrappedShow"></select>
-                <label class="wrapped-sem" for="wrappedLine">Your own line</label>
-                <input class="wrapped-sem" id="wrappedLine" type="text" maxlength="40">
-                <label class="wrapped-check wrapped-sem"><input id="wrappedTop" type="checkbox" checked>Show my best course</label>
                 <label class="wrapped-check wrapped-photo"><input id="wrappedPhoto" type="checkbox" checked>Leave a spot for my photo</label>
                 <p id="wrappedPhotoHint" class="hint">Add your photo over the picture in Instagram or Facebook.</p>
               </div>

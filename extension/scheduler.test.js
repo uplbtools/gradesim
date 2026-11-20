@@ -248,6 +248,9 @@ const order = scheduleEarliest({ courses: [Y('THESIS', 4, '1s,2s'), Y('INTRO', 1
 assert.strictEqual(order.assignedTerm.INTRO, 0);
 const scarce = scheduleEarliest({ courses: [Y('GE', 1, '1s,2s'), Y('LAB', 4, '1s')], passed: new Set(), unitCaps: one, startSem: '1' });
 assert.strictEqual(scarce.assignedTerm.LAB, 0);
+const ahead = scheduleEarliest({ courses: [Y('BASE', 1, '1s,2s'), { ...Y('NEXT', 2, '2s'), prereqs: ['BASE'] }, Y('LAB', 1, '2s')], passed: new Set(), unitCaps: one, startSem: '2' });
+assert.strictEqual(ahead.assignedTerm.LAB, 0);
+assert.strictEqual(ahead.gradTermIndex, 3);
 
 console.log('scheduler.test.js: all assertions passed');
 
@@ -259,3 +262,11 @@ const perTerm = scheduleEarliest({
   startSem: '1',
 });
 assert.strictEqual(perTerm.assignedTerm.X2, 0);
+
+const coChain = scheduleEarliest({
+  courses: [{ ...C('P', 2, '1'), co: ['Q'] }, C('F', 2, '1'), { ...C('Q', 2, '1'), co: ['R'] }, C('R', 2, '1')],
+  passed: new Set(),
+  unitCaps: { '1': 6, '2': 6, 'midyear': 6 },
+  startSem: '1',
+});
+assert.strictEqual(coChain.assignedTerm.R, coChain.assignedTerm.Q);

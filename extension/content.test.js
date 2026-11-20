@@ -23,13 +23,17 @@ const AMIS_RESPONSE = {
   student: { name: 'Juan', address: 'somewhere' },
 };
 
-async function page({ token, status = 200, body = AMIS_RESPONSE, stored = {} }) {
+async function page({ token, status = 200, body = AMIS_RESPONSE, stored = {}, amis = {} }) {
   const store = { ...stored };
   const calls = [];
   let listener;
   const ctx = {
     localStorage: { getItem: k => (k === 'auth._token.local' ? token : null) },
     fetch: async (url, opts) => {
+      if (!url.includes('/students/grades')) {
+        const key = Object.keys(amis).find(k => url.includes(k));
+        return { ok: !!key, status: key ? 200 : 404, json: async () => amis[key] };
+      }
       calls.push({ url, opts });
       return { ok: status >= 200 && status < 300, status, json: async () => body };
     },
@@ -62,6 +66,21 @@ async function page({ token, status = 200, body = AMIS_RESPONSE, stored = {} }) 
       grade_term: { term: '1st Semester', ay: '2024-2025' },
     }] } },
   });
+
+  // Enlisted classes: only the course code, section and type, with a lab's lecture, and no bookmarks.
+  const lec = { section: 'S', type: 'LEC', facility_id: 'ICSLH3', course: { course_code: 'CMSC 124' } };
+  p = await page({ token: 'abc', amis: {
+    '/auth/user': { user: { id: 7, email: 'x' } },
+    '/scheduled-features': { activeTerm: { term_id: 1261 }, nextSchedule: { term_id: 1262 } },
+    'term_id=1261': { enlistments: [{ student_enlistment_classes: [
+      { status: 'Enlisted', class: { section: 'S-1L', type: 'LAB', course: { course_code: 'CMSC 124' }, parent: lec } },
+      { status: 'Finalized', class: { section: 'S', type: 'LEC', course: { course_code: 'CMSC 124' } } },
+      { status: 'Bookmarked', class: { section: 'A', type: 'LEC', course: { course_code: 'MATH 27' } } },
+    ] }] },
+    'term_id=1262': { enlistments: [] },
+  } });
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(p.store.enlisted)), { 1261: [['CMSC 124', 'S-1L', 'LAB'], ['CMSC 124', 'S', 'LEC']] });
+  assert.strictEqual(p.store.lastError, null);
 
   // A grade that changed (INC to 1.25) counts as new, and counts add up until the popup opens.
   const row = grade => ({ student_grades: { 1241: { values: [{ id: 77, grade }] } } });

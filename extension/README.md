@@ -13,6 +13,7 @@ Source for the Elbi GradeSim browser extension. Start with the [main README](../
 | `gradesData` | `{ student_grades: { <termId>: { term, values: [...] } } }` with only id, grade, unit_taken, section, status, course code and title, and grade term |
 | `fetchedAt` | Time of the last good fetch, in ms |
 | `lastError` | `'not-logged-in'`, `'amis-error'` or `null` |
+| `enlisted` | `{ <termId>: [[course code, section, type]] }` for the sem in session and the one being enlisted, from `/api/students/enlistments`. Bookmarked classes are left out |
 
 It skips the automatic fetch when `fetchedAt` is under an hour old. The popup's Refresh button sends `{ type: 'FETCH_GRADES', force: true }` to the open AMIS tab, which fetches right away and replies with `{ ok, lastError, fetchedAt }`.
 

@@ -11,13 +11,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-// Toolbar badge with the number of new grades, cleared when the popup opens.
-const showBadge = n => chrome.action.setBadgeText({ text: n ? String(n) : '' });
+// Toolbar badge with the number of new grades, cleared when the popup opens,
+// or an arrow while an update waits.
+const showBadge = () => chrome.storage.local.get(['newGrades', 'updateReady'])
+  .then(d => chrome.action.setBadgeText({ text: d.newGrades ? String(d.newGrades) : d.updateReady ? '↑' : '' }));
 chrome.action.setBadgeBackgroundColor({ color: '#7b1113' });
-chrome.storage.local.get('newGrades').then(d => showBadge(d.newGrades));
+showBadge();
 chrome.storage.onChanged.addListener(changes => {
-  if (changes.newGrades) showBadge(changes.newGrades.newValue);
+  if (changes.newGrades || changes.updateReady) showBadge();
 });
+
+// A downloaded update waits for the Update button in the popup.
+chrome.runtime.onUpdateAvailable.addListener(details => chrome.storage.local.set({ updateReady: details.version }));
+chrome.runtime.onInstalled.addListener(() => chrome.storage.local.remove('updateReady'));
 
 // Web app bridge (Chrome, Edge, Opera, Brave). The manifest lists
 // https://gradesim.uplb.tools under externally_connectable, so only that site

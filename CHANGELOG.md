@@ -1,10 +1,31 @@
 # Changelog
 
-## 2.1.28 (unreleased)
+## 2.1.32 (unreleased)
 
 ### Fixes
 - Every special problem (190) counts all its units in the GWA, like CMSC 190. AMIS shows the early units as S, and the final grade applies to them too.
 - A thesis (200) counts all its units the same way. Each sem is S while the work is in progress, and the final grade applies to all of it. A 1-unit sem taken to finish it adds no units.
+
+## 2.1.31 (2026-11-20)
+
+### Changes
+- When a new version is downloaded, the popup says so and has an Update button that installs it at once. The toolbar icon shows an arrow until then.
+- The Wrapped sem card uses Reann Vargas's new SEM STATS tin. It shows your name, the sem, your program, the sem's units, your standing and the GWA. The own line and the best course options are gone, since the new card has no spot for them.
+
+## 2.1.30 (2026-11-18)
+
+### Fixes
+- A CMSC 190 unit graded S takes the latest passing CMSC 190 grade, as in the web app. It took the earliest one when there were two.
+
+## 2.1.29 (2026-11-18)
+
+### Changes
+- The Planner tab has See my classes in Room TBA. It opens the classes AMIS lists as enlisted in Room TBA's planner, which shows the rooms on the map and saves the schedule to a calendar.
+
+## 2.1.28 (2026-11-18)
+
+### Fixes
+- The four HK rows are HK 11 (Wellness and Basic Injury Management) and then HK 12 three times, as the checklists list them. Only HK 11 fills the first row.
 
 ## 2.1.27 (2026-11-17)
 

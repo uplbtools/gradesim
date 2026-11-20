@@ -33,7 +33,7 @@ const fail = (prog, msg) => failures.push(`${prog}: ${msg}`);
 // The negative cases the issue names must be rejected.
 ['3', 'Elective', 'MID', 'rol', 'dicine', 'MAJOR', 'FIFTH', 'YEAR 3', 'CHEM 18. University Chemistry', 'MAJOR 200', 'MIDYEAR 1']
   .forEach(bad => assert.ok(codeProblem(bad), `should reject "${bad}"`));
-['CMSC 12', 'MATH 27', 'ABT 10', 'HNF 200', 'PEd 91', 'BIO 11.1', 'GE 1', 'FE 2', 'HK 1', 'NSTP 2', 'MAJ 3', 'AAE 200A', 'CMSC 190 (2)']
+['CMSC 12', 'MATH 27', 'ABT 10', 'HNF 200', 'PEd 91', 'BIO 11.1', 'GE 1', 'FE 2', 'HK 12 (2)', 'NSTP 2', 'MAJ 3', 'AAE 200A', 'CMSC 190 (2)']
   .forEach(good => assert.strictEqual(codeProblem(good), null, `should accept "${good}"`));
 
 const available = Object.values(UPLB_PROGRAMS).filter(p => p.available);
