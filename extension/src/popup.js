@@ -83,6 +83,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.storage.local.remove('newGrades');
   }
 
+  const { updateReady } = await chrome.storage.local.get('updateReady');
+  if (updateReady) {
+    showNotice($('updateNotice'), {
+      icon: 'info', body: `GradeSim ${updateReady} is ready.`,
+      action: button({ text: 'Update', small: true, onclick: () => chrome.runtime.reload() }),
+    });
+  } else Promise.resolve().then(() => chrome.runtime.requestUpdateCheck?.()).catch(() => {});
+
   // Load excluded courses from storage
   const savedExclusions = await chrome.storage.local.get(['excludedCourses']);
   if (savedExclusions.excludedCourses) {
@@ -895,8 +903,7 @@ function initializeWrapped() {
   $('wrappedExport').addEventListener('click', exportWrappedToPNG);
   $('wrappedName').addEventListener('input', redrawTin);
   $('wrappedShow').addEventListener('change', e => (gwaShows[wrappedPanels[wrappedCurrentPanel].frame] = e.target.value));
-  ['wrappedShow', 'wrappedTop', 'wrappedPhoto'].forEach(id => $(id).addEventListener('change', redrawTin));
-  $('wrappedLine').addEventListener('input', redrawTin);
+  ['wrappedShow', 'wrappedPhoto'].forEach(id => $(id).addEventListener('change', redrawTin));
   $('wrappedSem').addEventListener('change', () => {
     wrappedPanels = generateWrappedPanels(generateWrappedData(wrappedCourses), wrappedCourses, Number($('wrappedSem').value)).filter(Boolean);
     updateWrappedDisplay();
@@ -985,19 +992,8 @@ function generateThisSemPanel(data, courses, pick = data.semList.length - 1) {
     : g <= 2.5 ? 'Steady sem'
     : g <= 3.0 ? 'Survived the sem'
     : 'Bawi next sem');
-  let top = null;
-  taken.forEach(c => {
-    const v = parseFloat(c.grade);
-    if (v >= 1 && v <= 5 && !excludedCourses.has(courseIdOf(c)) && (!top || v < top.grade)) top = { code: (c.courseCode || '').trim(), grade: v };
-  });
-  const prev = n > 1 ? data.semList[n - 2].gwa : null;
-  const extra = prev == null ? 'My first sem in Elbi'
-    : data.bestSem === sem ? 'My best sem'
-    : prev - g >= 0.01 ? `Up ${(prev - g).toFixed(2)} from last sem`
-    : `${taken.reduce((u, c) => u + (c.units || 0), 0)} units done this sem`;
   return {
-    emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message: '', extra, frame: 'sem',
-    highlights: top ? [{ label: '🏆 Best course', name: top.code, detail: top.grade.toFixed(2) }] : [],
+    emoji: '🍓', title, value: g.toFixed(4), subtitle: sem.name, message: '', units: group.totalUnits, frame: 'sem',
   };
 }
 
@@ -1093,7 +1089,7 @@ function wrappedId() {
     ? new Date(fetchedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   return {
     name: $('wrappedName').value.trim(), year, course: $('programSelect').value, show: $('wrappedShow').value || 'none',
-    top: $('wrappedTop').checked, line: $('wrappedLine').value.trim(), amis, photo: $('wrappedPhoto').checked,
+    amis, photo: $('wrappedPhoto').checked,
   };
 }
 
@@ -1110,7 +1106,7 @@ function shownGwa(value = '', show = 'none') {
 
 const tinImages = {};
 const bareLabel = label => label.replace(/^\P{L}+/u, '');
-const FRAMES = { sem: 'tin-note', id: 'tin-id', tin: 'tin', note: 'tin', tray: 'tray', open: 'tin-red' };
+const FRAMES = { sem: 'tin-stats', id: 'tin-id', tin: 'tin', note: 'tin', tray: 'tray', open: 'tin-red' };
 const INK = '#1c1917', SOFT = '#4a3f3c', RED = '#7b1113', URL = 'gradesim.uplb.tools';
 const CREDIT = 'Design by Reann Vargas and Danica Manadong';
 
@@ -1168,7 +1164,7 @@ async function drawTinFrame(canvas, p) {
   });
   const id = wrappedId();
   const photo = tinImages['frames/photo.jpg'] ||= Object.assign(new Image(), { src: 'frames/photo.jpg' });
-  if (id.photo && p.frame !== 'id') await photo.decode();
+  if (id.photo && p.frame !== 'id' && p.frame !== 'sem') await photo.decode();
   // A polaroid with Reann's picture placeholder, for a photo added in Instagram.
   const polaroid = (x, y, w, turn) => at(x, y, turn, () => {
     const ph = w * 1.07;
@@ -1211,58 +1207,30 @@ async function drawTinFrame(canvas, p) {
   const cw = ctx.measureText(CREDIT).width + 48;
   ctx.fillStyle = 'rgba(28,25,23,0.82)';
   ctx.beginPath();
-  ctx.roundRect(540 - cw / 2, 1526, cw, 50, 25);
+  const cy = p.frame === 'sem' ? 1646 : 1526;
+  ctx.roundRect(540 - cw / 2, cy, cw, 50, 25);
   ctx.fill();
   ctx.fillStyle = '#ffffff';
-  ctx.fillText(CREDIT, 540, 1561);
+  ctx.fillText(CREDIT, 540, cy + 35);
 
   if (id.photo && (p.frame === 'tin' || p.frame === 'note')) polaroid(722, 455, 220, 0.12);
   if (id.photo && (p.frame === 'tray' || p.frame === 'open')) polaroid(842, 420, 230, 0.1);
 
+  // Reann's SEM STATS page. The strips and boxes are tilted, so each value turns with its line.
   if (p.frame === 'sem') {
-    const top = id.top ? p.highlights[0] : null;
     const [term, ay] = p.subtitle.split(' AY ');
-    if (id.photo) at(340, 743, -0.174, () => {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(-216, -216, 432, 432);
-      ctx.drawImage(photo, 0, 10, 280, 280, -194, -194, 388, 388);
+    ctx.textAlign = 'left';
+    [[id.name, 540, 615, 300], [ay ? `${term} ${ay}` : term, 552, 716, 290], [id.course, 602, 796, 250]]
+      .forEach(([t, x, y, max]) => at(x, y, -0.1, () => text(t, 700, 40, INK, 0, max)));
+    ctx.textAlign = 'center';
+    at(414, 1274, -0.19, () => text(String(p.units), 800, 40, INK, 0, 220));
+    at(515, 1404, -0.19, () => text(p.title, 800, 40, /Scholar$/.test(p.title) ? RED : INK, 0, 250));
+    at(817, 1245, -0.1, () => {
+      if (!g) return star(0, 0, 80, 0);
+      text('GWA', 700, 32, SOFT, -48);
+      text(g, 800, 72, RED, 30, 210);
     });
-    at(745, 715, -0.192, () => {
-      text('My', 600, 36, SOFT, -66, 280);
-      text(term, 800, 56, INK, 0, 290);
-      if (ay) text(`AY ${ay}`, 700, 38, RED, 56, 290);
-    });
-    // The stack is centered on the tray, a 787 by 462 cloth.
-    at(590, 1219, -0.195, () => {
-      const scholar = /Scholar$/.test(p.title);
-      const rows = [[p.title, 800, scholar ? 58 : g ? 66 : 90, scholar ? '#fff4e0' : INK]];
-      if (g) rows.push([g, 800, 150, RED]);
-      if (id.line || p.extra) rows.push([id.line || p.extra, 700, 42, INK]);
-      if (top) rows.push([`Best course ${top.name}, ${top.detail}`, 600, 36, SOFT]);
-      rows.push([URL, 600, 30, SOFT]);
-      const tall = rows.map(([, , size], k) => (k === 0 && scholar ? 88 : size * 0.74));
-      let y = -(tall.reduce((a, b) => a + b, 0) + 20 * (rows.length - 1)) / 2;
-      rows.forEach(([t, weight, size, color], k) => {
-        if (k === 0 && scholar) {
-          ctx.font = `800 58px ${font}`;
-          const w = ctx.measureText(t).width + 120;
-          ctx.fillStyle = RED;
-          ctx.beginPath();
-          ctx.moveTo(-w / 2 - 40, y);
-          ctx.lineTo(w / 2 + 40, y);
-          ctx.lineTo(w / 2 + 10, y + 44);
-          ctx.lineTo(w / 2 + 40, y + 88);
-          ctx.lineTo(-w / 2 - 40, y + 88);
-          ctx.lineTo(-w / 2 - 10, y + 44);
-          ctx.closePath();
-          ctx.fill();
-          text(t, weight, size, color, y + 64, w - 60);
-          star(-w / 2 + 6, y - 4, 40, -0.3);
-          star(w / 2 - 6, y, 32, 0.25);
-        } else text(t, weight, size, color, y + tall[k], 680);
-        y += tall[k] + 20;
-      });
-    });
+    at(612, 1575, -0.193, () => text(URL, 700, 32, INK, 11, 260));
     return canvas;
   }
 
@@ -1386,8 +1354,8 @@ function tinCanvas(p) {
   const tier = p.frame === 'id' || p.frame === 'sem';
   const id = wrappedId();
   const shown = tier && id.show !== 'none' && `GWA ${shownGwa(p.value, id.show)}`;
-  const highlights = p.frame === 'sem' && !id.top ? [] : p.highlights || [];
-  const label = [p.title, shown, id.amis && `from AMIS on ${id.amis}`, !tier && [p.value, p.subtitle].filter(Boolean).join(' '), p.frame === 'sem' && id.line || p.extra, ...highlights.map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn on a picnic blanket'].filter(Boolean).join(', ');
+  const highlights = p.highlights || [];
+  const label = [p.title, shown, id.amis && `from AMIS on ${id.amis}`, !tier && [p.value, p.subtitle].filter(Boolean).join(' '), p.frame === 'sem' ? `${p.units} units` : p.extra, ...highlights.map(x => `${bareLabel(x.label)} ${x.name}, ${x.detail}`), 'drawn on a picnic blanket'].filter(Boolean).join(', ');
   const canvas = h('canvas', { class: 'panel-frame', role: 'img', 'aria-label': label });
   drawTinFrame(canvas, p);
   return canvas;
@@ -1422,15 +1390,14 @@ function displayWrapped(courses) {
 function updateWrappedDisplay() {
   if (!wrappedPanels.length) return;
   const p = wrappedPanels[wrappedCurrentPanel];
-  $('wrappedLine').placeholder = p.extra || '';
   $('wrappedShow').replaceChildren(...GWA_SHOWS.map(k => h('option', { value: k }, k === 'none' ? 'Tier only' : shownGwa(p.value, k))));
   $('wrappedShow').value = gwaShows[p.frame] || 'none';
   $('wrappedPanel').replaceChildren(...flat(wrappedPanel(p)));
   $('wrappedId').hidden = !p.frame;
   $('wrappedId').querySelectorAll('.wrapped-gwa').forEach(el => (el.hidden = p.frame !== 'id' && p.frame !== 'sem'));
-  $('wrappedId').querySelectorAll('.wrapped-photo').forEach(el => (el.hidden = p.frame === 'id'));
-  $('wrappedPhotoHint').hidden = p.frame !== 'id' && !$('wrappedPhoto').checked;
-  $('wrappedId').querySelectorAll('.wrapped-name').forEach(el => (el.hidden = p.frame !== 'id'));
+  $('wrappedId').querySelectorAll('.wrapped-photo').forEach(el => (el.hidden = p.frame === 'id' || p.frame === 'sem'));
+  $('wrappedPhotoHint').hidden = p.frame !== 'id' && p.frame !== 'sem' && !$('wrappedPhoto').checked;
+  $('wrappedId').querySelectorAll('.wrapped-name').forEach(el => (el.hidden = p.frame !== 'id' && p.frame !== 'sem'));
   $('wrappedId').querySelectorAll('.wrapped-sem').forEach(el => (el.hidden = p.frame !== 'sem'));
   $('wrappedAmisHint').hidden = !p.frame || !!wrappedId().amis;
   $('wrappedExport').hidden = !p.frame;

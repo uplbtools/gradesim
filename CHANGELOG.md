@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.31 (2026-11-20)
+
+### Changes
+- When a new version is downloaded, the popup says so and has an Update button that installs it at once. The toolbar icon shows an arrow until then.
+- The Wrapped sem card uses Reann Vargas's new SEM STATS tin. It shows your name, the sem, your program, the sem's units, your standing and the GWA. The own line and the best course options are gone, since the new card has no spot for them.
+
 ## 2.1.30 (2026-11-18)
 
 ### Fixes
