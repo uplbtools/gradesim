@@ -1,6 +1,12 @@
 # Changelog
 
-## 2.1.32 (unreleased)
+## 2.1.33 (unreleased)
+
+### Fixes
+- BS Human Ecology has a Human Settlements Planning major to pick. It fills the seven Major rows with CERP 122, 162, 163, 164, 165, 166 and 170, as the department lists them.
+- BS Electrical Engineering's internship (EE 198) sits in the midyear after second year, as the 2018 curriculum and the 2025 catalog put it.
+
+## 2.1.32 (2026-11-20)
 
 ### Fixes
 - Every special problem (190) counts all its units in the GWA, like CMSC 190. AMIS shows the early units as S, and the final grade applies to them too.
