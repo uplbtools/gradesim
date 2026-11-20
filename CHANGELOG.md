@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.1.33 (unreleased)
+## 2.1.34 (unreleased)
+
+### Fixes
+- BS Economics' two Language Elective rows take only a foreign language course (French, Japanese or Spanish), like BA Communication Arts' foreign language elective.
+
+## 2.1.33 (2026-11-21)
 
 ### Fixes
 - BS Human Ecology has a Human Settlements Planning major to pick. It fills the seven Major rows with CERP 122, 162, 163, 164, 165, 166 and 170, as the department lists them.

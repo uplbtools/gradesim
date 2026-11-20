@@ -142,6 +142,8 @@ console.log('requirements.test.js: all assertions passed');
   const r2 = remainingRequirements(econ, both);
   assert.strictEqual(r2.fill.get('KAS 1').code, 'KAS 1', 'KAS 1 fills itself when taken');
   assert.strictEqual(remainingRequirements(econ, []).electives.doneUnits, 0, 'no electives done with nothing taken');
+  const lang = fillRequirementSlots(econ, [{ code: 'PHLO 171', title: '', units: 3, result: 'passed' }, { code: 'SPAN 10', title: '', units: 3, result: 'passed' }]);
+  assert.strictEqual(lang.get('MAJ 1').code, 'SPAN 10', 'a Language Elective takes only a foreign language');
   console.log('requirements.test.js: HIST 1 for KAS 1 passed');
 }
 
