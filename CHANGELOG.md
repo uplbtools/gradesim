@@ -4,6 +4,7 @@
 
 ### Fixes
 - BS Economics' two Language Elective rows take only a foreign language course (French, Japanese or Spanish), like BA Communication Arts' foreign language elective.
+- BS Human Ecology's HUME 199 can be taken in either 1st or 2nd sem, as AMIS's Program Course Listing shows.
 
 ## 2.1.33 (2026-11-21)
 

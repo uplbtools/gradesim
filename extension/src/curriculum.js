@@ -14515,6 +14515,7 @@ const UPLB_PROGRAMS = {
         "units": 1,
         "year": 4,
         "sem": "2",
+        "catalogSem": "1s,2s",
         "prereqs": []
       }
     ],
