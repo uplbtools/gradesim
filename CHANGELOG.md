@@ -1,6 +1,12 @@
 # Changelog
 
-## 2.1.34 (unreleased)
+## 2.1.35 (unreleased)
+
+### Fixes
+- The sem stats card uses Reann Vargas's updated art. The GWA and the link are no longer drawn twice, and the GWA and the hidden-GWA star fit the new tray.
+- The Wrapped cards credit Reann Vargas, who drew the art.
+
+## 2.1.34 (2026-11-21)
 
 ### Fixes
 - BS Economics' two Language Elective rows take only a foreign language course (French, Japanese or Spanish), like BA Communication Arts' foreign language elective.
